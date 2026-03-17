@@ -13,6 +13,9 @@
     <Filter Include="JoltPhysics">
       <UniqueIdentifier>{4583c1e7-c3d0-4b6c-903e-52bd8456bd30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SDL">
+      <UniqueIdentifier>{ce81788a-ab1b-4541-b936-f433b20f4c60}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
@@ -57,6 +60,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
       <Filter>JoltPhysics</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)game_controller.h">
+      <Filter>SDL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -97,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)CharacterController.cpp">
       <Filter>JoltPhysics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)game_controller.cpp">
+      <Filter>SDL</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

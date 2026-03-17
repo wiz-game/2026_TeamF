@@ -13,7 +13,7 @@ namespace basecross {
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
-
+		
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
 		Player(const std::shared_ptr<Stage>& stage) :

@@ -8,6 +8,7 @@
 #include "DXModelResource.h"
 #include "JoltManager.h"
 #include "Scene.h"
+#include "game_controller.h"
 
 namespace basecross{
 
@@ -28,11 +29,16 @@ namespace basecross{
 		try {
 			JoltManager::StaticInitialize();
 
+			GameController::Initialize();
+			GameController::EnableGyro(true);
+			GameController::StartVibration(0.1f, 10.0f);
+
 			// 背景色を設定
 			SetClearColor(Col4(0.0f, 0.11328125f, 0.2578125, 1.0f)); // ミッドナイトブルー
 			
 			//リソース作成
 			CreateResourses();
+
 
 			//自分自身にイベントを送る
 			//これによりゲームステージのオブジェクトがCreate時にシーンにアクセスできる
@@ -52,6 +58,10 @@ namespace basecross{
 			//ゲームステージの設定
 			ResetActiveStage<GameStage>();
 		}
+	}
+
+	void Scene::OnDestroy() {
+		GameController::Finalize();
 	}
 }
 //end basecross
