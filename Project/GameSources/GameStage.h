@@ -15,7 +15,7 @@ namespace basecross {
 	class GameStage : public Stage
 	{
 		JoltManager m_jphManger; // Jolt Physics マネージャー
-
+		shared_ptr<Player> m_Player;
 		void CreateViewLight(); //ビューの作成
 
 	public:

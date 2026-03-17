@@ -5,7 +5,7 @@
 
 #include "stdafx.h"
 #include "Project.h"
-
+#include "game_controller.h"
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
@@ -38,7 +38,8 @@ namespace basecross {
 			//ビューとライトの作成
 			CreateViewLight();
 
-			auto player = AddGameObject<Player>();
+			m_Player = AddGameObject<Player>();
+			
 		}
 		catch (...) {
 			throw;
@@ -49,7 +50,7 @@ namespace basecross {
 	{
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
-
+		GameController::Update();
 	}
 
 	void GameStage::OnUpdate2()
