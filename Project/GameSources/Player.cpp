@@ -45,8 +45,6 @@ namespace basecross{
 		quat = quat * rotY;
 		m_transform->SetQuaternion(rotY);
 
-		ƒKƒ‰ƒX‹Ê ‹Ê;
-		‹Ê.”j—ô();
 	}
 }
 //end basecross
