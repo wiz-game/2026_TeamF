@@ -75,7 +75,7 @@ JPH_FLOATING_POINT_EXCEPTIONS_ENABLED;
 
 JPH_OBJECT_STREAM;JPH_PROFILE_ENABLED;JPH_DISABLE_CUSTOM_ALLOCATOR;_HAS_STD_BYTE=0;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)External\Jolt\include\;C:\wiz\ゲーム制作\BaseCross11_2026\Project\External\SDL3\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)External\Jolt\include\;$(SolutionDir)External\SDL3\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -86,7 +86,7 @@ JPH_OBJECT_STREAM;JPH_PROFILE_ENABLED;JPH_DISABLE_CUSTOM_ALLOCATOR;_HAS_STD_BYTE
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\wiz\ゲーム制作\BaseCross11_2026\Project\External\SDL3\lib\x64;$(SolutionDir)External\Jolt\lib\Debug\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)External\SDL3\lib\x64;$(SolutionDir)External\Jolt\lib\Debug\</AdditionalLibraryDirectories>
       <AdditionalDependencies>Jolt.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
