@@ -75,6 +75,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h">
       <Filter>Sawamura\ProtoStage</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkDraw.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -124,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp">
       <Filter>Sawamura\ProtoStage</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
