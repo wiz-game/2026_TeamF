@@ -16,6 +16,12 @@
     <Filter Include="SDL">
       <UniqueIdentifier>{ce81788a-ab1b-4541-b936-f433b20f4c60}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sawamura">
+      <UniqueIdentifier>{200fb4fd-6581-444a-87e2-48f1f2e317e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sawamura\ProtoStage">
+      <UniqueIdentifier>{047e65de-56fa-4675-b44f-c55b694da517}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
@@ -63,6 +69,13 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)game_controller.h">
       <Filter>SDL</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProtoStage.h">
+      <Filter>Sawamura\ProtoStage</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h">
+      <Filter>Sawamura\ProtoStage</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkDraw.h">
     <ClInclude Include="$(MSBuildThisFileDirectory)PowerSupply.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -113,6 +126,13 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)game_controller.cpp">
       <Filter>SDL</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProtoStage.cpp">
+      <Filter>Sawamura\ProtoStage</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp">
+      <Filter>Sawamura\ProtoStage</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp">
     <ClCompile Include="$(MSBuildThisFileDirectory)PowerSupply.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
