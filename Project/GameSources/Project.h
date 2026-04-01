@@ -12,4 +12,7 @@
 #include "Character.h"
 #include "Player.h"
 
+#include "PowerSupply.h"
+#include "Port.h"
+
 #include "GameStage.h"

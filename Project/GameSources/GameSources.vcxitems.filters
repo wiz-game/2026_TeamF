@@ -63,6 +63,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)game_controller.h">
       <Filter>SDL</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PowerSupply.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Port.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -106,6 +112,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)game_controller.cpp">
       <Filter>SDL</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PowerSupply.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Port.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
