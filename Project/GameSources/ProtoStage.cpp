@@ -1,6 +1,6 @@
 /*!
 @file GameStage.cpp
-@brief ゲームステージ実体
+@brief プロトタイプステージ実体
 */
 
 #include "stdafx.h"
@@ -9,11 +9,11 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	//	ゲームステージクラス実体
+	//	プロトタイプステージクラス実体
 	//--------------------------------------------------------------------------------------
 
 	//ビューとライトの作成
-	void GameStage::CreateViewLight() {
+	void ProtoStage::CreateViewLight() {
 		// カメラの設定
 		auto camera = ObjectFactory::Create<Camera>();
 		camera->SetEye(Vec3(0.0f, 8.0f, -8.0f));
@@ -28,7 +28,7 @@ namespace basecross {
 		light->SetDefaultLighting(); //デフォルトのライティングを指定
 	}
 
-	void GameStage::OnCreate() {
+	void ProtoStage::OnCreate() {
 		try {
 			auto& app = App::GetApp();
 
@@ -38,10 +38,8 @@ namespace basecross {
 			//ビューとライトの作成
 			CreateViewLight();
 
-			m_Player = AddGameObject<Player>();
-			AddGameObject<InkDraw>();
-			AddGameObject<PowerSupply>();
-			AddGameObject<Port>();
+			//プロトタイプ用地面作成
+			m_floor = AddGameObject<Floor>();
 
 		}
 		catch (...) {
@@ -49,19 +47,19 @@ namespace basecross {
 		}
 	}
 
-	void GameStage::OnUpdate()
+	void ProtoStage::OnUpdate()
 	{
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
 		GameController::Update();
 	}
 
-	void GameStage::OnUpdate2()
+	void ProtoStage::OnUpdate2()
 	{
-		m_jphManger.Update(1.0f / 60.0f);
+
 	}
 
-	void GameStage::OnDraw()
+	void ProtoStage::OnDraw()
 	{
 	}
 }
