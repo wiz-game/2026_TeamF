@@ -39,6 +39,9 @@ namespace basecross {
 			CreateViewLight();
 
 			m_Player = AddGameObject<Player>();
+
+			AddGameObject<PowerSupply>();
+			AddGameObject<Port>();
 			
 		}
 		catch (...) {

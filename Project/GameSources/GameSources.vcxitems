@@ -27,6 +27,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltRigidBody.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Port.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PowerSupply.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Project.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectBehavior.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectShader.h" />
@@ -52,6 +54,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Port.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PowerSupply.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProtoStage.cpp" />

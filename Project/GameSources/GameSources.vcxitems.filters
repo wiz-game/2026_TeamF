@@ -76,6 +76,10 @@
       <Filter>Sawamura\ProtoStage</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)InkDraw.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)PowerSupply.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Port.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -129,6 +133,10 @@
       <Filter>Sawamura\ProtoStage</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)PowerSupply.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Port.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
