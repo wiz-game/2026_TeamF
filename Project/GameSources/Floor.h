@@ -20,7 +20,7 @@ namespace basecross
 	public:
 		Floor(const std::shared_ptr<Stage> stage) :
 			GameObject(stage),
-			m_pos(Vec3(0, 0, 0)),
+			m_pos(Vec3(0, -1, 0)),
 			m_scale(Vec3(8, 1, 15))
 		{
 

@@ -6,6 +6,9 @@
 #include "stdafx.h"
 #include "Project.h"
 #include "game_controller.h"
+#include "JoltRigidBody.h"
+#include "CharacterController.h"
+
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
@@ -38,7 +41,15 @@ namespace basecross {
 			//ビューとライトの作成
 			CreateViewLight();
 
+			//プレイヤー作成
+			m_Player = AddGameObject<Player>();
+
 			//プロトタイプ用地面作成
+			JPH::StaticCompoundShapeSettings compoundSettings;
+			JPH::BoxShapeSettings floorShapeSettings(JPH::Vec3(5.0f, 1.0f, 5.0f) * 0.5f);
+			JPH::ShapeRefC floorShape = floorShapeSettings.Create().Get();
+			compoundSettings.AddShape(JPH::Vec3(0.0f, -1.0f, 0.0f), JPH::Quat::sIdentity(), floorShape);
+
 			m_floor = AddGameObject<Floor>();
 
 		}

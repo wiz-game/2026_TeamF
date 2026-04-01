@@ -31,7 +31,7 @@ namespace basecross{
 
 			GameController::Initialize();
 			GameController::EnableGyro(true);
-			GameController::StartVibration(0.1f, 10.0f);
+			GameController::StartVibration(0.0f, 10.0f);
 
 			// 背景色を設定
 			SetClearColor(Col4(0.0f, 0.11328125f, 0.2578125, 1.0f)); // ミッドナイトブルー
