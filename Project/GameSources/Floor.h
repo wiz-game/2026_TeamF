@@ -31,7 +31,7 @@ namespace basecross
 
 		}
 
-		void OnCreate();
-		void OnUpdate();
+		void OnCreate() override;	//初期設定用
+		void OnUpdate() override;	//更新用
 	};
 }

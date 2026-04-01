@@ -16,6 +16,7 @@ namespace basecross
 
 		//Transformコンポーネント
 		m_trans = GetComponent<Transform>();
+
 		//位置、スケール設定
 		m_trans->SetPosition(m_pos);
 		m_trans->SetScale(m_scale);
