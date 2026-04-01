@@ -1,143 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Headers">
-      <UniqueIdentifier>{4b0a624a-610d-4bc6-b311-2b02a781cdf9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources">
-      <UniqueIdentifier>{96692d2a-8790-41a9-bfac-6c5662d4ad61}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DXModel">
-      <UniqueIdentifier>{f99ea933-3d18-461c-be32-b3f9d65da825}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="JoltPhysics">
-      <UniqueIdentifier>{4583c1e7-c3d0-4b6c-903e-52bd8456bd30}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SDL">
-      <UniqueIdentifier>{ce81788a-ab1b-4541-b936-f433b20f4c60}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sawamura">
-      <UniqueIdentifier>{200fb4fd-6581-444a-87e2-48f1f2e317e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sawamura\ProtoStage">
-      <UniqueIdentifier>{047e65de-56fa-4675-b44f-c55b694da517}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)CharacterController.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DXModel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)game_controller.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Port.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PowerSupply.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProtoStage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Goal.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Player.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Project.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectShader.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectBehavior.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
-      <Filter>DXModel</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h">
-      <Filter>DXModel</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h">
-      <Filter>DXModel</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)JoltLayers.h">
-      <Filter>JoltPhysics</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)JoltManager.h">
-      <Filter>JoltPhysics</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)JoltRigidBody.h">
-      <Filter>JoltPhysics</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
-      <Filter>JoltPhysics</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)game_controller.h">
-      <Filter>SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ProtoStage.h">
-      <Filter>Sawamura\ProtoStage</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h">
-      <Filter>Sawamura\ProtoStage</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)InkDraw.h">
-    <ClInclude Include="$(MSBuildThisFileDirectory)PowerSupply.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Port.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
-      <Filter>DXModel</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)DXModel.cpp">
-      <Filter>DXModel</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp">
-      <Filter>DXModel</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp">
-      <Filter>JoltPhysics</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp">
-      <Filter>JoltPhysics</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)CharacterController.cpp">
-      <Filter>JoltPhysics</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)game_controller.cpp">
-      <Filter>SDL</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ProtoStage.cpp">
-      <Filter>Sawamura\ProtoStage</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp">
-      <Filter>Sawamura\ProtoStage</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp">
-    <ClCompile Include="$(MSBuildThisFileDirectory)PowerSupply.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Port.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)game_controller.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkDraw.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)JoltLayers.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)JoltManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)JoltRigidBody.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Port.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PowerSupply.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Project.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectBehavior.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectShader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProtoStage.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Goal.h" />
   </ItemGroup>
 </Project>

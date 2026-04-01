@@ -21,6 +21,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)game_controller.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Goal.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)InkDraw.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltLayers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltManager.h" />
@@ -49,6 +50,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Goal.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp" />
