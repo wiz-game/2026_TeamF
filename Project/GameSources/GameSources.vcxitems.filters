@@ -63,6 +63,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)game_controller.h">
       <Filter>SDL</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkDraw.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -106,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)game_controller.cpp">
       <Filter>SDL</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
