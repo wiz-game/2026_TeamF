@@ -13,3 +13,4 @@
 #include "Player.h"
 
 #include "GameStage.h"
+#include "InkDraw.h"
