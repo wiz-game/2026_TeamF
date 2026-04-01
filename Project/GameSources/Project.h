@@ -13,6 +13,10 @@
 #include "Player.h"
 #include "Floor.h"
 
+#include "PowerSupply.h"
+#include "Port.h"
+#include "Goal.h"
+
 #include "GameStage.h"
 #include "ProtoStage.h"
 #include "InkDraw.h"

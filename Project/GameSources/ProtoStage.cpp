@@ -52,6 +52,11 @@ namespace basecross {
 
 			m_floor = AddGameObject<Floor>();
 
+			AddGameObject<PowerSupply>();
+			AddGameObject<Port>();
+			AddGameObject<Goal>();
+
+
 		}
 		catch (...) {
 			throw;

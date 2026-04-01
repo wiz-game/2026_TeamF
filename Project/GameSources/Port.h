@@ -1,0 +1,34 @@
+/*!
+@file Port.h
+@brief ポート
+*/
+
+#pragma once
+#include "stdafx.h"
+#include "PNTDXModelDraw.h"
+
+namespace basecross {
+	class Port : public GameObject // GameObjectクラスの継承【必須】
+	{
+		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
+		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
+
+		Vec3 m_pos = Vec3(1.0f, 1.0f, 4.0f);
+		Vec3 m_scale = Vec3(1.0f, 0.1f, 1.0f);
+
+	public:
+		// ステージを引数にしたコンストラクタ【必須】
+		Port(const std::shared_ptr<Stage>& stage) :
+			GameObject(stage) // ステージをGameObjectに渡す【必須】
+		{
+		}
+
+		void OnCreate() override; // 初期設定用の関数(UnityのStartメソッドに相当)
+		void OnUpdate() override; // 毎フレーム実行される関数(UnityのUpdateメソッドに相当)
+
+		void Energized();	//通電したときの関数
+	};
+
+}
+//end basecross
+

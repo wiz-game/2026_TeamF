@@ -1,6 +1,6 @@
 /*!
 @file GameStage.cpp
-@brief ƒQ[ƒ€ƒXƒe[ƒWÀ‘Ì
+@brief ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -9,36 +9,40 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒXÀ‘Ì
+	//	ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹å®Ÿä½“
 	//--------------------------------------------------------------------------------------
 
-	//ƒrƒ…[‚Æƒ‰ƒCƒg‚Ìì¬
+	//ãƒ“ãƒ¥ãƒ¼ã¨ãƒ©ã‚¤ãƒˆã®ä½œæˆ
 	void GameStage::CreateViewLight() {
-		// ƒJƒƒ‰‚Ìİ’è
+		// ã‚«ãƒ¡ãƒ©ã®è¨­å®š
 		auto camera = ObjectFactory::Create<Camera>();
 		camera->SetEye(Vec3(0.0f, 8.0f, -8.0f));
 		camera->SetAt(Vec3(0.0f, 0.0f, 0.0f));
 
-		// ƒrƒ…[‚ÉƒJƒƒ‰‚ğİ’è
+		// ãƒ“ãƒ¥ãƒ¼ã«ã‚«ãƒ¡ãƒ©ã‚’è¨­å®š
 		auto view = CreateView<SingleView>();
 		view->SetCamera(camera);
 
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìì¬
+		//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã®ä½œæˆ
 		auto light = CreateLight<MultiLight>();
-		light->SetDefaultLighting(); //ƒfƒtƒHƒ‹ƒg‚Ìƒ‰ƒCƒeƒBƒ“ƒO‚ğw’è
+		light->SetDefaultLighting(); //ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã‚’æŒ‡å®š
 	}
 
 	void GameStage::OnCreate() {
 		try {
 			auto& app = App::GetApp();
 
-			// JoltPhysics‚ğ‰Šú‰»‚·‚é
+			// JoltPhysicsã‚’åˆæœŸåŒ–ã™ã‚‹
 			m_jphManger.Initialize();
 
-			//ƒrƒ…[‚Æƒ‰ƒCƒg‚Ìì¬
+			//ãƒ“ãƒ¥ãƒ¼ã¨ãƒ©ã‚¤ãƒˆã®ä½œæˆ
 			CreateViewLight();
 
 			m_Player = AddGameObject<Player>();
+			AddGameObject<InkDraw>();
+			AddGameObject<PowerSupply>();
+			AddGameObject<Port>();
+
 			
 		}
 		catch (...) {
@@ -48,7 +52,7 @@ namespace basecross {
 
 	void GameStage::OnUpdate()
 	{
-		// ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚ğæ“¾
+		// ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
 		auto& app = App::GetApp();
 		GameController::Update();
 	}
