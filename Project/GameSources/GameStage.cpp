@@ -39,7 +39,7 @@ namespace basecross {
 			CreateViewLight();
 
 			m_Player = AddGameObject<Player>();
-			
+			AddGameObject<InkDraw>();
 		}
 		catch (...) {
 			throw;
