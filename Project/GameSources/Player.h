@@ -12,7 +12,7 @@ namespace basecross {
 	class Player : public GameObject // GameObjectクラスの継承【必須】
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
-		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
+		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
 		float m_height;
 		float m_radius;
 
@@ -29,7 +29,7 @@ namespace basecross {
 			GameObject(stage), // ステージをGameObjectに渡す【必須】
 			m_height(1.5f),
 			m_radius(0.70f),
-			m_moveSpeed(2.0f),
+			m_moveSpeed(4.0f),
 			m_moveDir(Vec3(0)),
 			m_pos(Vec3(0)),
 			m_ink(0.0f),

@@ -17,18 +17,15 @@ namespace basecross{
 
 		m_transform->SetPosition(Vec3(0.0f, 5.0f, 0.0f));
 		// ドローコンポーネントを追加
-		m_draw = AddComponent<PNTDXModelDraw>();
-		m_draw->SetMeshResource(L"DEFAULT_CUBE");
+		m_draw = AddComponent<PNTStaticDraw>();
+		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
 		m_draw->SetDiffuse(Col4(1, 1, 1, 1));
-
-		auto draw = AddComponent<PNTStaticDraw>();
-		draw->SetMeshResource(L"DEFAULT_CUBE");
 
 		auto cc = AddComponent<CharacterController>();
 		CharacterController::Settings settings;
 		settings.height = m_height;
 		settings.radius = m_radius;
-		settings.mass = 50.0f;
+		settings.mass = 0.0f;
 		settings.maxSlopeAngle - 45.0f;
 		cc->Initialize(settings);
 
@@ -69,13 +66,13 @@ namespace basecross{
 		auto pad = GameController::GetCurrentState();
 		auto LStickX = GameController::GetLeftStickX();
 		auto LStickY = GameController::GetLeftStickY();
-		const Vec3 stickL(LStickX, 0.0f, LStickY);
+		const Vec3 stickL(LStickX, 0.0f, -LStickY);
 
 		if (cc)
 		{
 			m_moveDir = stickL;
 			m_moveDir.normalize();
-			m_moveSpeed = 2 * stickL.length();
+			m_moveSpeed = 4 * stickL.length();
 			float rad = atan2f(m_moveDir.z, m_moveDir.x);
 
 			m_moveDir.x = cosf(rad);
