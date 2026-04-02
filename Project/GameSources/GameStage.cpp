@@ -43,6 +43,7 @@ namespace basecross {
 			AddGameObject<PowerSupply>();
 			AddGameObject<Port>();
 
+			
 		}
 		catch (...) {
 			throw;
