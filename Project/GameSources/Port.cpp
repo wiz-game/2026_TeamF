@@ -21,10 +21,11 @@ namespace basecross {
 		m_draw = AddComponent<PNTDXModelDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
 
-		auto draw = AddComponent<PNTStaticDraw>();
-		draw->SetMeshResource(L"DEFAULT_CUBE");
-		draw->SetDiffuse(Col4(1, 0, 0, 1));
+		m_statidDraw = AddComponent<PNTStaticDraw>();
+		m_statidDraw->SetMeshResource(L"DEFAULT_CUBE");
+		m_statidDraw->SetDiffuse(Col4(1, 0, 0, 1));
 
+		auto coll = AddComponent<CollisionObb>();
 	}
 
 	// 更新処理
@@ -32,6 +33,18 @@ namespace basecross {
 	{
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
+
+		isConnect = false;
+
+	}
+
+	void Port::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
+	{
+		if (auto ink = std::dynamic_pointer_cast<InkDraw>(obj))
+		{
+			isConnect = true;
+			m_statidDraw->SetDiffuse(Col4(1, 1, 0, 1));
+		}
 	}
 
 	//通電したときの処理
