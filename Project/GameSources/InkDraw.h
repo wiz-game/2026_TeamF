@@ -18,7 +18,7 @@ namespace basecross{
 		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
 
 		float m_scaleX = 0.5f; // X軸のスケーリング
-		float m_scaleY = 5.0f; // Y軸のスケーリング
+		float m_scaleY = 0.5f; // Y軸のスケーリング
 	public:
 		// 構築と破棄
 		InkDraw(const shared_ptr<Stage>& stage) :
