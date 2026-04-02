@@ -5,6 +5,7 @@
 
 #pragma once
 #include "stdafx.h"
+#include "MainCamera.h"
 #include "PNTDXModelDraw.h"
 
 namespace basecross {
@@ -13,6 +14,9 @@ namespace basecross {
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
+
+		std::weak_ptr<MainCamera> m_camera;
+
 		float m_height;
 		float m_radius;
 
@@ -23,19 +27,21 @@ namespace basecross {
 
 		float m_ink;	//インク残量
 		float m_inkMax;	//インク最大残量
+		float m_inkDecrease;	//インク減少量
 		
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
 		Player(const std::shared_ptr<Stage>& stage) :
 			GameObject(stage), // ステージをGameObjectに渡す【必須】
-			m_height(1.5f),
-			m_radius(0.70f),
+			m_height(1.0f),
+			m_radius(0.49f),
 			m_moveSpeed(0.0f),
 			m_maxSpeed(4.0f),
 			m_moveDir(Vec3(0)),
 			m_pos(Vec3(0)),
 			m_ink(0.0f),
-			m_inkMax(10.0f)
+			m_inkMax(10.0f),
+			m_inkDecrease(1.0f)
 		{
 		}
 
@@ -44,6 +50,7 @@ namespace basecross {
 
 		void OnMove();
 		void DropInk();
+		void OnDied();
 	};
 
 }

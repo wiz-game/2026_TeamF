@@ -55,6 +55,7 @@ namespace basecross{
 		//m_transform->SetQuaternion(rotY);
 		OnMove();
 		DropInk();
+		OnDied();
 	}
 
 	void Player::OnMove()
@@ -73,7 +74,16 @@ namespace basecross{
 			m_moveDir = stickL;
 			m_moveDir.normalize();
 			m_moveSpeed = m_maxSpeed * stickL.length();
+
+			float cameraAngleY = 0.0f;
+			auto maincamera = m_camera.lock();
+			if (maincamera)
+			{
+				cameraAngleY = maincamera->GetAngleY();
+			}
+
 			float rad = atan2f(m_moveDir.z, m_moveDir.x);
+			rad += cameraAngleY + XM_PIDIV2;
 
 			m_moveDir.x = cosf(rad);
 			m_moveDir.z = sinf(rad);
@@ -93,10 +103,21 @@ namespace basecross{
 		{
 			if (cc && cc->IsOnGround())
 			{
-				m_ink -= delta;
+				m_ink -= m_inkDecrease * delta;
 				auto ink = stage->AddGameObject<InkDraw>();
 				ink->GetComponent<Transform>()->SetPosition(Vec3(m_pos.x, m_pos.y - m_height / 2, m_pos.z));
 			}
+		}
+	}
+
+	void Player::OnDied()
+	{
+		auto& app = App::GetApp();
+		std::wstringstream wss(L"");
+		if (m_ink <= 0)
+		{
+			wss << L"Died!!";
+			app->GetScene<Scene>()->SetDebugString(wss.str());
 		}
 	}
 }

@@ -18,7 +18,7 @@ namespace basecross {
 	//ビューとライトの作成
 	void ProtoStage::CreateViewLight() {
 		// カメラの設定
-		auto camera = ObjectFactory::Create<Camera>();
+		auto camera = ObjectFactory::Create<MainCamera>();
 		camera->SetEye(Vec3(0.0f, 8.0f, -8.0f));
 		camera->SetAt(Vec3(0.0f, 0.0f, 0.0f));
 
@@ -43,6 +43,13 @@ namespace basecross {
 
 			//プレイヤー作成
 			m_Player = AddGameObject<Player>();
+			SetSharedGameObject(L"Player", m_Player);
+
+			//カメラ取得
+			auto view = GetView();
+			auto camera = view->GetTargetCamera();
+			auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
+			mainCamera->SetTarget(m_Player);
 
 			//プロトタイプ用地面作成
 			JPH::StaticCompoundShapeSettings compoundSettings;
@@ -53,6 +60,7 @@ namespace basecross {
 			auto level = AddGameObject<GameObject>();
 			auto rb = level->AddComponent<JoltRigidBody>();
 
+			//JoltRigidBody
 			JoltRigidBody::Settings settings;
 			settings.shape = floorShape;
 			settings.motionType = JPH::EMotionType::Static;
@@ -60,6 +68,7 @@ namespace basecross {
 
 			rb->Initialize(settings);
 
+			//地面作成
 			m_floor = AddGameObject<Floor>();
 
 			AddGameObject<PowerSupply>();
