@@ -72,7 +72,7 @@ namespace basecross{
 		{
 			m_moveDir = stickL;
 			m_moveDir.normalize();
-			m_moveSpeed = 4 * stickL.length();
+			m_moveSpeed = m_maxSpeed * stickL.length();
 			float rad = atan2f(m_moveDir.z, m_moveDir.x);
 
 			m_moveDir.x = cosf(rad);

@@ -17,6 +17,7 @@ namespace basecross {
 		float m_radius;
 
 		float m_moveSpeed;
+		float m_maxSpeed;
 		Vec3 m_moveDir;
 		Vec3 m_pos;
 
@@ -29,7 +30,8 @@ namespace basecross {
 			GameObject(stage), // ƒXƒe[ƒW‚ğGameObject‚É“n‚·y•K{z
 			m_height(1.5f),
 			m_radius(0.70f),
-			m_moveSpeed(4.0f),
+			m_moveSpeed(0.0f),
+			m_maxSpeed(4.0f),
 			m_moveDir(Vec3(0)),
 			m_pos(Vec3(0)),
 			m_ink(0.0f),
