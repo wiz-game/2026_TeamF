@@ -17,7 +17,7 @@ namespace basecross {
 		std::shared_ptr<Transform> m_transform;
 		std::shared_ptr<PNTDXModelDraw> m_draw;
 
-		Vec3 m_pos = Vec3(0.0f, 2.0f, 5.0f);
+		Vec3 m_pos = Vec3(0.0f, 0.0f, 5.0f);
 		Vec3 m_scale = Vec3(2.0f, 2.0f, 0.5f);
 
 	public:

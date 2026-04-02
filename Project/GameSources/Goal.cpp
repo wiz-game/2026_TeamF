@@ -26,7 +26,7 @@ namespace basecross {
 		//コリジョン
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetAfterCollision(AfterCollision::None);
-		coll->SetFixed(true);//固定
+		//coll->SetFixed(true);//固定
 		coll->SetDrawActive(true);
 		SetAlphaActive(true);
 	}
