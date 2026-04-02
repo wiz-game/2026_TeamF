@@ -20,3 +20,5 @@
 #include "GameStage.h"
 #include "ProtoStage.h"
 #include "InkDraw.h"
+
+#include "Electrified.h"
