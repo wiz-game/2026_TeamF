@@ -15,7 +15,7 @@ namespace basecross{
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();
 
-		m_transform->SetPosition(Vec3(0.0f, 0.0f, 0.0f));
+		m_transform->SetPosition(Vec3(0.0f, 5.0f, 0.0f));
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTDXModelDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
@@ -26,8 +26,8 @@ namespace basecross{
 
 		auto cc = AddComponent<CharacterController>();
 		CharacterController::Settings settings;
-		settings.height = 1.5f;
-		settings.radius = 0.7f;
+		settings.height = m_height;
+		settings.radius = m_radius;
 		settings.mass = 50.0f;
 		settings.maxSlopeAngle - 45.0f;
 		cc->Initialize(settings);
@@ -38,6 +38,7 @@ namespace basecross{
 	// プレイヤーの更新処理
 	void Player::OnUpdate()
 	{
+		m_pos = m_transform->GetPosition();
 		//// アプリケーションオブジェクトを取得
 		//auto& app = App::GetApp();
 
@@ -70,7 +71,7 @@ namespace basecross{
 		auto LStickY = GameController::GetLeftStickY();
 		const Vec3 stickL(LStickX, 0.0f, LStickY);
 
-		if (cc && cc->IsOnGround())
+		if (cc)
 		{
 			m_moveDir = stickL;
 			m_moveDir.normalize();
@@ -88,9 +89,17 @@ namespace basecross{
 	{
 		auto delta = App::GetApp()->GetElapsedTime();
 		auto pad = GameController::GetCurrentState();
+		auto cc = GetComponent<CharacterController>();
+		auto stage = GetStage();
+
 		if (pad.buttonDown)
 		{
-			m_ink -= delta;
+			if (cc && cc->IsOnGround())
+			{
+				m_ink -= delta;
+				auto ink = stage->AddGameObject<InkDraw>();
+				ink->GetComponent<Transform>()->SetPosition(Vec3(m_pos.x, m_pos.y - m_height / 2, m_pos.z));
+			}
 		}
 	}
 }
