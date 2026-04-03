@@ -12,22 +12,32 @@ namespace basecross
 	{
 		std::weak_ptr<GameObject>m_target;
 
-		float m_eyePos[3] = { 0.0f,2.0f,10.0f };
+		float m_eyePos[3] = { 0.0f,5.0f,10.0f };
 		float m_angleX = XMConvertToRadians(45.0f);
-		float m_angleY = -XM_PIDIV2;
+		float m_angleY;
 	public:
+		MainCamera():
+			m_angleY(-(XM_PIDIV2))
+		{
+		}
+
+		~MainCamera()
+		{
+		}
+
 		void OnCreate();
 		void OnUpdate();
 
 		void CameraMove();
-		float GetAngleY() const
-		{
-			return m_angleY;
-		}
 
 		void SetTarget(const std::weak_ptr<GameObject> target)
 		{
 			m_target = target;
+		}
+
+		float GetAngleY() const
+		{
+			return m_angleY;
 		}
 	};
 }

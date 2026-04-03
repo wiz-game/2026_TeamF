@@ -20,6 +20,7 @@ namespace basecross
 
 	void MainCamera::CameraMove()
 	{
+		auto& app = App::GetApp();
 		auto delta = App::GetApp()->GetElapsedTime();
 
 		//ターゲット(プレイヤー)
@@ -32,34 +33,21 @@ namespace basecross
 		//ターゲットの移動用コンポーネント取得
 		auto targetTrans = target->GetComponent<Transform>();
 		Vec3 targetPos = targetTrans->GetPosition();
-		Vec3 at = targetPos;
-		at.y += 1.0f;
+		Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
 		SetAt(at);
 
 		//コントローラー取得
 		auto device = App::GetApp()->GetInputDevice();
 		auto& pad = device.GetControlerVec()[0];
 
-		m_angleX -= pad.fThumbRY * delta;
-		m_angleY -= pad.fThumbRX * delta * GetAspect();
-
+		//m_angleX -= pad.fThumbRY * delta;
+		//m_angleY += -pad.fThumbLX * delta * GetAspect();
 
 		float groundDis = 4.0f * cosf(m_angleX);
 
-		Vec3 dir;
-		dir.x = groundDis * cosf(m_angleY);
-		dir.y = 4.0f * sinf(m_angleX);
-		dir.z = groundDis * sinf(m_angleY);
+		m_angleY -= XMConvertToRadians(60.0f) * pad.fThumbLX * delta;
+		Vec3 eye = targetPos + Vec3(cosf(m_angleY) * 5.0f, m_eyePos[1], sinf(m_angleY) * 5.0f);
 
-		Vec3 eye = targetPos + Vec3(cosf(m_angleY), m_eyePos[1], sinf(m_angleY) * m_eyePos[2]);
-
-		dir.normalize();
-		SetEye(at + dir * 6);
-
-		//auto player = static_pointer_cast<Player>(target);
-		//if (player)
-		//{
-		//	player->SetCameraAngleY();
-		//}
+		SetEye(eye);
 	}
 }

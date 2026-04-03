@@ -52,21 +52,21 @@ namespace basecross {
 			mainCamera->SetTarget(m_Player);
 
 			//プロトタイプ用地面作成
-			JPH::StaticCompoundShapeSettings compoundSettings;
-			JPH::BoxShapeSettings floorShapeSettings(JPH::Vec3(8.0f, 1.0f, 15.0f) * 0.45f);
-			JPH::ShapeRefC floorShape = floorShapeSettings.Create().Get();
-			compoundSettings.AddShape(JPH::Vec3(0.0f, -1.0f, 0.0f), JPH::Quat::sIdentity(), floorShape);
+			//JPH::StaticCompoundShapeSettings compoundSettings;
+			//JPH::BoxShapeSettings floorShapeSettings(JPH::Vec3(8.0f, 1.0f, 15.0f) * 0.45f);
+			//JPH::ShapeRefC floorShape = floorShapeSettings.Create().Get();
+			//compoundSettings.AddShape(JPH::Vec3(0.0f, -1.0f, 0.0f), JPH::Quat::sIdentity(), floorShape);
 
-			auto level = AddGameObject<GameObject>();
-			auto rb = level->AddComponent<JoltRigidBody>();
+			//auto level = AddGameObject<GameObject>();
+			//auto rb = level->AddComponent<JoltRigidBody>();
 
-			//JoltRigidBody
-			JoltRigidBody::Settings settings;
-			settings.shape = floorShape;
-			settings.motionType = JPH::EMotionType::Static;
-			settings.objectLayer = Layers::NON_MOVING;
+			////JoltRigidBody
+			//JoltRigidBody::Settings settings;
+			//settings.shape = floorShape;
+			//settings.motionType = JPH::EMotionType::Static;
+			//settings.objectLayer = Layers::NON_MOVING;
 
-			rb->Initialize(settings);
+			//rb->Initialize(settings);
 
 			//地面作成
 			m_floor = AddGameObject<Floor>();

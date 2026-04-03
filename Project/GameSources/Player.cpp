@@ -5,6 +5,7 @@
 
 #include "stdafx.h"
 #include "Project.h"
+#include "MainCamera.h"
 #include "game_controller.h"
 #include "CharacterController.h"
 
@@ -15,27 +16,31 @@ namespace basecross{
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();
 
-		m_transform->SetPosition(Vec3(0.0f, 5.0f, 0.0f));
+		m_transform->SetPosition(Vec3(0.0f, 0.05f, 0.0f));
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
 		m_draw->SetDiffuse(Col4(1, 1, 1, 1));
 
-		auto cc = AddComponent<CharacterController>();
-		CharacterController::Settings settings;
-		settings.height = m_height;
-		settings.radius = m_radius;
-		settings.mass = 0.0f;
-		settings.maxSlopeAngle - 45.0f;
-		cc->Initialize(settings);
+		//auto cc = AddComponent<CharacterController>();
+		//CharacterController::Settings settings;
+		//settings.height = m_height;
+		//settings.radius = m_radius;
+		//settings.mass = 0.0f;
+		//settings.maxSlopeAngle - 45.0f;
+		//cc->Initialize(settings);
 
+		m_moveSpeed = m_maxSpeed;
 		m_ink = m_inkMax;
+
+		auto view = GetStage()->GetView();
+		auto camera = view->GetTargetCamera();
+		m_camera = dynamic_pointer_cast<MainCamera>(camera);
 	}
 
 	// プレイヤーの更新処理
 	void Player::OnUpdate()
 	{
-		m_pos = m_transform->GetPosition();
 		//// アプリケーションオブジェクトを取得
 		//auto& app = App::GetApp();
 
@@ -61,52 +66,63 @@ namespace basecross{
 	void Player::OnMove()
 	{
 		auto& app = App::GetApp();
+		std::wstringstream wss(L"");
+		//auto cc = GetComponent<CharacterController>();
+
+		auto device = App::GetApp()->GetInputDevice();
+		auto& pad = device.GetControlerVec()[0];
+		Vec3 stickL(pad.fThumbLX, 0.0f, pad.fThumbLY);
+
 		auto delta = app->GetElapsedTime();
-		auto cc = GetComponent<CharacterController>();
 
-		auto pad = GameController::GetCurrentState();
-		auto LStickX = GameController::GetLeftStickX();
-		auto LStickY = GameController::GetLeftStickY();
-		const Vec3 stickL(LStickX, 0.0f, -LStickY);
+		m_pos = m_transform->GetPosition();
 
-		if (cc)
+		float cameraAngleY = 0.0f;
+		auto mainCamera = m_camera.lock();
+		if (mainCamera)
 		{
-			m_moveDir = stickL;
-			m_moveDir.normalize();
-			m_moveSpeed = m_maxSpeed * stickL.length();
-
-			float cameraAngleY = 0.0f;
-			auto maincamera = m_camera.lock();
-			if (maincamera)
-			{
-				cameraAngleY = maincamera->GetAngleY();
-			}
-
-			float rad = atan2f(m_moveDir.z, m_moveDir.x);
-			rad += cameraAngleY + XM_PIDIV2;
-
-			m_moveDir.x = cosf(rad);
-			m_moveDir.z = sinf(rad);
-
-			cc->SetLinearVelocity(m_moveSpeed * m_moveDir);
+			cameraAngleY = mainCamera->GetAngleY();
 		}
+
+		float length = stickL.length();
+		if (length != 0)
+		{
+			float padAngle = atan2f(stickL.z, stickL.x);
+			float forwardAngle = padAngle + cameraAngleY + XM_PIDIV2;
+
+			m_forward.x = cosf(forwardAngle);
+			m_forward.y = 0.0f;
+			m_forward.z = sinf(forwardAngle);
+
+			m_velocity += m_forward * delta;
+			if (m_velocity.x <= m_maxSpeed || m_velocity.z <= m_maxSpeed)
+				m_velocity *= m_accel;
+;			//cc->SetLinearVelocity(m_moveSpeed * m_velocity * m_moveDir);
+		}
+		else
+		{
+			if (m_velocity.x >= 0.0f || m_velocity.z >= 0.0f)
+			{
+				//m_velocity -= 0.25f * delta;
+				//m_velocity *= m_accel;
+			}
+		}
+		m_pos += m_moveSpeed * m_velocity * delta;
+		m_transform->SetPosition(m_pos);
 	}
 
 	void Player::DropInk()
 	{
 		auto delta = App::GetApp()->GetElapsedTime();
 		auto pad = GameController::GetCurrentState();
-		auto cc = GetComponent<CharacterController>();
+		//auto cc = GetComponent<CharacterController>();
 		auto stage = GetStage();
 
 		if (pad.buttonDown)
 		{
-			if (cc && cc->IsOnGround())
-			{
-				m_ink -= m_inkDecrease * delta;
-				auto ink = stage->AddGameObject<InkDraw>();
-				ink->GetComponent<Transform>()->SetPosition(Vec3(m_pos.x, m_pos.y - m_height / 2, m_pos.z));
-			}
+			m_ink -= m_inkDecrease * delta;
+			auto ink = stage->AddGameObject<InkDraw>();
+			ink->GetComponent<Transform>()->SetPosition(Vec3(m_pos.x, m_pos.y - m_height / 2, m_pos.z));
 		}
 	}
 

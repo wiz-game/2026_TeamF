@@ -21,9 +21,11 @@ namespace basecross {
 		float m_radius;
 
 		float m_moveSpeed;
-		float m_maxSpeed;
-		Vec3 m_moveDir;
+		float m_maxSpeed;	//最大速度
+		float m_accel;	//加速度
 		Vec3 m_pos;
+		Vec3 m_forward;
+		Vec3 m_velocity;
 
 		float m_ink;	//インク残量
 		float m_inkMax;	//インク最大残量
@@ -37,8 +39,10 @@ namespace basecross {
 			m_radius(0.49f),
 			m_moveSpeed(0.0f),
 			m_maxSpeed(4.0f),
-			m_moveDir(Vec3(0)),
+			m_accel(0.99f),
 			m_pos(Vec3(0)),
+			m_forward(Vec3(0)),
+			m_velocity(Vec3(0)),
 			m_ink(0.0f),
 			m_inkMax(10.0f),
 			m_inkDecrease(1.0f)
@@ -51,6 +55,7 @@ namespace basecross {
 		void OnMove();
 		void DropInk();
 		void OnDied();
+
 	};
 
 }
