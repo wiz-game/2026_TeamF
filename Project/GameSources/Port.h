@@ -12,7 +12,7 @@ namespace basecross {
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
-		std::shared_ptr<PNTStaticDraw> m_statidDraw;
+		std::shared_ptr<PNTStaticDraw> m_staticDraw;
 
 		Vec3 m_pos = Vec3(1.0f, 0.0f, 4.0f);
 		Vec3 m_scale = Vec3(1.0f, 0.1f, 1.0f);
@@ -28,9 +28,13 @@ namespace basecross {
 
 		void OnCreate() override; // 初期設定用の関数(UnityのStartメソッドに相当)
 		void OnUpdate() override; // 毎フレーム実行される関数(UnityのUpdateメソッドに相当)
-		void OnCollisionEnter(std::shared_ptr<GameObject>& obj);	//インクとの当たり判定
+		void OnCollisionEnter(std::shared_ptr<GameObject>& obj)override;
+		void OnCollisionExcute(std::shared_ptr<GameObject>& obj)override;	//インクとの当たり判定
 
-		void Energized();	//通電したときの関数
+		bool GetConnect() const
+		{
+			return isConnect;
+		}
 	};
 
 }
