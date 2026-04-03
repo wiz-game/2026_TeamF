@@ -16,6 +16,7 @@
 #include "PowerSupply.h"
 #include "Port.h"
 #include "Goal.h"
+#include "UpDownFloor.h"
 
 #include "GameStage.h"
 #include "ProtoStage.h"

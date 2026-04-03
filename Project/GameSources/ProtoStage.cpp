@@ -43,7 +43,7 @@ namespace basecross {
 
 			//プレイヤー作成
 			m_Player = AddGameObject<Player>();
-			SetSharedGameObject(L"Player", m_Player);
+			//SetSharedGameObject(L"Player", m_Player);
 
 			//カメラ取得
 			auto view = GetView();
@@ -73,7 +73,8 @@ namespace basecross {
 
 			AddGameObject<PowerSupply>();
 			AddGameObject<Port>();
-			AddGameObject<Goal>();
+			//AddGameObject<Goal>();
+			AddGameObject<UpDownFloor>();
 
 
 		}

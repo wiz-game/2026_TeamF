@@ -13,6 +13,7 @@ namespace basecross{
 	// プレイヤーの初期設定
 	void Player::OnCreate()
 	{
+		GetStage()->SetSharedGameObject(L"Player", GetThis<Player>());
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();
 
