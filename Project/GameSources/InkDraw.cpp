@@ -20,7 +20,7 @@ namespace basecross{
 		m_draw->SetDiffuse(Col4(0, 0, 0, 1));
 		m_draw->SetEmissive(Col4(0, 0, 0, 1));
 
-		auto coll = AddComponent<CollisionObb>();
+		//auto coll = AddComponent<CollisionObb>();
 	}
 
 	void InkDraw::OnUpdate()
