@@ -95,18 +95,10 @@ namespace basecross{
 			m_forward.z = sinf(forwardAngle);
 
 			m_velocity += m_forward * delta;
-			if (m_velocity.x <= m_maxSpeed || m_velocity.z <= m_maxSpeed)
-				m_velocity *= m_accel;
 ;			//cc->SetLinearVelocity(m_moveSpeed * m_velocity * m_moveDir);
 		}
-		else
-		{
-			if (m_velocity.x >= 0.0f || m_velocity.z >= 0.0f)
-			{
-				//m_velocity -= 0.25f * delta;
-				//m_velocity *= m_accel;
-			}
-		}
+		if (m_velocity.x <= m_maxSpeed || m_velocity.z <= m_maxSpeed)
+			m_velocity *= m_accel;
 		m_pos += m_moveSpeed * m_velocity * delta;
 		m_transform->SetPosition(m_pos);
 	}
