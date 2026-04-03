@@ -16,8 +16,13 @@ namespace basecross {
 	{
 		std::shared_ptr<Transform> m_transform;
 		std::shared_ptr<PNTDXModelDraw> m_draw;
+		std::shared_ptr<PNTStaticDraw> m_staticDraw;
+		std::shared_ptr<CollisionObb> m_coll;
 
-		Vec3 m_pos = Vec3(0.0f, 0.0f, 5.0f);
+		std::shared_ptr<Player> m_player;
+		std::shared_ptr<Port> m_port;
+
+		Vec3 m_pos = Vec3(0.0f, 1.0f, 5.0f);
 		Vec3 m_scale = Vec3(2.0f, 2.0f, 0.5f);
 
 	public:
@@ -31,10 +36,8 @@ namespace basecross {
 		}
 
 		virtual void OnCreate() override; // 初期化
-		//virtual void OnUpdate() override; // 更新
+		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
-
-		virtual void OnCollisionEnter(std::shared_ptr<GameObject>& target) override;
 	};
 
 }

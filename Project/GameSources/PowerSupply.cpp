@@ -21,9 +21,9 @@ namespace basecross {
 		m_draw = AddComponent<PNTDXModelDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
 
-		m_statidDraw = AddComponent<PNTStaticDraw>();
-		m_statidDraw->SetMeshResource(L"DEFAULT_CUBE");
-		m_statidDraw->SetDiffuse(Col4(0, 1, 0, 1));
+		m_staticDraw = AddComponent<PNTStaticDraw>();
+		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
+		m_staticDraw->SetDiffuse(Col4(0, 1, 0, 1));
 
 		auto coll = AddComponent<CollisionObb>();
 	}
@@ -43,7 +43,7 @@ namespace basecross {
 		if (auto ink = std::dynamic_pointer_cast<InkDraw>(obj))
 		{
 			isConnect = true;
-			m_statidDraw->SetDiffuse(Col4(1, 1, 0, 1));
+			m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
 		}
 	}
 

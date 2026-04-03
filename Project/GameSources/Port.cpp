@@ -11,6 +11,7 @@ namespace basecross {
 	// 初期設定
 	void Port::OnCreate()
 	{
+		GetStage()->SetSharedGameObject(L"Port", GetThis<Port>());
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();
 
@@ -21,9 +22,9 @@ namespace basecross {
 		m_draw = AddComponent<PNTDXModelDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
 
-		m_statidDraw = AddComponent<PNTStaticDraw>();
-		m_statidDraw->SetMeshResource(L"DEFAULT_CUBE");
-		m_statidDraw->SetDiffuse(Col4(1, 0, 0, 1));
+		m_staticDraw = AddComponent<PNTStaticDraw>();
+		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
+		m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
 
 		auto coll = AddComponent<CollisionObb>();
 	}
@@ -34,7 +35,7 @@ namespace basecross {
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
 
-		isConnect = false;
+		//isConnect = false;
 
 	}
 
@@ -43,15 +44,29 @@ namespace basecross {
 		if (auto ink = std::dynamic_pointer_cast<InkDraw>(obj))
 		{
 			isConnect = true;
-			m_statidDraw->SetDiffuse(Col4(1, 1, 0, 1));
+			m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
+		}
+		else
+		{
+			isConnect = false;
+			m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
 		}
 	}
 
-	//通電したときの処理
-	void Port::Energized()
+	void Port::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
 	{
-
+		if (auto ink = std::dynamic_pointer_cast<InkDraw>(obj))
+		{
+			isConnect = true;
+			m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
+		}
+		else
+		{
+			isConnect = false;
+			m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
+		}
 	}
+
 }
 //end basecross
 
