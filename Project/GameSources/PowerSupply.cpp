@@ -26,6 +26,7 @@ namespace basecross {
 		m_staticDraw->SetDiffuse(Col4(0, 1, 0, 1));
 
 		auto coll = AddComponent<CollisionObb>();
+		//coll->SetFixed(true);
 	}
 
 	// 更新処理
