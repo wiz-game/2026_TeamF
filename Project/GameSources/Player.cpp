@@ -69,11 +69,15 @@ namespace basecross{
 		auto& app = App::GetApp();
 		std::wstringstream wss(L"");
 		//auto cc = GetComponent<CharacterController>();
-
+		
+		//コントローラー取得
 		auto device = App::GetApp()->GetInputDevice();
 		auto& pad = device.GetControlerVec()[0];
 		Vec3 stickL(pad.fThumbLX, 0.0f, pad.fThumbLY);
 
+		auto key = device.GetKeyState();
+
+		//ElapsedTime取得
 		auto delta = app->GetElapsedTime();
 
 		m_pos = m_transform->GetPosition();
@@ -83,6 +87,24 @@ namespace basecross{
 		if (mainCamera)
 		{
 			cameraAngleY = mainCamera->GetAngleY();
+		}
+
+		Vec3 v = Vec3(0);
+		if (key.m_bPushKeyTbl['A'])
+		{
+			stickL.x = -m_moveSpeed;
+		}
+		if (key.m_bPushKeyTbl['D'])
+		{
+			stickL.x = m_moveSpeed;
+		}
+		if (key.m_bPushKeyTbl['W'])
+		{
+			stickL.z = m_moveSpeed;
+		}
+		if (key.m_bPushKeyTbl['S'])
+		{
+			stickL.z = -m_moveSpeed;
 		}
 
 		float length = stickL.length();
@@ -98,6 +120,8 @@ namespace basecross{
 			m_velocity += m_forward * delta;
 ;			//cc->SetLinearVelocity(m_moveSpeed * m_velocity * m_moveDir);
 		}
+
+		
 		if (m_velocity.x <= m_maxSpeed || m_velocity.z <= m_maxSpeed)
 			m_velocity *= m_accel;
 		m_pos += m_moveSpeed * m_velocity * delta;
@@ -107,11 +131,13 @@ namespace basecross{
 	void Player::DropInk()
 	{
 		auto delta = App::GetApp()->GetElapsedTime();
+		auto device = App::GetApp()->GetInputDevice();
 		auto pad = GameController::GetCurrentState();
+		auto key = device.GetKeyState();
 		//auto cc = GetComponent<CharacterController>();
 		auto stage = GetStage();
 
-		if (pad.buttonDown)
+		if (pad.buttonDown || key.m_bPushKeyTbl[' '])
 		{
 			m_ink -= m_inkDecrease * delta;
 			auto ink = stage->AddGameObject<InkDraw>();
