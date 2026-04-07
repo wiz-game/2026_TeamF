@@ -26,7 +26,7 @@ namespace basecross {
 		m_staticDraw->SetDiffuse(Col4(0, 1, 0, 1));
 
 		auto coll = AddComponent<CollisionObb>();
-		//coll->SetFixed(true);
+		coll->SetAfterCollision(AfterCollision::None);
 	}
 
 	// 更新処理
@@ -46,12 +46,6 @@ namespace basecross {
 			isConnect = true;
 			m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
 		}
-	}
-
-	//インクとつながった時の処理
-	void PowerSupply::Connected()
-	{
-
 	}
 }
 //end basecross

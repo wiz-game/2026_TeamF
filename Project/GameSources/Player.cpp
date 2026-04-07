@@ -31,6 +31,9 @@ namespace basecross{
 		cc->Initialize(settings);
 
 		m_ink = m_inkMax;
+
+		auto coll = AddComponent<CollisionObb>();
+		//coll->SetAfterCollision(AfterCollision::None);
 	}
 
 	// プレイヤーの更新処理
@@ -79,7 +82,13 @@ namespace basecross{
 			m_moveDir.x = cosf(rad);
 			m_moveDir.z = sinf(rad);
 
-			cc->SetLinearVelocity(m_moveSpeed * m_moveDir);
+			Vec3 inputVelocity = m_moveSpeed * m_moveDir;
+
+			// 入力速度 + 床から伝わった速度 を合計してセットする
+			cc->SetLinearVelocity(inputVelocity + m_externalVelocity);
+
+			// セットした後は、毎フレームリセットする（床に乗っていない時は0にするため）
+			m_externalVelocity = Vec3(0, 0, 0);
 		}
 	}
 
@@ -100,6 +109,21 @@ namespace basecross{
 			}
 		}
 	}
+
+	void Player::AddExternalMove(const Vec3& move)
+	{
+		// 1. 座標を直接更新
+		Vec3 nextPos = m_transform->GetPosition() + move;
+		m_transform->SetPosition(nextPos);
+
+		// 2. CharacterControllerがある場合、内部座標も更新する
+		auto cc = GetComponent<CharacterController>();
+		if (cc)
+		{
+			cc->SetPosition(nextPos);
+		}
+	}
+
 }
 //end basecross
 

@@ -31,8 +31,6 @@ namespace basecross {
 		void OnUpdate() override; // 毎フレーム実行される関数(UnityのUpdateメソッドに相当)
 		void OnCollisionEnter(std::shared_ptr<GameObject>& obj);	//インクとの当たり判定
 
-		void Connected();//インクとつながった時の関数
-
 		float GetElect() const
 		{
 			return m_elect;

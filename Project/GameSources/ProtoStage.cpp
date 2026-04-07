@@ -19,7 +19,7 @@ namespace basecross {
 	void ProtoStage::CreateViewLight() {
 		// カメラの設定
 		auto camera = ObjectFactory::Create<Camera>();
-		camera->SetEye(Vec3(0.0f, 8.0f, -8.0f));
+		camera->SetEye(Vec3(0.0f, 10.0f, -10.0f));
 		camera->SetAt(Vec3(0.0f, 0.0f, 0.0f));
 
 		// ビューにカメラを設定

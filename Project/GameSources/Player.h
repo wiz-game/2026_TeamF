@@ -8,11 +8,15 @@
 #include "PNTDXModelDraw.h"
 
 namespace basecross {
+
+class UpDownFloor;
+
 	// GameObjectクラスを継承した「Player」クラスを定義
 	class Player : public GameObject // GameObjectクラスの継承【必須】
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
+		std::shared_ptr<UpDownFloor> m_currentFloor;//現在乗っている床
 		float m_height;
 		float m_radius;
 
@@ -23,6 +27,8 @@ namespace basecross {
 
 		float m_ink;	//インク残量
 		float m_inkMax;	//インク最大残量
+
+		Vec3 m_externalVelocity; // 外部からの速度
 		
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
@@ -35,7 +41,8 @@ namespace basecross {
 			m_moveDir(Vec3(0)),
 			m_pos(Vec3(0)),
 			m_ink(0.0f),
-			m_inkMax(10.0f)
+			m_inkMax(10.0f),
+			m_externalVelocity(Vec3(0))
 		{
 		}
 
@@ -44,6 +51,10 @@ namespace basecross {
 
 		void OnMove();
 		void DropInk();
+
+		// 外部からの移動を加算する関数
+		void AddExternalMove(const Vec3& move);
+		void SetExternalVelocity(const Vec3& v) { m_externalVelocity = v; }
 	};
 
 }
