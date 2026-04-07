@@ -21,6 +21,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Goal.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ComputeShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
@@ -44,5 +45,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ProtoStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Goal.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ComputeShader.h" />
   </ItemGroup>
 </Project>
