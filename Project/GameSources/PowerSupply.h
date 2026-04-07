@@ -35,6 +35,11 @@ namespace basecross {
 		{
 			return m_elect;
 		}
+
+		bool GetConnect() const
+		{
+			return isConnect;
+		}
 	};
 
 }

@@ -11,6 +11,7 @@ namespace basecross {
 	// 初期設定
 	void PowerSupply::OnCreate()
 	{
+		GetStage()->SetSharedGameObject(L"PowerSupply", GetThis<PowerSupply>());
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();
 
@@ -35,7 +36,7 @@ namespace basecross {
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
 
-		isConnect = false;
+		//isConnect = false;
 
 	}
 
@@ -45,6 +46,11 @@ namespace basecross {
 		{
 			isConnect = true;
 			m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
+		}
+		else
+		{
+			isConnect = false;
+			m_staticDraw->SetDiffuse(Col4(0, 1, 0, 1));
 		}
 	}
 }

@@ -28,6 +28,9 @@ namespace basecross {
 
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetAfterCollision(AfterCollision::None);
+
+		m_powerSupply = GetStage()->GetSharedGameObject<PowerSupply>(L"PowerSupply");
+
 	}
 
 	// 更新処理
@@ -44,13 +47,17 @@ namespace basecross {
 	{
 		if (auto ink = std::dynamic_pointer_cast<InkDraw>(obj))
 		{
-			isConnect = true;
-			m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
-		}
-		else
-		{
-			isConnect = false;
-			m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
+			bool conct = m_powerSupply->GetConnect();
+			if (conct)
+			{
+				isConnect = true;
+				m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
+			}
+			else
+			{
+				isConnect = false;
+				m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
+			}
 		}
 	}
 
@@ -58,16 +65,19 @@ namespace basecross {
 	{
 		if (auto ink = std::dynamic_pointer_cast<InkDraw>(obj))
 		{
-			isConnect = true;
-			m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
-		}
-		else
-		{
-			isConnect = false;
-			m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
+			bool conct = m_powerSupply->GetConnect();
+			if (conct)
+			{
+				isConnect = true;
+				m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
+			}
+			else
+			{
+				isConnect = false;
+				m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
+			}
 		}
 	}
-
 }
 //end basecross
 
