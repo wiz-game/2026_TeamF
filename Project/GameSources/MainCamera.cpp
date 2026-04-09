@@ -40,14 +40,25 @@ namespace basecross
 		auto device = App::GetApp()->GetInputDevice();
 		auto& pad = device.GetControlerVec()[0];
 
+		Vec3 stickL(pad.fThumbLX, 0.0f, pad.fThumbLY);
+		Vec3 stickR(pad.fThumbRX, 0.0f, pad.fThumbRY);
 		//m_angleX -= pad.fThumbRY * delta;
 		//m_angleY += -pad.fThumbLX * delta * GetAspect();
 
 		float groundDis = 4.0f * cosf(m_angleX);
+		Vec3 eye = Vec3(0);
 
-		m_angleY -= XMConvertToRadians(60.0f) * pad.fThumbLX * delta;
-		Vec3 eye = targetPos + Vec3(cosf(m_angleY) * 5.0f, m_eyePos[1], sinf(m_angleY) * 5.0f);
-
+		float length = stickL.length();
+		if (length != 0)
+		{
+			m_angleY -= XMConvertToRadians(60.0f) * pad.fThumbLX * delta;
+		}
+		else
+		{
+			m_angleY -= XMConvertToRadians(100.0f) * pad.fThumbRX * delta;
+		}
+		eye = targetPos + Vec3(cosf(m_angleY) * 5.0f, m_eyePos[1], sinf(m_angleY) * 5.0f);
 		SetEye(eye);
+
 	}
 }
