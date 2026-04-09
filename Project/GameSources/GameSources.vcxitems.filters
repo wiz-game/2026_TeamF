@@ -23,6 +23,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Goal.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MainCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UpDownFloor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Electrified.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
@@ -48,5 +49,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Goal.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MainCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)UpDownFloor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Electrified.h" />
   </ItemGroup>
 </Project>

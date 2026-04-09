@@ -30,6 +30,7 @@ namespace basecross {
 		float m_ink;	//インク残量
 		float m_inkMax;	//インク最大残量
 		float m_inkDecrease;	//インク減少量
+		bool m_isDraw;	//インクを塗れるかどうか
 		
 	public :
 		// ステージを引数にしたコンストラクタ【必須】
@@ -45,7 +46,8 @@ namespace basecross {
 			m_velocity(Vec3(0)),
 			m_ink(0.0f),
 			m_inkMax(10.0f),
-			m_inkDecrease(1.0f)
+			m_inkDecrease(1.0f),
+			m_isDraw(true)
 		{
 		}
 

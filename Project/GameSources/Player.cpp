@@ -132,14 +132,16 @@ namespace basecross{
 	{
 		auto delta = App::GetApp()->GetElapsedTime();
 		auto device = App::GetApp()->GetInputDevice();
-		auto pad = GameController::GetCurrentState();
+		auto pad = device.GetControlerVec()[0];
+		//auto pad = GameController::GetCurrentState();
 		auto key = device.GetKeyState();
-		//auto cc = GetComponent<CharacterController>();
 		auto stage = GetStage();
 
-		if (pad.buttonDown || key.m_bPushKeyTbl[' '])
+		if (pad.wButtons & XINPUT_GAMEPAD_A || key.m_bPushKeyTbl[' '])
 		{
+			if(m_ink>0)
 			m_ink -= m_inkDecrease * delta;
+
 			auto ink = stage->AddGameObject<InkDraw>();
 			ink->GetComponent<Transform>()->SetPosition(Vec3(m_pos.x, m_pos.y - m_height / 2, m_pos.z));
 		}
@@ -149,11 +151,14 @@ namespace basecross{
 	{
 		auto& app = App::GetApp();
 		std::wstringstream wss(L"");
+
+		wss << m_ink;
+
 		if (m_ink <= 0)
 		{
-			wss << L"Died!!";
-			app->GetScene<Scene>()->SetDebugString(wss.str());
+			wss << L"\n" << L"Died!!";
 		}
+		app->GetScene<Scene>()->SetDebugString(wss.str());
 	}
 }
 //end basecross
