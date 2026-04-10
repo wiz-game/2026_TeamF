@@ -25,20 +25,16 @@ namespace basecross{
 
 	void InkDraw::OnUpdate()
 	{
+		
 	}
 
-	void InkDraw::OnDraw()
+	void InkDraw::FadingInk(float amount)
 	{
-		float downcolor = 0.5f;
-
-		m_color.x -= downcolor;
-		m_color.y -= downcolor;
-		m_color.z -= downcolor;
-
-		if(m_draw){
-			m_draw->SetDiffuse(Col4(m_color));
-			m_draw->SetEmissive(Col4(m_color));
-		}
+		m_color.x = max(0.0f, m_color.x + amount);
+		m_color.y = max(0.0f, m_color.y + amount);
+		m_color.z = max(0.0f, m_color.z + amount);
+		m_draw->SetDiffuse(m_color);
+		m_draw->SetEmissive(m_color);
 	}
 }
 //end basecross
