@@ -39,6 +39,7 @@ namespace basecross
 		//コントローラー取得
 		auto device = App::GetApp()->GetInputDevice();
 		auto& pad = device.GetControlerVec()[0];
+		auto key = device.GetKeyState();
 
 		Vec3 stickL(pad.fThumbLX, 0.0f, pad.fThumbLY);
 		Vec3 stickR(pad.fThumbRX, 0.0f, pad.fThumbRY);
@@ -47,6 +48,15 @@ namespace basecross
 
 		float groundDis = 4.0f * cosf(m_angleX);
 		Vec3 eye = Vec3(0);
+
+		if (key.m_bPushKeyTbl['A'])
+		{
+			m_angleY += XMConvertToRadians(60.0f) * 1 * delta;
+		}
+		if (key.m_bPushKeyTbl['D'])
+		{
+			m_angleY -= XMConvertToRadians(60.0f) * 1 * delta;
+		}
 
 		float length = stickL.length();
 		if (length != 0)

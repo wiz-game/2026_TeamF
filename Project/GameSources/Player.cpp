@@ -89,7 +89,6 @@ namespace basecross{
 			cameraAngleY = mainCamera->GetAngleY();
 		}
 
-		Vec3 v = Vec3(0);
 		if (key.m_bPushKeyTbl['A'])
 		{
 			stickL.x = -m_moveSpeed;
@@ -139,11 +138,12 @@ namespace basecross{
 
 		if (pad.wButtons & XINPUT_GAMEPAD_A || key.m_bPushKeyTbl[' '])
 		{
-			if(m_ink>0)
-			m_ink -= m_inkDecrease * delta;
-
-			auto ink = stage->AddGameObject<InkDraw>();
-			ink->GetComponent<Transform>()->SetPosition(Vec3(m_pos.x, m_pos.y - m_height / 2, m_pos.z));
+			if (m_ink > 0)
+			{
+				m_ink -= m_inkDecrease * delta;
+				auto ink = stage->AddGameObject<InkDraw>();
+				ink->GetComponent<Transform>()->SetPosition(Vec3(m_pos.x, m_pos.y - m_height / 2, m_pos.z));
+			}
 		}
 	}
 
