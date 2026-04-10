@@ -1,6 +1,6 @@
 /*!
 @file Player.cpp
-@brief ƒvƒŒƒCƒ„[‚È‚ÇÀ‘Ì
+@brief ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½È‚Çï¿½ï¿½ï¿½
 */
 
 #include "stdafx.h"
@@ -10,20 +10,20 @@
 #include "CharacterController.h"
 
 namespace basecross{
-	// ƒvƒŒƒCƒ„[‚Ì‰Šúİ’è
+	// ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìï¿½ï¿½ï¿½ï¿½İ’ï¿½
 	void Player::OnCreate()
 	{
 		GetStage()->SetSharedGameObject(L"Player", GetThis<Player>());
-		// ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚µ‚Ä‚¨‚­
+		// ï¿½gï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½tï¿½Hï¿½[ï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½|ï¿½[ï¿½lï¿½ï¿½ï¿½gï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
 		m_transform = GetComponent<Transform>();
 
 		m_transform->SetPosition(Vec3(0.0f, 0.05f, 0.0f));
-		// ƒhƒ[ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ’Ç‰Á
+		// ï¿½hï¿½ï¿½ï¿½[ï¿½Rï¿½ï¿½ï¿½|ï¿½[ï¿½lï¿½ï¿½ï¿½gï¿½ï¿½Ç‰ï¿½
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
 		m_draw->SetDiffuse(Col4(1, 1, 1, 1));
 
-		//auto cc = AddComponent<CharacterController>();
+		auto cc = AddComponent<CharacterController>();
 		//CharacterController::Settings settings;
 		//settings.height = m_height;
 		//settings.radius = m_radius;
@@ -37,15 +37,17 @@ namespace basecross{
 		auto view = GetStage()->GetView();
 		auto camera = view->GetTargetCamera();
 		m_camera = dynamic_pointer_cast<MainCamera>(camera);
+		auto coll = AddComponent<CollisionObb>();
+		//coll->SetAfterCollision(AfterCollision::None);
 	}
 
-	// ƒvƒŒƒCƒ„[‚ÌXVˆ—
+	// ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÌXï¿½Vï¿½ï¿½ï¿½ï¿½
 	void Player::OnUpdate()
 	{
-		//// ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚ğæ“¾
+		//// ï¿½Aï¿½vï¿½ï¿½ï¿½Pï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½æ“¾
 		//auto& app = App::GetApp();
 
-		//// ‘O‰ñ‚©‚ç‚ÌŒo‰ßŠÔFƒfƒ‹ƒ^ƒ^ƒCƒ€‚ğæ“¾‚·‚é
+		//// ï¿½Oï¿½ñ‚©‚ï¿½ÌŒoï¿½ßï¿½ï¿½ÔFï¿½fï¿½ï¿½ï¿½^ï¿½^ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½
 		//float delta = app->GetElapsedTime();
 
 		//auto sensor = GameController::GetSensorData();
@@ -62,6 +64,7 @@ namespace basecross{
 		OnMove();
 		DropInk();
 		OnDied();
+		UpdateMoveFloor();
 	}
 
 	void Player::OnMove()
@@ -70,14 +73,14 @@ namespace basecross{
 		std::wstringstream wss(L"");
 		//auto cc = GetComponent<CharacterController>();
 		
-		//ƒRƒ“ƒgƒ[ƒ‰[æ“¾
+		//ï¿½Rï¿½ï¿½ï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½[ï¿½æ“¾
 		auto device = App::GetApp()->GetInputDevice();
 		auto& pad = device.GetControlerVec()[0];
 		Vec3 stickL(pad.fThumbLX, 0.0f, pad.fThumbLY);
 
 		auto key = device.GetKeyState();
 
-		//ElapsedTimeæ“¾
+		//ElapsedTimeï¿½æ“¾
 		auto delta = app->GetElapsedTime();
 
 		m_pos = m_transform->GetPosition();
@@ -159,6 +162,77 @@ namespace basecross{
 			wss << L"\n" << L"Died!!";
 		}
 		app->GetScene<Scene>()->SetDebugString(wss.str());
+	}
+
+	void Player::UpdateMoveFloor()
+	{
+		auto scene = App::GetApp()->GetScene<Scene>();
+		auto cc = GetComponent<CharacterController>();
+		if (!cc || !m_currentFloor) return;
+
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½(isUp)ï¿½ï¿½ï¿½ÂÚ’nï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚©ï¿½`ï¿½ï¿½ï¿½bï¿½N
+		auto shouldBeParent = cc->IsOnGround() && m_currentFloor->GetIsUp();
+		if (shouldBeParent)
+		{
+			cc->SetGravityEnabled(false); //ï¿½dï¿½Í‚ğ–³Œï¿½ï¿½É‚ï¿½ï¿½ï¿½
+
+			//float delta = App::GetApp()->GetElapsedTime();
+			
+			//ï¿½ï¿½ï¿½ÌˆÚ“ï¿½ï¿½Ê‚ï¿½ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½Playerï¿½Ìï¿½ï¿½Wï¿½É‰ï¿½ï¿½Z
+			float floorVelocityY = m_currentFloor->GetMoveSpeed();
+
+			Vec3 currentV = cc->GetLinearVelocity();
+			currentV.y = floorVelocityY; //ï¿½ï¿½ï¿½ÌˆÚ“ï¿½ï¿½Ê‚ï¿½ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ì‘ï¿½ï¿½xï¿½É‰ï¿½ï¿½Z
+			cc->SetLinearVelocity(currentV);
+
+			//ï¿½fï¿½oï¿½bï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½Ì•\ï¿½ï¿½
+			std::wstring debugMsg = L"Grounded: " + std::wstring(cc->IsOnGround() ? L"true" : L"false")
+				+ L" | IsUp: " + (m_currentFloor->GetIsUp() ? L"true" : L"false")
+				+ L"\n"
+				+ L"ï¿½ï¿½ï¿½Ú“ï¿½ï¿½ï¿½ï¿½BspeedY: " + std::to_wstring(floorVelocityY);
+			scene->SetDebugString(debugMsg);
+		}
+		else
+		{
+			cc->SetGravityEnabled(true); //ï¿½dï¿½Í‚ï¿½Lï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½
+		}
+	}
+
+	// ï¿½ï¿½ï¿½Æ‚ÌÕ“ËŠJï¿½n
+	void Player::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
+	{
+		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
+		if (floor)
+		{
+			m_currentFloor = floor;
+			auto scene = App::GetApp()->GetScene<Scene>();
+			//scene->SetDebugString(L"ï¿½ï¿½ï¿½Éï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
+		}
+	}
+
+	// ï¿½ï¿½ï¿½Æ‚ÌÕ“ËŒpï¿½ï¿½
+	void Player::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
+	{
+		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
+		if (floor)
+		{
+			m_currentFloor = floor;
+			auto scene = App::GetApp()->GetScene<Scene>();
+			//scene->SetDebugString(L"ï¿½ï¿½ï¿½Éï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
+		}
+
+	}
+
+	// ï¿½ï¿½ï¿½Æ‚ÌÕ“ËIï¿½ï¿½
+	void Player::OnCollisionExit(std::shared_ptr<GameObject>& obj)
+	{
+		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
+		if (floor)
+		{
+			m_currentFloor = nullptr;
+			auto scene = App::GetApp()->GetScene<Scene>();
+			//scene->SetDebugString(L"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½~ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
+		}
 	}
 }
 //end basecross

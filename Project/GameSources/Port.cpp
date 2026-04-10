@@ -27,16 +27,17 @@ namespace basecross {
 		m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
 
 		auto coll = AddComponent<CollisionObb>();
-		//coll->SetFixed(true);
+		coll->SetAfterCollision(AfterCollision::None);
+
+		m_powerSupply = GetStage()->GetSharedGameObject<PowerSupply>(L"PowerSupply");
 	}
 
 	// 更新処理
 	void Port::OnUpdate()
 	{
+		Electrified::OnUpdate();
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
-
-		//isConnect = false;
 
 	}
 
@@ -44,30 +45,36 @@ namespace basecross {
 	{
 		if (auto ink = std::dynamic_pointer_cast<InkDraw>(obj))
 		{
-			isConnect = true;
-			m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
-		}
-		else
-		{
-			isConnect = false;
-			m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
+			auto connect = m_powerSupply->GetConnect();
+			if (connect /*&& this->isPower*/)
+			{
+				isConnect = true;
+				m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
+			}
+			else
+			{
+				isConnect = false;
+				m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
+			}
 		}
 	}
 
 	void Port::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
 	{
-		if (auto ink = std::dynamic_pointer_cast<InkDraw>(obj))
-		{
-			isConnect = true;
-			m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
-		}
-		else
-		{
-			isConnect = false;
-			m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
-		}
+		//if (auto ink = std::dynamic_pointer_cast<InkDraw>(obj))
+		//{
+		//	if (this->isPower)
+		//	{
+		//		isConnect = true;
+		//		m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
+		//	}
+		//	else
+		//	{
+		//		isConnect = false;
+		//		m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
+		//	}
+		//}
 	}
-
 }
 //end basecross
 

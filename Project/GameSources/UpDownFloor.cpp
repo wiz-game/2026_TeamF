@@ -1,6 +1,6 @@
 /*!
 @file UpDownFloor.cpp
-@brief ゴール実体
+@brief 上下する床実体
 */
 
 #include "stdafx.h"
@@ -24,8 +24,8 @@ namespace basecross {
 		m_staticDraw->SetEmissive(Col4(0, 0, 0, 1));
 
 		m_coll = AddComponent<CollisionObb>();
-		//m_coll->SetFixed(true);
-		
+		m_coll->SetFixed(true);
+
 		try
 		{	// objectの取得
 			m_port = GetStage()->GetSharedGameObject<Port>(L"Port");
@@ -43,17 +43,23 @@ namespace basecross {
 		bool isConnect = m_port->GetConnect();
 		float delta = App::GetApp()->GetElapsedTime();
 		Vec3 pos = m_transform->GetPosition();
+		Vec3 newPos = pos; // 移動後の位置を計算するための変数
 
 		//通電していれば床が動く
 		if (isConnect)
 		{
-			pos.y += m_moveSpeed * delta;
-			if (pos.y > m_pos.y + 2.0f || pos.y <= 0.0f)
+			m_isUp = true;
+			newPos.y += m_moveSpeed * delta;
+			if (newPos.y > m_pos.y + 3.0f || newPos.y <= -0.2f)
 			{
 				m_moveSpeed *= -1.0f;
 			}
 
-			m_transform->SetPosition(pos);
+			m_transform->SetPosition(newPos);
+		}
+		else
+		{
+			m_isUp = false;
 		}
 	}
 }

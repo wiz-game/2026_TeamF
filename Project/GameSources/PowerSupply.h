@@ -6,9 +6,10 @@
 #pragma once
 #include "stdafx.h"
 #include "PNTDXModelDraw.h"
+#include "Electrified.h"
 
 namespace basecross {
-	class PowerSupply : public GameObject // GameObjectクラスの継承【必須】
+	class PowerSupply : public Electrified
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
@@ -23,7 +24,7 @@ namespace basecross {
 	public:
 		// ステージを引数にしたコンストラクタ【必須】
 		PowerSupply(const std::shared_ptr<Stage>& stage) :
-			GameObject(stage) // ステージをGameObjectに渡す【必須】
+			Electrified(stage)
 		{
 		}
 
@@ -31,11 +32,14 @@ namespace basecross {
 		void OnUpdate() override; // 毎フレーム実行される関数(UnityのUpdateメソッドに相当)
 		void OnCollisionEnter(std::shared_ptr<GameObject>& obj);	//インクとの当たり判定
 
-		void Connected();//インクとつながった時の関数
-
 		float GetElect() const
 		{
 			return m_elect;
+		}
+
+		bool GetConnect() const
+		{
+			return isConnect;
 		}
 	};
 

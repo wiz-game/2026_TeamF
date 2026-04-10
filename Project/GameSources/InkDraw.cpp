@@ -1,6 +1,6 @@
 /*!
 @file InkDraw.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -8,7 +8,7 @@
 
 namespace basecross{
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void InkDraw::OnCreate()
 	{
 		m_transform = GetComponent<Transform>();
@@ -20,12 +20,14 @@ namespace basecross{
 		m_draw->SetDiffuse(Col4(m_color));
 		m_draw->SetEmissive(Col4(m_color));
 
-		//auto coll = AddComponent<CollisionObb>();
+		auto coll = AddComponent<CollisionObb>();
+		coll->SetAfterCollision(AfterCollision::None);
 	}
 
 	void InkDraw::OnUpdate()
 	{
 		
+		Electrified::OnUpdate();
 	}
 
 	void InkDraw::FadingInk(float amount)
