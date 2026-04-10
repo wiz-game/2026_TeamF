@@ -5,6 +5,7 @@
 
 #pragma once
 #include "stdafx.h"
+#include "Electrified.h"
 
 namespace basecross{
 
@@ -12,7 +13,7 @@ namespace basecross{
 	//--------------------------------------------------------------------------------------
 	//	class GenericSprite : public GameObject;
 	//--------------------------------------------------------------------------------------
-	class InkDraw : public GameObject
+	class InkDraw : public Electrified
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
@@ -22,7 +23,7 @@ namespace basecross{
 	public:
 		// 構築と破棄
 		InkDraw(const shared_ptr<Stage>& stage) :
-			GameObject(stage)
+			Electrified(stage)
 		{
 		}
 		virtual ~InkDraw()

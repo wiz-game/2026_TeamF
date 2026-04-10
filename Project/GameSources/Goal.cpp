@@ -22,10 +22,10 @@ namespace basecross {
 		m_staticDraw = AddComponent<PNTStaticDraw>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
 		m_staticDraw->SetDrawActive(false);//最初は描画しない
-		m_staticDraw->SetRasterizerState(RasterizerState::Wireframe);//ワイヤーフレームで描画
+		//m_staticDraw->SetRasterizerState(RasterizerState::Wireframe);//ワイヤーフレームで描画
 		m_staticDraw->SetBlendState(BlendState::Additive);//加算ブレンドで描画
 
-		m_staticDraw->SetDiffuse(Col4(1.0f, 1.0f, 1.0f, 1.0f));//緑色
+		m_staticDraw->SetDiffuse(Col4(0.0f, 0.8f, 0.5f, 0.8f));//緑色
 
 		try
 		{	// objectの取得

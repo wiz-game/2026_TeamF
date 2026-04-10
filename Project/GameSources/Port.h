@@ -6,11 +6,11 @@
 #pragma once
 #include "stdafx.h"
 #include "PNTDXModelDraw.h"
+#include "Electrified.h"
 
 namespace basecross {
 	class PowerSupply;
-
-	class Port : public GameObject // GameObjectクラスの継承【必須】
+	class Port : public Electrified
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
@@ -25,7 +25,7 @@ namespace basecross {
 	public:
 		// ステージを引数にしたコンストラクタ【必須】
 		Port(const std::shared_ptr<Stage>& stage) :
-			GameObject(stage) // ステージをGameObjectに渡す【必須】
+			Electrified(stage) // ステージをGameObjectに渡す【必須】
 		{
 		}
 

@@ -26,6 +26,7 @@ namespace basecross{
 
 	void InkDraw::OnUpdate()
 	{
+		Electrified::OnUpdate();
 	}
 
 	void InkDraw::OnDraw()
