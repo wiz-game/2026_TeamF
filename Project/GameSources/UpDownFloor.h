@@ -7,6 +7,10 @@
 #include "stdafx.h"
 
 namespace basecross {
+
+	class Player;
+	class Port;
+
 	//--------------------------------------------------------------------------------------
 	//	class UpDownFloor : public GameObject;
 	//--------------------------------------------------------------------------------------
@@ -23,13 +27,14 @@ namespace basecross {
 		Vec3 m_pos = Vec3(0.0f, 0.0f, 5.0f);
 		Vec3 m_scale = Vec3(2.0f, 0.2f, 2.0f);
 
-		float m_moveSpeed;
+		float m_moveSpeed = 1.0f;
+
+		bool m_isUp = false;
 
 	public:
 		// 構築と破棄
 		UpDownFloor(const shared_ptr<Stage>& stage) :
-			GameObject(stage),
-			m_moveSpeed(1.0f)
+			GameObject(stage)
 		{
 		}
 		virtual ~UpDownFloor()
@@ -39,6 +44,16 @@ namespace basecross {
 		virtual void OnCreate() override; // 初期化
 		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
+
+		bool GetIsUp() const
+		{
+			return m_isUp;
+		}
+
+		float GetMoveSpeed() const
+		{
+			return m_moveSpeed;
+		}
 	};
 
 }

@@ -21,7 +21,11 @@ namespace basecross {
 
 		m_staticDraw = AddComponent<PNTStaticDraw>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
-		m_staticDraw->SetDrawActive(false);
+		m_staticDraw->SetDrawActive(false);//最初は描画しない
+		//m_staticDraw->SetRasterizerState(RasterizerState::Wireframe);//ワイヤーフレームで描画
+		m_staticDraw->SetBlendState(BlendState::Additive);//加算ブレンドで描画
+
+		m_staticDraw->SetDiffuse(Col4(0.0f, 0.8f, 0.5f, 0.8f));//緑色
 
 		try
 		{	// objectの取得
@@ -50,13 +54,15 @@ namespace basecross {
 			// プレイヤーのTransformコンポーネントから位置を取得
 			Vec3 playerPos = m_player->GetComponent<Transform>()->GetPosition();
 
-			// 2点間の距離を計算
-			float distance = (myPos - playerPos).length();
+			// 位置の差を計算
+			float diffX = fabs(myPos.x - playerPos.x);
+			float diffY = fabs(myPos.y - playerPos.y);
+			float diffZ = fabs(myPos.z - playerPos.z);
 
 			// 距離が一定以下（例: 1.5f）ならゴールとみなす
-			if (distance < 1.5f)
+			if (diffX < 1.8f && diffY < 1.8f && diffZ < 0.45f)
 			{
-				scene->SetDebugString(L"プレイヤーがゴールに触れました");
+				scene->SetDebugString(L"Goal");
 			}
 		}
 	}

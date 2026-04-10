@@ -28,7 +28,8 @@ namespace basecross{
 		//virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
 
-		bool isPower;//電源かどうか
+		bool isPower = false;//電源かどうか
+		bool m_isSource = false;
 		float e = 0.0f;//電気の強さ
 		vector<shared_ptr<GameObject>> targets;//電気の影響を受けるオブジェクト
 
