@@ -127,6 +127,8 @@ namespace basecross{
 		if (m_velocity.x <= m_maxSpeed || m_velocity.z <= m_maxSpeed)
 			m_velocity *= m_accel;
 		m_pos += m_moveSpeed * m_velocity * delta;
+
+		m_pos.y = 0.5f;
 		m_transform->SetPosition(m_pos);
 	}
 
