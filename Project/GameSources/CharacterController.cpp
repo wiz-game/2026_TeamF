@@ -92,7 +92,8 @@ namespace basecross
         if (!m_character) return;
 
         // 重力を適用
-        JPH::Vec3 gravity = m_pPhysicsSystem->GetGravity();
+		//フラグがtrueなら重力を取得して適用、falseなら重力をゼロにして空中での移動を維持
+		JPH::Vec3 gravity = m_isGravityEnabled ? m_pPhysicsSystem->GetGravity() : JPH::Vec3::sZero();
         JPH::Vec3 currentVelocity = m_character->GetLinearVelocity();
 
         JPH::Vec3 newVelocity;

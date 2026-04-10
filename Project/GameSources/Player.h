@@ -52,9 +52,15 @@ class UpDownFloor;
 		void OnMove();
 		void DropInk();
 
+		void OnCollisionEnter(std::shared_ptr<GameObject>& obj) override;
+		void OnCollisionExcute(std::shared_ptr<GameObject>& obj) override;
+		void OnCollisionExit(std::shared_ptr<GameObject>& obj)override;
+
+		void UpdateMoveFloor();
+
 		// ŠO•”‚©‚ç‚ÌˆÚ“®‚ğ‰ÁZ‚·‚éŠÖ”
-		void AddExternalMove(const Vec3& move);
-		void SetExternalVelocity(const Vec3& v) { m_externalVelocity = v; }
+		//void AddExternalMove(const Vec3& move);
+		//void SetExternalVelocity(const Vec3& v) { m_externalVelocity = v; }
 	};
 
 }

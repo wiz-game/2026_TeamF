@@ -56,6 +56,10 @@ namespace basecross
         // 内部オブジェクトへのアクセス
         JPH::CharacterVirtual* GetCharacter() { return m_character.get(); }
 
+        //重力の有効・無効を切り替える関数
+		void SetGravityEnabled(bool enabled) { m_isGravityEnabled = enabled; }
+        bool IsGravityEnabled() const { return  m_isGravityEnabled; }
+
     private:
         void UpdateCharacter(float deltaTime);
 
@@ -63,5 +67,7 @@ namespace basecross
         Settings m_settings;
         JPH::PhysicsSystem* m_pPhysicsSystem = nullptr;
         Vec3 m_desiredVelocity;
+
+        bool m_isGravityEnabled = true;//重力を制御するフラグ
     };
 }

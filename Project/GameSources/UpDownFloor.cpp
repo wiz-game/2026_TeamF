@@ -55,26 +55,6 @@ namespace basecross {
 				m_moveSpeed *= -1.0f;
 			}
 
-			// --- プレイヤーへの移動量加算処理 ---
-			// このフレームの移動量を算出
-			Vec3 moveAmount = newPos - pos;
-
-			// プレイヤーを取得（共有オブジェクトから取得する例）
-			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
-			if (player) {
-				Vec3 pPos = player->GetComponent<Transform>()->GetPosition();
-				// プレイヤーが床の範囲内にいるか判定
-				float diffX = fabsf(pPos.x - pos.x);
-				float diffZ = fabsf(pPos.z - pos.z);
-
-				// 床のサイズ(2.0x2.0)に基づき、範囲内(1.0)かつ足元が表面に近いかチェック
-				if (diffX < 1.1f && diffZ < 1.1f &&
-					pPos.y > pos.y && pPos.y < pos.y + 1.5f)
-				{
-					player->AddExternalMove(moveAmount);
-					player->SetExternalVelocity(Vec3(0, m_moveSpeed, 0));
-				}
-			}
 			m_transform->SetPosition(newPos);
 		}
 		else

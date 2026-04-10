@@ -59,6 +59,7 @@ namespace basecross{
 		//m_transform->SetQuaternion(rotY);
 		OnMove();
 		DropInk();
+		UpdateMoveFloor();
 	}
 
 	void Player::OnMove()
@@ -82,13 +83,7 @@ namespace basecross{
 			m_moveDir.x = cosf(rad);
 			m_moveDir.z = sinf(rad);
 
-			Vec3 inputVelocity = m_moveSpeed * m_moveDir;
-
-			// 入力速度 + 床から伝わった速度 を合計してセットする
-			cc->SetLinearVelocity(inputVelocity + m_externalVelocity);
-
-			// セットした後は、毎フレームリセットする（床に乗っていない時は0にするため）
-			m_externalVelocity = Vec3(0, 0, 0);
+			cc->SetLinearVelocity(m_moveSpeed * m_moveDir);
 		}
 	}
 
@@ -110,20 +105,76 @@ namespace basecross{
 		}
 	}
 
-	void Player::AddExternalMove(const Vec3& move)
+	void Player::UpdateMoveFloor()
 	{
-		// 1. 座標を直接更新
-		Vec3 nextPos = m_transform->GetPosition() + move;
-		m_transform->SetPosition(nextPos);
-
-		// 2. CharacterControllerがある場合、内部座標も更新する
+		auto scene = App::GetApp()->GetScene<Scene>();
 		auto cc = GetComponent<CharacterController>();
-		if (cc)
+		if (!cc || !m_currentFloor) return;
+
+		//床が動いている(isUp)かつ接地しているかチャック
+		auto shouldBeParent = cc->IsOnGround() && m_currentFloor->GetIsUp();
+		if (shouldBeParent)
 		{
-			cc->SetPosition(nextPos);
+			cc->SetGravityEnabled(false); //重力を無効にする
+
+			//float delta = App::GetApp()->GetElapsedTime();
+			
+			//床の移動量を計算してPlayerの座標に加算
+			float floorVelocityY = m_currentFloor->GetMoveSpeed();
+
+			Vec3 currentV = cc->GetLinearVelocity();
+			currentV.y = floorVelocityY; //床の移動量をプレイヤーの速度に加算
+			cc->SetLinearVelocity(currentV);
+
+			//デバッグ文字の表示
+			std::wstring debugMsg = L"Grounded: " + std::wstring(cc->IsOnGround() ? L"true" : L"false")
+				+ L" | IsUp: " + (m_currentFloor->GetIsUp() ? L"true" : L"false")
+				+ L"\n"
+				+ L"床移動中。speedY: " + std::to_wstring(floorVelocityY);
+			scene->SetDebugString(debugMsg);
+		}
+		else
+		{
+			cc->SetGravityEnabled(true); //重力を有効にする
 		}
 	}
 
+	// 床との衝突開始
+	void Player::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
+	{
+		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
+		if (floor)
+		{
+			m_currentFloor = floor;
+			auto scene = App::GetApp()->GetScene<Scene>();
+			//scene->SetDebugString(L"床に乗りました");
+		}
+	}
+
+	// 床との衝突継続
+	void Player::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
+	{
+		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
+		if (floor)
+		{
+			m_currentFloor = floor;
+			auto scene = App::GetApp()->GetScene<Scene>();
+			//scene->SetDebugString(L"床に乗りました");
+		}
+
+	}
+
+	// 床との衝突終了
+	void Player::OnCollisionExit(std::shared_ptr<GameObject>& obj)
+	{
+		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
+		if (floor)
+		{
+			m_currentFloor = nullptr;
+			auto scene = App::GetApp()->GetScene<Scene>();
+			//scene->SetDebugString(L"床から降りました");
+		}
+	}
 }
 //end basecross
 
