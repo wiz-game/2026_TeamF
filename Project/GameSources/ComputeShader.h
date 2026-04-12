@@ -15,7 +15,7 @@ namespace basecross {
     * 4.é¿çs
     */
 
-    template<typename ResultType>
+    template<typename InputType,typename ResultType>
     class DX11ComputeShader {
         ComPtr<ID3D11Buffer> m_InputBuffer;
         ComPtr<ID3D11Buffer> m_OutputBuffer;
@@ -51,12 +51,13 @@ namespace basecross {
             }
         }
 
+        template<typename BufferType>
         bool CreateElementBuffer(ID3D11Device* device,D3D11_BUFFER_DESC* desc, ID3D11Buffer** buffer) {
-            desc->ByteWidth = sizeof(ResultType) * m_InitializeSize;
+            desc->ByteWidth = sizeof(BufferType) * m_InitializeSize;
             desc->Usage = D3D11_USAGE_DEFAULT;
             desc->BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
             desc->MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
-            desc->StructureByteStride = sizeof(ResultType);
+            desc->StructureByteStride = sizeof(BufferType);
 
             auto result = device->CreateBuffer(desc, nullptr, buffer);
 
@@ -110,10 +111,10 @@ namespace basecross {
 
 			D3D11_BUFFER_DESC inputBufferDesc = {};
 			D3D11_BUFFER_DESC outputBufferDesc = {};
-            if (!CreateElementBuffer(device,&inputBufferDesc,m_InputBuffer.GetAddressOf())) {
+            if (!CreateElementBuffer<InputType>(device,&inputBufferDesc,m_InputBuffer.GetAddressOf())) {
 				return false;
             }
-			if (!CreateElementBuffer(device,&outputBufferDesc,m_OutputBuffer.GetAddressOf())) {
+			if (!CreateElementBuffer<ResultType>(device,&outputBufferDesc,m_OutputBuffer.GetAddressOf())) {
                 return false;
             }
 			if (!CreateShaderResourceView(device ,&inputBufferDesc)) {
@@ -127,7 +128,6 @@ namespace basecross {
             }
         }
 
-        template<typename InputType>
         vector<ResultType> Execute(vector<InputType>& inputData) {
             auto devResource = App::GetApp()->GetDeviceResources();
             auto devContext = devResource->GetD3DDeviceContext();

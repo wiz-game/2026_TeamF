@@ -24,6 +24,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)UpDownFloor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ComputeShader.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureCollision.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Electrified.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
@@ -50,8 +51,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)UpDownFloor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ComputeShader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureCollision.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Electrified.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="$(MSBuildThisFileDirectory)TestComputeShader.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl" />
   </ItemGroup>
 </Project>

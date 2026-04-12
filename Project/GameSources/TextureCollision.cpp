@@ -9,6 +9,8 @@
 #include <queue>
 
 namespace basecross{
+	IMPLEMENT_DX11_COMPUTE_SHADER(GenerateMaskShader, App::GetApp()->GetShadersPath() + L"GenerateMaskShader.cso")
+
 	TextureCollision::TextureCollision(const shared_ptr<GameObject>& ptr):Collision(ptr){}
 
 	void TextureCollision::OnCreate() {
@@ -46,7 +48,7 @@ namespace basecross{
 		return data;
 	}
 
-	vector<TextureCollision::MaskData> TextureCollision::CreateAlphaMask(CoordContext& coordContext) {
+	vector<MaskData> TextureCollision::CreateAlphaMask(CoordContext& coordContext) {
 		auto& app = App::GetApp();
 		auto deviceResource = app->GetDeviceResources();
 		auto device = deviceResource->GetD3DDevice();
@@ -84,7 +86,18 @@ namespace basecross{
 		coordContext.m_SizeX = desc.Width;
 		coordContext.m_SizeY = desc.Height;
 
-		vector<MaskData> alphaMasks;
+		/*int maskSize = coordContext.m_SizeX * coordContext.m_SizeY;
+		auto start = std::chrono::steady_clock::now();
+		DX11ComputeShader<MaskData> shader = DX11ComputeShader<MaskData>();
+		shader.Initialize(256, maskSize, maskSize);
+		shader.SetShader(GenerateMaskShader::GetPtr()->GetShader());
+
+		vector<MaskData> alphaMasks = shader.Execute({});
+		auto end = std::chrono::steady_clock::now();
+
+		auto duration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;*/
+
+		
 		//テスト出力
 		std::filesystem::path path = "test.txt";
 

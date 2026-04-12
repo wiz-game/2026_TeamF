@@ -7,12 +7,15 @@
 #include "stdafx.h"
 
 namespace basecross{
-	
+	DECLARE_DX11_COMPUTE_SHADER(GenerateMaskShader)
+
+	struct MaskData {
+		UINT m_Mask = 0;
+		bool m_IsVisited = false;
+	};
+
 	class TextureCollision : public Collision {
-		struct MaskData {
-			UINT m_Mask = 0;
-			bool m_IsVisited = false;
-		};
+		
 		struct CoordContext {
 			int m_SizeX = 0;
 			int m_SizeY = 0;
