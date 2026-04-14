@@ -29,6 +29,8 @@ namespace basecross {
         size_t m_InitializeSize;
 		size_t m_ResultSize;
 
+        bool m_UseTexture;
+
         void Bind(ID3D11DeviceContext2* context) {
             context->CSSetShaderResources(0, 1, m_ShaderResourceView.GetAddressOf());
             context->CSSetUnorderedAccessViews(0, 1, m_AccessView.GetAddressOf(), nullptr);
@@ -97,6 +99,8 @@ namespace basecross {
 			return SUCCEEDED(result);
         }
     public:
+        DX11ComputeShader() : m_UseTexture(false){}
+
         bool Initialize(size_t threadGroupCountX,size_t outputBufferSize, size_t resultBufferSize) {
             if (outputBufferSize == 0 || resultBufferSize == 0 || threadGroupCountX == 0) {
                 return false;
@@ -128,15 +132,16 @@ namespace basecross {
             }
         }
 
-        vector<ResultType> Execute(vector<InputType>& inputData) {
+        vector<ResultType> Execute(const vector<InputType>& inputData) {
             auto devResource = App::GetApp()->GetDeviceResources();
             auto devContext = devResource->GetD3DDeviceContext();
 
             //シェーダーのバインドを解除(一応)
             UnBind(devContext);
-
-            //シェーダーに情報を送る
-            devContext->UpdateSubresource(m_InputBuffer.Get(), 0, nullptr, inputData.data(), 0, 0);
+            if (!m_UseTexture) {
+                //シェーダーに情報を送る
+                devContext->UpdateSubresource(m_InputBuffer.Get(), 0, nullptr, inputData.data(), 0, 0);
+            }
 
             //シェーダーのバインド
 			Bind(devContext);
@@ -170,6 +175,11 @@ namespace basecross {
             auto devContext = devResource->GetD3DDeviceContext();
             //コンピュータシェーダーの設定
             devContext->CSSetShader(m_Shader.Get(), nullptr, 0);
+        }
+
+        void UseTexture(ID3D11ShaderResourceView* srv) {
+            m_UseTexture = true;
+            m_ShaderResourceView = srv;
         }
     };
 }

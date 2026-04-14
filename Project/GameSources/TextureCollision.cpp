@@ -10,6 +10,7 @@
 
 namespace basecross{
 	IMPLEMENT_DX11_COMPUTE_SHADER(GenerateMaskShader, App::GetApp()->GetShadersPath() + L"GenerateMaskShader.cso")
+	IMPLEMENT_DX11_CONSTANT_BUFFER(TextureSizeConstantBuffer)
 
 	TextureCollision::TextureCollision(const shared_ptr<GameObject>& ptr):Collision(ptr){}
 
@@ -19,17 +20,19 @@ namespace basecross{
 	void TextureCollision::OnDraw() {
 
 	}
-	void TextureCollision::GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc) {
+	void TextureCollision::GetSrvResource(ID3D11ShaderResourceView** srv, D3D11_TEXTURE2D_DESC* desc) {
 		auto object = GetGameObject();
 		auto draw = object->GetComponent<SmBaseDraw>();
 
 		//srvから情報を取得
-		auto srv = draw->GetTextureResource()->GetShaderResourceView();
+		*srv = draw->GetTextureResource()->GetShaderResourceView().Get();
 		ID3D11Resource* gpuResource = nullptr;
-		srv->GetResource(&gpuResource);
+		(*srv)->GetResource(&gpuResource);
+
+		ID3D11Texture2D* texture = nullptr;
 
 		gpuResource->QueryInterface(__uuidof(ID3D11Texture2D), (void**)texture);
-		(*texture)->GetDesc(desc);
+		texture->GetDesc(desc);
 	}
 
 	uint8_t* TextureCollision::ReadColorData(ID3D11DeviceContext2* context, ID3D11Texture2D* texture, UINT& rowPitch) {
@@ -56,48 +59,34 @@ namespace basecross{
 
 		vector<MaskData> errorList = {};
 		//設定されているテスクチャデータを取得(本来はインクのSRVをここで取得)
-		ID3D11Texture2D* srvTexture = nullptr;
+		ID3D11ShaderResourceView* srv = nullptr;
 		D3D11_TEXTURE2D_DESC srvDesc;
-		GetSrvResource(&srvTexture, &srvDesc);
-		if (!srvTexture) {
+		GetSrvResource(&srv, &srvDesc);
+		if (!srv) {
 			return errorList;
 		}
 
-		//読み取り用データを作成
-		D3D11_TEXTURE2D_DESC desc = srvDesc;
-		desc.Usage = D3D11_USAGE_STAGING;
-		desc.BindFlags = 0;
-		desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+		coordContext.m_SizeX = srvDesc.Width;
+		coordContext.m_SizeY = srvDesc.Height;
 
-		ID3D11Texture2D* stagingTexture = nullptr;
-		auto result = device->CreateTexture2D(&desc, nullptr, &stagingTexture);
-		if (FAILED(result)) {
-			return errorList;
-		}
-		//データをコピー
-		context->CopyResource(stagingTexture, srvTexture);
-
-		//カラーデータを取得
-		UINT rowPitch;
-		uint8_t* data = ReadColorData(context, stagingTexture, rowPitch);
-		if (!data) {
-			return errorList;
-		}
-		coordContext.m_SizeX = desc.Width;
-		coordContext.m_SizeY = desc.Height;
-
-		/*int maskSize = coordContext.m_SizeX * coordContext.m_SizeY;
+		int maskSize = coordContext.m_SizeX * coordContext.m_SizeY;
 		auto start = std::chrono::steady_clock::now();
-		DX11ComputeShader<MaskData> shader = DX11ComputeShader<MaskData>();
+		//入力はテクスチャなので入力型は適当にint
+		DX11ComputeShader<int,MaskData> shader = DX11ComputeShader<int,MaskData>();
 		shader.Initialize(256, maskSize, maskSize);
 		shader.SetShader(GenerateMaskShader::GetPtr()->GetShader());
+		shader.UseTexture(srv);
+
+		TextureSizeConstantData cb;
+
+		cb.width = coordContext.m_SizeX;
+		shader.SetConstantBuffer(&cb, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
 
 		vector<MaskData> alphaMasks = shader.Execute({});
 		auto end = std::chrono::steady_clock::now();
 
-		auto duration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;*/
+		auto duration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
 
-		
 		//テスト出力
 		std::filesystem::path path = "test.txt";
 
@@ -106,15 +95,10 @@ namespace basecross{
 		//データのα値をもとに2値化
 		for (int y = 0; y < coordContext.m_SizeY; y++) {
 			for (int x = 0; x < coordContext.m_SizeX; x++) {
-				uint8_t a = data[y * rowPitch + x * 4 + 3];
-				UINT mask = (a > 0 ? 1 : 0);
-				alphaMasks.push_back({ mask, false });
-				ofs << mask;
+				ofs << alphaMasks[y * coordContext.m_SizeX + x].m_Mask;
 			}
 			ofs << endl;
 		}
-
-		stagingTexture->Release();
 
 		return alphaMasks;
 	}

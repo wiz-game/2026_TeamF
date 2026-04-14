@@ -7,7 +7,13 @@
 #include "stdafx.h"
 
 namespace basecross{
+	struct TextureSizeConstantData {
+		int width;
+		int padding[3];
+	};
+
 	DECLARE_DX11_COMPUTE_SHADER(GenerateMaskShader)
+	DECLARE_DX11_CONSTANT_BUFFER(TextureSizeConstantBuffer, TextureSizeConstantData)
 
 	struct MaskData {
 		UINT m_Mask = 0;
@@ -21,7 +27,7 @@ namespace basecross{
 			int m_SizeY = 0;
 		};
 
-		void GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc);
+		void GetSrvResource(ID3D11ShaderResourceView** texture, D3D11_TEXTURE2D_DESC* desc);
 		uint8_t* ReadColorData(ID3D11DeviceContext2* context,ID3D11Texture2D* texture,UINT& rowPitch);
 		vector<MaskData> CreateAlphaMask(CoordContext& coordContext);
 		vector<int> BfsTree(vector<MaskData>& masks,const CoordContext& context, int start);
