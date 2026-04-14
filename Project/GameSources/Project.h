@@ -10,6 +10,7 @@
 #include "ProjectBehavior.h"
 #include "Scene.h"
 #include "Character.h"
+#include "ComputeShader.h"
 #include "Player.h"
 #include "Floor.h"
 
@@ -24,3 +25,5 @@
 #include "MainCamera.h"
 
 #include "Electrified.h"
+
+#include "TextureCollision.h"
