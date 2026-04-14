@@ -109,7 +109,7 @@ JPH_FLOATING_POINT_EXCEPTIONS_ENABLED;
 
 JPH_OBJECT_STREAM;JPH_DISABLE_CUSTOM_ALLOCATOR;_HAS_STD_BYTE=0;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)External\SDL\;$(SolutionDir)External\Jolt\include\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)External\SDL3\include;$(SolutionDir)External\Jolt\include\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -122,8 +122,8 @@ JPH_OBJECT_STREAM;JPH_DISABLE_CUSTOM_ALLOCATOR;_HAS_STD_BYTE=0;NDEBUG;_WINDOWS;%
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)External\Jolt\lib\Release\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Jolt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Local\Game Programing Files\BaseCross\2026_前期制作\Project\External\SDL3\lib\x64;$(SolutionDir)External\Jolt\lib\Release\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Jolt.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
