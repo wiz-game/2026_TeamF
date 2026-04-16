@@ -28,6 +28,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltLayers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltRigidBody.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Json.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Port.h" />
@@ -60,6 +61,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Json.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Port.cpp" />
@@ -73,7 +75,13 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="$(MSBuildThisFileDirectory)TestComputeShader.hlsl">
+    <FxCompile Include="$(MSBuildThisFileDirectory)FloorFill.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>

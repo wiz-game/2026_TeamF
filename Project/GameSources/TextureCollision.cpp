@@ -9,6 +9,10 @@
 #include <queue>
 
 namespace basecross{
+	IMPLEMENT_DX11_COMPUTE_SHADER(GenerateMaskShader, App::GetApp()->GetShadersPath() + L"GenerateMaskShader.cso")
+	IMPLEMENT_DX11_COMPUTE_SHADER(FloorFillShader, App::GetApp()->GetShadersPath() + L"FloorFill.cso")
+	IMPLEMENT_DX11_CONSTANT_BUFFER(TextureSizeConstantBuffer)
+
 	TextureCollision::TextureCollision(const shared_ptr<GameObject>& ptr):Collision(ptr){}
 
 	void TextureCollision::OnCreate() {
@@ -22,7 +26,7 @@ namespace basecross{
 		auto draw = object->GetComponent<SmBaseDraw>();
 
 		//srvから情報を取得
-		auto srv = draw->GetTextureResource()->GetShaderResourceView();
+		auto srv = draw->GetTextureResource()->GetShaderResourceView().Get();
 		ID3D11Resource* gpuResource = nullptr;
 		srv->GetResource(&gpuResource);
 
@@ -46,7 +50,8 @@ namespace basecross{
 		return data;
 	}
 
-	vector<TextureCollision::MaskData> TextureCollision::CreateAlphaMask(CoordContext& coordContext) {
+	vector<MaskData> TextureCollision::CreateAlphaMask(CoordContext& coordContext) {
+		auto start = std::chrono::steady_clock::now();
 		auto& app = App::GetApp();
 		auto deviceResource = app->GetDeviceResources();
 		auto device = deviceResource->GetD3DDevice();
@@ -54,54 +59,42 @@ namespace basecross{
 
 		vector<MaskData> errorList = {};
 		//設定されているテスクチャデータを取得(本来はインクのSRVをここで取得)
-		ID3D11Texture2D* srvTexture = nullptr;
+		ID3D11Texture2D* texResource = nullptr;
 		D3D11_TEXTURE2D_DESC srvDesc;
-		GetSrvResource(&srvTexture, &srvDesc);
-		if (!srvTexture) {
+		GetSrvResource(&texResource, &srvDesc);
+		if (!texResource) {
 			return errorList;
 		}
 
-		//読み取り用データを作成
-		D3D11_TEXTURE2D_DESC desc = srvDesc;
-		desc.Usage = D3D11_USAGE_STAGING;
-		desc.BindFlags = 0;
-		desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+		coordContext.m_SizeX = srvDesc.Width;
+		coordContext.m_SizeY = srvDesc.Height;
 
-		ID3D11Texture2D* stagingTexture = nullptr;
-		auto result = device->CreateTexture2D(&desc, nullptr, &stagingTexture);
-		if (FAILED(result)) {
-			return errorList;
-		}
-		//データをコピー
-		context->CopyResource(stagingTexture, srvTexture);
+		int maskSize = coordContext.m_SizeX * coordContext.m_SizeY;
+		vector<MaskData> alphaMasks = {};
+		//入力はテクスチャなので入力型は適当にint
+		DX11ComputeShader<int> shader = DX11ComputeShader<int>();
+		shader.RegisterResult(ResultBufferContext(alphaMasks.data(), sizeof(MaskData), maskSize));
+		auto object = GetGameObject();
+		auto draw = object->GetComponent<SmBaseDraw>();
 
-		//カラーデータを取得
-		UINT rowPitch;
-		uint8_t* data = ReadColorData(context, stagingTexture, rowPitch);
-		if (!data) {
-			return errorList;
-		}
-		coordContext.m_SizeX = desc.Width;
-		coordContext.m_SizeY = desc.Height;
+		//srvから情報を取得
+		auto srv = draw->GetTextureResource()->GetShaderResourceView().Get();
+		shader.UseTexture(srv);
 
-		vector<MaskData> alphaMasks;
-		//テスト出力
-		std::filesystem::path path = "test.txt";
+		shader.Initialize({ 8,8,1,coordContext.m_SizeX,coordContext.m_SizeY,1 }, maskSize);
+		shader.SetShader(GenerateMaskShader::GetPtr()->GetShader());
 
-		ofstream ofs(path);
+		TextureSizeConstantData cb;
+		cb.width = coordContext.m_SizeX;
+		cb.height = coordContext.m_SizeY;
+		shader.SetConstantBuffer(cb, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
 
-		//データのα値をもとに2値化
-		for (int y = 0; y < coordContext.m_SizeY; y++) {
-			for (int x = 0; x < coordContext.m_SizeX; x++) {
-				uint8_t a = data[y * rowPitch + x * 4 + 3];
-				UINT mask = (a > 0 ? 1 : 0);
-				alphaMasks.push_back({ mask, false });
-				ofs << mask;
-			}
-			ofs << endl;
-		}
+		shader.Execute({});
 
-		stagingTexture->Release();
+		shader.GetResult(alphaMasks, 0);
+
+		auto end = std::chrono::steady_clock::now();
+		auto duration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
 
 		return alphaMasks;
 	}
@@ -117,8 +110,8 @@ namespace basecross{
 			area.push_back(search);
 
 			vector<int> searchIndex = {
-				search + context.m_SizeX,
-				search - context.m_SizeX
+				(int)(search + context.m_SizeX),
+				(int)(search - context.m_SizeX)
 			};
 			int coordX, coordY;
 			IndexToCoord(search, context.m_SizeX, coordX, coordY);
@@ -147,25 +140,68 @@ namespace basecross{
 	}
 
 	void TextureCollision::CreateMeshCollision() {
+
 		CoordContext context = CoordContext();
 		vector<MaskData> alphaMasks = CreateAlphaMask(context);
 
-		vector<vector<int>> maskAreaGroup;
-		
-		//領域ごとに分割(この領域の数のメッシュを生成する)
-		for (int i = 0; i < alphaMasks.size(); i++) {
-			int x = 0, y = 0;
-			IndexToCoord(i, context.m_SizeX, x, y);
-			int mask = alphaMasks[i].m_Mask;
-			bool isVisited = alphaMasks[i].m_IsVisited;
+		auto start = std::chrono::steady_clock::now();
 
-			if (mask != 0 && !isVisited) {
-				auto area = BfsTree(alphaMasks, context, i);
-				maskAreaGroup.push_back(area);
+		vector<int> cellLabels(alphaMasks.size(), 0);
+		for (int i = 0; i < cellLabels.size(); i++) {
+			//透明部分は-1
+			if (alphaMasks[i].m_Mask == 0) {
+				cellLabels[i] = -1;
+				continue;
 			}
+			cellLabels[i] = i;
 		}
 
+		auto end = std::chrono::steady_clock::now();
+		auto initializeDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+		start = std::chrono::steady_clock::now();
 
+		DX11ComputeShader<int> shader = DX11ComputeShader<int>();
+		shader.Initialize({ 8,8,1,context.m_SizeX,context.m_SizeY,1 }, cellLabels.size());
+		shader.SetShader(FloorFillShader::GetPtr()->GetShader());
+		TextureSizeConstantData cb;
+		cb.width = context.m_SizeX;
+		cb.height = context.m_SizeY;
+		shader.SetConstantBuffer(cb, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
+
+		vector<int> isConverted = {0};
+
+		shader.RegisterResult(ResultBufferContext(cellLabels.data(), sizeof(cellLabels[0]), cellLabels.size()));
+		shader.RegisterResult(ResultBufferContext(isConverted.data(), sizeof(isConverted[0]), 1));
+
+		end = std::chrono::steady_clock::now();
+		auto shaderInitializeDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+		start = std::chrono::steady_clock::now();
+
+		const int maxLoop = context.m_SizeX * context.m_SizeY;
+		for (int i = 0; i < maxLoop; i++) {
+			shader.ResetUAV(1);
+			shader.Execute(cellLabels);
+			shader.GetResult(cellLabels, 0);
+			shader.GetResult(isConverted, 1);
+			//最後の要素はラベルが0のときにループを抜けるためのダミー
+			if (isConverted[0] != 1) {
+				break;
+			}
+		}
+		end = std::chrono::steady_clock::now();
+		auto shaderDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+		start = std::chrono::steady_clock::now();
+
+		unordered_map<int, vector<int>> labelGroup;
+		for (auto& label : cellLabels) {
+			if (label == -1) continue;
+			labelGroup[label].push_back(label);
+		}
+
+		end = std::chrono::steady_clock::now();
+		auto mappingDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+
+		int checker = 0;
 	}
 	void TextureCollision::IndexToCoord(int index, int width, int& x, int& y) {
 		x = index % width;
