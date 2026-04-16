@@ -143,7 +143,7 @@ namespace basecross{
 
 		if (pad.wButtons & XINPUT_GAMEPAD_A || key.m_bPushKeyTbl[' '])
 		{
-			if (m_ink > 0)
+			if (m_isDraw && m_ink > 0)
 			{
 				m_ink -= m_inkDecrease * delta;
 				auto ink = stage->AddGameObject<InkDraw>();
@@ -204,11 +204,16 @@ namespace basecross{
 	void Player::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
 	{
 		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
+		auto ink = dynamic_pointer_cast<InkDraw>(obj);
 		if (floor)
 		{
 			m_currentFloor = floor;
 			auto scene = App::GetApp()->GetScene<Scene>();
 			//scene->SetDebugString(L"���ɏ��܂���");
+		}
+		if (ink)
+		{
+			m_isDraw = false;
 		}
 	}
 
@@ -216,11 +221,16 @@ namespace basecross{
 	void Player::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
 	{
 		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
+		auto ink = dynamic_pointer_cast<InkDraw>(obj);
 		if (floor)
 		{
 			m_currentFloor = floor;
 			auto scene = App::GetApp()->GetScene<Scene>();
 			//scene->SetDebugString(L"���ɏ��܂���");
+		}
+		if (ink)
+		{
+			m_isDraw = false;
 		}
 
 	}
@@ -229,11 +239,16 @@ namespace basecross{
 	void Player::OnCollisionExit(std::shared_ptr<GameObject>& obj)
 	{
 		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
+		auto ink = dynamic_pointer_cast<InkDraw>(obj);
 		if (floor)
 		{
 			m_currentFloor = nullptr;
 			auto scene = App::GetApp()->GetScene<Scene>();
 			//scene->SetDebugString(L"������~��܂���");
+		}
+		if (ink)
+		{
+			m_isDraw = true;
 		}
 	}
 }

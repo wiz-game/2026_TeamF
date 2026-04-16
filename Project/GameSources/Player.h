@@ -52,7 +52,7 @@ class UpDownFloor;
 			m_velocity(Vec3(0)),
 			m_ink(0.0f),
 			m_inkMax(10.0f),
-			m_inkDecrease(1.0f),
+			m_inkDecrease(10.0f),
 			m_isDraw(true),
 			m_externalVelocity(Vec3(0))
 		{
