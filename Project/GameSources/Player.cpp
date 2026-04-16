@@ -21,7 +21,8 @@ namespace basecross{
 		// �h���[�R���|�[�l���g��ǉ�
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
-		m_draw->SetDiffuse(Col4(1, 1, 1, 1));
+		m_draw->SetDiffuse(Col4(0, 0, 0, 1));
+		m_draw->SetEmissive(Col4(0, 0, 0, 1));
 
 		auto cc = AddComponent<CharacterController>();
 		//CharacterController::Settings settings;
@@ -147,6 +148,8 @@ namespace basecross{
 			{
 				m_ink -= m_inkDecrease * delta;
 				auto ink = stage->AddGameObject<InkDraw>();
+				ink->FadingInk(m_fade);
+				m_fade += 0.0065f;
 				ink->GetComponent<Transform>()->SetPosition(Vec3(m_pos.x, m_pos.y - m_height / 2, m_pos.z));
 			}
 		}

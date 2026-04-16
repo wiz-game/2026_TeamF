@@ -34,6 +34,7 @@ class UpDownFloor;
 		float m_ink;	//インク残量
 		float m_inkMax;	//インク残量最大値
 		float m_inkDecrease;	//インク減少量
+		float m_fade;	//インクの掠れ
 		bool m_isDraw;	//インクが出せるかどうか
 
 		Vec3 m_externalVelocity; // �O������̑��x
@@ -54,6 +55,7 @@ class UpDownFloor;
 			m_inkMax(10.0f),
 			m_inkDecrease(10.0f),
 			m_isDraw(true),
+			m_fade(0.0f),
 			m_externalVelocity(Vec3(0))
 		{
 		}
