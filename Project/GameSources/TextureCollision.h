@@ -9,10 +9,12 @@
 namespace basecross{
 	struct TextureSizeConstantData {
 		int width;
-		int padding[3];
+		int height;
+		int padding[2];
 	};
 
 	DECLARE_DX11_COMPUTE_SHADER(GenerateMaskShader)
+	DECLARE_DX11_COMPUTE_SHADER(FloorFillShader)
 	DECLARE_DX11_CONSTANT_BUFFER(TextureSizeConstantBuffer, TextureSizeConstantData)
 
 	struct MaskData {
@@ -23,11 +25,11 @@ namespace basecross{
 	class TextureCollision : public Collision {
 		
 		struct CoordContext {
-			int m_SizeX = 0;
-			int m_SizeY = 0;
+			UINT m_SizeX = 0;
+			UINT m_SizeY = 0;
 		};
 
-		void GetSrvResource(ID3D11ShaderResourceView** texture, D3D11_TEXTURE2D_DESC* desc);
+		void GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc);
 		uint8_t* ReadColorData(ID3D11DeviceContext2* context,ID3D11Texture2D* texture,UINT& rowPitch);
 		vector<MaskData> CreateAlphaMask(CoordContext& coordContext);
 		vector<int> BfsTree(vector<MaskData>& masks,const CoordContext& context, int start);

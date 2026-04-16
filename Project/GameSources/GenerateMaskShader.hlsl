@@ -1,6 +1,7 @@
 cbuffer cb : register(b0)
 {
     int width;
+    int height;
 }
 struct Output
 {
@@ -10,20 +11,23 @@ struct Output
 Texture2D inputTexture : register(t0);
 RWStructuredBuffer<Output> outputBuffer : register(u0);
 
-[numthreads(256, 1, 1)]
+[numthreads(8, 8, 1)]
 void main( uint3 DTid : SV_DispatchThreadID )
 {
-    int x = DTid.x % width;
-    int y = DTid.x / width;
+    if(DTid.x >= width || DTid.y >= height) return;
     
+    int x = DTid.x;
+    int y = DTid.y;
+    
+    int index = y * width + x;
     float alpha = inputTexture.Load(int3(x, y, 0)).a;
     if (alpha > 0)
     {
-        outputBuffer[DTid.x].mask = 1;
+        outputBuffer[index].mask = 1;
     }
     else
     {
-        outputBuffer[DTid.x].mask = 0;
+        outputBuffer[index].mask = 0;
     }
-    outputBuffer[DTid.x].visited = false;
+    outputBuffer[index].visited = false;
 }

@@ -82,6 +82,7 @@ JPH_OBJECT_STREAM;JPH_PROFILE_ENABLED;JPH_DISABLE_CUSTOM_ALLOCATOR;_HAS_STD_BYTE
       <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
