@@ -108,35 +108,21 @@ namespace basecross{
 	void Player::UpdateMoveFloor()
 	{
 		auto scene = App::GetApp()->GetScene<Scene>();
-		auto cc = GetComponent<CharacterController>();
-		if (!cc || !m_currentFloor) return;
+		//m_curretnFloorがあってかつ床が動いている(isUp)かチャック
+		if (!m_currentFloor && m_currentFloor->GetIsUp()) return;
 
-		//床が動いている(isUp)かつ接地しているかチャック
-		auto shouldBeParent = cc->IsOnGround() && m_currentFloor->GetIsUp();
-		if (shouldBeParent)
-		{
-			cc->SetGravityEnabled(false); //重力を無効にする
+		//床の移動量を取得
+		float floorVelocityY = m_currentFloor->GetMoveSpeed();
 
-			//float delta = App::GetApp()->GetElapsedTime();
-			
-			//床の移動量を計算してPlayerの座標に加算
-			float floorVelocityY = m_currentFloor->GetMoveSpeed();
+		Vec3 currentV = m_transform->GetPosition();
+		currentV.y = floorVelocityY; //床の移動量をプレイヤーの速度に加算
+		m_transform->SetPosition(Vec3(currentV.x, currentV.y, currentV.z));
 
-			Vec3 currentV = cc->GetLinearVelocity();
-			currentV.y = floorVelocityY; //床の移動量をプレイヤーの速度に加算
-			cc->SetLinearVelocity(currentV);
-
-			//デバッグ文字の表示
-			std::wstring debugMsg = L"Grounded: " + std::wstring(cc->IsOnGround() ? L"true" : L"false")
-				+ L" | IsUp: " + (m_currentFloor->GetIsUp() ? L"true" : L"false")
-				+ L"\n"
-				+ L"床移動中。speedY: " + std::to_wstring(floorVelocityY);
-			scene->SetDebugString(debugMsg);
-		}
-		else
-		{
-			cc->SetGravityEnabled(true); //重力を有効にする
-		}
+		//デバッグ文字の表示
+		std::wstring debugMsg = L" PlayerPos : " + std::to_wstring(currentV.x) + L", " + std::to_wstring(currentV.y) + L", " + std::to_wstring(currentV.z)
+			+ L"\n"
+			+ L"床移動中。speedY : " + std::to_wstring(floorVelocityY);
+		scene->SetDebugString(debugMsg);
 	}
 
 	// 床との衝突開始
