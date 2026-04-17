@@ -22,6 +22,7 @@ namespace basecross{
 
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetAfterCollision(AfterCollision::None);
+		coll->SetMakedSize(0.0001f);
 	}
 
 	void InkDraw::OnUpdate()
