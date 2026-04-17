@@ -7,8 +7,6 @@
 #include "Project.h"
 #include "game_controller.h"
 namespace basecross {
-	IMPLEMENT_DX11_COMPUTE_SHADER(TestShader,App::GetApp()->GetShadersPath() + L"TestComputeShader.cso")
-	IMPLEMENT_DX11_CONSTANT_BUFFER(TestConstantBuffer)
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
@@ -38,7 +36,7 @@ namespace basecross {
 
 			//ビューとライトの作成
 			CreateViewLight();
-			App::GetApp()->RegisterTexture(L"InkTest",App::GetApp()->GetDataDirWString() +  L"Texture/InkCollisionTest.png");
+			App::GetApp()->RegisterTexture(L"InkTest",App::GetApp()->GetDataDirWString() +  L"Texture/InkCollisionTest2.png");
 
 			m_Player = AddGameObject<Player>();
 			AddGameObject<InkDraw>();
@@ -48,19 +46,6 @@ namespace basecross {
 			auto draw = m_Player->GetComponent<SmBaseDraw>();
 			draw->SetTextureResource(L"InkTest");
 			m_Player->AddComponent<TextureCollision>();
-
-			vector<float> testData(5000000, 1.0f);
-			vector<float> result = {};
-
-			auto start = std::chrono::steady_clock::now();
-			DX11ComputeShader<float> shader = DX11ComputeShader<float>();
-			shader.Initialize(256, testData.size(), testData.size());
-			shader.SetShader(TestShader::GetPtr()->GetShader());
-			
-			result = shader.Execute(testData);
-			auto end = std::chrono::steady_clock::now();
-
-			auto duration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
 		}
 		catch (...) {
 			throw;
