@@ -12,6 +12,7 @@ namespace basecross{
 	// プレイヤーの初期設定
 	void Player::OnCreate()
 	{
+		m_currentFloor = nullptr;
 		GetStage()->SetSharedGameObject(L"Player", GetThis<Player>());
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();

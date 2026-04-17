@@ -70,18 +70,23 @@ namespace basecross{
 		coordContext.m_SizeY = srvDesc.Height;
 
 		int maskSize = coordContext.m_SizeX * coordContext.m_SizeY;
-		vector<MaskData> alphaMasks = {};
-		//入力はテクスチャなので入力型は適当にint
-		DX11ComputeShader<int> shader = DX11ComputeShader<int>();
-		shader.RegisterResult(ResultBufferContext(alphaMasks.data(), sizeof(MaskData), maskSize));
+
 		auto object = GetGameObject();
 		auto draw = object->GetComponent<SmBaseDraw>();
 
 		//srvから情報を取得
 		auto srv = draw->GetTextureResource()->GetShaderResourceView().Get();
-		shader.UseTexture(srv);
 
-		shader.Initialize({ 8,8,1,coordContext.m_SizeX,coordContext.m_SizeY,1 }, maskSize);
+		vector<MaskData> alphaMasks = {};
+		//入力はテクスチャなので入力型は適当にint
+		DX11ComputeShader<int> shader = DX11ComputeShader<int>();
+		BufferContext maskBuffer = BufferContext(sizeof(MaskData), maskSize);
+		maskBuffer.CreateUAV();
+
+		shader.AddUAV(maskBuffer.m_UAV.Get());
+		shader.AddSRV(srv);
+
+		shader.Initialize({ 8,8,1,coordContext.m_SizeX,coordContext.m_SizeY,1 });
 		shader.SetShader(GenerateMaskShader::GetPtr()->GetShader());
 
 		TextureSizeConstantData cb;
@@ -91,7 +96,7 @@ namespace basecross{
 
 		shader.Execute({});
 
-		shader.GetResult(alphaMasks, 0);
+		shader.GetResult(alphaMasks, maskBuffer);
 
 		auto end = std::chrono::steady_clock::now();
 		auto duration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
@@ -144,62 +149,62 @@ namespace basecross{
 		CoordContext context = CoordContext();
 		vector<MaskData> alphaMasks = CreateAlphaMask(context);
 
-		auto start = std::chrono::steady_clock::now();
+		//auto start = std::chrono::steady_clock::now();
 
-		vector<int> cellLabels(alphaMasks.size(), 0);
-		for (int i = 0; i < cellLabels.size(); i++) {
-			//透明部分は-1
-			if (alphaMasks[i].m_Mask == 0) {
-				cellLabels[i] = -1;
-				continue;
-			}
-			cellLabels[i] = i;
-		}
+		//vector<int> cellLabels(alphaMasks.size(), 0);
+		//for (int i = 0; i < cellLabels.size(); i++) {
+		//	//透明部分は-1
+		//	if (alphaMasks[i].m_Mask == 0) {
+		//		cellLabels[i] = -1;
+		//		continue;
+		//	}
+		//	cellLabels[i] = i;
+		//}
 
-		auto end = std::chrono::steady_clock::now();
-		auto initializeDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
-		start = std::chrono::steady_clock::now();
+		//auto end = std::chrono::steady_clock::now();
+		//auto initializeDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+		//start = std::chrono::steady_clock::now();
 
-		DX11ComputeShader<int> shader = DX11ComputeShader<int>();
-		shader.Initialize({ 8,8,1,context.m_SizeX,context.m_SizeY,1 }, cellLabels.size());
-		shader.SetShader(FloorFillShader::GetPtr()->GetShader());
-		TextureSizeConstantData cb;
-		cb.width = context.m_SizeX;
-		cb.height = context.m_SizeY;
-		shader.SetConstantBuffer(cb, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
+		//DX11ComputeShader<int> shader = DX11ComputeShader<int>();
+		//shader.Initialize({ 8,8,1,context.m_SizeX,context.m_SizeY,1 }, cellLabels.size());
+		//shader.SetShader(FloorFillShader::GetPtr()->GetShader());
+		//TextureSizeConstantData cb;
+		//cb.width = context.m_SizeX;
+		//cb.height = context.m_SizeY;
+		//shader.SetConstantBuffer(cb, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
 
-		vector<int> isConverted = {0};
+		//vector<int> isConverted = {0};
 
-		shader.RegisterResult(ResultBufferContext(cellLabels.data(), sizeof(cellLabels[0]), cellLabels.size()));
-		shader.RegisterResult(ResultBufferContext(isConverted.data(), sizeof(isConverted[0]), 1));
+		//shader.RegisterResult(ResultBufferContext(cellLabels.data(), sizeof(cellLabels[0]), cellLabels.size()));
+		//shader.RegisterResult(ResultBufferContext(isConverted.data(), sizeof(isConverted[0]), 1));
 
-		end = std::chrono::steady_clock::now();
-		auto shaderInitializeDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
-		start = std::chrono::steady_clock::now();
+		//end = std::chrono::steady_clock::now();
+		//auto shaderInitializeDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+		//start = std::chrono::steady_clock::now();
 
-		const int maxLoop = context.m_SizeX * context.m_SizeY;
-		for (int i = 0; i < maxLoop; i++) {
-			shader.ResetUAV(1);
-			shader.Execute(cellLabels);
-			shader.GetResult(cellLabels, 0);
-			shader.GetResult(isConverted, 1);
-			//最後の要素はラベルが0のときにループを抜けるためのダミー
-			if (isConverted[0] != 1) {
-				break;
-			}
-		}
-		end = std::chrono::steady_clock::now();
-		auto shaderDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
-		start = std::chrono::steady_clock::now();
+		//const int maxLoop = context.m_SizeX * context.m_SizeY;
+		//for (int i = 0; i < maxLoop; i++) {
+		//	shader.ResetUAV(1);
+		//	shader.Execute(cellLabels);
+		//	shader.GetResult(cellLabels, 0);
+		//	shader.GetResult(isConverted, 1);
+		//	//最後の要素はラベルが0のときにループを抜けるためのダミー
+		//	if (isConverted[0] != 1) {
+		//		break;
+		//	}
+		//}
+		//end = std::chrono::steady_clock::now();
+		//auto shaderDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+		//start = std::chrono::steady_clock::now();
 
-		unordered_map<int, vector<int>> labelGroup;
-		for (auto& label : cellLabels) {
-			if (label == -1) continue;
-			labelGroup[label].push_back(label);
-		}
+		//unordered_map<int, vector<int>> labelGroup;
+		//for (auto& label : cellLabels) {
+		//	if (label == -1) continue;
+		//	labelGroup[label].push_back(label);
+		//}
 
-		end = std::chrono::steady_clock::now();
-		auto mappingDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+		//end = std::chrono::steady_clock::now();
+		//auto mappingDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
 
 		int checker = 0;
 	}
