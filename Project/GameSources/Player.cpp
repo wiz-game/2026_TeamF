@@ -108,21 +108,25 @@ namespace basecross{
 	void Player::UpdateMoveFloor()
 	{
 		auto scene = App::GetApp()->GetScene<Scene>();
+
+		if (!m_currentFloor) return;
 		//m_curretnFloorがあってかつ床が動いている(isUp)かチャック
-		if (!m_currentFloor && m_currentFloor->GetIsUp()) return;
+		if (m_currentFloor->GetIsUp())
+		{
 
-		//床の移動量を取得
-		float floorVelocityY = m_currentFloor->GetMoveSpeed();
+			//床の移動量を取得
+			float floorVelocityY = m_currentFloor->GetMoveSpeed();
 
-		Vec3 currentV = m_transform->GetPosition();
-		currentV.y = floorVelocityY; //床の移動量をプレイヤーの速度に加算
-		m_transform->SetPosition(Vec3(currentV.x, currentV.y, currentV.z));
+			Vec3 currentV = m_transform->GetPosition();
+			currentV.y = floorVelocityY; //床の移動量をプレイヤーの速度に加算
+			m_transform->SetPosition(Vec3(currentV.x, currentV.y, currentV.z));
 
-		//デバッグ文字の表示
-		std::wstring debugMsg = L" PlayerPos : " + std::to_wstring(currentV.x) + L", " + std::to_wstring(currentV.y) + L", " + std::to_wstring(currentV.z)
-			+ L"\n"
-			+ L"床移動中。speedY : " + std::to_wstring(floorVelocityY);
-		scene->SetDebugString(debugMsg);
+			//デバッグ文字の表示
+			std::wstring debugMsg = L" PlayerPos : " + std::to_wstring(currentV.x) + L", " + std::to_wstring(currentV.y) + L", " + std::to_wstring(currentV.z)
+				+ L"\n"
+				+ L"床移動中。speedY : " + std::to_wstring(floorVelocityY);
+			scene->SetDebugString(debugMsg);
+		}
 	}
 
 	// 床との衝突開始
