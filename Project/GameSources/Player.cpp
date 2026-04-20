@@ -40,6 +40,7 @@ namespace basecross{
 	void Player::OnUpdate()
 	{
 		m_pos = m_transform->GetPosition();
+		auto scene = App::GetApp()->GetScene<Scene>();
 		//// アプリケーションオブジェクトを取得
 		//auto& app = App::GetApp();
 
@@ -57,9 +58,20 @@ namespace basecross{
 		////quat = quat * rotX * rotY * rotZ;
 		//quat = quat * rotY;
 		//m_transform->SetQuaternion(rotY);
+
 		OnMove();
 		DropInk();
 		UpdateMoveFloor();
+
+		if (m_pos.y <= -10.0f)
+		{
+			PostEvent(0.0f, GetThis<Player>(), scene, L"ToProtoStage");
+		}
+
+		scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
+			+ L"\n"
+			+ L"インク残量 : " + std::to_wstring(m_ink));
+
 	}
 
 	void Player::OnMove()
@@ -113,7 +125,6 @@ namespace basecross{
 		//m_curretnFloorがあってかつ床が動いている(isUp)かチャック
 		if (m_currentFloor->GetIsUp())
 		{
-
 			//床の移動量を取得
 			float floorVelocityY = m_currentFloor->GetMoveSpeed();
 
