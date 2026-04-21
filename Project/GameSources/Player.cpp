@@ -158,12 +158,12 @@ namespace basecross{
 
 		if (pad.wButtons & XINPUT_GAMEPAD_A || key.m_bPushKeyTbl[' '])
 		{
-			if (m_isDraw && m_ink > 0)
+			if (m_ink > 0)
 			{
 				m_ink -= m_inkDecrease * delta;
 				auto ink = stage->AddGameObject<InkDraw>();
 				ink->FadingInk(m_fade);
-				m_fade += 0.0060f;
+				m_fade += (0.5f / m_inkDecrease) * delta / m_inkMax;
 				ink->GetComponent<Transform>()->SetPosition(Vec3(m_pos.x, m_pos.y - m_height / 2, m_pos.z));
 			}
 		}
