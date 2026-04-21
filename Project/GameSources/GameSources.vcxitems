@@ -25,6 +25,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)game_controller.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Goal.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GoalStage.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkCloud.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)InkDraw.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltLayers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltManager.h" />
@@ -60,6 +61,7 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Goal.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GoalStage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkCloud.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp" />

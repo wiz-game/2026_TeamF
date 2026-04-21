@@ -79,6 +79,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GoalStage.cpp">
       <Filter>Stage</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkCloud.cpp">
+      <Filter>Ink</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
@@ -161,6 +164,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GoalStage.h">
       <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkCloud.h">
+      <Filter>Ink</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

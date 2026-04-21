@@ -51,7 +51,7 @@ namespace basecross{
 				//Electrify(target);
 				//相手がElectrified（またはその継承クラス）か確認
 				auto targetElect = std::dynamic_pointer_cast<Electrified>(target);
-				if (targetElect) {
+				if (targetElect && !targetElect->isPower) {
 					targetElect->isPower = true;// 電気を伝える
 				}
 			}

@@ -10,7 +10,7 @@
 
 namespace basecross {
 	class PowerSupply;
-	class Port : public Electrified
+	class Port : public GameObject
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
@@ -21,11 +21,13 @@ namespace basecross {
 		Vec3 m_scale = Vec3(1.0f, 0.1f, 1.0f);
 
 		bool isConnect = false;
+		bool isPower = false;
+		float m_elect = 0.0f;
 
 	public:
 		// ステージを引数にしたコンストラクタ【必須】
 		Port(const std::shared_ptr<Stage>& stage) :
-			Electrified(stage) // ステージをGameObjectに渡す【必須】
+			GameObject(stage) // ステージをGameObjectに渡す【必須】
 		{
 		}
 
@@ -38,8 +40,13 @@ namespace basecross {
 		{
 			return isConnect;
 		}
+
+		void SetisPower(bool power, float elect)
+		{
+			isPower = power;
+			m_elect = elect;
+		}
 	};
 
 }
-//end basecross
-
+//end basecross}

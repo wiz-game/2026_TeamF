@@ -12,7 +12,6 @@ namespace basecross {
 	// 初期設定
 	void PowerSupply::OnCreate()
 	{
-		Electrified::OnCreate();// 基底クラスの初期化も呼び出す
 		this->isPower = true;	// 電源であることを設定
 		GetStage()->SetSharedGameObject(L"PowerSupply", GetThis<PowerSupply>());
 		// トランスフォームコンポーネントを取得しておく
@@ -33,21 +32,19 @@ namespace basecross {
 		coll->SetAfterCollision(AfterCollision::None);
 
 		//coll->SetFixed(true);
-		this->isPower = true;// 電源であることを設定
-		this->m_isSource = true;// 電源であることを設定
+		isPower = true;// 電源であることを設定
 	}
 
 	// 更新処理
 	void PowerSupply::OnUpdate()
 	{
-		Electrified::OnUpdate();// 基底クラスの更新も呼び出す
 	}
 
 	void PowerSupply::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
 	{
-		if (auto ink = std::dynamic_pointer_cast<InkDraw>(obj))
+		if (auto ink = std::dynamic_pointer_cast<InkCloud>(obj))
 		{
-			if (this->isPower)
+			if (isPower)
 			{
 				isConnect = true;
 				m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));

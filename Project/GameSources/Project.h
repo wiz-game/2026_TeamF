@@ -28,3 +28,4 @@
 #include "TextureCollision.h"
 
 #include "GoalStage.h"
+#include "InkCloud.h"

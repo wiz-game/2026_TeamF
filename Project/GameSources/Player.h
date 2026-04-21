@@ -6,6 +6,7 @@
 #pragma once
 #include "stdafx.h"
 #include "PNTDXModelDraw.h"
+#include "InkCloud.h"
 
 namespace basecross {
 
@@ -17,6 +18,8 @@ class UpDownFloor;
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<UpDownFloor> m_currentFloor;//現在乗っている床
+		
+		std::shared_ptr<InkCloud> m_targetCloud;
 		float m_height;
 		float m_radius;
 

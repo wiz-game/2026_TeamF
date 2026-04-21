@@ -111,8 +111,35 @@ namespace basecross{
 			if (cc && cc->IsOnGround())
 			{
 				m_ink -= delta;
+
+				std::vector<std::shared_ptr<GameObject>> objVec;
+				GetStage()->GetUsedTagObjectVec(L"InkCloud", objVec);
+
+				m_targetCloud = nullptr;
+
+				for (auto& obj : objVec)
+				{
+					auto cloud = std::dynamic_pointer_cast<InkCloud>(obj);
+					if (cloud)
+					{
+						float dist = (cloud->GetComponent<Transform>()->GetPosition() - m_pos).length();
+
+						if (dist < 2.0f)
+						{
+							m_targetCloud = cloud;
+							break;
+						}
+					}
+				}
+
+				if (!m_targetCloud)
+				{
+					m_targetCloud = GetStage()->AddGameObject<InkCloud>();
+				}
+
 				auto ink = stage->AddGameObject<InkDraw>();
 				ink->GetComponent<Transform>()->SetPosition(Vec3(m_pos.x, m_pos.y - m_height / 2, m_pos.z));
+				m_targetCloud->AddInk(ink);//ƒCƒ“ƒN‚ð’Ç‰Á
 			}
 		}
 	}
