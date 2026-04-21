@@ -8,7 +8,7 @@
 
 namespace basecross{
 
-
+	class GameObject;
 	//--------------------------------------------------------------------------------------
 	//	class GenericSprite : public GameObject;
 	//--------------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ namespace basecross{
 		float m_nextEnergy = 0.0f;
 
 		//ÚG‚µ‚Ä‚¢‚é‘Šè
-		std::set<std::shared_ptr<GameObject>> m_contactObjects;
+		std::vector<std::weak_ptr<GameObject>> m_contactObjects;
 	};
 
 }

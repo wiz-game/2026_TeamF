@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "Electrified.h"
 #include "PowerSupply.h"
+#include "GameObject.h"
 
 namespace basecross{
 
