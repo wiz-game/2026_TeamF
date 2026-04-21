@@ -8,13 +8,7 @@
 #include "JoltManager.h"
 
 namespace basecross {
-	struct TestConstantBufferData {
-		float Value;
-		float pading[3];
-	};
-
-	DECLARE_DX11_COMPUTE_SHADER(TestShader)
-	DECLARE_DX11_CONSTANT_BUFFER(TestConstantBuffer, TestConstantBufferData)
+	
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------

@@ -46,7 +46,7 @@ class UpDownFloor;
 			m_height(1.0f),
 			m_radius(0.49f),
 			m_moveSpeed(0.0f),
-			m_maxSpeed(4.0f),
+			m_maxSpeed(5.0f),
 			m_accel(0.99f),
 			m_pos(Vec3(0.0f, 0.5f, 0.0f)),
 			m_forward(Vec3(0)),

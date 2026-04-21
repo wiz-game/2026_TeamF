@@ -46,6 +46,9 @@ namespace basecross{
 	void Player::OnUpdate()
 	{
 		//// �A�v���P�[�V�����I�u�W�F�N�g���擾
+		m_pos = m_transform->GetPosition();
+		auto scene = App::GetApp()->GetScene<Scene>();
+		//// �A�v���P�[�V�����I�u�W�F�N�g���擾
 		//auto& app = App::GetApp();
 
 		//// �O�񂩂�̌o�ߎ��ԁF�f���^�^�C�����擾����
@@ -62,10 +65,21 @@ namespace basecross{
 		////quat = quat * rotX * rotY * rotZ;
 		//quat = quat * rotY;
 		//m_transform->SetQuaternion(rotY);
+
 		OnMove();
 		DropInk();
 		OnDied();
 		UpdateMoveFloor();
+
+		if (m_pos.y <= -10.0f)
+		{
+			PostEvent(0.0f, GetThis<Player>(), scene, L"ToProtoStage");
+		}
+
+		scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
+			+ L"\n"
+			+ L"�C���N�c�� : " + std::to_wstring(m_ink));
+
 	}
 
 	void Player::OnMove()
@@ -164,7 +178,7 @@ namespace basecross{
 
 		if (m_ink <= 0)
 		{
-			wss << L"\n" << L"Died!!";
+			wss << L"\n" << L"Died!!\n";
 		}
 		app->GetScene<Scene>()->SetDebugString(wss.str());
 	}
@@ -173,7 +187,6 @@ namespace basecross{
 	{
 		auto scene = App::GetApp()->GetScene<Scene>();
 		auto cc = GetComponent<CharacterController>();
-		if (!cc || !m_currentFloor) return;
 
 		//���������Ă���(isUp)���ڒn���Ă��邩�`���b�N
 		auto shouldBeParent = cc->IsOnGround() && m_currentFloor->GetIsUp();
@@ -200,6 +213,23 @@ namespace basecross{
 		else
 		{
 			cc->SetGravityEnabled(true); //�d�͂�L���ɂ���
+		}
+		if (!m_currentFloor) return;
+		//m_curretnFloor�������Ă����������Ă���(isUp)���`���b�N
+		if (m_currentFloor->GetIsUp())
+		{
+			//���̈ړ��ʂ��擾
+			float floorVelocityY = m_currentFloor->GetMoveSpeed();
+
+			Vec3 currentV = m_transform->GetPosition();
+			currentV.y = floorVelocityY; //���̈ړ��ʂ��v���C���[�̑��x�ɉ��Z
+			m_transform->SetPosition(Vec3(currentV.x, currentV.y, currentV.z));
+
+			//�f�o�b�O�����̕\��
+			std::wstring debugMsg = L" PlayerPos : " + std::to_wstring(currentV.x) + L", " + std::to_wstring(currentV.y) + L", " + std::to_wstring(currentV.z)
+				+ L"\n"
+				+ L"���ړ����BspeedY : " + std::to_wstring(floorVelocityY);
+			scene->SetDebugString(debugMsg);
 		}
 	}
 
