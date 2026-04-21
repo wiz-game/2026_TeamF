@@ -26,3 +26,5 @@
 #include "Electrified.h"
 
 #include "TextureCollision.h"
+
+#include "GoalStage.h"
