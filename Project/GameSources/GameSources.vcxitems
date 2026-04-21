@@ -22,6 +22,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Electrified.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameStageBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)game_controller.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Goal.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GoalStage.h" />
@@ -30,6 +31,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltLayers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltRigidBody.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MainCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Json.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h" />
@@ -55,6 +57,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Electrified.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameStageBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)game_controller.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -65,6 +68,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MainCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Json.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp" />

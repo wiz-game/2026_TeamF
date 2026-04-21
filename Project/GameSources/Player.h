@@ -1,10 +1,11 @@
 /*!
 @file Player.h
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚Ç
+@brief ï¿½ï½½Lï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½Nï¿½ï½½^ï¿½ï½½[ï¿½ï½½ï¾ˆã‚‘ï½¿ï½½
 */
 
 #pragma once
 #include "stdafx.h"
+#include "MainCamera.h"
 #include "PNTDXModelDraw.h"
 #include "InkCloud.h"
 
@@ -12,48 +13,61 @@ namespace basecross {
 
 class UpDownFloor;
 
-	// GameObjectƒNƒ‰ƒX‚ğŒp³‚µ‚½uPlayervƒNƒ‰ƒX‚ğ’è‹`
-	class Player : public GameObject // GameObjectƒNƒ‰ƒX‚ÌŒp³y•K{z
+	// GameObjectï¿½ï½½Nï¿½ï½½ï¿½ï½½ï¿½ï½½Xï¿½ï½½ï¿½ï½½ï¿½ï½½pï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½uPlayerï¿½ï½½vï¿½ï½½Nï¿½ï½½ï¿½ï½½ï¿½ï½½Xï¿½ï½½ï¿½ï½½ï¿½ï½½`
+	class Player : public GameObject // GameObjectï¿½ï½½Nï¿½ï½½ï¿½ï½½ï¿½ï½½Xï¿½ï½½ï¾Œç¶™ï¿½ï½½ï¿½ï½½ï¿½ï½½yï¿½ï½½Kï¿½ï½½{ï¿½ï½½z
 	{
-		std::shared_ptr<Transform> m_transform; // ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚Í‚æ‚­g‚¤‚Ì‚Åƒƒ“ƒo‚É‚µ‚Ä‚¨‚­
-		std::shared_ptr<PNTStaticDraw> m_draw; // ƒhƒ[ƒRƒ“ƒ|[ƒlƒ“ƒg
-		std::shared_ptr<UpDownFloor> m_currentFloor;//Œ»İæ‚Á‚Ä‚¢‚é°
+		std::weak_ptr<MainCamera> m_camera;
+		std::shared_ptr<Transform> m_transform; // ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã¯ã‚ˆãä½¿ã†ã®ã§ãƒ¡ãƒ³ãƒã«ã—ã¦ãŠã
+		std::shared_ptr<PNTStaticDraw> m_draw; // ãƒ‰ãƒ­ãƒ¼ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
+		std::shared_ptr<UpDownFloor> m_currentFloor;//ç¾åœ¨ä¹—ã£ã¦ã„ã‚‹åºŠ
 		
 		std::shared_ptr<InkCloud> m_targetCloud;
 		float m_height;
 		float m_radius;
 
 		float m_moveSpeed;
-		float m_maxSpeed;
-		Vec3 m_moveDir;
+		float m_maxSpeed;	//è­›é¬®å€¬
+		float m_accel;
 		Vec3 m_pos;
+		Vec3 m_forward;
+		Vec3 m_velocity;
 
-		float m_ink;	//ƒCƒ“ƒNc—Ê
-		float m_inkMax;	//ƒCƒ“ƒNÅ‘åc—Ê
+		float m_ink;	//ç¹§ï½¤ç¹ï½³ç¹§ï½¯è°¿çŸ©ã¼
+		float m_inkMax;	//ç¹§ï½¤ç¹ï½³ç¹§ï½¯è°¿çŸ©ã¼è­›èŸï½§è›Ÿï½¤
+		float m_inkDecrease;	//ç¹§ï½¤ç¹ï½³ç¹§ï½¯è²‚å¸›ï½°é·¹ã¼
+		float m_fade;	//ç¹§ï½¤ç¹ï½³ç¹§ï½¯ç¸ºï½®è¬—ç¹§
+		bool m_isDraw;	//ç¹§ï½¤ç¹ï½³ç¹§ï½¯ç¸ºæ‚Ÿï¿½ç¸ºå¸™ï½‹ç¸ºä¹â†ç¸ºï¿½Â°
 
-		Vec3 m_externalVelocity; // ŠO•”‚©‚ç‚Ì‘¬“x
+		Vec3 m_externalVelocity; // ï¿½ï½½Oï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾Œæ‰˜ï½¿ï½½ï¿½ï½½x
 		
 	public :
-		// ƒXƒe[ƒW‚ğˆø”‚É‚µ‚½ƒRƒ“ƒXƒgƒ‰ƒNƒ^y•K{z
+		// ï¿½ï½½Xï¿½ï½½eï¿½ï½½[ï¿½ï½½Wï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾‰ã‚‘ï½¿ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½Rï¿½ï½½ï¿½ï½½ï¿½ï½½Xï¿½ï½½gï¿½ï½½ï¿½ï½½ï¿½ï½½Nï¿½ï½½^ï¿½ï½½yï¿½ï½½Kï¿½ï½½{ï¿½ï½½z
 		Player(const std::shared_ptr<Stage>& stage) :
-			GameObject(stage), // ƒXƒe[ƒW‚ğGameObject‚É“n‚·y•K{z
-			m_height(1.5f),
-			m_radius(0.70f),
+			GameObject(stage), // ï¿½ï½½Xï¿½ï½½eï¿½ï½½[ï¿½ï½½Wï¿½ï½½ï¿½ï½½GameObjectï¿½ï½½ï¾‰æ¸¡ï¿½ï½½ï¿½ï½½ï¿½ï½½yï¿½ï½½Kï¿½ï½½{ï¿½ï½½z
+			m_height(1.0f),
+			m_radius(0.49f),
 			m_moveSpeed(0.0f),
-			m_maxSpeed(4.0f),
-			m_moveDir(Vec3(0)),
-			m_pos(Vec3(0)),
+			m_maxSpeed(5.0f),
+			m_accel(0.99f),
+			m_pos(Vec3(0.0f, 0.5f, 0.0f)),
+			m_forward(Vec3(0)),
+			m_velocity(Vec3(0)),
 			m_ink(0.0f),
 			m_inkMax(10.0f),
+			m_inkDecrease(10.0f),
+			m_isDraw(true),
+			m_fade(0.0f),
 			m_externalVelocity(Vec3(0))
 		{
 		}
 
-		void OnCreate() override; // ‰Šúİ’è—p‚ÌŠÖ”(Unity‚ÌStartƒƒ\ƒbƒh‚É‘Š“–)
-		void OnUpdate() override; // –ˆƒtƒŒ[ƒ€Às‚³‚ê‚éŠÖ”(Unity‚ÌUpdateƒƒ\ƒbƒh‚É‘Š“–)
+		void OnCreate() override; // ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾æŠµï½¿ï½½pï¿½ï½½ï¾Œé–¢æ’°ï½¿ï½½(Unityï¿½ï½½ï¿½ï½½Startï¿½ï½½ï¿½ï½½ï¿½ï½½\ï¿½ï½½bï¿½ï½½hï¿½ï½½ï¾‰æ‰˜ï½¿ï½½ï¿½ï½½ï¿½ï½½)
+		void OnUpdate() override; // ï¿½ï½½ï¿½ï½½ï¿½ï½½tï¿½ï½½ï¿½ï½½ï¿½ï½½[ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½sï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾–æ’°ï½¿ï½½(Unityï¿½ï½½ï¿½ï½½Updateï¿½ï½½ï¿½ï½½ï¿½ï½½\ï¿½ï½½bï¿½ï½½hï¿½ï½½ï¾‰æ‰˜ï½¿ï½½ï¿½ï½½ï¿½ï½½)
 
 		void OnMove();
 		void DropInk();
+		void OnDied();
+
 
 		void OnCollisionEnter(std::shared_ptr<GameObject>& obj) override;
 		void OnCollisionExcute(std::shared_ptr<GameObject>& obj) override;
@@ -61,7 +75,7 @@ class UpDownFloor;
 
 		void UpdateMoveFloor();
 
-		// ŠO•”‚©‚ç‚ÌˆÚ“®‚ğ‰ÁZ‚·‚éŠÖ”
+		// ï¿½ï½½Oï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾Œç§»é›£ï½¿ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½Zï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾–æ’°ï½¿ï½½
 		//void AddExternalMove(const Vec3& move);
 		//void SetExternalVelocity(const Vec3& v) { m_externalVelocity = v; }
 	};
