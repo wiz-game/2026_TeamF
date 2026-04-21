@@ -1,6 +1,6 @@
 /*!
 @file Player.h
-@brief �ｽL�ｽ�ｽ�ｽ�ｽ�ｽN�ｽ^�ｽ[�ｽﾈゑｿｽ
+@brief プレイヤー
 */
 
 #pragma once
@@ -13,8 +13,7 @@ namespace basecross {
 
 class UpDownFloor;
 
-	// GameObject�ｽN�ｽ�ｽ�ｽX�ｽ�ｽ�ｽp�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽuPlayer�ｽv�ｽN�ｽ�ｽ�ｽX�ｽ�ｽ�ｽ`
-	class Player : public GameObject // GameObject�ｽN�ｽ�ｽ�ｽX�ｽﾌ継�ｽ�ｽ�ｽy�ｽK�ｽ{�ｽz
+	class Player : public GameObject 
 	{
 		std::weak_ptr<MainCamera> m_camera;
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
@@ -26,24 +25,23 @@ class UpDownFloor;
 		float m_radius;
 
 		float m_moveSpeed;
-		float m_maxSpeed;	//譛鬮倬
+		float m_maxSpeed;
 		float m_accel;
 		Vec3 m_pos;
 		Vec3 m_forward;
 		Vec3 m_velocity;
 
-		float m_ink;	//繧､繝ｳ繧ｯ谿矩㍼
-		float m_inkMax;	//繧､繝ｳ繧ｯ谿矩㍼譛螟ｧ蛟､
-		float m_inkDecrease;	//繧､繝ｳ繧ｯ貂帛ｰ鷹㍼
-		float m_fade;	//繧､繝ｳ繧ｯ縺ｮ謗繧
-		bool m_isDraw;	//繧､繝ｳ繧ｯ縺悟�縺帙ｋ縺九←縺�°
+		float m_ink;
+		float m_inkMax;
+		float m_inkDecrease;
+		float m_fade;	
+		bool m_isDraw;	
 
-		Vec3 m_externalVelocity; // �ｽO�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾌ托ｿｽ�ｽx
+		Vec3 m_externalVelocity; 
 		
 	public :
-		// �ｽX�ｽe�ｽ[�ｽW�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾉゑｿｽ�ｽ�ｽ�ｽR�ｽ�ｽ�ｽX�ｽg�ｽ�ｽ�ｽN�ｽ^�ｽy�ｽK�ｽ{�ｽz
 		Player(const std::shared_ptr<Stage>& stage) :
-			GameObject(stage), // �ｽX�ｽe�ｽ[�ｽW�ｽ�ｽGameObject�ｽﾉ渡�ｽ�ｽ�ｽy�ｽK�ｽ{�ｽz
+			GameObject(stage),
 			m_height(1.0f),
 			m_radius(0.49f),
 			m_moveSpeed(0.0f),
@@ -54,15 +52,15 @@ class UpDownFloor;
 			m_velocity(Vec3(0)),
 			m_ink(0.0f),
 			m_inkMax(10.0f),
-			m_inkDecrease(10.0f),
+			m_inkDecrease(1.0f),
 			m_isDraw(true),
 			m_fade(0.0f),
 			m_externalVelocity(Vec3(0))
 		{
 		}
 
-		void OnCreate() override; // �ｽ�ｽ�ｽ�ｽ�ｽﾝ抵ｿｽp�ｽﾌ関撰ｿｽ(Unity�ｽ�ｽStart�ｽ�ｽ�ｽ\�ｽb�ｽh�ｽﾉ托ｿｽ�ｽ�ｽ)
-		void OnUpdate() override; // �ｽ�ｽ�ｽt�ｽ�ｽ�ｽ[�ｽ�ｽ�ｽ�ｽ�ｽs�ｽ�ｽ�ｽ�ｽ�ｽﾖ撰ｿｽ(Unity�ｽ�ｽUpdate�ｽ�ｽ�ｽ\�ｽb�ｽh�ｽﾉ托ｿｽ�ｽ�ｽ)
+		void OnCreate() override;
+		void OnUpdate() override;
 
 		void OnMove();
 		void DropInk();
