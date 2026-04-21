@@ -7,15 +7,26 @@
 #include "stdafx.h"
 
 namespace basecross{
-	
+	struct TextureSizeConstantData {
+		int width;
+		int height;
+		int padding[2];
+	};
+
+	DECLARE_DX11_COMPUTE_SHADER(GenerateMaskShader)
+	DECLARE_DX11_COMPUTE_SHADER(FloorFillShader)
+	DECLARE_DX11_CONSTANT_BUFFER(TextureSizeConstantBuffer, TextureSizeConstantData)
+
+	struct MaskData {
+		UINT m_Mask = 0;
+		bool m_IsVisited = false;
+	};
+
 	class TextureCollision : public Collision {
-		struct MaskData {
-			UINT m_Mask = 0;
-			bool m_IsVisited = false;
-		};
+		
 		struct CoordContext {
-			int m_SizeX = 0;
-			int m_SizeY = 0;
+			UINT m_SizeX = 0;
+			UINT m_SizeY = 0;
 		};
 
 		void GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc);

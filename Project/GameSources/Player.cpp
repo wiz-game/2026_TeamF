@@ -40,6 +40,7 @@ namespace basecross{
 	void Player::OnUpdate()
 	{
 		m_pos = m_transform->GetPosition();
+		auto scene = App::GetApp()->GetScene<Scene>();
 		//// アプリケーションオブジェクトを取得
 		//auto& app = App::GetApp();
 
@@ -57,9 +58,20 @@ namespace basecross{
 		////quat = quat * rotX * rotY * rotZ;
 		//quat = quat * rotY;
 		//m_transform->SetQuaternion(rotY);
+
 		OnMove();
 		DropInk();
 		UpdateMoveFloor();
+
+		if (m_pos.y <= -10.0f)
+		{
+			PostEvent(0.0f, GetThis<Player>(), scene, L"ToProtoStage");
+		}
+
+		scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
+			+ L"\n"
+			+ L"インク残量 : " + std::to_wstring(m_ink));
+
 	}
 
 	void Player::OnMove()
@@ -108,34 +120,23 @@ namespace basecross{
 	void Player::UpdateMoveFloor()
 	{
 		auto scene = App::GetApp()->GetScene<Scene>();
-		auto cc = GetComponent<CharacterController>();
-		if (!cc || !m_currentFloor) return;
 
-		//床が動いている(isUp)かつ接地しているかチャック
-		auto shouldBeParent = cc->IsOnGround() && m_currentFloor->GetIsUp();
-		if (shouldBeParent)
+		if (!m_currentFloor) return;
+		//m_curretnFloorがあってかつ床が動いている(isUp)かチャック
+		if (m_currentFloor->GetIsUp())
 		{
-			cc->SetGravityEnabled(false); //重力を無効にする
-
-			//float delta = App::GetApp()->GetElapsedTime();
-			
-			//床の移動量を計算してPlayerの座標に加算
+			//床の移動量を取得
 			float floorVelocityY = m_currentFloor->GetMoveSpeed();
 
-			Vec3 currentV = cc->GetLinearVelocity();
+			Vec3 currentV = m_transform->GetPosition();
 			currentV.y = floorVelocityY; //床の移動量をプレイヤーの速度に加算
-			cc->SetLinearVelocity(currentV);
+			m_transform->SetPosition(Vec3(currentV.x, currentV.y, currentV.z));
 
 			//デバッグ文字の表示
-			std::wstring debugMsg = L"Grounded: " + std::wstring(cc->IsOnGround() ? L"true" : L"false")
-				+ L" | IsUp: " + (m_currentFloor->GetIsUp() ? L"true" : L"false")
+			std::wstring debugMsg = L" PlayerPos : " + std::to_wstring(currentV.x) + L", " + std::to_wstring(currentV.y) + L", " + std::to_wstring(currentV.z)
 				+ L"\n"
-				+ L"床移動中。speedY: " + std::to_wstring(floorVelocityY);
+				+ L"床移動中。speedY : " + std::to_wstring(floorVelocityY);
 			scene->SetDebugString(debugMsg);
-		}
-		else
-		{
-			cc->SetGravityEnabled(true); //重力を有効にする
 		}
 	}
 
