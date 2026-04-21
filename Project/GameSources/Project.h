@@ -20,8 +20,10 @@
 #include "UpDownFloor.h"
 
 #include "GameStage.h"
+#include "GameStageBase.h"
 #include "ProtoStage.h"
 #include "InkDraw.h"
+#include "MainCamera.h"
 
 #include "Electrified.h"
 

@@ -1,50 +1,57 @@
 /*!
 @file Player.cpp
-@brief ƒvƒŒƒCƒ„[‚È‚ÇÀ‘Ì
+@brief ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½È‚Çï¿½ï¿½ï¿½
 */
 
 #include "stdafx.h"
 #include "Project.h"
+#include "MainCamera.h"
 #include "game_controller.h"
 #include "CharacterController.h"
 
 namespace basecross{
-	// ƒvƒŒƒCƒ„[‚Ì‰Šúİ’è
+	// ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìï¿½ï¿½ï¿½ï¿½İ’ï¿½
 	void Player::OnCreate()
 	{
 		GetStage()->SetSharedGameObject(L"Player", GetThis<Player>());
-		// ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚µ‚Ä‚¨‚­
+		// ï¿½gï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½tï¿½Hï¿½[ï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½|ï¿½[ï¿½lï¿½ï¿½ï¿½gï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
 		m_transform = GetComponent<Transform>();
 
-		m_transform->SetPosition(Vec3(0.0f, 5.0f, 0.0f));
-		// ƒhƒ[ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ’Ç‰Á
+		m_transform->SetPosition(Vec3(0.0f, 0.05f, 0.0f));
+		// ï¿½hï¿½ï¿½ï¿½[ï¿½Rï¿½ï¿½ï¿½|ï¿½[ï¿½lï¿½ï¿½ï¿½gï¿½ï¿½Ç‰ï¿½
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
-		m_draw->SetDiffuse(Col4(1, 1, 1, 1));
+		m_draw->SetDiffuse(Col4(0, 0, 0, 1));
+		m_draw->SetEmissive(Col4(0, 0, 0, 1));
 
 		auto cc = AddComponent<CharacterController>();
-		CharacterController::Settings settings;
-		settings.height = m_height;
-		settings.radius = m_radius;
-		settings.mass = 0.0f;
-		settings.maxSlopeAngle - 45.0f;
-		cc->Initialize(settings);
+		//CharacterController::Settings settings;
+		//settings.height = m_height;
+		//settings.radius = m_radius;
+		//settings.mass = 0.0f;
+		//settings.maxSlopeAngle - 45.0f;
+		//cc->Initialize(settings);
 
+		m_moveSpeed = m_maxSpeed;
 		m_ink = m_inkMax;
 
+		auto view = GetStage()->GetView();
+		auto camera = view->GetTargetCamera();
+		m_camera = dynamic_pointer_cast<MainCamera>(camera);
 		auto coll = AddComponent<CollisionObb>();
 		//coll->SetAfterCollision(AfterCollision::None);
 	}
 
-	// ƒvƒŒƒCƒ„[‚ÌXVˆ—
+	// ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÌXï¿½Vï¿½ï¿½ï¿½ï¿½
 	void Player::OnUpdate()
 	{
+		//// ï¿½Aï¿½vï¿½ï¿½ï¿½Pï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½æ“¾
 		m_pos = m_transform->GetPosition();
 		auto scene = App::GetApp()->GetScene<Scene>();
-		//// ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚ğæ“¾
+		//// ï¿½Aï¿½vï¿½ï¿½ï¿½Pï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½æ“¾
 		//auto& app = App::GetApp();
 
-		//// ‘O‰ñ‚©‚ç‚ÌŒo‰ßŠÔFƒfƒ‹ƒ^ƒ^ƒCƒ€‚ğæ“¾‚·‚é
+		//// ï¿½Oï¿½ñ‚©‚ï¿½ÌŒoï¿½ßï¿½ï¿½ÔFï¿½fï¿½ï¿½ï¿½^ï¿½^ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½
 		//float delta = app->GetElapsedTime();
 
 		//auto sensor = GameController::GetSensorData();
@@ -61,6 +68,7 @@ namespace basecross{
 
 		OnMove();
 		DropInk();
+		OnDied();
 		UpdateMoveFloor();
 
 		if (m_pos.y <= -10.0f)
@@ -70,110 +78,210 @@ namespace basecross{
 
 		scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
 			+ L"\n"
-			+ L"ƒCƒ“ƒNc—Ê : " + std::to_wstring(m_ink));
+			+ L"ï¿½Cï¿½ï¿½ï¿½Nï¿½cï¿½ï¿½ : " + std::to_wstring(m_ink));
 
 	}
 
 	void Player::OnMove()
 	{
 		auto& app = App::GetApp();
+		std::wstringstream wss(L"");
+		//auto cc = GetComponent<CharacterController>();
+		
+		//ï¿½Rï¿½ï¿½ï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½[ï¿½æ“¾
+		auto device = App::GetApp()->GetInputDevice();
+		auto& pad = device.GetControlerVec()[0];
+		Vec3 stickL(pad.fThumbLX, 0.0f, pad.fThumbLY);
+
+		auto key = device.GetKeyState();
+
+		//ElapsedTimeï¿½æ“¾
 		auto delta = app->GetElapsedTime();
-		auto cc = GetComponent<CharacterController>();
 
-		auto pad = GameController::GetCurrentState();
-		auto LStickX = GameController::GetLeftStickX();
-		auto LStickY = GameController::GetLeftStickY();
-		const Vec3 stickL(LStickX, 0.0f, -LStickY);
+		m_pos = m_transform->GetPosition();
 
-		if (cc)
+		float cameraAngleY = 0.0f;
+		auto mainCamera = m_camera.lock();
+		if (mainCamera)
 		{
-			m_moveDir = stickL;
-			m_moveDir.normalize();
-			m_moveSpeed = m_maxSpeed * stickL.length();
-			float rad = atan2f(m_moveDir.z, m_moveDir.x);
-
-			m_moveDir.x = cosf(rad);
-			m_moveDir.z = sinf(rad);
-
-			cc->SetLinearVelocity(m_moveSpeed * m_moveDir);
+			cameraAngleY = mainCamera->GetAngleY();
 		}
+
+		if (key.m_bPushKeyTbl['A'])
+		{
+			stickL.x = -m_moveSpeed;
+		}
+		if (key.m_bPushKeyTbl['D'])
+		{
+			stickL.x = m_moveSpeed;
+		}
+		if (key.m_bPushKeyTbl['W'])
+		{
+			stickL.z = m_moveSpeed;
+		}
+		if (key.m_bPushKeyTbl['S'])
+		{
+			stickL.z = -m_moveSpeed;
+		}
+
+		float length = stickL.length();
+		if (length != 0)
+		{
+			float padAngle = atan2f(stickL.z, stickL.x);
+			float forwardAngle = padAngle + cameraAngleY + XM_PIDIV2;
+
+			m_forward.x = cosf(forwardAngle);
+			m_forward.y = 0.0f;
+			m_forward.z = sinf(forwardAngle);
+
+			m_velocity += m_forward * delta;
+;			//cc->SetLinearVelocity(m_moveSpeed * m_velocity * m_moveDir);
+		}
+
+		
+		if (m_velocity.x <= m_maxSpeed || m_velocity.z <= m_maxSpeed)
+			m_velocity *= m_accel;
+		m_pos += m_moveSpeed * m_velocity * delta;
+
+		m_pos.y = 0.5f;
+		m_transform->SetPosition(m_pos);
 	}
 
 	void Player::DropInk()
 	{
 		auto delta = App::GetApp()->GetElapsedTime();
-		auto pad = GameController::GetCurrentState();
-		auto cc = GetComponent<CharacterController>();
+		auto device = App::GetApp()->GetInputDevice();
+		auto pad = device.GetControlerVec()[0];
+		//auto pad = GameController::GetCurrentState();
+		auto key = device.GetKeyState();
 		auto stage = GetStage();
 
-		if (pad.buttonDown)
+		if (pad.wButtons & XINPUT_GAMEPAD_A || key.m_bPushKeyTbl[' '])
 		{
-			if (cc && cc->IsOnGround())
+			if (m_isDraw && m_ink > 0)
 			{
-				m_ink -= delta;
+				m_ink -= m_inkDecrease * delta;
 				auto ink = stage->AddGameObject<InkDraw>();
+				ink->FadingInk(m_fade);
+				m_fade += 0.0060f;
 				ink->GetComponent<Transform>()->SetPosition(Vec3(m_pos.x, m_pos.y - m_height / 2, m_pos.z));
 			}
 		}
 	}
 
+	void Player::OnDied()
+	{
+		auto& app = App::GetApp();
+		std::wstringstream wss(L"");
+
+		wss << m_ink;
+
+		if (m_ink <= 0)
+		{
+			wss << L"\n" << L"Died!!\n";
+		}
+		app->GetScene<Scene>()->SetDebugString(wss.str());
+	}
+
 	void Player::UpdateMoveFloor()
 	{
 		auto scene = App::GetApp()->GetScene<Scene>();
+		auto cc = GetComponent<CharacterController>();
 
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½(isUp)ï¿½ï¿½ï¿½ÂÚ’nï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚©ï¿½`ï¿½ï¿½ï¿½bï¿½N
+		auto shouldBeParent = cc->IsOnGround() && m_currentFloor->GetIsUp();
+		if (shouldBeParent)
+		{
+			cc->SetGravityEnabled(false); //ï¿½dï¿½Í‚ğ–³Œï¿½ï¿½É‚ï¿½ï¿½ï¿½
+
+			//float delta = App::GetApp()->GetElapsedTime();
+			
+			//ï¿½ï¿½ï¿½ÌˆÚ“ï¿½ï¿½Ê‚ï¿½ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½Playerï¿½Ìï¿½ï¿½Wï¿½É‰ï¿½ï¿½Z
+			float floorVelocityY = m_currentFloor->GetMoveSpeed();
+
+			Vec3 currentV = cc->GetLinearVelocity();
+			currentV.y = floorVelocityY; //ï¿½ï¿½ï¿½ÌˆÚ“ï¿½ï¿½Ê‚ï¿½ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ì‘ï¿½ï¿½xï¿½É‰ï¿½ï¿½Z
+			cc->SetLinearVelocity(currentV);
+
+			//ï¿½fï¿½oï¿½bï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½Ì•\ï¿½ï¿½
+			std::wstring debugMsg = L"Grounded: " + std::wstring(cc->IsOnGround() ? L"true" : L"false")
+				+ L" | IsUp: " + (m_currentFloor->GetIsUp() ? L"true" : L"false")
+				+ L"\n"
+				+ L"ï¿½ï¿½ï¿½Ú“ï¿½ï¿½ï¿½ï¿½BspeedY: " + std::to_wstring(floorVelocityY);
+			scene->SetDebugString(debugMsg);
+		}
+		else
+		{
+			cc->SetGravityEnabled(true); //ï¿½dï¿½Í‚ï¿½Lï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½
+		}
 		if (!m_currentFloor) return;
-		//m_curretnFloor‚ª‚ ‚Á‚Ä‚©‚Â°‚ª“®‚¢‚Ä‚¢‚é(isUp)‚©ƒ`ƒƒƒbƒN
+		//m_curretnFloorï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Âï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½(isUp)ï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½bï¿½N
 		if (m_currentFloor->GetIsUp())
 		{
-			//°‚ÌˆÚ“®—Ê‚ğæ“¾
+			//ï¿½ï¿½ï¿½ÌˆÚ“ï¿½ï¿½Ê‚ï¿½ï¿½æ“¾
 			float floorVelocityY = m_currentFloor->GetMoveSpeed();
 
 			Vec3 currentV = m_transform->GetPosition();
-			currentV.y = floorVelocityY; //°‚ÌˆÚ“®—Ê‚ğƒvƒŒƒCƒ„[‚Ì‘¬“x‚É‰ÁZ
+			currentV.y = floorVelocityY; //ï¿½ï¿½ï¿½ÌˆÚ“ï¿½ï¿½Ê‚ï¿½ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ì‘ï¿½ï¿½xï¿½É‰ï¿½ï¿½Z
 			m_transform->SetPosition(Vec3(currentV.x, currentV.y, currentV.z));
 
-			//ƒfƒoƒbƒO•¶š‚Ì•\¦
+			//ï¿½fï¿½oï¿½bï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½Ì•\ï¿½ï¿½
 			std::wstring debugMsg = L" PlayerPos : " + std::to_wstring(currentV.x) + L", " + std::to_wstring(currentV.y) + L", " + std::to_wstring(currentV.z)
 				+ L"\n"
-				+ L"°ˆÚ“®’†BspeedY : " + std::to_wstring(floorVelocityY);
+				+ L"ï¿½ï¿½ï¿½Ú“ï¿½ï¿½ï¿½ï¿½BspeedY : " + std::to_wstring(floorVelocityY);
 			scene->SetDebugString(debugMsg);
 		}
 	}
 
-	// °‚Æ‚ÌÕ“ËŠJn
+	// ï¿½ï¿½ï¿½Æ‚ÌÕ“ËŠJï¿½n
 	void Player::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
 	{
 		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
+		auto ink = dynamic_pointer_cast<InkDraw>(obj);
 		if (floor)
 		{
 			m_currentFloor = floor;
 			auto scene = App::GetApp()->GetScene<Scene>();
-			//scene->SetDebugString(L"°‚Éæ‚è‚Ü‚µ‚½");
+			//scene->SetDebugString(L"ï¿½ï¿½ï¿½Éï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
+		}
+		if (ink)
+		{
+			m_isDraw = false;
 		}
 	}
 
-	// °‚Æ‚ÌÕ“ËŒp‘±
+	// ï¿½ï¿½ï¿½Æ‚ÌÕ“ËŒpï¿½ï¿½
 	void Player::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
 	{
 		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
+		auto ink = dynamic_pointer_cast<InkDraw>(obj);
 		if (floor)
 		{
 			m_currentFloor = floor;
 			auto scene = App::GetApp()->GetScene<Scene>();
-			//scene->SetDebugString(L"°‚Éæ‚è‚Ü‚µ‚½");
+			//scene->SetDebugString(L"ï¿½ï¿½ï¿½Éï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
+		}
+		if (ink)
+		{
+			m_isDraw = false;
 		}
 
 	}
 
-	// °‚Æ‚ÌÕ“ËI—¹
+	// ï¿½ï¿½ï¿½Æ‚ÌÕ“ËIï¿½ï¿½
 	void Player::OnCollisionExit(std::shared_ptr<GameObject>& obj)
 	{
 		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
+		auto ink = dynamic_pointer_cast<InkDraw>(obj);
 		if (floor)
 		{
 			m_currentFloor = nullptr;
 			auto scene = App::GetApp()->GetScene<Scene>();
-			//scene->SetDebugString(L"°‚©‚ç~‚è‚Ü‚µ‚½");
+			//scene->SetDebugString(L"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½~ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
+		}
+		if (ink)
+		{
+			m_isDraw = true;
 		}
 	}
 }
