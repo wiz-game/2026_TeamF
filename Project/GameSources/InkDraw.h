@@ -5,15 +5,13 @@
 
 #pragma once
 #include "stdafx.h"
-#include "Electrified.h"
+#include "InkCloud.h"
 
 namespace basecross{
-
-
 	//--------------------------------------------------------------------------------------
-	//	class GenericSprite : public GameObject;
+	//	class InkDraw : public GameObject;
 	//--------------------------------------------------------------------------------------
-	class InkDraw : public Electrified
+	class InkDraw : public GameObject
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
@@ -23,7 +21,7 @@ namespace basecross{
 	public:
 		// 構築と破棄
 		InkDraw(const shared_ptr<Stage>& stage) :
-			Electrified(stage)
+			GameObject(stage)
 		{
 		}
 		virtual ~InkDraw()
@@ -35,6 +33,11 @@ namespace basecross{
 		//virtual void OnDraw() override; // 描画
 
 		void FadingInk(float amount);
+
+		void SetInkColor(float r, float g, float b, float a)
+		{
+			m_draw->SetEmissive(Col4(r, g, b, a));
+		}
 	};
 
 }

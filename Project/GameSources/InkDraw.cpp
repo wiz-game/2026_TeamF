@@ -20,14 +20,13 @@ namespace basecross{
 		m_draw->SetDiffuse(Col4(m_color));
 		m_draw->SetEmissive(Col4(m_color));
 
-		auto coll = AddComponent<CollisionObb>();
-		coll->SetAfterCollision(AfterCollision::None);
+		//auto coll = AddComponent<CollisionObb>();
+		//coll->SetAfterCollision(AfterCollision::None);
 	}
 
 	void InkDraw::OnUpdate()
 	{
-		
-		Electrified::OnUpdate();
+
 	}
 
 	void InkDraw::FadingInk(float amount)

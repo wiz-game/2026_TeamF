@@ -1,6 +1,6 @@
 /*!
 @file Electrified.cpp
-@brief �L�����N�^�[�Ȃǎ���
+@brief キャラクターなど実体
 */
 
 #include "stdafx.h"
@@ -50,6 +50,20 @@ namespace basecross{
 				}),
 			m_contactObjects.end()
 		);
+
+		// PowerSupply を持っているか確認
+		//auto power = target->GetComponent<PowerSupply>();
+		//if (!power) return;
+
+		// フレーム時間を考慮して流量を決定
+		float delta = App::GetApp()->GetElapsedTime();
+
+		// 電気を受け取る
+		//float received = power->ConsumeElect(delta);
+
+		//if (received > 0.0f)
+		//{
+		//}
 	}
 }
 //end basecross
