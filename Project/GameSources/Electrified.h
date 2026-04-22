@@ -15,7 +15,14 @@ namespace basecross{
 	class Electrified : public Component
 	{
 	public:
+		Electrified(const shared_ptr<GameObject>& owner) :
+			Component(owner)
+		{
+		}
 		virtual ~Electrified() = default;
+
+		void OnUpdate() override {}
+		void OnDraw() override {}
 
 		//毎フレーム通電更新
 		virtual void UpdateElectrifed();
