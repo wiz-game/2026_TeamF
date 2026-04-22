@@ -10,11 +10,13 @@
 
 namespace basecross{
 
+	//外部から電力を貰う
 	void Electrified::InjectEnergy(float amount)
 	{
 		m_nextEnergy += amount;
 	}
 
+	//毎フレーム通電更新
 	void Electrified::UpdateElectrifed()
 	{
 		m_energy = m_nextEnergy;
@@ -34,11 +36,13 @@ namespace basecross{
 		}
 	}
 
+	//接触開始
 	void Electrified::OnElectrifiedEnter(std::shared_ptr<GameObject>& other)
 	{
 		m_contactObjects.push_back(other);
 	}
 
+	//接触終了
 	void Electrified::OnElectrifiedExit(std::shared_ptr<GameObject>& other)
 	{
 		m_contactObjects.erase(
