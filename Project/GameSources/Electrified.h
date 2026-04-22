@@ -12,9 +12,11 @@ namespace basecross{
 	//--------------------------------------------------------------------------------------
 	//	class GenericSprite : public GameObject;
 	//--------------------------------------------------------------------------------------
-	class Electrified
+	class Electrified : public Component
 	{
 	public:
+		virtual ~Electrified() = default;
+
 		//毎フレーム通電更新
 		virtual void UpdateElectrifed();
 
