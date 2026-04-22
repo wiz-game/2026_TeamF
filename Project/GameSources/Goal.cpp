@@ -63,6 +63,7 @@ namespace basecross {
 			if (diffX < 1.8f && diffY < 1.8f && diffZ < 0.45f)
 			{
 				scene->SetDebugString(L"Goal");
+				PostEvent(0.0f, GetThis<Goal>(), scene, L"ToGoalStage");
 			}
 		}
 	}

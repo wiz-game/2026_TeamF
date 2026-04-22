@@ -9,7 +9,7 @@
 #include "Electrified.h"
 
 namespace basecross {
-	class PowerSupply : public Electrified
+	class PowerSupply : public GameObject
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
@@ -20,11 +20,12 @@ namespace basecross {
 
 		float m_elect = 100.0f;
 		bool isConnect = false;
+		bool isPower = true;
 
 	public:
 		// ステージを引数にしたコンストラクタ【必須】
 		PowerSupply(const std::shared_ptr<Stage>& stage) :
-			Electrified(stage)
+			GameObject(stage)
 		{
 		}
 
@@ -40,6 +41,11 @@ namespace basecross {
 		bool GetConnect() const
 		{
 			return isConnect;
+		}
+
+		bool GetisPower() const
+		{
+			return isPower;
 		}
 	};
 

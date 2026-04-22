@@ -1,48 +1,47 @@
 /*!
 @file Player.h
-@brief �L�����N�^�[�Ȃ�
+@brief プレイヤー
 */
 
 #pragma once
 #include "stdafx.h"
 #include "MainCamera.h"
 #include "PNTDXModelDraw.h"
+#include "InkCloud.h"
 
 namespace basecross {
 
 class UpDownFloor;
 
-	// GameObject�N���X���p�������uPlayer�v�N���X���`
-	class Player : public GameObject // GameObject�N���X�̌p���y�K�{�z
+	class Player : public GameObject 
 	{
-		std::shared_ptr<Transform> m_transform; // �g�����X�t�H�[���͂悭�g���̂Ń����o�ɂ��Ă���
-		std::shared_ptr<PNTStaticDraw> m_draw; // �h���[�R���|�[�l���g
-
 		std::weak_ptr<MainCamera> m_camera;
-
-		std::shared_ptr<UpDownFloor> m_currentFloor;//���ݏ���Ă��鏰
+		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
+		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
+		std::shared_ptr<UpDownFloor> m_currentFloor;//現在乗っている床
+		
+		std::shared_ptr<InkCloud> m_targetCloud;
 		float m_height;
 		float m_radius;
 
 		float m_moveSpeed;
-		float m_maxSpeed;	//最高速
+		float m_maxSpeed;
 		float m_accel;
 		Vec3 m_pos;
 		Vec3 m_forward;
 		Vec3 m_velocity;
 
-		float m_ink;	//インク残量
-		float m_inkMax;	//インク残量最大値
-		float m_inkDecrease;	//インク減少量
-		float m_fade;	//インクの掠れ
-		bool m_isDraw;	//インクが出せるかどうか
+		float m_ink;
+		float m_inkMax;
+		float m_inkDecrease;
+		float m_fade;	
+		bool m_isDraw;	
 
-		Vec3 m_externalVelocity; // �O������̑��x
+		Vec3 m_externalVelocity; 
 		
 	public :
-		// �X�e�[�W�������ɂ����R���X�g���N�^�y�K�{�z
 		Player(const std::shared_ptr<Stage>& stage) :
-			GameObject(stage), // �X�e�[�W��GameObject�ɓn���y�K�{�z
+			GameObject(stage),
 			m_height(1.0f),
 			m_radius(0.49f),
 			m_moveSpeed(0.0f),
@@ -60,8 +59,8 @@ class UpDownFloor;
 		{
 		}
 
-		void OnCreate() override; // �����ݒ�p�̊֐�(Unity��Start���\�b�h�ɑ���)
-		void OnUpdate() override; // ���t���[�����s�����֐�(Unity��Update���\�b�h�ɑ���)
+		void OnCreate() override;
+		void OnUpdate() override;
 
 		void OnMove();
 		void DropInk();
@@ -74,7 +73,7 @@ class UpDownFloor;
 
 		void UpdateMoveFloor();
 
-		// �O������̈ړ������Z����֐�
+		// �ｽO�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾌ移難ｿｽ�ｽ�ｽ�ｽ�ｽ�ｽZ�ｽ�ｽ�ｽ�ｽﾖ撰ｿｽ
 		//void AddExternalMove(const Vec3& move);
 		//void SetExternalVelocity(const Vec3& v) { m_externalVelocity = v; }
 	};

@@ -62,6 +62,11 @@ namespace basecross{
 			//ゲームステージの設定
 			ResetActiveStage<ProtoStage>();
 		}
+		if (event->m_MsgStr == L"ToGoalStage") {
+			//ゴールステージの設定
+			ResetActiveStage<GoalStage>();
+		}
+
 	}
 
 	void Scene::OnDestroy() {

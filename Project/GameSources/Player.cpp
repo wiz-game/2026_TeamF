@@ -1,6 +1,6 @@
 /*!
 @file Player.cpp
-@brief �v���C���[�Ȃǎ���
+@brief �ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾈど趣ｿｽ�ｽ�ｽ
 */
 
 #include "stdafx.h"
@@ -10,15 +10,15 @@
 #include "CharacterController.h"
 
 namespace basecross{
-	// �v���C���[�̏����ݒ�
+	// �ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾌ擾ｿｽ�ｽ�ｽ�ｽﾝ抵ｿｽ
 	void Player::OnCreate()
 	{
 		GetStage()->SetSharedGameObject(L"Player", GetThis<Player>());
-		// �g�����X�t�H�[���R���|�[�l���g���擾���Ă���
+		// �ｽg�ｽ�ｽ�ｽ�ｽ�ｽX�ｽt�ｽH�ｽ[�ｽ�ｽ�ｽR�ｽ�ｽ�ｽ|�ｽ[�ｽl�ｽ�ｽ�ｽg�ｽ�ｽ�ｽ謫ｾ�ｽ�ｽ�ｽﾄゑｿｽ�ｽ�ｽ
 		m_transform = GetComponent<Transform>();
 
 		m_transform->SetPosition(Vec3(0.0f, 0.05f, 0.0f));
-		// �h���[�R���|�[�l���g��ǉ�
+		// �ｽh�ｽ�ｽ�ｽ[�ｽR�ｽ�ｽ�ｽ|�ｽ[�ｽl�ｽ�ｽ�ｽg�ｽ�ｽﾇ会ｿｽ
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
 		m_draw->SetDiffuse(Col4(0, 0, 0, 1));
@@ -42,16 +42,16 @@ namespace basecross{
 		//coll->SetAfterCollision(AfterCollision::None);
 	}
 
-	// �v���C���[�̍X�V����
+	// �ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾌ更�ｽV�ｽ�ｽ�ｽ�ｽ
 	void Player::OnUpdate()
 	{
-		//// �A�v���P�[�V�����I�u�W�F�N�g���擾
+		//// �ｽA�ｽv�ｽ�ｽ�ｽP�ｽ[�ｽV�ｽ�ｽ�ｽ�ｽ�ｽI�ｽu�ｽW�ｽF�ｽN�ｽg�ｽ�ｽ�ｽ謫ｾ
 		m_pos = m_transform->GetPosition();
 		auto scene = App::GetApp()->GetScene<Scene>();
-		//// �A�v���P�[�V�����I�u�W�F�N�g���擾
+		//// �ｽA�ｽv�ｽ�ｽ�ｽP�ｽ[�ｽV�ｽ�ｽ�ｽ�ｽ�ｽI�ｽu�ｽW�ｽF�ｽN�ｽg�ｽ�ｽ�ｽ謫ｾ
 		//auto& app = App::GetApp();
 
-		//// �O�񂩂�̌o�ߎ��ԁF�f���^�^�C�����擾����
+		//// �ｽO�ｽｩゑｿｽﾌ経�ｽﾟ趣ｿｽ�ｽﾔ：�ｽf�ｽ�ｽ�ｽ^�ｽ^�ｽC�ｽ�ｽ�ｽ�ｽ�ｽ謫ｾ�ｽ�ｽ�ｽ�ｽ
 		//float delta = app->GetElapsedTime();
 
 		//auto sensor = GameController::GetSensorData();
@@ -78,7 +78,7 @@ namespace basecross{
 
 		scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
 			+ L"\n"
-			+ L"�C���N�c�� : " + std::to_wstring(m_ink));
+			+ L"ink残量 : " + std::to_wstring(m_ink));
 
 	}
 
@@ -88,14 +88,14 @@ namespace basecross{
 		std::wstringstream wss(L"");
 		//auto cc = GetComponent<CharacterController>();
 		
-		//�R���g���[���[�擾
+		//�ｽR�ｽ�ｽ�ｽg�ｽ�ｽ�ｽ[�ｽ�ｽ�ｽ[�ｽ謫ｾ
 		auto device = App::GetApp()->GetInputDevice();
 		auto& pad = device.GetControlerVec()[0];
 		Vec3 stickL(pad.fThumbLX, 0.0f, pad.fThumbLY);
 
 		auto key = device.GetKeyState();
 
-		//ElapsedTime�擾
+		//ElapsedTime�ｽ謫ｾ
 		auto delta = app->GetElapsedTime();
 
 		m_pos = m_transform->GetPosition();
@@ -161,10 +161,38 @@ namespace basecross{
 			if (m_ink > 0)
 			{
 				m_ink -= m_inkDecrease * delta;
+				m_ink -= delta;
+
+				std::vector<std::shared_ptr<GameObject>> objVec;
+				GetStage()->GetUsedTagObjectVec(L"InkCloud", objVec);
+
+				m_targetCloud = nullptr;
+
+				for (auto& obj : objVec)
+				{
+					auto cloud = std::dynamic_pointer_cast<InkCloud>(obj);
+					if (cloud)
+					{
+						float dist = (cloud->GetComponent<Transform>()->GetPosition() - m_pos).length();
+
+						if (dist < 2.0f)
+						{
+							m_targetCloud = cloud;
+							break;
+						}
+					}
+				}
+
+				if (!m_targetCloud)
+				{
+					m_targetCloud = GetStage()->AddGameObject<InkCloud>();
+				}
+
 				auto ink = stage->AddGameObject<InkDraw>();
 				ink->FadingInk(m_fade);
 				m_fade += (0.5f / m_inkDecrease) * delta / m_inkMax;
 				ink->GetComponent<Transform>()->SetPosition(Vec3(m_pos.x, m_pos.y - m_height / 2, m_pos.z));
+				m_targetCloud->AddInk(ink);//インクを追加
 			}
 		}
 	}
@@ -188,52 +216,52 @@ namespace basecross{
 		auto scene = App::GetApp()->GetScene<Scene>();
 		auto cc = GetComponent<CharacterController>();
 
-		//���������Ă���(isUp)���ڒn���Ă��邩�`���b�N
+		//�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾄゑｿｽ�ｽ�ｽ(isUp)�ｽ�ｽ�ｽﾂ接地�ｽ�ｽ�ｽﾄゑｿｽ�ｽ驍ｩ�ｽ`�ｽ�ｽ�ｽb�ｽN
 		auto shouldBeParent = cc->IsOnGround() && m_currentFloor->GetIsUp();
 		if (shouldBeParent)
 		{
-			cc->SetGravityEnabled(false); //�d�͂𖳌��ɂ���
+			cc->SetGravityEnabled(false); //�ｽd�ｽﾍを無鯉ｿｽ�ｽﾉゑｿｽ�ｽ�ｽ
 
 			//float delta = App::GetApp()->GetElapsedTime();
 			
-			//���̈ړ��ʂ��v�Z����Player�̍��W�ɉ��Z
+			//�ｽ�ｽ�ｽﾌ移難ｿｽ�ｽﾊゑｿｽ�ｽv�ｽZ�ｽ�ｽ�ｽ�ｽPlayer�ｽﾌ搾ｿｽ�ｽW�ｽﾉ会ｿｽ�ｽZ
 			float floorVelocityY = m_currentFloor->GetMoveSpeed();
 
 			Vec3 currentV = cc->GetLinearVelocity();
-			currentV.y = floorVelocityY; //���̈ړ��ʂ��v���C���[�̑��x�ɉ��Z
+			currentV.y = floorVelocityY; //�ｽ�ｽ�ｽﾌ移難ｿｽ�ｽﾊゑｿｽ�ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾌ托ｿｽ�ｽx�ｽﾉ会ｿｽ�ｽZ
 			cc->SetLinearVelocity(currentV);
 
-			//�f�o�b�O�����̕\��
+			//�ｽf�ｽo�ｽb�ｽO�ｽ�ｽ�ｽ�ｽ�ｽﾌ表�ｽ�ｽ
 			std::wstring debugMsg = L"Grounded: " + std::wstring(cc->IsOnGround() ? L"true" : L"false")
 				+ L" | IsUp: " + (m_currentFloor->GetIsUp() ? L"true" : L"false")
 				+ L"\n"
-				+ L"���ړ����BspeedY: " + std::to_wstring(floorVelocityY);
+				+ L"�ｽ�ｽ�ｽﾚ難ｿｽ�ｽ�ｽ�ｽBspeedY: " + std::to_wstring(floorVelocityY);
 			scene->SetDebugString(debugMsg);
 		}
 		else
 		{
-			cc->SetGravityEnabled(true); //�d�͂�L���ɂ���
+			cc->SetGravityEnabled(true); //�ｽd�ｽﾍゑｿｽL�ｽ�ｽ�ｽﾉゑｿｽ�ｽ�ｽ
 		}
 		if (!m_currentFloor) return;
-		//m_curretnFloor�������Ă����������Ă���(isUp)���`���b�N
+		//m_curretnFloor�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾄゑｿｽ�ｽﾂ擾ｿｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾄゑｿｽ�ｽ�ｽ(isUp)�ｽ�ｽ�ｽ`�ｽ�ｽ�ｽb�ｽN
 		if (m_currentFloor->GetIsUp())
 		{
-			//���̈ړ��ʂ��擾
+			//�ｽ�ｽ�ｽﾌ移難ｿｽ�ｽﾊゑｿｽ�ｽ謫ｾ
 			float floorVelocityY = m_currentFloor->GetMoveSpeed();
 
 			Vec3 currentV = m_transform->GetPosition();
-			currentV.y = floorVelocityY; //���̈ړ��ʂ��v���C���[�̑��x�ɉ��Z
+			currentV.y = floorVelocityY; //�ｽ�ｽ�ｽﾌ移難ｿｽ�ｽﾊゑｿｽ�ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾌ托ｿｽ�ｽx�ｽﾉ会ｿｽ�ｽZ
 			m_transform->SetPosition(Vec3(currentV.x, currentV.y, currentV.z));
 
-			//�f�o�b�O�����̕\��
+			//�ｽf�ｽo�ｽb�ｽO�ｽ�ｽ�ｽ�ｽ�ｽﾌ表�ｽ�ｽ
 			std::wstring debugMsg = L" PlayerPos : " + std::to_wstring(currentV.x) + L", " + std::to_wstring(currentV.y) + L", " + std::to_wstring(currentV.z)
 				+ L"\n"
-				+ L"���ړ����BspeedY : " + std::to_wstring(floorVelocityY);
+				+ L"�ｽ�ｽ�ｽﾚ難ｿｽ�ｽ�ｽ�ｽBspeedY : " + std::to_wstring(floorVelocityY);
 			scene->SetDebugString(debugMsg);
 		}
 	}
 
-	// ���Ƃ̏ՓˊJ�n
+	// �ｽ�ｽ�ｽﾆの衝突開�ｽn
 	void Player::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
 	{
 		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
@@ -242,7 +270,7 @@ namespace basecross{
 		{
 			m_currentFloor = floor;
 			auto scene = App::GetApp()->GetScene<Scene>();
-			//scene->SetDebugString(L"���ɏ��܂���");
+			//scene->SetDebugString(L"�ｽ�ｽ�ｽﾉ擾ｿｽ�ｽﾜゑｿｽ�ｽ�ｽ");
 		}
 		if (ink)
 		{
@@ -250,7 +278,7 @@ namespace basecross{
 		}
 	}
 
-	// ���Ƃ̏Փˌp��
+	// �ｽ�ｽ�ｽﾆの衝突継�ｽ�ｽ
 	void Player::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
 	{
 		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
@@ -259,7 +287,7 @@ namespace basecross{
 		{
 			m_currentFloor = floor;
 			auto scene = App::GetApp()->GetScene<Scene>();
-			//scene->SetDebugString(L"���ɏ��܂���");
+			//scene->SetDebugString(L"�ｽ�ｽ�ｽﾉ擾ｿｽ�ｽﾜゑｿｽ�ｽ�ｽ");
 		}
 		if (ink)
 		{
@@ -268,7 +296,7 @@ namespace basecross{
 
 	}
 
-	// ���Ƃ̏ՓˏI��
+	// �ｽ�ｽ�ｽﾆの衝突終�ｽ�ｽ
 	void Player::OnCollisionExit(std::shared_ptr<GameObject>& obj)
 	{
 		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
@@ -277,7 +305,7 @@ namespace basecross{
 		{
 			m_currentFloor = nullptr;
 			auto scene = App::GetApp()->GetScene<Scene>();
-			//scene->SetDebugString(L"������~��܂���");
+			//scene->SetDebugString(L"�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ~�ｽ�ｽﾜゑｿｽ�ｽ�ｽ");
 		}
 		if (ink)
 		{
