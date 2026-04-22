@@ -8,6 +8,7 @@
 #include "MainCamera.h"
 #include "PNTDXModelDraw.h"
 #include "InkCloud.h"
+#include "FloorDecision.h"
 
 namespace basecross {
 
@@ -19,7 +20,7 @@ class UpDownFloor;
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<UpDownFloor> m_currentFloor;//現在乗っている床
-		
+		std::shared_ptr<FloorDecision> m_floorDecision;
 		std::shared_ptr<InkCloud> m_targetCloud;
 		float m_height;
 		float m_radius;
@@ -38,6 +39,9 @@ class UpDownFloor;
 		bool m_isDraw;	
 
 		Vec3 m_externalVelocity; 
+
+		float m_gravity;
+		bool m_isGround;
 		
 	public :
 		Player(const std::shared_ptr<Stage>& stage) :
@@ -55,7 +59,9 @@ class UpDownFloor;
 			m_inkDecrease(1.0f),
 			m_isDraw(true),
 			m_fade(0.0f),
-			m_externalVelocity(Vec3(0))
+			m_externalVelocity(Vec3(0)),
+			m_gravity(-9.8f),
+			m_isGround(true)
 		{
 		}
 

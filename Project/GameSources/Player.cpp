@@ -40,6 +40,15 @@ namespace basecross{
 		m_camera = dynamic_pointer_cast<MainCamera>(camera);
 		auto coll = AddComponent<CollisionObb>();
 		//coll->SetAfterCollision(AfterCollision::None);
+
+		try
+		{
+			m_floorDecision = GetStage()->GetSharedGameObject<FloorDecision>(L"FloorDecision");
+		}
+		catch (...) {
+			m_floorDecision.reset();
+		}
+
 	}
 
 	// �ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾌ更�ｽV�ｽ�ｽ�ｽ�ｽ
@@ -138,12 +147,21 @@ namespace basecross{
 ;			//cc->SetLinearVelocity(m_moveSpeed * m_velocity * m_moveDir);
 		}
 
+		if (m_currentFloor || m_isGround)
+		{
+			m_velocity.y = 0.0f;
+		}
+		else
+		{
+			m_velocity.y += m_gravity * delta;
+		}
 		
 		if (m_velocity.x <= m_maxSpeed || m_velocity.z <= m_maxSpeed)
 			m_velocity *= m_accel;
-		m_pos += m_moveSpeed * m_velocity * delta;
+		m_pos.x += m_moveSpeed * m_velocity.x * delta;
+		m_pos.z += m_moveSpeed * m_velocity.z * delta;
+		m_pos.y += m_velocity.y * delta;	//重力による落下
 
-		m_pos.y = 0.5f;
 		m_transform->SetPosition(m_pos);
 	}
 
@@ -158,7 +176,7 @@ namespace basecross{
 
 		if (pad.wButtons & XINPUT_GAMEPAD_A || key.m_bPushKeyTbl[' '])
 		{
-			if (m_isDraw && m_ink > 0)
+			if (m_isDraw && m_ink > 0 && m_isGround)
 			{
 				m_ink -= m_inkDecrease * delta;
 				m_ink -= delta;
@@ -191,7 +209,7 @@ namespace basecross{
 				auto ink = stage->AddGameObject<InkDraw>();
 				ink->FadingInk(m_fade);
 				m_fade += 0.0060f;
-				ink->GetComponent<Transform>()->SetPosition(Vec3(m_pos.x, m_pos.y - m_height / 2, m_pos.z));
+				ink->GetComponent<Transform>()->SetPosition(Vec3(m_pos.x, (m_pos.y - m_height / 2) + 0.2f, m_pos.z));
 				m_targetCloud->AddInk(ink);//インクを追加
 			}
 		}
@@ -213,104 +231,74 @@ namespace basecross{
 
 	void Player::UpdateMoveFloor()
 	{
-		auto scene = App::GetApp()->GetScene<Scene>();
-		auto cc = GetComponent<CharacterController>();
-
-		//�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾄゑｿｽ�ｽ�ｽ(isUp)�ｽ�ｽ�ｽﾂ接地�ｽ�ｽ�ｽﾄゑｿｽ�ｽ驍ｩ�ｽ`�ｽ�ｽ�ｽb�ｽN
-		auto shouldBeParent = cc->IsOnGround() && m_currentFloor->GetIsUp();
-		if (shouldBeParent)
-		{
-			cc->SetGravityEnabled(false); //�ｽd�ｽﾍを無鯉ｿｽ�ｽﾉゑｿｽ�ｽ�ｽ
-
-			//float delta = App::GetApp()->GetElapsedTime();
-			
-			//�ｽ�ｽ�ｽﾌ移難ｿｽ�ｽﾊゑｿｽ�ｽv�ｽZ�ｽ�ｽ�ｽ�ｽPlayer�ｽﾌ搾ｿｽ�ｽW�ｽﾉ会ｿｽ�ｽZ
-			float floorVelocityY = m_currentFloor->GetMoveSpeed();
-
-			Vec3 currentV = cc->GetLinearVelocity();
-			currentV.y = floorVelocityY; //�ｽ�ｽ�ｽﾌ移難ｿｽ�ｽﾊゑｿｽ�ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾌ托ｿｽ�ｽx�ｽﾉ会ｿｽ�ｽZ
-			cc->SetLinearVelocity(currentV);
-
-			//�ｽf�ｽo�ｽb�ｽO�ｽ�ｽ�ｽ�ｽ�ｽﾌ表�ｽ�ｽ
-			std::wstring debugMsg = L"Grounded: " + std::wstring(cc->IsOnGround() ? L"true" : L"false")
-				+ L" | IsUp: " + (m_currentFloor->GetIsUp() ? L"true" : L"false")
-				+ L"\n"
-				+ L"�ｽ�ｽ�ｽﾚ難ｿｽ�ｽ�ｽ�ｽBspeedY: " + std::to_wstring(floorVelocityY);
-			scene->SetDebugString(debugMsg);
-		}
-		else
-		{
-			cc->SetGravityEnabled(true); //�ｽd�ｽﾍゑｿｽL�ｽ�ｽ�ｽﾉゑｿｽ�ｽ�ｽ
-		}
 		if (!m_currentFloor) return;
-		//m_curretnFloor�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾄゑｿｽ�ｽﾂ擾ｿｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾄゑｿｽ�ｽ�ｽ(isUp)�ｽ�ｽ�ｽ`�ｽ�ｽ�ｽb�ｽN
-		if (m_currentFloor->GetIsUp())
+
+		// m_floorDecision が null なら取得を試みる
+		if (!m_floorDecision) {
+			try {
+				m_floorDecision = GetStage()->GetSharedGameObject<FloorDecision>(L"FloorDecision");
+			}
+			catch (...) {
+				return; // まだ見つからなければ処理を抜ける
+			}
+		}
+		if (m_floorDecision->GetGetOn())
 		{
-			//�ｽ�ｽ�ｽﾌ移難ｿｽ�ｽﾊゑｿｽ�ｽ謫ｾ
-			float floorVelocityY = m_currentFloor->GetMoveSpeed();
+			//床の座標を取得
+			float floorTop = m_currentFloor->GetComponent<Transform>()->GetPosition().y;
 
-			Vec3 currentV = m_transform->GetPosition();
-			currentV.y = floorVelocityY; //�ｽ�ｽ�ｽﾌ移難ｿｽ�ｽﾊゑｿｽ�ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾌ托ｿｽ�ｽx�ｽﾉ会ｿｽ�ｽZ
-			m_transform->SetPosition(Vec3(currentV.x, currentV.y, currentV.z));
-
-			//�ｽf�ｽo�ｽb�ｽO�ｽ�ｽ�ｽ�ｽ�ｽﾌ表�ｽ�ｽ
-			std::wstring debugMsg = L" PlayerPos : " + std::to_wstring(currentV.x) + L", " + std::to_wstring(currentV.y) + L", " + std::to_wstring(currentV.z)
-				+ L"\n"
-				+ L"�ｽ�ｽ�ｽﾚ難ｿｽ�ｽ�ｽ�ｽBspeedY : " + std::to_wstring(floorVelocityY);
-			scene->SetDebugString(debugMsg);
+			m_pos.y = floorTop + (m_height / 2.0f); //Playerに床の移動量を加算
+			m_transform->SetPosition(m_pos);
 		}
 	}
 
 	// �ｽ�ｽ�ｽﾆの衝突開�ｽn
 	void Player::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
 	{
-		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
+		auto moveFloor = dynamic_pointer_cast<UpDownFloor>(obj);
 		auto ink = dynamic_pointer_cast<InkDraw>(obj);
-		if (floor)
+		if (moveFloor)
 		{
-			m_currentFloor = floor;
-			auto scene = App::GetApp()->GetScene<Scene>();
-			//scene->SetDebugString(L"�ｽ�ｽ�ｽﾉ擾ｿｽ�ｽﾜゑｿｽ�ｽ�ｽ");
+			m_currentFloor = moveFloor;
+			//m_isGround = true;
 		}
 		if (ink)
 		{
 			m_isDraw = false;
+		}
+
+		if (auto floor = dynamic_pointer_cast<Floor>(obj))
+		{
+			m_isGround = true;
 		}
 	}
 
 	// �ｽ�ｽ�ｽﾆの衝突継�ｽ�ｽ
 	void Player::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
 	{
-		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
-		auto ink = dynamic_pointer_cast<InkDraw>(obj);
-		if (floor)
-		{
-			m_currentFloor = floor;
-			auto scene = App::GetApp()->GetScene<Scene>();
-			//scene->SetDebugString(L"�ｽ�ｽ�ｽﾉ擾ｿｽ�ｽﾜゑｿｽ�ｽ�ｽ");
-		}
-		if (ink)
-		{
-			m_isDraw = false;
-		}
-
+		OnCollisionEnter(obj);//Enterと同じ処理を行う
 	}
 
 	// �ｽ�ｽ�ｽﾆの衝突終�ｽ�ｽ
 	void Player::OnCollisionExit(std::shared_ptr<GameObject>& obj)
 	{
-		auto floor = dynamic_pointer_cast<UpDownFloor>(obj);
+		auto moveFloor = dynamic_pointer_cast<UpDownFloor>(obj);
 		auto ink = dynamic_pointer_cast<InkDraw>(obj);
-		if (floor)
+		if (moveFloor)
 		{
 			m_currentFloor = nullptr;
-			auto scene = App::GetApp()->GetScene<Scene>();
-			//scene->SetDebugString(L"�ｽ�ｽ�ｽ�ｽ�ｽ�ｽ~�ｽ�ｽﾜゑｿｽ�ｽ�ｽ");
+			m_isGround = false;
 		}
 		if (ink)
 		{
 			m_isDraw = true;
 		}
+
+		if (auto floor = dynamic_pointer_cast<Floor>(obj))
+		{
+			m_isGround = false;
+		}
+
 	}
 }
 //end basecross

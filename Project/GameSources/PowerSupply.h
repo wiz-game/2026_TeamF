@@ -15,7 +15,7 @@ namespace basecross {
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<PNTStaticDraw> m_staticDraw;
 
-		Vec3 m_pos = Vec3(0.0f, 0.0f, -4.0f);
+		Vec3 m_pos = Vec3(0.0f, -0.3f, -4.0f);
 		Vec3 m_scale = Vec3(1.0f, 0.1f, 1.0f);
 
 		float m_elect = 100.0f;

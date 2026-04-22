@@ -58,7 +58,7 @@ namespace basecross {
 
 		if (CntlVec[0].wPressedButtons && XINPUT_GAMEPAD_A)
 		{
-			PostEvent(0.0f, GetThis<GoalStage>(), scene, L"ToProtoStage");
+			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToProtoStage");
 		}
 	}
 

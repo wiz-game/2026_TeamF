@@ -74,7 +74,8 @@ namespace basecross {
 			AddGameObject<PowerSupply>();
 			AddGameObject<Port>();
 			AddGameObject<Goal>();
-			//AddGameObject<UpDownFloor>();
+			AddGameObject<UpDownFloor>();
+			AddGameObject<FloorDecision>();
 
 
 		}

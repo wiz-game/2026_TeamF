@@ -68,7 +68,7 @@ namespace basecross {
 		auto transform = GetComponent<Transform>();
 		transform->SetPosition(center);
 		transform->SetScale(size);
-		m_combinedColl->SetDrawActive(true);
+		m_combinedColl->SetDrawActive(false);
 	}
 
 	void InkCloud::OnCollisionEnter(std::shared_ptr<GameObject>& info)

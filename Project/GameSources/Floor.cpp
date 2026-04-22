@@ -20,6 +20,9 @@ namespace basecross
 		//位置、スケール設定
 		m_trans->SetPosition(m_pos);
 		m_trans->SetScale(m_scale);
+
+		auto coll = AddComponent<CollisionObb>();
+		coll->SetFixed(true);
 	}
 
 	void Floor::OnUpdate()

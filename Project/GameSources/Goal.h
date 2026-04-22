@@ -19,7 +19,7 @@ namespace basecross {
 		std::shared_ptr<Player> m_player;
 		std::shared_ptr<Port> m_port;
 
-		Vec3 m_pos = Vec3(0.0f, 1.0f, 6.0f);
+		Vec3 m_pos = Vec3(0.0f, 4.0f, 10.0f);
 		Vec3 m_scale = Vec3(3.0f, 3.0f, 0.5f);
 
 	public:
