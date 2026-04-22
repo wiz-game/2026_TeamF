@@ -1,43 +1,34 @@
 /*!
-@file UpDownFloor.h
-@brief 上下する床
+@file FloorDecision.h
+@brief 上下する床の判定
 */
 
 #pragma once
 #include "stdafx.h"
+#include "UpDownFloor.h"
 
 namespace basecross {
-
-	class Player;
-	class Port;
-
 	//--------------------------------------------------------------------------------------
-	//	class UpDownFloor : public GameObject;
+	//	class FloorDecision : public GameObject;
 	//--------------------------------------------------------------------------------------
-	class UpDownFloor : public GameObject
+	class FloorDecision : public GameObject
 	{
 		std::shared_ptr<Transform> m_transform;
-		std::shared_ptr<PNTDXModelDraw> m_draw;
-		std::shared_ptr<PNTStaticDraw> m_staticDraw;
 		std::shared_ptr<CollisionObb> m_coll;
 
-		std::shared_ptr<Player> m_player;
-		std::shared_ptr<Port> m_port;
+		std::shared_ptr<UpDownFloor> m_updownFloor;
 
-		Vec3 m_pos = Vec3(0.0f, -0.5f, 5.5f);
 		Vec3 m_scale = Vec3(2.0f, 0.1f, 2.0f);
 
-		float m_moveSpeed = 1.0f;
-
-		bool m_isUp = false;
+		bool m_getOn = false;
 
 	public:
 		// 構築と破棄
-		UpDownFloor(const shared_ptr<Stage>& stage) :
+		FloorDecision(const shared_ptr<Stage>& stage) :
 			GameObject(stage)
 		{
 		}
-		virtual ~UpDownFloor()
+		virtual ~FloorDecision()
 		{
 		}
 
@@ -45,14 +36,14 @@ namespace basecross {
 		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
 
-		bool GetIsUp() const
-		{
-			return m_isUp;
-		}
+		void OnCollisionEnter(std::shared_ptr<GameObject>& obj) override;
+		void OnCollisionExcute(std::shared_ptr<GameObject>& obj) override;
+		void OnCollisionExit(std::shared_ptr<GameObject>& obj)override;
 
-		float GetMoveSpeed() const
+
+		bool GetGetOn() const
 		{
-			return m_moveSpeed;
+			return m_getOn;
 		}
 	};
 

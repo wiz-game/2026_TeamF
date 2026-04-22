@@ -11,6 +11,7 @@ namespace basecross {
 	//初期化
 	void UpDownFloor::OnCreate()
 	{
+		GetStage()->SetSharedGameObject(L"UpDownFloor", GetThis<UpDownFloor>());
 		m_transform = GetComponent<Transform>();
 		m_transform->SetPosition(m_pos);
 		m_transform->SetScale(m_scale);
@@ -50,7 +51,7 @@ namespace basecross {
 		{
 			m_isUp = true;
 			newPos.y += m_moveSpeed * delta;
-			if (newPos.y > m_pos.y + 3.0f || newPos.y <= -0.2f)
+			if (newPos.y > m_pos.y + 3.0f || newPos.y <= -0.5f)
 			{
 				m_moveSpeed *= -1.0f;
 			}
