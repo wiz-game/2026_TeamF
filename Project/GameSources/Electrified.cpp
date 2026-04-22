@@ -1,61 +1,69 @@
 /*!
 @file Electrified.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
 #include "Electrified.h"
 #include "PowerSupply.h"
+#include "GameObject.h"
 
 namespace basecross{
 
-	//‰Šú‰»
-	void Electrified::OnCreate()
+	void Electrified::InjectEnergy(float amount)
 	{
+		m_nextEnergy += amount;
 	}
 
-	void Electrified::OnCollisionEnter(shared_ptr<GameObject>& info)
+	void Electrified::UpdateElectrifed()
 	{
-		targets.push_back(info);
+		m_energy = m_nextEnergy;
+		m_nextEnergy = 0.0f;
+
+		if (m_energy <= 0.0f)return;
+
+		for (auto& w : m_contactObjects)
+		{
+			if(auto obj = w.lock())
+			{
+				if (auto elec = obj->GetComponent<Electrified>())
+				{
+					elec->InjectEnergy(m_energy);
+				}
+			}
+		}
 	}
 
-	void Electrified::OnCollisionExit(shared_ptr<GameObject>& info)
+	void Electrified::OnElectrifiedEnter(std::shared_ptr<GameObject>& other)
 	{
-		targets.erase(std::remove(targets.begin(), targets.end(), info), targets.end());
+		m_contactObjects.push_back(other);
 	}
 
-	void Electrified::Electrify(shared_ptr<GameObject>& target)
+	void Electrified::OnElectrifiedExit(std::shared_ptr<GameObject>& other)
 	{
+		m_contactObjects.erase(
+			std::remove_if(
+				m_contactObjects.begin(), 
+				m_contactObjects.end(),
+				[&](const std::weak_ptr<GameObject>& w) {
+					return w.lock() == other;
+				}),
+			m_contactObjects.end()
+		);
 
-		// PowerSupply ‚ğ‚Á‚Ä‚¢‚é‚©Šm”F
+		// PowerSupply ã‚’æŒã£ã¦ã„ã‚‹ã‹ç¢ºèª
 		//auto power = target->GetComponent<PowerSupply>();
 		//if (!power) return;
 
-		// ƒtƒŒ[ƒ€ŠÔ‚ğl—¶‚µ‚Ä—¬—Ê‚ğŒˆ’è
+		// ãƒ•ãƒ¬ãƒ¼ãƒ æ™‚é–“ã‚’è€ƒæ…®ã—ã¦æµé‡ã‚’æ±ºå®š
 		float delta = App::GetApp()->GetElapsedTime();
 
-		// “d‹C‚ğó‚¯æ‚é
+		// é›»æ°—ã‚’å—ã‘å–ã‚‹
 		//float received = power->ConsumeElect(delta);
 
 		//if (received > 0.0f)
 		//{
 		//}
-	}
-
-	void Electrified::OnUpdate()
-	{
-		if (!m_isSource) isPower = false;// “dŒ¹‚Å‚È‚¢ê‡‚Í“d‹C‚ğó‚¯æ‚é‘O‚ÉƒŠƒZƒbƒg
-
-		if (isPower) {
-			for (auto& target : targets) {
-				//Electrify(target);
-				//‘Šè‚ªElectrifiedi‚Ü‚½‚Í‚»‚ÌŒp³ƒNƒ‰ƒXj‚©Šm”F
-				auto targetElect = std::dynamic_pointer_cast<Electrified>(target);
-				if (targetElect) {
-					targetElect->isPower = true;// “d‹C‚ğ“`‚¦‚é
-				}
-			}
-		}
 	}
 }
 //end basecross

@@ -18,8 +18,8 @@ namespace basecross {
 	//ビューとライトの作成
 	void ProtoStage::CreateViewLight() {
 		// カメラの設定
-		auto camera = ObjectFactory::Create<Camera>();
-		camera->SetEye(Vec3(0.0f, 10.0f, -10.0f));
+		auto camera = ObjectFactory::Create<MainCamera>();
+		camera->SetEye(Vec3(0.0f, 8.0f, -8.0f));
 		camera->SetAt(Vec3(0.0f, 0.0f, 0.0f));
 
 		// ビューにカメラを設定
@@ -43,24 +43,33 @@ namespace basecross {
 
 			//プレイヤー作成
 			m_Player = AddGameObject<Player>();
+			//SetSharedGameObject(L"Player", m_Player);
+
+			//カメラ取得
+			auto view = GetView();
+			auto camera = view->GetTargetCamera();
+			auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
+			mainCamera->SetTarget(m_Player);
 
 			//プロトタイプ用地面作成
-			JPH::StaticCompoundShapeSettings compoundSettings;
-			JPH::BoxShapeSettings floorShapeSettings(JPH::Vec3(8.0f, 1.0f, 15.0f) * 0.45f);
-			JPH::ShapeRefC floorShape = floorShapeSettings.Create().Get();
-			compoundSettings.AddShape(JPH::Vec3(0.0f, -1.0f, 0.0f), JPH::Quat::sIdentity(), floorShape);
+			//JPH::StaticCompoundShapeSettings compoundSettings;
+			//JPH::BoxShapeSettings floorShapeSettings(JPH::Vec3(8.0f, 1.0f, 15.0f) * 0.45f);
+			//JPH::ShapeRefC floorShape = floorShapeSettings.Create().Get();
+			//compoundSettings.AddShape(JPH::Vec3(0.0f, -1.0f, 0.0f), JPH::Quat::sIdentity(), floorShape);
 
-			auto level = AddGameObject<GameObject>();
-			auto rb = level->AddComponent<JoltRigidBody>();
+			//auto level = AddGameObject<GameObject>();
+			//auto rb = level->AddComponent<JoltRigidBody>();
 
-			JoltRigidBody::Settings settings;
-			settings.shape = floorShape;
-			settings.motionType = JPH::EMotionType::Static;
-			settings.objectLayer = Layers::NON_MOVING;
+			////JoltRigidBody
+			//JoltRigidBody::Settings settings;
+			//settings.shape = floorShape;
+			//settings.motionType = JPH::EMotionType::Static;
+			//settings.objectLayer = Layers::NON_MOVING;
 
-			rb->Initialize(settings);
+			//rb->Initialize(settings);
 
-			m_floor = AddGameObject<Floor>();
+			m_floor = AddGameObject<Floor>(Vec3(0.0f, -1.0f, 0.0f), Vec3(8, 1, 15));
+			AddGameObject<Floor>(Vec3(0.0f, 2.0f, 10.0f), Vec3(8.0f, 0.5f, 5.0f));
 
 			AddGameObject<PowerSupply>();
 			AddGameObject<Port>();

@@ -1,56 +1,71 @@
 /*!
 @file Player.h
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚Ç
+@brief ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 */
 
 #pragma once
 #include "stdafx.h"
+#include "MainCamera.h"
 #include "PNTDXModelDraw.h"
+#include "InkCloud.h"
 
 namespace basecross {
 
 class UpDownFloor;
 
-	// GameObjectƒNƒ‰ƒX‚ğŒp³‚µ‚½uPlayervƒNƒ‰ƒX‚ğ’è‹`
-	class Player : public GameObject // GameObjectƒNƒ‰ƒX‚ÌŒp³y•K{z
+	class Player : public GameObject 
 	{
-		std::shared_ptr<Transform> m_transform; // ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚Í‚æ‚­g‚¤‚Ì‚Åƒƒ“ƒo‚É‚µ‚Ä‚¨‚­
-		std::shared_ptr<PNTStaticDraw> m_draw; // ƒhƒ[ƒRƒ“ƒ|[ƒlƒ“ƒg
-		std::shared_ptr<UpDownFloor> m_currentFloor;//Œ»İæ‚Á‚Ä‚¢‚é°
+		std::weak_ptr<MainCamera> m_camera;
+		std::shared_ptr<Transform> m_transform; // ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã¯ã‚ˆãä½¿ã†ã®ã§ãƒ¡ãƒ³ãƒã«ã—ã¦ãŠã
+		std::shared_ptr<PNTStaticDraw> m_draw; // ãƒ‰ãƒ­ãƒ¼ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
+		std::shared_ptr<UpDownFloor> m_currentFloor;//ç¾åœ¨ä¹—ã£ã¦ã„ã‚‹åºŠ
+		
+		std::shared_ptr<InkCloud> m_targetCloud;
 		float m_height;
 		float m_radius;
 
 		float m_moveSpeed;
 		float m_maxSpeed;
-		Vec3 m_moveDir;
+		float m_accel;
 		Vec3 m_pos;
+		Vec3 m_forward;
+		Vec3 m_velocity;
 
-		float m_ink;	//ƒCƒ“ƒNc—Ê
-		float m_inkMax;	//ƒCƒ“ƒNÅ‘åc—Ê
+		float m_ink;
+		float m_inkMax;
+		float m_inkDecrease;
+		float m_fade;	
+		bool m_isDraw;	
 
-		Vec3 m_externalVelocity; // ŠO•”‚©‚ç‚Ì‘¬“x
+		Vec3 m_externalVelocity; 
 		
 	public :
-		// ƒXƒe[ƒW‚ğˆø”‚É‚µ‚½ƒRƒ“ƒXƒgƒ‰ƒNƒ^y•K{z
 		Player(const std::shared_ptr<Stage>& stage) :
-			GameObject(stage), // ƒXƒe[ƒW‚ğGameObject‚É“n‚·y•K{z
-			m_height(1.5f),
-			m_radius(0.70f),
+			GameObject(stage),
+			m_height(1.0f),
+			m_radius(0.49f),
 			m_moveSpeed(0.0f),
-			m_maxSpeed(4.0f),
-			m_moveDir(Vec3(0)),
-			m_pos(Vec3(0)),
+			m_maxSpeed(5.0f),
+			m_accel(0.99f),
+			m_pos(Vec3(0.0f, 0.5f, 0.0f)),
+			m_forward(Vec3(0)),
+			m_velocity(Vec3(0)),
 			m_ink(0.0f),
 			m_inkMax(10.0f),
+			m_inkDecrease(1.0f),
+			m_isDraw(true),
+			m_fade(0.0f),
 			m_externalVelocity(Vec3(0))
 		{
 		}
 
-		void OnCreate() override; // ‰Šúİ’è—p‚ÌŠÖ”(Unity‚ÌStartƒƒ\ƒbƒh‚É‘Š“–)
-		void OnUpdate() override; // –ˆƒtƒŒ[ƒ€Às‚³‚ê‚éŠÖ”(Unity‚ÌUpdateƒƒ\ƒbƒh‚É‘Š“–)
+		void OnCreate() override;
+		void OnUpdate() override;
 
 		void OnMove();
 		void DropInk();
+		void OnDied();
+
 
 		void OnCollisionEnter(std::shared_ptr<GameObject>& obj) override;
 		void OnCollisionExcute(std::shared_ptr<GameObject>& obj) override;
@@ -58,7 +73,7 @@ class UpDownFloor;
 
 		void UpdateMoveFloor();
 
-		// ŠO•”‚©‚ç‚ÌˆÚ“®‚ğ‰ÁZ‚·‚éŠÖ”
+		// ï¿½ï½½Oï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾Œç§»é›£ï½¿ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½Zï¿½ï½½ï¿½ï½½ï¿½ï½½ï¿½ï½½ï¾–æ’°ï½¿ï½½
 		//void AddExternalMove(const Vec3& move);
 		//void SetExternalVelocity(const Vec3& v) { m_externalVelocity = v; }
 	};

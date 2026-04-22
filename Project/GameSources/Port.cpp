@@ -35,7 +35,6 @@ namespace basecross {
 	// 更新処理
 	void Port::OnUpdate()
 	{
-		Electrified::OnUpdate();
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
 
@@ -43,10 +42,11 @@ namespace basecross {
 
 	void Port::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
 	{
-		if (auto ink = std::dynamic_pointer_cast<InkDraw>(obj))
+		if (auto ink = std::dynamic_pointer_cast<InkCloud>(obj))
 		{
 			auto connect = m_powerSupply->GetConnect();
-			if (connect /*&& this->isPower*/)
+			auto power = ink->GetisPower();
+			if (connect && power /*&& m_elect >= 50.0f*/)
 			{
 				isConnect = true;
 				m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
@@ -63,7 +63,7 @@ namespace basecross {
 	{
 		//if (auto ink = std::dynamic_pointer_cast<InkDraw>(obj))
 		//{
-		//	if (this->isPower)
+		//	if (ink->isPower)
 		//	{
 		//		isConnect = true;
 		//		m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));

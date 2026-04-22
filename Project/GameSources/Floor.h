@@ -18,10 +18,14 @@ namespace basecross
 		Vec3 m_pos;
 		Vec3 m_scale;
 	public:
-		Floor(const std::shared_ptr<Stage> stage) :
+		Floor(const std::shared_ptr<Stage> stage,
+			Vec3 const pos,
+			Vec3 const scale):
 			GameObject(stage),
-			m_pos(Vec3(0.0f, -1.0f, 0.0f)),
-			m_scale(Vec3(8, 1, 15))
+			m_pos(pos),
+			m_scale(scale)
+			//m_pos(Vec3(0.0f, -1.0f, 0.0f)),
+			//m_scale(Vec3(8, 1, 15))
 		{
 
 		}
