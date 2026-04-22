@@ -176,6 +176,9 @@
     <FxCompile Include="$(MSBuildThisFileDirectory)FloorFill.hlsl">
       <Filter>ComputeShader\HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)FlagClearShader.hlsl">
+      <Filter>ComputeShader\HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CharacterController">

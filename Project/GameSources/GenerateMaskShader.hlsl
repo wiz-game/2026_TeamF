@@ -9,7 +9,7 @@ struct Output
     bool visited;
 };
 Texture2D inputTexture : register(t0);
-RWStructuredBuffer<Output> outputBuffer : register(u0);
+RWStructuredBuffer<int> outputBuffer : register(u0);
 
 [numthreads(8, 8, 1)]
 void main( uint3 DTid : SV_DispatchThreadID )
@@ -23,11 +23,10 @@ void main( uint3 DTid : SV_DispatchThreadID )
     float alpha = inputTexture.Load(int3(x, y, 0)).a;
     if (alpha > 0)
     {
-        outputBuffer[index].mask = 1;
+        outputBuffer[index] = index;
     }
     else
     {
-        outputBuffer[index].mask = 0;
+        outputBuffer[index] = -1;
     }
-    outputBuffer[index].visited = false;
 }
