@@ -61,7 +61,7 @@ class UpDownFloor;
 			m_fade(0.0f),
 			m_externalVelocity(Vec3(0)),
 			m_gravity(-9.8f),
-			m_isGround(true)
+			m_isGround(false)
 		{
 		}
 

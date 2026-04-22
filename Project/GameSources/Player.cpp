@@ -87,7 +87,9 @@ namespace basecross{
 
 		scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
 			+ L"\n"
-			+ L"ink残量 : " + std::to_wstring(m_ink));
+			+ L"ink残量 : " + std::to_wstring(m_ink)
+			+ L"\n"
+			+ L"isGround : " + (m_isGround ? L"true" : L"false"));
 
 	}
 
