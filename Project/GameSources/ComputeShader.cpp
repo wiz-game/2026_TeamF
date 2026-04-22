@@ -24,8 +24,9 @@ namespace basecross {
         shaderBufferDesc.Format = DXGI_FORMAT_UNKNOWN;
         shaderBufferDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
         shaderBufferDesc.Buffer.FirstElement = 0;
+        UINT numElements = context.m_InputDesc.ByteWidth / context.m_InputDesc.StructureByteStride;
         shaderBufferDesc.Buffer.NumElements = context.m_InputDesc.ByteWidth / context.m_InputDesc.StructureByteStride;
-        shaderBufferDesc.Buffer.ElementWidth = context.GetFullDataSize();
+        //shaderBufferDesc.Buffer.ElementWidth = context.GetFullDataSize();
 
         auto result = device->CreateShaderResourceView(context.m_Buffer.Get(), &shaderBufferDesc, &context.m_SRV);
 
@@ -53,12 +54,67 @@ namespace basecross {
         return SUCCEEDED(result);
     }
 
+    BufferContext::BufferContext() {
+
+    }
     BufferContext::BufferContext(UINT bufferSize, UINT arraySize) : m_BufferSize(bufferSize),m_ArraySize(arraySize) {
         auto devResource = App::GetApp()->GetDeviceResources();
         auto device = devResource->GetD3DDevice();
 
         m_InputDesc = {};
         ComputeShaderUtil::CreateElementBuffer(device, &m_InputDesc, *this);
+    }
+    bool BufferContext::CreateSRV() {
+        auto devResource = App::GetApp()->GetDeviceResources();
+        auto device = devResource->GetD3DDevice();
+
+        if (!ComputeShaderUtil::CreateSRV(device, *this)) {
+            return false;
+        }
+
+        return true;
+    }
+    bool BufferContext::CreateUAV() {
+        auto devResource = App::GetApp()->GetDeviceResources();
+        auto device = devResource->GetD3DDevice();
+
+        if (!ComputeShaderUtil::CreateUAV(device, *this)) {
+            return false;
+        }
+        if (!ComputeShaderUtil::CreateReadBackBuffer(device, *this)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    void BufferContext::ResetUAV() {
+        auto devResource = App::GetApp()->GetDeviceResources();
+        auto devContext = devResource->GetD3DDeviceContext();
+        UINT clear[4] = { 0,0,0,0 };
+        devContext->ClearUnorderedAccessViewUint(m_UAV.Get(), clear);
+    }
+
+    void BufferContext::Upload(void* data) {
+        auto devResource = App::GetApp()->GetDeviceResources();
+        auto devContext = devResource->GetD3DDeviceContext();
+
+        devContext->UpdateSubresource(m_Buffer.Get(), 0, nullptr, data, 0, 0);
+    }
+    void BufferContext::ReadBuffer(void* data) {
+        auto devResource = App::GetApp()->GetDeviceResources();
+        auto devContext = devResource->GetD3DDeviceContext();
+
+        D3D11_MAPPED_SUBRESOURCE mappedResource = { 0 };
+        devContext->CopyResource(m_ReadBackBuffer.Get(), m_Buffer.Get());
+        if (SUCCEEDED(devContext->Map(m_ReadBackBuffer.Get(), 0, D3D11_MAP_READ, 0, &mappedResource))) {
+            memcpy(data, mappedResource.pData, GetFullDataSize());
+            devContext->Unmap(m_ReadBackBuffer.Get(), 0);
+        }
+    }
+
+    UINT BufferContext::GetFullDataSize() const {
+        return m_BufferSize * m_ArraySize;
     }
 }
 //end basecross

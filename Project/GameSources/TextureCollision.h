@@ -30,9 +30,7 @@ namespace basecross{
 		};
 
 		void GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc);
-		uint8_t* ReadColorData(ID3D11DeviceContext2* context,ID3D11Texture2D* texture,UINT& rowPitch);
-		vector<MaskData> CreateAlphaMask(CoordContext& coordContext);
-		vector<int> BfsTree(vector<MaskData>& masks,const CoordContext& context, int start);
+		void CreateAlphaMask(BufferContext& bufferContext,CoordContext& coordContext);
 		void IndexToCoord(int index, int width, int& x, int& y);
 		void CoordToIndex(int& index, int x, int y, int width);
 	public:

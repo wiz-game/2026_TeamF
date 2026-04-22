@@ -50,9 +50,6 @@ namespace basecross {
         }
     };
 
-    enum BufferType {
-        Default,PingPong
-    };
     struct BufferContext {
         ComPtr<ID3D11Buffer> m_Buffer;
         ComPtr<ID3D11ShaderResourceView> m_SRV;
@@ -61,43 +58,18 @@ namespace basecross {
         D3D11_BUFFER_DESC m_InputDesc;
         UINT m_BufferSize;
         UINT m_ArraySize;
-
+        BufferContext();
         BufferContext(UINT bufferSize, UINT arraySize);
 
-        bool CreateSRV() {
-            auto devResource = App::GetApp()->GetDeviceResources();
-            auto device = devResource->GetD3DDevice();
+        bool CreateSRV();
+        bool CreateUAV();
 
-            if (ComputeShaderUtil::CreateSRV(device, *this)) {
-                return false;
-            }
+        void ResetUAV();
 
-            return true;
-        }
-        bool CreateUAV() {
-            auto devResource = App::GetApp()->GetDeviceResources();
-            auto device = devResource->GetD3DDevice();
+        void Upload(void* data);
+        void ReadBuffer(void* data);
 
-            if (!ComputeShaderUtil::CreateUAV(device, *this)) {
-                return false;
-            }
-            if (!ComputeShaderUtil::CreateReadBackBuffer(device, *this)) {
-                return false;
-            }
-
-            return true;
-        }
-
-        void ResetUAV() {
-            auto devResource = App::GetApp()->GetDeviceResources();
-            auto devContext = devResource->GetD3DDeviceContext();
-            UINT clear[4] = { 0,0,0,0 };
-            devContext->ClearUnorderedAccessViewUint(m_UAV.Get(), clear);
-        }
-
-        UINT GetFullDataSize() const{
-            return m_BufferSize * m_ArraySize;
-        }
+        UINT GetFullDataSize() const;
     };
 
     template<typename InputType>
@@ -142,7 +114,7 @@ namespace basecross {
             m_ThreadGroupContext = threadGroupCount;
         }
 
-        void Execute(const vector<InputType>& inputData) {
+        void Execute() {
             auto devResource = App::GetApp()->GetDeviceResources();
             auto devContext = devResource->GetD3DDeviceContext();
 
@@ -160,21 +132,7 @@ namespace basecross {
             //シェーダーのバインドを解除
             UnBind(devContext);
         }
-
-        template<typename Type>
-        void GetResult(vector<Type>& result, BufferContext& context) {
-            auto devResource = App::GetApp()->GetDeviceResources();
-            auto devContext = devResource->GetD3DDeviceContext();
-
-            result.resize(context.m_ArraySize);
-            D3D11_MAPPED_SUBRESOURCE mappedResource = { 0 };
-            devContext->CopyResource(context.m_ReadBackBuffer.Get(), context.m_Buffer.Get());
-            if (SUCCEEDED(devContext->Map(context.m_ReadBackBuffer.Get(), 0, D3D11_MAP_READ, 0, &mappedResource))) {
-                memcpy(&result[0], mappedResource.pData, context.GetFullDataSize());
-                devContext->Unmap(context.m_ReadBackBuffer.Get(), 0);
-            }
-        }
-
+       
         template<typename ConstantType>
         void SetConstantBuffer(ConstantType& cb, ID3D11Buffer* buffur) {
             auto devResource = App::GetApp()->GetDeviceResources();
@@ -192,13 +150,6 @@ namespace basecross {
             //コンピュータシェーダーの設定
             devContext->CSSetShader(m_Shader.Get(), nullptr, 0);
         }
-
-        void UploadBufferData(ID3D11Buffer* buffer,void* data) {
-            auto devResource = App::GetApp()->GetDeviceResources();
-            auto devContext = devResource->GetD3DDeviceContext();
-
-            devContext->UpdateSubresource(buffer, 0, nullptr, data, 0, 0);
-        }
         
         void AddSRV(ID3D11ShaderResourceView* srv) {
             m_SRVs.push_back(srv);
@@ -208,12 +159,12 @@ namespace basecross {
         }
 
         void SetSRV(int index, ID3D11ShaderResourceView* srv) {
-            if (index < 0 || index > m_SRVs.size()) return;
+            if (index < 0 || index >= m_SRVs.size()) return;
 
             m_SRVs[index] = srv;
         }
         void SetUAV(int index, ID3D11UnorderedAccessView* uav) {
-            if (index < 0 || index > m_UAVs.size()) return;
+            if (index < 0 || index >= m_UAVs.size()) return;
 
             m_UAVs[index] = uav;
         }
