@@ -27,6 +27,7 @@ void main( uint3 DTid : SV_DispatchThreadID )
     
     int newLabel = inputBuffer[index];
     
+    
     //上下左右のデータと比較して、変換前のデータより小さい値があれば変換後のデータを更新する
     if(x < width - 1 && inputBuffer[index + 1] != -1)
     {
