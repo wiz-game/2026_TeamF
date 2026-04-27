@@ -46,7 +46,7 @@ namespace basecross {
 		{
 			auto connect = m_powerSupply->GetConnect();
 			auto power = ink->GetisPower();
-			if (/*connect &&*/ power && m_elect <= 50.0f)
+			if (/*connect &&*/ power)
 			{
 				isConnect = true;
 				m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));

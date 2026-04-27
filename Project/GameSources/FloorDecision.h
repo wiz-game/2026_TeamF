@@ -5,7 +5,6 @@
 
 #pragma once
 #include "stdafx.h"
-#include "UpDownFloor.h"
 
 namespace basecross {
 	//--------------------------------------------------------------------------------------
@@ -16,16 +15,20 @@ namespace basecross {
 		std::shared_ptr<Transform> m_transform;
 		std::shared_ptr<CollisionObb> m_coll;
 
-		std::shared_ptr<UpDownFloor> m_updownFloor;
-
-		Vec3 m_scale = Vec3(2.0f, 0.1f, 2.0f);
+		Vec3 m_scale = Vec3(1.5f, 0.1f, 1.5f);
 
 		bool m_getOn = false;
+		std::shared_ptr<GameObject> m_owner = nullptr;//親になるオブジェクト
+
+		Vec3 m_currentMoveVec;
 
 	public:
 		// 構築と破棄
-		FloorDecision(const shared_ptr<Stage>& stage) :
-			GameObject(stage)
+		FloorDecision(const shared_ptr<Stage>& stage,
+			const shared_ptr<GameObject> owner) :
+			GameObject(stage),
+			m_owner(owner),
+			m_currentMoveVec(0)
 		{
 		}
 		virtual ~FloorDecision()
@@ -40,10 +43,15 @@ namespace basecross {
 		void OnCollisionExcute(std::shared_ptr<GameObject>& obj) override;
 		void OnCollisionExit(std::shared_ptr<GameObject>& obj)override;
 
-
 		bool GetGetOn() const
 		{
 			return m_getOn;
+		}
+
+		//MoveFloorから移動量を取得する
+		void SetCurrentMoveVec(const Vec3& v)
+		{
+			m_currentMoveVec = v;
 		}
 	};
 

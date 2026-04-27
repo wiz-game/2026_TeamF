@@ -46,7 +46,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)UpDownFloor.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)MoveFloor.cpp">
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)PowerSupply.cpp">
@@ -137,7 +137,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)UpDownFloor.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)MoveFloor.h">
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)PowerSupply.h">
