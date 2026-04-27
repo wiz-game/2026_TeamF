@@ -221,6 +221,7 @@ namespace basecross{
 		app->GetScene<Scene>()->SetDebugString(wss.str());
 	}
 
+	//移動量を取得する関数
 	void Player::UpdateMoveFloor(const Vec3& movePos)
 	{
 		// m_floorDecision が null なら何もしない
@@ -235,17 +236,9 @@ namespace basecross{
 	{
 		if (auto floor = dynamic_pointer_cast<FloorDecision>(obj))
 		{
-			//if (floor->GetGetOn())
-			//{
-				m_floorDecision = floor;
-				m_isGround = true;
-				m_isDraw = false;
-				App::GetApp()->GetScene<Scene>()->SetDebugString(L"FloorDecision Assigned!");
-			//}
-			//else
-			//{
-			//	m_isDraw = true;
-			//}
+			m_floorDecision = floor;
+			m_isGround = true;
+			m_isDraw = false;
 		}
 
 		auto ink = dynamic_pointer_cast<InkDraw>(obj);
@@ -281,8 +274,6 @@ namespace basecross{
 		{
 			m_isDraw = false;
 		}
-
-		//OnCollisionEnter(obj);//Enterと同じ処理を行う
 	}
 
 	//衝突終了

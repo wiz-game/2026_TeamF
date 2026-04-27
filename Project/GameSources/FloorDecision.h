@@ -17,7 +17,6 @@ namespace basecross {
 
 		Vec3 m_scale = Vec3(1.5f, 0.1f, 1.5f);
 
-		bool m_getOn = false;
 		std::shared_ptr<GameObject> m_owner = nullptr;//親になるオブジェクト
 
 		Vec3 m_currentMoveVec;
@@ -42,11 +41,6 @@ namespace basecross {
 		void OnCollisionEnter(std::shared_ptr<GameObject>& obj) override;
 		void OnCollisionExcute(std::shared_ptr<GameObject>& obj) override;
 		void OnCollisionExit(std::shared_ptr<GameObject>& obj)override;
-
-		bool GetGetOn() const
-		{
-			return m_getOn;
-		}
 
 		//MoveFloorから移動量を取得する
 		void SetCurrentMoveVec(const Vec3& v)

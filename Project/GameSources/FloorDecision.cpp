@@ -32,6 +32,7 @@ namespace basecross {
 	{
 		if (auto player = dynamic_pointer_cast<Player>(obj))
 		{
+			//Playerに移動量を渡す
 			player->UpdateMoveFloor(m_currentMoveVec);
 		}
 	}
