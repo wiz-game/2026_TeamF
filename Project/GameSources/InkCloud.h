@@ -18,7 +18,6 @@ namespace basecross {
 		std::shared_ptr<CollisionObb> m_combinedColl;	//統合された1つのコリジョン
 
 		bool isPower = false;//自分に電流が流れているか
-		float m_elect = 0.0f;
 
 	public:
 		// 構築と破棄

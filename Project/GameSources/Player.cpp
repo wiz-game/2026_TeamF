@@ -39,16 +39,6 @@ namespace basecross{
 		auto camera = view->GetTargetCamera();
 		m_camera = dynamic_pointer_cast<MainCamera>(camera);
 		auto coll = AddComponent<CollisionObb>();
-		//coll->SetAfterCollision(AfterCollision::None);
-
-		try
-		{
-			m_floorDecision = GetStage()->GetSharedGameObject<FloorDecision>(L"FloorDecision");
-		}
-		catch (...) {
-			m_floorDecision.reset();
-		}
-
 	}
 
 	// �ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾌ更�ｽV�ｽ�ｽ�ｽ�ｽ
@@ -78,7 +68,6 @@ namespace basecross{
 		OnMove();
 		DropInk();
 		OnDied();
-		UpdateMoveFloor();
 
 		if (m_pos.y <= -10.0f)
 		{
@@ -89,8 +78,9 @@ namespace basecross{
 			+ L"\n"
 			+ L"ink残量 : " + std::to_wstring(m_ink)
 			+ L"\n"
-			+ L"isGround : " + (m_isGround ? L"true" : L"false"));
-
+			+ L"isGround : " + (m_isGround ? L"true" : L"false")
+			+ L"\n"
+			+ L" m_FloorDecision : " + (m_floorDecision ? L"Valid" : L"null"));
 	}
 
 	void Player::OnMove()
@@ -149,7 +139,7 @@ namespace basecross{
 ;			//cc->SetLinearVelocity(m_moveSpeed * m_velocity * m_moveDir);
 		}
 
-		if (m_currentFloor || m_isGround)
+		if (m_isGround)
 		{
 			m_velocity.y = 0.0f;
 		}
@@ -231,39 +221,27 @@ namespace basecross{
 		app->GetScene<Scene>()->SetDebugString(wss.str());
 	}
 
-	void Player::UpdateMoveFloor()
+	//移動量を取得する関数
+	void Player::UpdateMoveFloor(const Vec3& movePos)
 	{
-		if (!m_currentFloor) return;
+		// m_floorDecision が null なら何もしない
+		if (!m_floorDecision) return;
 
-		// m_floorDecision が null なら取得を試みる
-		if (!m_floorDecision) {
-			try {
-				m_floorDecision = GetStage()->GetSharedGameObject<FloorDecision>(L"FloorDecision");
-			}
-			catch (...) {
-				return; // まだ見つからなければ処理を抜ける
-			}
-		}
-		if (m_floorDecision->GetGetOn())
-		{
-			//床の座標を取得
-			float floorTop = m_currentFloor->GetComponent<Transform>()->GetPosition().y;
-
-			m_pos.y = floorTop + (m_height / 2.0f); //Playerに床の移動量を加算
-			m_transform->SetPosition(m_pos);
-		}
+		m_pos += movePos; //Playerに床の移動量を加算
+		m_transform->SetPosition(m_pos);
 	}
 
-	// �ｽ�ｽ�ｽﾆの衝突開�ｽn
+	// 衝突開始
 	void Player::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
 	{
-		auto moveFloor = dynamic_pointer_cast<UpDownFloor>(obj);
-		auto ink = dynamic_pointer_cast<InkDraw>(obj);
-		if (moveFloor)
+		if (auto floor = dynamic_pointer_cast<FloorDecision>(obj))
 		{
-			m_currentFloor = moveFloor;
-			//m_isGround = true;
+			m_floorDecision = floor;
+			m_isGround = true;
+			m_isDraw = false;
 		}
+
+		auto ink = dynamic_pointer_cast<InkDraw>(obj);
 		if (ink)
 		{
 			m_isDraw = false;
@@ -275,32 +253,48 @@ namespace basecross{
 		}
 	}
 
-	// �ｽ�ｽ�ｽﾆの衝突継�ｽ�ｽ
+	//衝突中
 	void Player::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
 	{
-		OnCollisionEnter(obj);//Enterと同じ処理を行う
+		if (auto floor = dynamic_pointer_cast<FloorDecision>(obj))
+		{
+			m_floorDecision = floor;
+			m_isGround = true;
+			m_isDraw = false;
+		}
+
+		// 接触が継続していれば接地フラグを維持
+		if (dynamic_pointer_cast<Floor>(obj))
+		{
+			m_isGround = true;
+		}
+
+		auto ink = dynamic_pointer_cast<InkDraw>(obj);
+		if (ink)
+		{
+			m_isDraw = false;
+		}
 	}
 
-	// �ｽ�ｽ�ｽﾆの衝突終�ｽ�ｽ
+	//衝突終了
 	void Player::OnCollisionExit(std::shared_ptr<GameObject>& obj)
 	{
-		auto moveFloor = dynamic_pointer_cast<UpDownFloor>(obj);
 		auto ink = dynamic_pointer_cast<InkDraw>(obj);
-		if (moveFloor)
-		{
-			m_currentFloor = nullptr;
-			m_isGround = false;
-		}
 		if (ink)
 		{
 			m_isDraw = true;
 		}
 
-		if (auto floor = dynamic_pointer_cast<Floor>(obj))
+		if (dynamic_pointer_cast<FloorDecision>(obj))
 		{
+			m_floorDecision = nullptr;
 			m_isGround = false;
 		}
 
+		if (dynamic_pointer_cast<Floor>(obj))
+		{
+			m_isGround = false;
+		}
 	}
 }
 //end basecross

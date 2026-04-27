@@ -22,7 +22,6 @@ namespace basecross {
 
 		bool isConnect = false;
 		bool isPower = false;
-		float m_elect = 0.0f;
 
 	public:
 		// ステージを引数にしたコンストラクタ【必須】
@@ -41,10 +40,9 @@ namespace basecross {
 			return isConnect;
 		}
 
-		void SetisPower(bool power, float elect)
+		void SetisPower(bool power)
 		{
 			isPower = power;
-			m_elect = elect;
 		}
 	};
 

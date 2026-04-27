@@ -12,15 +12,15 @@
 
 namespace basecross {
 
-class UpDownFloor;
+class MoveFloor;
 
 	class Player : public GameObject 
 	{
 		std::weak_ptr<MainCamera> m_camera;
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
-		std::shared_ptr<UpDownFloor> m_currentFloor;//現在乗っている床
-		std::shared_ptr<FloorDecision> m_floorDecision;
+
+		std::shared_ptr<FloorDecision> m_floorDecision = nullptr;
 		std::shared_ptr<InkCloud> m_targetCloud;
 		float m_height;
 		float m_radius;
@@ -77,7 +77,7 @@ class UpDownFloor;
 		void OnCollisionExcute(std::shared_ptr<GameObject>& obj) override;
 		void OnCollisionExit(std::shared_ptr<GameObject>& obj)override;
 
-		void UpdateMoveFloor();
+		void UpdateMoveFloor(const Vec3& movePos);
 
 		// �ｽO�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾌ移難ｿｽ�ｽ�ｽ�ｽ�ｽ�ｽZ�ｽ�ｽ�ｽ�ｽﾖ撰ｿｽ
 		//void AddExternalMove(const Vec3& move);

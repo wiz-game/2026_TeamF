@@ -11,7 +11,8 @@ namespace basecross {
 	void InkCloud::OnCreate()
 	{
 		AddTag(L"InkCloud");
-		//GetStage()->SetSharedGameObject(L"InkCloud", GetThis<InkCloud>());
+
+		auto electrified = AddComponent<Electrified>();
 	}
 
 	void InkCloud::OnUpdate()
@@ -75,16 +76,13 @@ namespace basecross {
 	{
 		if (auto powerSupply = std::dynamic_pointer_cast<PowerSupply>(info))
 		{
-			float elect = powerSupply->GetElect();
 			bool power = powerSupply->GetisPower();
 			isPower = power;
-			m_elect = power ? elect : 0.0f;
-
 		}
 		// port
 		if (auto port = std::dynamic_pointer_cast<Port>(info))
 		{
-			port->SetisPower(isPower, isPower ? m_elect : 0.0f);
+			port->SetisPower(isPower);
 		}
 
 		//自分自身都の判定
