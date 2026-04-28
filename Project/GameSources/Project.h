@@ -32,3 +32,4 @@
 #include "GoalStage.h"
 #include "InkCloud.h"
 #include "FloorDecision.h"
+#include "GoalDoor.h"

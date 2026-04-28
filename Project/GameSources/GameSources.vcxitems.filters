@@ -87,6 +87,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)FloorDecision.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GoalDoor.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
@@ -176,6 +179,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStageBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MainCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FloorDecision.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GoalDoor.h">
       <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
