@@ -51,6 +51,9 @@ namespace basecross {
 			auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
 			mainCamera->SetTarget(m_Player);
 
+			//UI作成
+			auto gauge = AddGameObject<InkGauge>();
+
 			//プロトタイプ用地面作成
 			//JPH::StaticCompoundShapeSettings compoundSettings;
 			//JPH::BoxShapeSettings floorShapeSettings(JPH::Vec3(8.0f, 1.0f, 15.0f) * 0.45f);

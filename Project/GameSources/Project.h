@@ -32,3 +32,5 @@
 #include "GoalStage.h"
 #include "InkCloud.h"
 #include "FloorDecision.h"
+
+#include "InkGauge.h"

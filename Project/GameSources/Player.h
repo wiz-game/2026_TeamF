@@ -72,7 +72,6 @@ class MoveFloor;
 		void DropInk();
 		void OnDied();
 
-
 		void OnCollisionEnter(std::shared_ptr<GameObject>& obj) override;
 		void OnCollisionExcute(std::shared_ptr<GameObject>& obj) override;
 		void OnCollisionExit(std::shared_ptr<GameObject>& obj)override;
