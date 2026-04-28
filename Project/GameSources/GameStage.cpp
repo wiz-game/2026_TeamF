@@ -41,7 +41,7 @@ namespace basecross {
 			m_Player = AddGameObject<Player>();
 			AddGameObject<InkDraw>();
 			AddGameObject<PowerSupply>();
-			AddGameObject<Port>();
+			AddGameObject<Port>(Vec3(0.0f, -0.3f, 3.0f));
 
 			auto draw = m_Player->GetComponent<SmBaseDraw>();
 			draw->SetTextureResource(L"InkTest");
