@@ -289,6 +289,7 @@ namespace basecross{
 		{
 			m_floorDecision = nullptr;
 			m_isGround = false;
+			m_isDraw = true;
 		}
 
 		if (dynamic_pointer_cast<Floor>(obj))
