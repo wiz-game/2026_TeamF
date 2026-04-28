@@ -26,7 +26,6 @@ namespace basecross {
         shaderBufferDesc.Buffer.FirstElement = 0;
         UINT numElements = context.m_InputDesc.ByteWidth / context.m_InputDesc.StructureByteStride;
         shaderBufferDesc.Buffer.NumElements = context.m_InputDesc.ByteWidth / context.m_InputDesc.StructureByteStride;
-        //shaderBufferDesc.Buffer.ElementWidth = context.GetFullDataSize();
 
         auto result = device->CreateShaderResourceView(context.m_Buffer.Get(), &shaderBufferDesc, &context.m_SRV);
 

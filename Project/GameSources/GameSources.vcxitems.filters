@@ -82,6 +82,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)InkCloud.cpp">
       <Filter>Ink</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameStageBase.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MainCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
@@ -168,15 +170,17 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)InkCloud.h">
       <Filter>Ink</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameStageBase.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MainCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl">
       <Filter>ComputeShader\HLSL</Filter>
     </FxCompile>
-    <FxCompile Include="$(MSBuildThisFileDirectory)FloorFill.hlsl">
+    <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindFirst.hlsl">
       <Filter>ComputeShader\HLSL</Filter>
     </FxCompile>
-    <FxCompile Include="$(MSBuildThisFileDirectory)FlagClearShader.hlsl">
+    <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindSecond.hlsl">
       <Filter>ComputeShader\HLSL</Filter>
     </FxCompile>
   </ItemGroup>
