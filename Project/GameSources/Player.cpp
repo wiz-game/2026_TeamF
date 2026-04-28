@@ -21,8 +21,10 @@ namespace basecross{
 		// �ｽh�ｽ�ｽ�ｽ[�ｽR�ｽ�ｽ�ｽ|�ｽ[�ｽl�ｽ�ｽ�ｽg�ｽ�ｽﾇ会ｿｽ
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
-		m_draw->SetDiffuse(Col4(0, 0, 0, 1));
-		m_draw->SetEmissive(Col4(0, 0, 0, 1));
+
+		SetAlphaActive(true);
+		//m_draw->SetDiffuse(Col4(0, 0, 0, 1.0f));
+		m_draw->SetEmissive(Col4(0, 0, 0, 1.0f));
 
 		auto cc = AddComponent<CharacterController>();
 		//CharacterController::Settings settings;
