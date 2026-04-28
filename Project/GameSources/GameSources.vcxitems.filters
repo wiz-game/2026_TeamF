@@ -87,6 +87,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)FloorDecision.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkGauge.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
@@ -178,6 +181,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)FloorDecision.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkGauge.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl">
@@ -235,6 +241,9 @@
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{7f8702b4-8f16-4612-9532-30796c5c8a46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{11379065-8d22-4b7d-8f61-d3992fa86beb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

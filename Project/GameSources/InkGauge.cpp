@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Project.h"
+#include "Player.h"
 
 namespace basecross
 {
@@ -9,7 +10,7 @@ namespace basecross
 
 		Vec2 offsetPos = Vec2(-100, -15);
 
-		float width = 2000 * ink;
+		float width = 200 * ink;
 		float height = 25.0f / 2.0f;
 		m_vertices =
 		{
