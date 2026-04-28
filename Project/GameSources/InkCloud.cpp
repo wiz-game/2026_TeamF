@@ -83,6 +83,7 @@ namespace basecross {
 		if (auto port = std::dynamic_pointer_cast<Port>(info))
 		{
 			port->SetisPower(isPower);
+			//m_wasPower = true;
 		}
 
 		//自分自身都の判定
@@ -96,7 +97,12 @@ namespace basecross {
 			}
 		}
 	}
-		void InkCloud::OnCollisionExit(shared_ptr<GameObject>& info)
+	void InkCloud::OnCollisionExcute(shared_ptr<GameObject>& info)
+	{
+		OnCollisionEnter(info);
+	}
+
+	void InkCloud::OnCollisionExit(shared_ptr<GameObject>& info)
 	{
 	}
 

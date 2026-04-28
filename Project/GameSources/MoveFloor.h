@@ -14,13 +14,14 @@ namespace basecross {
 
 	enum class MoveAxis { X, Y, Z };
 
-	struct UpDownFloorDesc
+	struct MoveFloorDesc
 	{	//	デフォルトの値
 		Vec3 pos = Vec3(0.0f, -0.5f, 5.5f);
 		Vec3 scale = Vec3(2.0f, 0.1f, 2.0f);
 		MoveAxis axis = MoveAxis::Y;
 		float speed = 1.0f;
 		float limitDist = 3.0f;
+		std::shared_ptr<Port> port = nullptr;
 	};
 
 	//--------------------------------------------------------------------------------------
@@ -50,13 +51,14 @@ namespace basecross {
 	public:
 		// 構築と破棄
 		MoveFloor(const shared_ptr<Stage>& stage,
-			const UpDownFloorDesc& desc) :
+			const MoveFloorDesc& desc) :
 			GameObject(stage),
 			m_pos(desc.pos),
 			m_scale(desc.scale),
 			m_moveAxis(desc.axis),
 			m_speed(desc.speed),
-			m_limitDist(desc.limitDist)
+			m_limitDist(desc.limitDist),
+			m_port(desc.port)
 		{
 		}
 		virtual ~MoveFloor()
@@ -67,10 +69,6 @@ namespace basecross {
 		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
 
-		bool GetIsUp() const
-		{
-			return m_isUp;
-		}
 	};
 }
 //end basecross

@@ -30,11 +30,9 @@ namespace basecross {
 
 		try
 		{	// objectの取得
-			m_port = GetStage()->GetSharedGameObject<Port>(L"Port");
 			m_player = GetStage()->GetSharedGameObject<Player>(L"Player");
 		}
 		catch (...) {
-			m_port.reset();
 		}
 	}
 
