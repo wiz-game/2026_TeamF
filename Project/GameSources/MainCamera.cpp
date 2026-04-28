@@ -65,7 +65,7 @@ namespace basecross
 		}
 		else
 		{
-			m_angleY -= XMConvertToRadians(100.0f) * pad.fThumbRX * delta;
+			m_angleY -= XMConvertToRadians(60.0f) * pad.fThumbRX * delta;
 		}
 		eye = targetPos + Vec3(cosf(m_angleY) * 5.0f, m_eyePos[1], sinf(m_angleY) * 5.0f);
 		SetEye(eye);

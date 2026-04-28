@@ -12,8 +12,6 @@ namespace basecross {
 	// 初期設定
 	void PowerSupply::OnCreate()
 	{
-		this->isPower = true;	// 電源であることを設定
-		GetStage()->SetSharedGameObject(L"PowerSupply", GetThis<PowerSupply>());
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();
 

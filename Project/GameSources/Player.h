@@ -8,18 +8,19 @@
 #include "MainCamera.h"
 #include "PNTDXModelDraw.h"
 #include "InkCloud.h"
+#include "FloorDecision.h"
 
 namespace basecross {
 
-class UpDownFloor;
+class MoveFloor;
 
 	class Player : public GameObject 
 	{
 		std::weak_ptr<MainCamera> m_camera;
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
-		std::shared_ptr<UpDownFloor> m_currentFloor;//現在乗っている床
-		
+
+		std::shared_ptr<FloorDecision> m_floorDecision = nullptr;
 		std::shared_ptr<InkCloud> m_targetCloud;
 		float m_height;
 		float m_radius;
@@ -38,6 +39,9 @@ class UpDownFloor;
 		bool m_isDraw;	
 
 		Vec3 m_externalVelocity; 
+
+		float m_gravity;
+		bool m_isGround;
 		
 	public :
 		Player(const std::shared_ptr<Stage>& stage) :
@@ -52,10 +56,12 @@ class UpDownFloor;
 			m_velocity(Vec3(0)),
 			m_ink(0.0f),
 			m_inkMax(10.0f),
-			m_inkDecrease(1.0f),
+			m_inkDecrease(0.9f),
 			m_isDraw(true),
 			m_fade(0.0f),
-			m_externalVelocity(Vec3(0))
+			m_externalVelocity(Vec3(0)),
+			m_gravity(-9.8f),
+			m_isGround(false)
 		{
 		}
 
@@ -71,7 +77,7 @@ class UpDownFloor;
 		void OnCollisionExcute(std::shared_ptr<GameObject>& obj) override;
 		void OnCollisionExit(std::shared_ptr<GameObject>& obj)override;
 
-		void UpdateMoveFloor();
+		void UpdateMoveFloor(const Vec3& movePos);
 
 		// �ｽO�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾌ移難ｿｽ�ｽ�ｽ�ｽ�ｽ�ｽZ�ｽ�ｽ�ｽ�ｽﾖ撰ｿｽ
 		//void AddExternalMove(const Vec3& move);

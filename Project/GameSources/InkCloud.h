@@ -17,13 +17,18 @@ namespace basecross {
 		std::vector<std::shared_ptr<InkDraw>> m_inkList;	//属するインクのリスト
 		std::shared_ptr<CollisionObb> m_combinedColl;	//統合された1つのコリジョン
 
-		bool isPower = false;//自分に電流が流れているか
-		float m_elect = 0.0f;
+		bool isPower;//自分に電流が流れているか
+
+		bool m_wasPower;//前フレームの通電状態
+		float m_powerTimer;//通電してからの経過時間
 
 	public:
 		// 構築と破棄
 		InkCloud(const shared_ptr<Stage>& stage) :
-			GameObject(stage)
+			GameObject(stage),
+			isPower(false),
+			m_wasPower(false),
+			m_powerTimer(0.0f)
 		{
 		}
 		virtual ~InkCloud()
@@ -44,6 +49,7 @@ namespace basecross {
 		void UpdateCombinaedCollision();// 統合コリジョンを更新する関数
 
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& info) override;
+		virtual void OnCollisionExcute(shared_ptr<GameObject>& info) override;
 		virtual void OnCollisionExit(shared_ptr<GameObject>& info) override;
 
 		bool GetisPower() const

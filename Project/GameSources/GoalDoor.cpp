@@ -1,6 +1,6 @@
 /*!
-@file Player.cpp
-@brief プレイヤーなど実体
+@file GoalDoor.cpp
+@brief ゴールの扉
 */
 
 #include "stdafx.h"
@@ -8,7 +8,7 @@
 
 namespace basecross
 {
-	void Floor::OnCreate()
+	void GoalDoor::OnCreate()
 	{
 		//Drawコンポーネント
 		m_draw = AddComponent<PNTStaticDraw>();
@@ -21,12 +21,31 @@ namespace basecross
 		m_trans->SetPosition(m_pos);
 		m_trans->SetScale(m_scale);
 
+		m_startPos = m_pos;
+
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetFixed(true);
 	}
 
-	void Floor::OnUpdate()
+	void GoalDoor::OnUpdate()
 	{
 
+		if (!m_port) return;
+
+		bool isConnect = m_port->GetConnect();
+		if (isConnect)
+		{
+			m_isOpen = true;
+			m_pos += m_moveDir * m_speed;
+			m_trans->SetPosition(m_pos);
+
+			float distance = (m_pos - m_startPos).length();
+
+			if (distance >= m_scale.x || distance >= m_scale.y)
+			{
+				m_speed = 0;
+			}
+		}
+		
 	}
 }

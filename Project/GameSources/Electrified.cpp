@@ -1,6 +1,6 @@
 /*!
 @file Electrified.cpp
-@brief キャラクターなど実体
+@brief キャラクターなど実佁E
 */
 
 #include "stdafx.h"
@@ -10,11 +10,13 @@
 
 namespace basecross{
 
+	//�O������d�͂�Ⴄ
 	void Electrified::InjectEnergy(float amount)
 	{
 		m_nextEnergy += amount;
 	}
 
+	//���t���[���ʓd�X�V
 	void Electrified::UpdateElectrifed()
 	{
 		m_energy = m_nextEnergy;
@@ -34,11 +36,13 @@ namespace basecross{
 		}
 	}
 
+	//�ڐG�J�n
 	void Electrified::OnElectrifiedEnter(std::shared_ptr<GameObject>& other)
 	{
 		m_contactObjects.push_back(other);
 	}
 
+	//�ڐG�I��
 	void Electrified::OnElectrifiedExit(std::shared_ptr<GameObject>& other)
 	{
 		m_contactObjects.erase(
@@ -50,20 +54,6 @@ namespace basecross{
 				}),
 			m_contactObjects.end()
 		);
-
-		// PowerSupply を持っているか確認
-		//auto power = target->GetComponent<PowerSupply>();
-		//if (!power) return;
-
-		// フレーム時間を考慮して流量を決定
-		float delta = App::GetApp()->GetElapsedTime();
-
-		// 電気を受け取る
-		//float received = power->ConsumeElect(delta);
-
-		//if (received > 0.0f)
-		//{
-		//}
 	}
 }
 //end basecross

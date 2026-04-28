@@ -40,8 +40,8 @@ namespace basecross {
 
 			m_Player = AddGameObject<Player>();
 			AddGameObject<InkDraw>();
-			AddGameObject<PowerSupply>();
-			AddGameObject<Port>();
+			AddGameObject<PowerSupply>(Vec3(0.0f, -0.3f, -4.0f));
+			AddGameObject<Port>(Vec3(0.0f, -0.3f, 3.0f));
 
 			auto view = GetView();
 			auto camera = view->GetTargetCamera();

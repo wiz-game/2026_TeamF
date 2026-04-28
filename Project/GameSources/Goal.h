@@ -17,15 +17,19 @@ namespace basecross {
 		std::shared_ptr<PNTStaticDraw> m_staticDraw;
 
 		std::shared_ptr<Player> m_player;
-		std::shared_ptr<Port> m_port;
+		std::shared_ptr<Port> m_port = nullptr;
 
-		Vec3 m_pos = Vec3(0.0f, 1.0f, 6.0f);
+		Vec3 m_pos;
 		Vec3 m_scale = Vec3(3.0f, 3.0f, 0.5f);
 
 	public:
 		// 構築と破棄
-		Goal(const shared_ptr<Stage>& stage) :
-			GameObject(stage)
+		Goal(const shared_ptr<Stage>& stage,
+			const Vec3& pos,
+			std::shared_ptr<Port> port) :
+			GameObject(stage),
+			m_pos(pos),
+			m_port(port)
 		{
 		}
 		virtual ~Goal()

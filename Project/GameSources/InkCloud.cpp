@@ -11,20 +11,49 @@ namespace basecross {
 	void InkCloud::OnCreate()
 	{
 		AddTag(L"InkCloud");
-		//GetStage()->SetSharedGameObject(L"InkCloud", GetThis<InkCloud>());
+
+		auto electrified = AddComponent<Electrified>();
 	}
 
 	void InkCloud::OnUpdate()
 	{
-		// 電気が通っていたら、中に入っている全インクを光らせる
-		for (auto& ink : m_inkList) {
-			if (isPower) {
-				ink->SetInkColor(1, 1, 0, 1); // 黄色く光る
+		auto delta = App::GetApp()->GetElapsedTime();
+		if (isPower)
+		{
+			m_powerTimer += delta;
+
+			// --- ループ処理の追加 ---
+			float cycleTime = 1.0f; // 1.0秒ごとに電流が流れる周期
+			if (m_powerTimer > cycleTime)
+			{
+				m_powerTimer = 0.0f; // タイマーをリセットして繰り返す
 			}
-			else {
-				ink->SetInkColor(0, 0, 0, 1); // 黒に戻る
+
+			// 電流移動のエフェクト計算
+			float effectDuration = 0.5f; // 1周期のうち、光っている時間
+
+			for (auto& ink : m_inkList) {
+				// 現在のタイマーが発光期間内であれば光らせる
+				if (m_powerTimer < effectDuration) {
+					// 時間の経過とともに少しずつ暗くする（フェードアウト）
+					float alpha = 1.0f - (m_powerTimer / effectDuration);
+					ink->SetInkColor(1, 1, 0, alpha);
+				}
+				else {
+					// 発光期間を過ぎたら次の周期まで黒
+					ink->SetInkColor(0, 0, 0, 1);
+				}
 			}
 		}
+		else
+		{
+			m_powerTimer = 0.0f;
+			for (auto& ink : m_inkList)
+			{
+				ink->SetInkColor(0, 0, 0, 1);
+			}
+		}
+		m_wasPower = isPower;
 	}
 
 	//InkDrawを1つのコリジョンにまとめる処理
@@ -68,23 +97,21 @@ namespace basecross {
 		auto transform = GetComponent<Transform>();
 		transform->SetPosition(center);
 		transform->SetScale(size);
-		m_combinedColl->SetDrawActive(true);
+		m_combinedColl->SetDrawActive(false);
 	}
 
 	void InkCloud::OnCollisionEnter(std::shared_ptr<GameObject>& info)
 	{
 		if (auto powerSupply = std::dynamic_pointer_cast<PowerSupply>(info))
 		{
-			float elect = powerSupply->GetElect();
 			bool power = powerSupply->GetisPower();
 			isPower = power;
-			m_elect = power ? elect : 0.0f;
-
 		}
 		// port
 		if (auto port = std::dynamic_pointer_cast<Port>(info))
 		{
-			port->SetisPower(isPower, isPower ? m_elect : 0.0f);
+			port->SetisPower(isPower);
+			//m_wasPower = true;
 		}
 
 		//自分自身都の判定
@@ -94,11 +121,16 @@ namespace basecross {
 			if (otherCloud->GetisPower() && !this->isPower)
 			{
 				this->isPower = true;
-				// m_elect も必要なら渡す
+				this->m_powerTimer = otherCloud->m_powerTimer - 0.2f;
 			}
 		}
 	}
-		void InkCloud::OnCollisionExit(shared_ptr<GameObject>& info)
+	void InkCloud::OnCollisionExcute(shared_ptr<GameObject>& info)
+	{
+		OnCollisionEnter(info);
+	}
+
+	void InkCloud::OnCollisionExit(shared_ptr<GameObject>& info)
 	{
 	}
 
