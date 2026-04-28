@@ -14,7 +14,7 @@ namespace basecross {
 	//ビューとライトの作成
 	void GameStage::CreateViewLight() {
 		// カメラの設定
-		auto camera = ObjectFactory::Create<Camera>();
+		auto camera = ObjectFactory::Create<MainCamera>();
 		camera->SetEye(Vec3(0.0f, 8.0f, -8.0f));
 		camera->SetAt(Vec3(0.0f, 0.0f, 0.0f));
 
@@ -43,9 +43,15 @@ namespace basecross {
 			AddGameObject<PowerSupply>(Vec3(0.0f, -0.3f, -4.0f));
 			AddGameObject<Port>(Vec3(0.0f, -0.3f, 3.0f));
 
-			auto draw = m_Player->GetComponent<SmBaseDraw>();
+			auto view = GetView();
+			auto camera = view->GetTargetCamera();
+			auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
+			mainCamera->SetTarget(m_Player);
+
+			auto floor = AddGameObject<Floor>(Vec3(0.0f, -1.0f, 0.0f), Vec3(8, 1, 15));
+			auto draw = floor->GetComponent<SmBaseDraw>();
 			draw->SetTextureResource(L"InkTest");
-			m_Player->AddComponent<TextureCollision>();
+			floor->AddComponent<TextureCollision>();
 		}
 		catch (...) {
 			throw;

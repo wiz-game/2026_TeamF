@@ -81,37 +81,35 @@ namespace basecross {
         vector<ComPtr<ID3D11UnorderedAccessView>> m_UAVs;
 
         ThreadGroupContext m_ThreadGroupContext;
-        UINT m_ResultSize;
-
-        bool m_UseTexture;
 
         void Bind(ID3D11DeviceContext2* context) {
             vector<ID3D11ShaderResourceView*> shaderViews;
             for (auto& srv : m_SRVs) {
                 shaderViews.push_back(srv.Get());
             }
-            context->CSSetShaderResources(0, shaderViews.size(), shaderViews.data());
+            context->CSSetShaderResources(0, (UINT)shaderViews.size(), shaderViews.data());
 
             vector<ID3D11UnorderedAccessView*> accessViews;
             for (auto& uav : m_UAVs) {
                 accessViews.push_back(uav.Get());
             }
-            context->CSSetUnorderedAccessViews(0, accessViews.size(), accessViews.data(), nullptr);
+            context->CSSetUnorderedAccessViews(0, (UINT)accessViews.size(),accessViews.data(), nullptr);
         }
         void UnBind(ID3D11DeviceContext2* context) {
             vector<ID3D11UnorderedAccessView*> accessViewNULL(m_UAVs.size(), nullptr);
-            context->CSSetUnorderedAccessViews(0, accessViewNULL.size(), accessViewNULL.data(), nullptr);
+            context->CSSetUnorderedAccessViews(0, (UINT)accessViewNULL.size(), accessViewNULL.data(), nullptr);
             vector < ID3D11ShaderResourceView*> shaderViewNULL(m_SRVs.size(), nullptr);
-            context->CSSetShaderResources(0, shaderViewNULL.size(), shaderViewNULL.data());
+            context->CSSetShaderResources(0, (UINT)shaderViewNULL.size(), shaderViewNULL.data());
         }
     public:
-        DX11ComputeShader() : m_UseTexture(false) {}
+        DX11ComputeShader(){}
 
         bool Initialize(const ThreadGroupContext& threadGroupCount) {
             if (threadGroupCount.IsZero()) {
                 return false;
             }
             m_ThreadGroupContext = threadGroupCount;
+            return true;
         }
 
         void Execute() {

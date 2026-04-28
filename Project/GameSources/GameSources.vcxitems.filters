@@ -189,10 +189,10 @@
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl">
       <Filter>ComputeShader\HLSL</Filter>
     </FxCompile>
-    <FxCompile Include="$(MSBuildThisFileDirectory)FloorFill.hlsl">
+    <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindFirst.hlsl">
       <Filter>ComputeShader\HLSL</Filter>
     </FxCompile>
-    <FxCompile Include="$(MSBuildThisFileDirectory)FlagClearShader.hlsl">
+    <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindSecond.hlsl">
       <Filter>ComputeShader\HLSL</Filter>
     </FxCompile>
   </ItemGroup>
