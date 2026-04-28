@@ -185,7 +185,7 @@ namespace basecross{
 					{
 						float dist = (cloud->GetComponent<Transform>()->GetPosition() - m_pos).length();
 
-						if (dist < 2.0f)
+						if (dist < 1.0f)
 						{
 							m_targetCloud = cloud;
 							break;
