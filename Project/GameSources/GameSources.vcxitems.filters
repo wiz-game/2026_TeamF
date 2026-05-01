@@ -90,6 +90,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GoalDoor.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
@@ -184,6 +185,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GoalDoor.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Singleton.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl">
