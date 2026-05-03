@@ -87,6 +87,16 @@ namespace basecross {
 			//右に開く扉
 			auto rightDoor = AddGameObject<GoalDoor>(Vec3(12.0f, 4.0f, 23.0f), goal_port, Vec3(1, 0, 0));
 
+			//動く扉の初期設定
+			TrapDoorAxisDesc moveDoorY;
+			moveDoorY.pos = Vec3(5.0f, 0.0f, 0.0f);
+			moveDoorY.scale = Vec3(2.0f, 0.1f, 2.0f);
+			moveDoorY.initialRotation = Vec3(0.0f, 0.0f, XM_PIDIV2);
+			moveDoorY.axis = MoveAxis::Y;
+			moveDoorY.speed = -0.01f;
+			moveDoorY.port = moveFloor_port;
+			AddGameObject<TrapDoorAxis>(moveDoorY);
+
 
 			//動く床の初期設定
 			MoveFloorDesc moveFloorY;

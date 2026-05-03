@@ -33,3 +33,6 @@
 #include "InkCloud.h"
 #include "FloorDecision.h"
 #include "GoalDoor.h"
+
+#include "TrapDoor.h"
+#include "TrapDoorAxis.h"

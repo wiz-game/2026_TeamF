@@ -46,6 +46,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MoveFloor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureCollision.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoorAxis.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp" />
@@ -84,6 +86,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MoveFloor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureCollision.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoorAxis.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
