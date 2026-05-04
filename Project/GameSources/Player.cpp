@@ -21,8 +21,10 @@ namespace basecross{
 		// �ｽh�ｽ�ｽ�ｽ[�ｽR�ｽ�ｽ�ｽ|�ｽ[�ｽl�ｽ�ｽ�ｽg�ｽ�ｽﾇ会ｿｽ
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
-		m_draw->SetDiffuse(Col4(0, 0, 0, 1));
-		m_draw->SetEmissive(Col4(0, 0, 0, 1));
+
+		SetAlphaActive(true);
+		//m_draw->SetDiffuse(Col4(0, 0, 0, 1.0f));
+		m_draw->SetEmissive(Col4(0, 0, 0, 1.0f));
 
 		auto cc = AddComponent<CharacterController>();
 		//CharacterController::Settings settings;
@@ -251,6 +253,18 @@ namespace basecross{
 		{
 			m_isGround = true;
 		}
+
+		if (auto trapDoor = dynamic_pointer_cast<TrapDoor>(obj))
+		{
+			if (trapDoor->GetIsMove())
+			{
+				m_isGround = true;
+			}
+			else
+			{
+				m_isGround = false;
+			}
+		}
 	}
 
 	//衝突中
@@ -274,6 +288,19 @@ namespace basecross{
 		{
 			m_isDraw = false;
 		}
+
+		if (auto trapDoor = dynamic_pointer_cast<TrapDoor>(obj))
+		{
+			if (trapDoor->GetIsMove())
+			{
+				m_isGround = true;
+			}
+			else
+			{
+				m_isGround = false;
+			}
+		}
+
 	}
 
 	//衝突終了
@@ -296,6 +323,12 @@ namespace basecross{
 		{
 			m_isGround = false;
 		}
+
+		if (auto trapDoor = dynamic_pointer_cast<TrapDoor>(obj))
+		{
+			m_isGround = false;
+		}
+
 	}
 }
 //end basecross
