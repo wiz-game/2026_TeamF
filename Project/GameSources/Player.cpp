@@ -253,6 +253,18 @@ namespace basecross{
 		{
 			m_isGround = true;
 		}
+
+		if (auto trapDoor = dynamic_pointer_cast<TrapDoor>(obj))
+		{
+			if (trapDoor->GetIsMove())
+			{
+				m_isGround = true;
+			}
+			else
+			{
+				m_isGround = false;
+			}
+		}
 	}
 
 	//衝突中
@@ -276,6 +288,19 @@ namespace basecross{
 		{
 			m_isDraw = false;
 		}
+
+		if (auto trapDoor = dynamic_pointer_cast<TrapDoor>(obj))
+		{
+			if (trapDoor->GetIsMove())
+			{
+				m_isGround = true;
+			}
+			else
+			{
+				m_isGround = false;
+			}
+		}
+
 	}
 
 	//衝突終了
@@ -298,6 +323,12 @@ namespace basecross{
 		{
 			m_isGround = false;
 		}
+
+		if (auto trapDoor = dynamic_pointer_cast<TrapDoor>(obj))
+		{
+			m_isGround = false;
+		}
+
 	}
 }
 //end basecross

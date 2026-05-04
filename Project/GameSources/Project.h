@@ -36,3 +36,4 @@
 
 #include "TrapDoor.h"
 #include "TrapDoorAxis.h"
+#include "OffsetObject.h"

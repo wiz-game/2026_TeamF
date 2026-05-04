@@ -44,6 +44,8 @@ namespace basecross {
 		MoveAxis m_moveAxis;//どの軸に動くか
 		float m_speed;
 
+		bool m_isMove = false; //トラップドアが動いたかどうか
+
 	public:
 		// 構築と破棄
 		TrapDoorAxis(const shared_ptr<Stage>& stage,
@@ -66,6 +68,8 @@ namespace basecross {
 		virtual void OnCreate() override; // 初期化
 		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
+
+		bool GetIsMove() const { return m_isMove; } //トラップドアが動いたかどうかを取得
 
 	};
 }

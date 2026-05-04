@@ -21,8 +21,14 @@ namespace basecross {
 		//auto coll = AddComponent<CollisionObb>();
 		//coll->SetDrawActive(true);
 
-		GetStage()->AddGameObject<TrapDoor>
-			(GetThis<TrapDoorAxis>(), m_trapDoorScale, m_initialRotation);
+		//初期のRotationを決めるためのOffsetObjectを作成
+		auto offsetObj = GetStage()->AddGameObject<OffsetObject>(GetThis<TrapDoorAxis>());
+		auto offsetTrans = offsetObj->GetComponent<Transform>();
+
+		offsetTrans->SetRotation(m_initialRotation);
+
+		//TrapDoorの作成と位置をずらすためのObject
+		m_trapDoor = GetStage()->AddGameObject<TrapDoor>(offsetObj, m_trapDoorScale);
 
 	}
 
@@ -39,6 +45,8 @@ namespace basecross {
 		//通電していれば動く
 		if (isConnect)
 		{
+			m_isMove = true;
+			m_trapDoor->SetIsMove(true);
 			switch (m_moveAxis)
 			{
 			case MoveAxis::X:
@@ -108,6 +116,9 @@ namespace basecross {
 					m_rotateVec.z = 0;
 				}
 			}
+
+			m_isMove = false;
+			m_trapDoor->SetIsMove(false);
 
 			m_trans->SetRotation(m_rotateVec);
 		}
