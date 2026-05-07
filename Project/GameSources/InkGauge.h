@@ -30,8 +30,8 @@ namespace basecross
 		InkGauge(const std::shared_ptr<Stage>stage) :
 			GameObject(stage),
 			m_currentInk(10.0f),
-			m_maxInk(10.0f),
-			m_ink(10.0f),
+			m_maxInk(15.0f),
+			m_ink(15.0f),
 			m_width(0.0f),
 			m_height(0.0f),
 			m_unitWidth(1.0f),

@@ -28,7 +28,6 @@ namespace basecross {
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetAfterCollision(AfterCollision::None);
 
-		m_powerSupply = GetStage()->GetSharedGameObject<PowerSupply>(L"PowerSupply");
 	}
 
 	// 更新処理

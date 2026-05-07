@@ -9,13 +9,11 @@
 #include "Electrified.h"
 
 namespace basecross {
-	class PowerSupply;
 	class Port : public GameObject
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<PNTStaticDraw> m_staticDraw;
-		std::shared_ptr<PowerSupply> m_powerSupply;
 
 		Vec3 m_pos;
 		Vec3 m_scale = Vec3(1.0f, 0.1f, 1.0f);

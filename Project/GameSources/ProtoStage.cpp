@@ -73,15 +73,36 @@ namespace basecross {
 
 			//地面						position				scale
 			AddGameObject<Floor>(Vec3(0.0f, -1.0f, 0.0f), Vec3(8, 1, 15));
-			AddGameObject<Floor>(Vec3(6.0f, 2.0f, 12.0f), Vec3(4.5f, 0.5f, 4.0f));
+			AddGameObject<Floor>(Vec3(10.0f, 2.0f, 15.0f), Vec3(8.0f, 0.5f, 10.0f));
+			AddGameObject<Floor>(Vec3(10.0f, 2.0f, 29.0f), Vec3(8.0f, 0.5f, 10.0f));
 
-			AddGameObject<PowerSupply>();
+
+			AddGameObject<PowerSupply>(Vec3(0.0f, -0.3f, -4.0f));
+			AddGameObject<PowerSupply>(Vec3(10.0f, 2.4f, 11.0f));
 
 			//port										position
-			auto moveFloor_port1 = AddGameObject<Port>(Vec3(0.0f, -0.3f, 3.0f));
+			auto moveFloor_port = AddGameObject<Port>(Vec3(0.0f, -0.3f, 3.0f));
+			auto trapDoor_port = AddGameObject<Port>(Vec3(10.0f, 2.4f, 15.0f));
+			auto goal_port = AddGameObject<Port>(Vec3(10.0f, 2.4f, 25.0f));
 
 			//Goal					position			portの指定(nullptrの場合最初から表示)
-			AddGameObject<Goal>(Vec3(6.0f, 4.0f, 12.5f),nullptr);
+			AddGameObject<Goal>(Vec3(10.0f, 4.0f, 33.0f), goal_port);
+			
+			//左に開く扉
+			auto leftDoor = AddGameObject<GoalDoor>(Vec3(8.0f, 4.0f, 30.0f), goal_port, Vec3(-1, 0, 0));
+			//右に開く扉
+			auto rightDoor = AddGameObject<GoalDoor>(Vec3(12.0f, 4.0f, 30.0f), goal_port, Vec3(1, 0, 0));
+
+			//トラップドアの初期設定
+			TrapDoorAxisDesc moveDoorY;
+			moveDoorY.pos = Vec3(10.0f, 2.2f, 20.0f);
+			moveDoorY.scale = Vec3(2.0f, 0.1f, 4.0f);
+			moveDoorY.initialRotation = Vec3(XM_PIDIV2, 0.0f, 0.0f);
+			moveDoorY.axis = MoveAxis::X;
+			moveDoorY.speed = -0.01f;
+			moveDoorY.port = trapDoor_port;
+			AddGameObject<TrapDoorAxis>(moveDoorY);
+
 
 			//動く床の初期設定
 			MoveFloorDesc moveFloorY;
@@ -90,7 +111,7 @@ namespace basecross {
 			moveFloorY.axis = MoveAxis::Y;		//移動する軸の指定
 			moveFloorY.speed = 1.0f;			//移動速度
 			moveFloorY.limitDist = 2.05f;		//移動上限
-			moveFloorY.port = moveFloor_port1;	//portの指定
+			moveFloorY.port = moveFloor_port;	//portの指定
 			AddGameObject<MoveFloor>(moveFloorY);
 
 
@@ -100,7 +121,7 @@ namespace basecross {
 			moveFloorX.axis = MoveAxis::X;
 			moveFloorX.speed = -1.0f;
 			moveFloorX.limitDist = 1.5f;
-			moveFloorX.port = moveFloor_port1;
+			moveFloorX.port = moveFloor_port;
 			AddGameObject<MoveFloor>(moveFloorX);
 
 
@@ -110,7 +131,7 @@ namespace basecross {
 			moveFloorZ.axis = MoveAxis::Z;
 			moveFloorZ.speed = 1.0f;
 			moveFloorZ.limitDist = 1.5f;
-			moveFloorZ.port = moveFloor_port1;
+			moveFloorZ.port = moveFloor_port;
 			AddGameObject<MoveFloor>(moveFloorZ);
 
 		}

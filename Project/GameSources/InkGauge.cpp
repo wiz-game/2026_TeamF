@@ -8,7 +8,7 @@ namespace basecross
 	{
 		float ink = m_currentInk / m_maxInk;
 
-		m_width = 100 * ink;
+		m_width = m_maxInk * 10 * ink;
 		m_height = 25.0f / 2.0f;
 		m_vertices =
 		{
