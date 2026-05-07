@@ -44,3 +44,6 @@
 #include "BaseEnemy.h"
 #include "DrEnemy.h"
 #include "ErEnemy.h"
+
+#include "Sprite.h"
+#include "SoundManager.h"

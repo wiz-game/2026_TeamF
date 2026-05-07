@@ -6,16 +6,17 @@
 #pragma once
 #include "stdafx.h"
 //#include "JoltManager.h"
-
 namespace basecross {
-	
+	class Sprite;
+
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
 	class TitleStage : public Stage
 	{
-		
+		shared_ptr<Sprite> m_Title;
 		void CreateViewLight(); //ビューの作成
+		void RegisterResources();
 	public:
 		//構築と破棄
 		TitleStage() :Stage(){}

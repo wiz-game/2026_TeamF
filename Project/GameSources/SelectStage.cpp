@@ -29,13 +29,20 @@ namespace basecross {
 		auto light = CreateLight<MultiLight>();
 		light->SetDefaultLighting(); //デフォルトのライティングを指定
 	}
+	void SelectStage::RegisterResources() {
+		auto& app = App::GetApp();
+		wstring mediaPath = App::GetApp()->GetDataDirWString();
+		app->RegisterTexture(L"NUMBER", mediaPath + L"Texture/Number.png");
 
+	}
 	void SelectStage::OnCreate() {
 		try {
 			auto& app = App::GetApp();
 			CreateViewLight();
-
+			RegisterResources();
 			m_MaxSelectIndex = GameProgressManager::Get().GetStageSize();
+			m_SelectingSprite = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-25.0f, 50.0f, 0.0f), Vec2(50, 100), 2);
+			m_SelectingSprite->UpdateNumber(m_SelectIndex);
 		}
 		catch (...) {
 			throw;
@@ -48,12 +55,14 @@ namespace basecross {
 		auto& app = App::GetApp();
 
 		//選択移動左
-		if (GameController::IsPressed_DpadLeft()) {
+		if (GameController::IsTrigger_DpadLeft()) {
 			m_SelectIndex = max(0, m_SelectIndex - 1);
+			m_SelectingSprite->UpdateNumber(m_SelectIndex);
 		}
 		//選択移動右
-		if (GameController::IsPressed_DpadRight()) {
+		if (GameController::IsTrigger_DpadRight()) {
 			m_SelectIndex = min(m_MaxSelectIndex - 1, m_SelectIndex + 1);
+			m_SelectingSprite->UpdateNumber(m_SelectIndex);
 		}
 		//選択決定(A)
 		if (GameController::IsTrigger_ButtonDown()) {
