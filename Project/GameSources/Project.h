@@ -30,6 +30,9 @@
 #include "TextureCollision.h"
 
 #include "GoalStage.h"
+#include "TitleStage.h"
+#include "SelectStage.h"
+
 #include "InkCloud.h"
 #include "FloorDecision.h"
 #include "GoalDoor.h"
