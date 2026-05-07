@@ -96,6 +96,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoorAxis.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
@@ -194,6 +197,9 @@
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoorAxis.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h">
       <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
