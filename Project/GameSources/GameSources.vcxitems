@@ -18,9 +18,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ComputeShader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DrEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Electrified.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FloorDecision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameProgressManager.h" />
@@ -68,6 +70,7 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Electrified.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FloorDecision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameProgressManager.cpp" />
@@ -104,6 +107,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoorAxis.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindFirst.hlsl">
