@@ -40,7 +40,7 @@ namespace basecross
 			m_trans->SetPosition(m_pos);
 
 			float distance = (m_pos - m_startPos).length();
-
+			
 			if (distance >= m_scale.x || distance >= m_scale.y)
 			{
 				m_speed = 0;
