@@ -7,16 +7,19 @@
 #include "stdafx.h"
 
 namespace basecross {
-	
+	class NumberSprite;
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
 	class SelectStage : public Stage
 	{
-		UINT m_SelectIndex;
-		UINT m_MaxSelectIndex;
-		void CreateViewLight(); //ビューの作成
+		int m_SelectIndex;
+		int m_MaxSelectIndex;
 
+		//テスト用
+		shared_ptr<NumberSprite> m_SelectingSprite;
+		void CreateViewLight(); //ビューの作成
+		void RegisterResources();
 	public:
 		//構築と破棄
 		SelectStage();

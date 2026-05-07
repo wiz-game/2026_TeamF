@@ -42,3 +42,5 @@
 #include "OffsetObject.h"
 
 #include "BaseEnemy.h"
+#include "Sprite.h"
+#include "SoundManager.h"
