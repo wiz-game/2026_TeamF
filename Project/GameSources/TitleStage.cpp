@@ -26,11 +26,18 @@ namespace basecross {
 		auto light = CreateLight<MultiLight>();
 		light->SetDefaultLighting(); //デフォルトのライティングを指定
 	}
-
+	void TitleStage::RegisterResources() {
+		auto& app = App::GetApp();
+		wstring mediaPath = App::GetApp()->GetDataDirWString();
+		app->RegisterTexture(L"TITLE", mediaPath + L"Texture/Title.png");
+	}
 	void TitleStage::OnCreate() {
 		try {
 			auto& app = App::GetApp();
 			CreateViewLight();
+			RegisterResources();
+
+			m_Title = AddGameObject<Sprite>(L"TITLE", Vec3(), Vec2(600, 200), Anchor::Center);
 		}
 		catch (...) {
 			throw;

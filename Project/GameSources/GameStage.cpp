@@ -36,7 +36,7 @@ namespace basecross {
 
 			//ビューとライトの作成
 			CreateViewLight();
-			App::GetApp()->RegisterTexture(L"InkTest",App::GetApp()->GetDataDirWString() +  L"Texture/InkCollisionTest2.png");
+			App::GetApp()->RegisterTexture(L"InkTest",App::GetApp()->GetDataDirWString() +  L"Texture/Test/InkCollisionTest2.png");
 
 			m_Player = AddGameObject<Player>();
 			AddGameObject<InkDraw>();
