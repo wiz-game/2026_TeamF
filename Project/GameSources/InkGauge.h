@@ -18,11 +18,24 @@ namespace basecross
 
 		float m_currentInk;
 		float m_maxInk;
+		float m_ink;
+
+		float m_width;
+		float m_height;
+		float m_unitWidth;	//インク1あたりの横幅
+
+		Vec2 m_offsetPos;
+
 	public:
-		InkGauge(const std::shared_ptr<Stage>stage):
+		InkGauge(const std::shared_ptr<Stage>stage) :
 			GameObject(stage),
 			m_currentInk(10.0f),
-			m_maxInk(10.0f)
+			m_maxInk(10.0f),
+			m_ink(10.0f),
+			m_width(0.0f),
+			m_height(0.0f),
+			m_unitWidth(1.0f),
+			m_offsetPos(Vec2(-100.0f,-15.0f))
 		{
 		}
 

@@ -43,7 +43,7 @@ namespace basecross {
 
 			//プレイヤー作成
 			m_Player = AddGameObject<Player>();
-			//SetSharedGameObject(L"Player", m_Player);
+			SetSharedGameObject(L"player", m_Player);
 
 			//カメラ取得
 			auto view = GetView();
