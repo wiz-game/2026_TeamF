@@ -1,6 +1,6 @@
 /*!
 @file Scene.cpp
-@brief ƒV[ƒ“À‘•
+@brief ã‚·ãƒ¼ãƒ³å®Ÿè£…
 */
 
 #include "stdafx.h"
@@ -9,20 +9,21 @@
 #include "JoltManager.h"
 #include "Scene.h"
 #include "game_controller.h"
+#include "GameProgressManager.h"
 
 namespace basecross{
 
 	//--------------------------------------------------------------------------------------
-	///	ƒQ[ƒ€ƒV[ƒ“
+	///	ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³
 	//--------------------------------------------------------------------------------------
 	void Scene::CreateResourses() {
-		// ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é
+		// ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã™ã‚‹
 		auto& app = App::GetApp();
 
-		// ƒƒfƒBƒAƒtƒHƒ‹ƒ_[‚ÌƒpƒX‚ğæ“¾‚·‚é
+		// ãƒ¡ãƒ‡ã‚£ã‚¢ãƒ•ã‚©ãƒ«ãƒ€ãƒ¼ã®ãƒ‘ã‚¹ã‚’å–å¾—ã™ã‚‹
 		auto mediaPath = app->GetDataDirWString();
 
-		// ƒŠƒ\[ƒX‚Ì“Ç
+		// ãƒªã‚½ãƒ¼ã‚¹ã®èª­è¾¼
 	}
 
 	void Scene::OnCreate(){
@@ -33,38 +34,54 @@ namespace basecross{
 			GameController::EnableGyro(true);
 			GameController::StartVibration(0.0f, 10.0f);
 
-			// ”wŒiF‚ğİ’è
-			SetClearColor(Col4(0.0f, 0.11328125f, 0.2578125, 1.0f)); // ƒ~ƒbƒhƒiƒCƒgƒuƒ‹[
+			//ã‚¹ãƒ†ãƒ¼ã‚¸æ•°1ã§åˆæœŸåŒ–
+			GameProgressManager::Get().Initialize(1);
+
+			// èƒŒæ™¯è‰²ã‚’è¨­å®š
+			SetClearColor(Col4(0.0f, 0.11328125f, 0.2578125, 1.0f)); // ãƒŸãƒƒãƒ‰ãƒŠã‚¤ãƒˆãƒ–ãƒ«ãƒ¼
 			
-			//ƒŠƒ\[ƒXì¬
+			//ãƒªã‚½ãƒ¼ã‚¹ä½œæˆ
 			CreateResourses();
 
 
-			//©•ª©g‚ÉƒCƒxƒ“ƒg‚ğ‘—‚é
-			//‚±‚ê‚É‚æ‚èƒQ[ƒ€ƒXƒe[ƒW‚ÌƒIƒuƒWƒFƒNƒg‚ªCreate‚ÉƒV[ƒ“‚ÉƒAƒNƒZƒX‚Å‚«‚é
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToProtoStage");
+			//è‡ªåˆ†è‡ªèº«ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é€ã‚‹
+			//ã“ã‚Œã«ã‚ˆã‚Šã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒCreateæ™‚ã«ã‚·ãƒ¼ãƒ³ã«ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
 		}
 		catch (...) {
 			throw;
 		}
 	}
-
+	void Scene::OnUpdate() {
+		SceneBase::OnUpdate();
+		GameController::Update();
+	}
 	Scene::~Scene() {
 		JoltManager::StaticTerminate();
 	}
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
 		if (event->m_MsgStr == L"ToGameStage") {
-			//ƒQ[ƒ€ƒXƒe[ƒW‚Ìİ’è
+			//ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
 			ResetActiveStage<GameStage>();
 		}
 		if (event->m_MsgStr == L"ToProtoStage") {
-			//ƒQ[ƒ€ƒXƒe[ƒW‚Ìİ’è
+			//ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
 			ResetActiveStage<ProtoStage>();
 		}
 		if (event->m_MsgStr == L"ToGoalStage") {
-			//ƒS[ƒ‹ƒXƒe[ƒW‚Ìİ’è
+			//ã‚´ãƒ¼ãƒ«ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
 			ResetActiveStage<GoalStage>();
+		}
+		if (event->m_MsgStr == L"ToGameStage0") {
+			ResetActiveStage<ProtoStage>();
+		}
+
+		if (event->m_MsgStr == L"ToTitleStage") {
+			ResetActiveStage<TitleStage>();
+		}
+		if (event->m_MsgStr == L"ToSelectStage") {
+			ResetActiveStage<SelectStage>();
 		}
 
 	}
