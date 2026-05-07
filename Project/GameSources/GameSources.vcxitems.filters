@@ -107,6 +107,9 @@
       <Filter>Stage</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameProgressManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
@@ -219,6 +222,9 @@
       <Filter>Stage</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameProgressManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl">
@@ -279,6 +285,9 @@
     </Filter>
     <Filter Include="UI">
       <UniqueIdentifier>{11379065-8d22-4b7d-8f61-d3992fa86beb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sprite">
+      <UniqueIdentifier>{bb34a22b-9031-412c-bf54-7cf3fac0abd1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

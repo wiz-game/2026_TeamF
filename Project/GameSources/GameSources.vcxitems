@@ -14,12 +14,15 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ComputeShader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DrEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Electrified.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FloorDecision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameProgressManager.h" />
@@ -51,12 +54,14 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Singleton.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureCollision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoorAxis.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BaseEnemy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CharacterController.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ComputeShader.cpp" />
@@ -66,6 +71,7 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Electrified.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FloorDecision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameProgressManager.cpp" />
@@ -97,11 +103,13 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)MoveFloor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoorAxis.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindFirst.hlsl">
