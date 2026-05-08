@@ -34,7 +34,7 @@ namespace basecross
 		m_player = stage->GetSharedGameObject<Player>(L"player");
 		if (m_player)
 		{
-			int actualInk = m_player->GetInk();
+			float actualInk = m_player->GetInk();
 			float inkDec = 0.9f * delta;
 			m_ink = m_maxInk / m_width;
 

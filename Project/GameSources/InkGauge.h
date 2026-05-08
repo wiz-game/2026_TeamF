@@ -14,7 +14,7 @@ namespace basecross
 		std::vector<VertexPositionColorTexture> m_vertices;
 		std::vector<uint16_t> m_indices;
 
-		Col4 m_color = Col4(0, 0, 0, 1);
+		Col4 m_color = Col4(1, 0, 1, 1);
 
 		float m_currentInk;
 		float m_maxInk;
