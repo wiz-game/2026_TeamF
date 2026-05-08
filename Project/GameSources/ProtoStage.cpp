@@ -131,6 +131,8 @@ namespace basecross {
 			moveFloorZ.port = moveFloor_port;
 			AddGameObject<MoveFloor>(moveFloorZ);
 
+			AddGameObject<BeltConveyor>(moveFloor_port);
+
 		}
 		catch (...) {
 			throw;

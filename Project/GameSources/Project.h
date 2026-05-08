@@ -47,3 +47,5 @@
 
 #include "Sprite.h"
 #include "SoundManager.h"
+
+#include "BeltConveyor.h"

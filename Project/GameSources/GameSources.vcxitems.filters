@@ -116,6 +116,8 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp">
       <Filter>Enemy</Filter>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +240,8 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h">
       <Filter>Enemy</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
