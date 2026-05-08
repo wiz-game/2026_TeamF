@@ -6,7 +6,6 @@
 #include "stdafx.h"
 #include "Project.h"
 #include <filesystem>
-#include <queue>
 
 namespace basecross{
 	
@@ -421,7 +420,7 @@ namespace basecross{
 		return (point - closest).lengthSqr();
 	}
 	void DouglasPeucker::Calc(const vector<int>& points, int start, int end, float epsilon, const CoordContext& context, vector<int>& output) {
-		if (end - start <= 2) {
+		if (end - start <= 1) {
 			vector<int> result = { points[start],points[end] };
 			output.insert(output.end(), result.begin(), result.end());
 			return;
@@ -452,6 +451,7 @@ namespace basecross{
 			output.insert(output.end(), result2.begin(), result2.end());
 		}
 		else {
+
 			vector<int> result = { points[start],points[end] };
 			output.insert(output.end(), result.begin(), result.end());
 		}

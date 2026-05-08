@@ -30,11 +30,22 @@
 #include "TextureCollision.h"
 
 #include "GoalStage.h"
+#include "TitleStage.h"
+#include "SelectStage.h"
+
 #include "InkCloud.h"
 #include "FloorDecision.h"
 #include "GoalDoor.h"
 
 #include "TrapDoor.h"
 #include "TrapDoorAxis.h"
+#include "OffsetObject.h"
+
+#include "BaseEnemy.h"
+#include "DrEnemy.h"
+#include "ErEnemy.h"
+
+#include "Sprite.h"
+#include "SoundManager.h"
 
 #include "BeltConveyor.h"
