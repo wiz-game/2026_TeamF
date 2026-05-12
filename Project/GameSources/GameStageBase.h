@@ -1,8 +1,8 @@
-/*!
-@file GameStage.h
-@brief ƒQ[ƒ€ƒXƒe[ƒW
-*/
-
+///*!
+//@file GameStage.h
+//@brief ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸
+//*/
+//
 #pragma once
 #include "stdafx.h"
 #include "Json.h"
@@ -13,12 +13,12 @@
 namespace basecross {
 	
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒX
+	//	ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class GameStageBase : public Stage
 	{
 	public:
-		//ƒIƒuƒWƒFƒNƒg‚Ìí—Ş
+		//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¨®é¡
 		enum ENUM_ObjType
 		{
 			T_Box,
@@ -27,7 +27,7 @@ namespace basecross {
 			T_Unknown,
 		};
 
-		//Šî–{‚Ìƒpƒ‰ƒ[ƒ^[
+		//åŸºæœ¬ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼
 		struct STRUCT_BaseParams
 		{
 			wstring ObjType;
@@ -36,14 +36,14 @@ namespace basecross {
 			 Vec3 Scale;
 		};
 
-		//ƒeƒXƒg—p‚Ìƒpƒ‰ƒ[ƒ^
+		//ãƒ†ã‚¹ãƒˆç”¨ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		//struct SUTRUCT_BoxParams
 		//{
 		//	int HP;
 		//	int MaxHP;
 		//};
 
-		//\’z‚Æ”jŠü
+		//æ§‹ç¯‰ã¨ç ´æ£„
 		GameStageBase() :Stage(){}
 		virtual ~GameStageBase() {}
 		
@@ -55,22 +55,21 @@ namespace basecross {
 
 		void StageDateRoad(int num);
 
-		//ƒIƒuƒWƒFƒNƒgƒ^ƒCƒv‚ğwstring‚©‚çENUM‚É•ÏŠ·
+		//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¿ã‚¤ãƒ—ã‚’wstringã‹ã‚‰ENUMã«å¤‰æ›
 		GameStageBase::ENUM_ObjType ToStageObjType(const wstring& objType);
 
-		//Šî–{‚Ìƒpƒ‰ƒ[ƒ^[‚Ìæ“¾
+		//åŸºæœ¬ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã®å–å¾—
 		void BaseParams(JsonObject& json, STRUCT_BaseParams& params);
 
-		//Šî–{î•ñ‚µ‚©‚È‚¢ƒIƒuƒWƒFƒNƒg‚Ìƒpƒ‰ƒ[ƒ^‚Ìæ“¾
+		//åŸºæœ¬æƒ…å ±ã—ã‹ãªã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å–å¾—
 		GameStageBase::STRUCT_BaseParams StaticParams(JsonObject& json);
 
-		//ƒ{ƒbƒNƒX‚Ìƒpƒ‰ƒ[ƒ^‚Ìæ“¾
+		//ãƒœãƒƒã‚¯ã‚¹ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å–å¾—
 		//SUTRUCT_BoxParams BoxParams(JsonObject& json, STRUCT_BaseParams params);
 
-		//ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+		//ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 		void AddStaticObj(STRUCT_BaseParams params);
 
 	};
 }
 //end basecross
-

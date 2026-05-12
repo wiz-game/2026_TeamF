@@ -11,7 +11,6 @@ namespace basecross {
 	// 初期設定
 	void Port::OnCreate()
 	{
-		GetStage()->SetSharedGameObject(L"Port", GetThis<Port>());
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();
 
@@ -29,13 +28,11 @@ namespace basecross {
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetAfterCollision(AfterCollision::None);
 
-		m_powerSupply = GetStage()->GetSharedGameObject<PowerSupply>(L"PowerSupply");
 	}
 
 	// 更新処理
 	void Port::OnUpdate()
 	{
-		Electrified::OnUpdate();
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
 
@@ -43,10 +40,10 @@ namespace basecross {
 
 	void Port::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
 	{
-		if (auto ink = std::dynamic_pointer_cast<InkDraw>(obj))
+		if (auto ink = std::dynamic_pointer_cast<InkCloud>(obj))
 		{
-			auto connect = m_powerSupply->GetConnect();
-			if (connect /*&& this->isPower*/)
+			auto power = ink->GetisPower();
+			if (power)
 			{
 				isConnect = true;
 				m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
@@ -61,19 +58,6 @@ namespace basecross {
 
 	void Port::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
 	{
-		//if (auto ink = std::dynamic_pointer_cast<InkDraw>(obj))
-		//{
-		//	if (this->isPower)
-		//	{
-		//		isConnect = true;
-		//		m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
-		//	}
-		//	else
-		//	{
-		//		isConnect = false;
-		//		m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
-		//	}
-		//}
 	}
 }
 //end basecross

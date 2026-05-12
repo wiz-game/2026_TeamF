@@ -6,20 +6,101 @@
 #include "stdafx.h"
 #include "Project.h"
 #include <filesystem>
-#include <queue>
 
-namespace basecross{
-	IMPLEMENT_DX11_COMPUTE_SHADER(GenerateMaskShader, App::GetApp()->GetShadersPath() + L"GenerateMaskShader.cso")
-	IMPLEMENT_DX11_COMPUTE_SHADER(FloorFillShader, App::GetApp()->GetShadersPath() + L"FloorFill.cso")
-	IMPLEMENT_DX11_CONSTANT_BUFFER(TextureSizeConstantBuffer)
+namespace basecross {
 
-	TextureCollision::TextureCollision(const shared_ptr<GameObject>& ptr):Collision(ptr){}
+	TextureCollision::TextureCollision(const shared_ptr<GameObject>& ptr) : Component(ptr) {}
 
 	void TextureCollision::OnCreate() {
-		CreateMeshCollision();
+		ID3D11Texture2D* texResource = nullptr;
+		D3D11_TEXTURE2D_DESC srvDesc;
+		GetSrvResource(&texResource, &srvDesc);
+		if (!texResource) {
+			return;
+		}
+
+		m_TextureContext.m_SizeX = srvDesc.Width;
+		m_TextureContext.m_SizeY = srvDesc.Height;
+
+		int textureFullSize = m_TextureContext.m_SizeX * m_TextureContext.m_SizeY;
+		m_CB.width = m_TextureContext.m_SizeX;
+		m_CB.height = m_TextureContext.m_SizeY;
+
+		m_Labels.resize(textureFullSize);
+
+		m_LabelBuffer = make_shared<BufferContext>(sizeof(int), textureFullSize);
+		if(!m_LabelBuffer->CreateUAV()) {
+			int checker = 0;
+		}
+		if(!m_LabelBuffer->CreateSRV()) {
+			int checker = 0;
+		}
+
+		m_LabelOutputBuffer = make_shared<BufferContext>(sizeof(int), textureFullSize);
+		if(!m_LabelOutputBuffer->CreateSRV()) {
+			int checker = 0;
+		}
+		if(!m_LabelOutputBuffer->CreateUAV()){
+			int checker = 0;
+		}
+
+		m_ConvertFlagBuffer = make_shared<BufferContext>(sizeof(int), 1);
+		if (!m_ConvertFlagBuffer->CreateUAV()) {
+			int checker = 0;
+		}
+
+		//シェーダー初期化
+		m_MaskShader = make_shared<DX11ComputeShader>();
+		m_UnionFind1Shader = make_shared<DX11ComputeShader>();
+		m_UnionFind2Shader = make_shared<DX11ComputeShader>();
+
+		m_MaskShader->Initialize({ 8,8,1,m_TextureContext.m_SizeX,m_TextureContext.m_SizeY,1 });
+		m_UnionFind1Shader->Initialize({ 8,8,1,m_TextureContext.m_SizeX,m_TextureContext.m_SizeY,1 });
+		m_UnionFind2Shader->Initialize({ 8,8,1,m_TextureContext.m_SizeX,m_TextureContext.m_SizeY,1 });
+
+		m_MaskShader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
+		m_UnionFind1Shader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
+		m_UnionFind2Shader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
+
+		auto object = GetGameObject();
+		auto draw = object->GetComponent<SmBaseDraw>();
+		//srvから情報を取得
+		auto srv = draw->GetTextureResource()->GetShaderResourceView();
+
+		//SRV,UAVの場所を仮で取っておく
+		m_MaskShader->AddSRV(srv.Get());
+		m_MaskShader->AddUAV(m_LabelBuffer->m_UAV.Get());
+		m_MaskShader->SetShader(GenerateMaskShader::GetPtr()->GetShader());
+
+		m_UnionFind1Shader->AddSRV(m_LabelBuffer->m_SRV.Get());
+		m_UnionFind1Shader->AddUAV(m_LabelOutputBuffer->m_UAV.Get());
+		m_UnionFind1Shader->SetShader(UnionFindFirst::GetPtr()->GetShader());
+
+		m_UnionFind2Shader->AddSRV(m_LabelBuffer->m_SRV.Get());
+		m_UnionFind2Shader->AddUAV(m_LabelOutputBuffer->m_UAV.Get());
+		m_UnionFind2Shader->SetShader(UnionFindSecond::GetPtr()->GetShader());
+
+		InkConnectChecker::Get().AddTextureCollision(GetThis<TextureCollision>());
+	}
+	void TextureCollision::OnUpdate() {
+
 	}
 	void TextureCollision::OnDraw() {
+		for (auto& triangles : m_ContourTriangles) {
+			for (auto& triangle : triangles) {
+				Vec3 dir = triangle[1] - triangle[0];
+				float length = dir.length();
+				DrawLine(triangle[0], dir.normalize(), length);
 
+				dir = triangle[2] - triangle[1];
+				length = dir.length();
+				DrawLine(triangle[1], dir.normalize(), length);
+
+				dir = triangle[0] - triangle[2];
+				length = dir.length();
+				DrawLine(triangle[2], dir.normalize(), length);
+			}
+		}
 	}
 	void TextureCollision::GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc) {
 		auto object = GetGameObject();
@@ -34,175 +115,183 @@ namespace basecross{
 		(*texture)->GetDesc(desc);
 	}
 
-	uint8_t* TextureCollision::ReadColorData(ID3D11DeviceContext2* context, ID3D11Texture2D* texture, UINT& rowPitch) {
-		//情報を読み取り
-		D3D11_MAPPED_SUBRESOURCE mapped;
-		auto result = context->Map(texture, 0, D3D11_MAP_READ, 0, &mapped);
-		if (FAILED(result)) {
-			return nullptr;
-		}
-
-		uint8_t* data = (uint8_t*)mapped.pData;
-		rowPitch = mapped.RowPitch;
-
-		context->Unmap(texture, 0);
-
-		return data;
+	void TextureCollision::CreateAlphaMask() {
+		m_MaskShader->Execute();
 	}
-
-	vector<MaskData> TextureCollision::CreateAlphaMask(CoordContext& coordContext) {
+	void TextureCollision::ProcessCPU() {
 		auto start = std::chrono::steady_clock::now();
-		auto& app = App::GetApp();
-		auto deviceResource = app->GetDeviceResources();
-		auto device = deviceResource->GetD3DDevice();
-		auto context = deviceResource->GetD3DDeviceContext();
+		int labelSize = (int)m_Labels.size();
 
-		vector<MaskData> errorList = {};
-		//設定されているテスクチャデータを取得(本来はインクのSRVをここで取得)
-		ID3D11Texture2D* texResource = nullptr;
-		D3D11_TEXTURE2D_DESC srvDesc;
-		GetSrvResource(&texResource, &srvDesc);
-		if (!texResource) {
-			return errorList;
-		}
-
-		coordContext.m_SizeX = srvDesc.Width;
-		coordContext.m_SizeY = srvDesc.Height;
-
-		int maskSize = coordContext.m_SizeX * coordContext.m_SizeY;
-		vector<MaskData> alphaMasks = {};
-		//入力はテクスチャなので入力型は適当にint
-		DX11ComputeShader<int> shader = DX11ComputeShader<int>();
-		shader.RegisterResult(ResultBufferContext(alphaMasks.data(), sizeof(MaskData), maskSize));
-		auto object = GetGameObject();
-		auto draw = object->GetComponent<SmBaseDraw>();
-
-		//srvから情報を取得
-		auto srv = draw->GetTextureResource()->GetShaderResourceView().Get();
-		shader.UseTexture(srv);
-
-		shader.Initialize({ 8,8,1,coordContext.m_SizeX,coordContext.m_SizeY,1 }, maskSize);
-		shader.SetShader(GenerateMaskShader::GetPtr()->GetShader());
-
-		TextureSizeConstantData cb;
-		cb.width = coordContext.m_SizeX;
-		cb.height = coordContext.m_SizeY;
-		shader.SetConstantBuffer(cb, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
-
-		shader.Execute({});
-
-		shader.GetResult(alphaMasks, 0);
-
-		auto end = std::chrono::steady_clock::now();
-		auto duration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
-
-		return alphaMasks;
-	}
-
-	vector<int> TextureCollision::BfsTree(vector<MaskData>& masks, const CoordContext& context, int start) {
-		vector<int> area;
-		queue<int> searchQueue;
-		searchQueue.push(start);
-
-		while (!searchQueue.empty()) {
-			int search = searchQueue.front();
-			searchQueue.pop();
-			area.push_back(search);
-
-			vector<int> searchIndex = {
-				(int)(search + context.m_SizeX),
-				(int)(search - context.m_SizeX)
-			};
-			int coordX, coordY;
-			IndexToCoord(search, context.m_SizeX, coordX, coordY);
-			if (coordX > 0) {
-				searchIndex.push_back(search - 1);
+		vector<char> checkList(labelSize, 0);
+		vector<int> groupId;
+		groupId.reserve(20);
+		for (int i = 0; i < labelSize; i++) {
+			int& label = m_Labels[i];
+			if (label != -1 && checkList[label] != 1) {
+				groupId.push_back(i);
+				checkList[label] = 1;
 			}
-			if (coordX < context.m_SizeX - 1) {
-				searchIndex.push_back(search + 1);
-			}
-
-			for (auto& index : searchIndex) {
-				if (index < 0 || index >= masks.size()) {
-					continue;
-				}
-				int mask = masks[index].m_Mask;
-				bool isVisited = masks[index].m_IsVisited;
-
-				if (mask != 0 && !isVisited) {
-					masks[index].m_IsVisited = true;
-					searchQueue.push(index);
-				}
-			}
-
-		}
-		return area;
-	}
-
-	void TextureCollision::CreateMeshCollision() {
-
-		CoordContext context = CoordContext();
-		vector<MaskData> alphaMasks = CreateAlphaMask(context);
-
-		auto start = std::chrono::steady_clock::now();
-
-		vector<int> cellLabels(alphaMasks.size(), 0);
-		for (int i = 0; i < cellLabels.size(); i++) {
-			//透明部分は-1
-			if (alphaMasks[i].m_Mask == 0) {
-				cellLabels[i] = -1;
-				continue;
-			}
-			cellLabels[i] = i;
 		}
 
 		auto end = std::chrono::steady_clock::now();
-		auto initializeDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
-		start = std::chrono::steady_clock::now();
-
-		DX11ComputeShader<int> shader = DX11ComputeShader<int>();
-		shader.Initialize({ 8,8,1,context.m_SizeX,context.m_SizeY,1 }, cellLabels.size());
-		shader.SetShader(FloorFillShader::GetPtr()->GetShader());
-		TextureSizeConstantData cb;
-		cb.width = context.m_SizeX;
-		cb.height = context.m_SizeY;
-		shader.SetConstantBuffer(cb, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
-
-		vector<int> isConverted = {0};
-
-		shader.RegisterResult(ResultBufferContext(cellLabels.data(), sizeof(cellLabels[0]), cellLabels.size()));
-		shader.RegisterResult(ResultBufferContext(isConverted.data(), sizeof(isConverted[0]), 1));
-
-		end = std::chrono::steady_clock::now();
-		auto shaderInitializeDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
-		start = std::chrono::steady_clock::now();
-
-		const int maxLoop = context.m_SizeX * context.m_SizeY;
-		for (int i = 0; i < maxLoop; i++) {
-			shader.ResetUAV(1);
-			shader.Execute(cellLabels);
-			shader.GetResult(cellLabels, 0);
-			shader.GetResult(isConverted, 1);
-			//最後の要素はラベルが0のときにループを抜けるためのダミー
-			if (isConverted[0] != 1) {
-				break;
-			}
-		}
-		end = std::chrono::steady_clock::now();
-		auto shaderDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
-		start = std::chrono::steady_clock::now();
-
-		unordered_map<int, vector<int>> labelGroup;
-		for (auto& label : cellLabels) {
-			if (label == -1) continue;
-			labelGroup[label].push_back(label);
-		}
-
-		end = std::chrono::steady_clock::now();
 		auto mappingDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+		start = std::chrono::steady_clock::now();
+		//メッシュ作成
+		CreateTextureMesh(m_Labels, groupId, m_TextureContext);
+		end = std::chrono::steady_clock::now();
+		auto createMeshDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
 
+		float allDuration = mappingDuration + createMeshDuration;
 		int checker = 0;
 	}
+	void TextureCollision::ProcessGPU() {
+		auto start = std::chrono::steady_clock::now();
+
+		//カラーマスク抽出
+		m_MaskShader->Execute();
+
+		auto end = std::chrono::steady_clock::now();
+		auto maskDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+
+		start = std::chrono::steady_clock::now();
+
+		m_UnionFind1Shader->Execute();
+		swap(m_LabelBuffer, m_LabelOutputBuffer);
+
+		const int maxLoop = 16;
+		const int checkDuration = 50;
+		for (int i = 0; i < maxLoop; i++) {
+			m_UnionFind2Shader->SetSRV(0, m_LabelBuffer->m_SRV.Get());
+			m_UnionFind2Shader->SetUAV(0, m_LabelOutputBuffer->m_UAV.Get());
+			m_UnionFind2Shader->Execute();
+			swap(m_LabelBuffer, m_LabelOutputBuffer);
+		}
+		for (int i = 0; i < m_TextureContext.m_SizeX * m_TextureContext.m_SizeY; i++) {
+			int o = 0;
+		}
+		m_LabelBuffer->ReadBuffer(m_Labels.data());
+		end = std::chrono::steady_clock::now();
+		auto shaderDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+
+		float allDuration = maskDuration + shaderDuration;
+		int checker = 0;
+	}
+	void TextureCollision::CreateMeshCollision() {
+		ProcessGPU();
+		ProcessCPU();
+	}
+
+	void TextureCollision::CreateTextureMesh(vector<int>& cells, vector<int>& groupIDs, CoordContext& context) {
+		auto start = std::chrono::steady_clock::now();
+
+		//塊の輪郭抽出
+		m_Contours.clear();
+		m_Contours.resize(groupIDs.size());
+		vector<Vec2> findIndices = {
+			{ 0,-1},{  1,-1},{ 1,0},{ 1, 1},
+			{ 0, 1},{ -1, 1},{-1,0},{-1,-1},
+		};
+		
+		int page = 1;
+		for (int i = 0; i < groupIDs.size();i++) {
+			GetContour(cells, groupIDs[i], m_Contours[i]);
+		}
+		auto end = std::chrono::steady_clock::now();
+		auto contourDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+
+		m_ContourTriangles.clear();
+		m_ContourTriangles.reserve(m_Contours.size());
+
+		float totalDouglasDuration = 0.0f;
+		float totalEarClippingDuration = 0.0f;
+		vector<int> tempContour;
+
+		DouglasPeucker douglasPeucker;
+		//頂点最適化
+		for (auto& contour : m_Contours) {
+			start = std::chrono::steady_clock::now();
+			douglasPeucker.Initialize(contour, m_TextureContext);
+			tempContour.clear();
+			douglasPeucker.Calc(0, (int)contour.size() - 1, 2.0f, tempContour);
+			contour = tempContour;
+			end = std::chrono::steady_clock::now();
+			auto duration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+			totalDouglasDuration += duration;
+
+			start = std::chrono::steady_clock::now();
+			vector<vector<Vec3>> triangles = EarClipping::Calc(CalcContourWorldPosition(contour));
+			m_ContourTriangles.push_back(triangles);
+			end = std::chrono::steady_clock::now();
+			duration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+			totalEarClippingDuration += duration;
+		}
+		int checker = 0;
+	}
+	void TextureCollision::GetContour(vector<int>& cells,int& groupID, vector<int>& out) {
+		struct Vec2Int {
+			int x, y;
+		};
+		vector<Vec2Int> findIndices = {
+			{ 0,-1},{  1,-1},{ 1,0},{ 1, 1},
+			{ 0, 1},{ -1, 1},{-1,0},{-1,-1},
+		};
+
+		int startIndex = groupID;
+		int currentIndex = startIndex;
+		int befIndex = -1;
+		out.reserve(cells.size() * 0.5f);
+
+		int count = 0;
+		int checkDir = 6;
+
+		do {
+			for (int i = 0; i < 8; i++) {
+				int dir = (checkDir + i) % 8;
+
+				int x, y;
+				x = currentIndex % m_TextureContext.m_SizeX;
+				y = currentIndex / m_TextureContext.m_SizeX;
+				if (findIndices[dir].x == -1 && x <= 0) continue;
+				if (findIndices[dir].x == 1 && x >= (int)m_TextureContext.m_SizeX - 1) continue;
+				if (findIndices[dir].y == -1 && y <= 0) continue;
+				if (findIndices[dir].y == 1 && y >= (int)m_TextureContext.m_SizeY - 1) continue;
+
+				int index = currentIndex + findIndices[dir].y * m_TextureContext.m_SizeX + findIndices[dir].x;
+				if (cells[index] != -1 && cells[index] == groupID) {
+					befIndex = currentIndex;
+					currentIndex = index;
+					out.push_back(index);
+					checkDir = (dir + 6) % 8;
+					break;
+				}
+			}
+
+			count++;
+		} while (currentIndex != startIndex);
+	}
+
+	vector<Vec3> TextureCollision::CalcContourWorldPosition(const vector<int>& contour) {
+		vector<Vec3> worldPositions;
+		worldPositions.reserve(contour.size());
+
+		auto transform = GetGameObject()->GetComponent<Transform>();
+		Vec3 position = transform->GetPosition();
+		Vec3 scale = transform->GetScale();
+		for (int i = 0; i < contour.size(); i++) {
+			int vertexId = contour[i];
+
+			int x = vertexId % m_TextureContext.m_SizeX;
+			int y = vertexId / m_TextureContext.m_SizeX;
+			float px = (float)x / m_TextureContext.m_SizeX;
+			float py = (float)y / m_TextureContext.m_SizeY;
+			Vec3 vertexPosition = Vec3((px - 0.5f) * scale.x, scale.y * 0.5f, -(py - 0.5f) * scale.z);
+
+			Vec3 worldPosition = vertexPosition + position;
+			worldPositions.push_back(worldPosition);
+		}
+		return worldPositions;
+	}
+
 	void TextureCollision::IndexToCoord(int index, int width, int& x, int& y) {
 		x = index % width;
 		y = index / width;
@@ -211,21 +300,228 @@ namespace basecross{
 		index = y * width + x;
 	}
 
-	bool TextureCollision::SimpleCollisionCall(const shared_ptr<Collision>& Src) {
-		return false;
+	void TextureCollision::DrawLine(Vec3 position, Vec3 dir, float length) {
+		auto meshResource = App::GetApp()->GetResource<MeshResource>(L"DEFAULT_PC_LINE");
+		auto Dev = App::GetApp()->GetDeviceResources();
+		auto pD3D11DeviceContext = Dev->GetD3DDeviceContext();
+		auto RenderState = Dev->GetRenderState();
+
+		Quat quaternion = Quat();
+
+		XMVECTOR direction = XMVector3Normalize(dir);
+		XMVECTOR up = XMVectorSet(0, 1, 0, 0);
+
+		// ワールド行列（向き）を作る
+		XMMATRIX mat = XMMatrixInverse(nullptr, XMMatrixLookToLH(XMVectorZero(), direction, up));
+		
+		// クォータニオンに変換
+		quaternion = (Quat)XMQuaternionRotationMatrix(mat);
+
+		Mat4x4 world = (Mat4x4)XMMatrixScaling(1.0f, 1.0f, length);
+		world *= (Mat4x4)XMMatrixRotationQuaternion(quaternion);
+		world *= (Mat4x4)XMMatrixTranslation(position.x, position.y, position.z);
+		world.transpose();
+		//行列の定義
+		bsm::Mat4x4 ViewMat, ProjMat;
+		
+		//カメラを得る
+		auto CameraPtr = GetGameObject()->OnGetDrawCamera();
+		//ビューと射影行列を得る
+		ViewMat = CameraPtr->GetViewMatrix();
+		//転置する
+		ViewMat.transpose();
+		//転置する
+		ProjMat = CameraPtr->GetProjMatrix();
+		ProjMat.transpose();
+		//コンスタントバッファの準備
+		SimpleConstants sb;
+		sb.World = world;
+		sb.View = ViewMat;
+		sb.Projection = ProjMat;
+		//エミッシブ
+		sb.Emissive = Col4(0, 0, 0, 0);
+		//デフィーズはすべて通す
+		sb.Diffuse = Col4(1, 1, 1, 1);
+		//コンスタントバッファの更新
+		pD3D11DeviceContext->UpdateSubresource(CBSimple::GetPtr()->GetBuffer(), 0, nullptr, &sb, 0, 0);
+
+		//ストライドとオフセット
+		UINT stride = sizeof(VertexPositionColor);
+		UINT offset = 0;
+		//頂点バッファのセット
+		pD3D11DeviceContext->IASetVertexBuffers(0, 1, meshResource->GetVertexBuffer().GetAddressOf(), &stride, &offset);
+		//インデックスバッファのセット
+		pD3D11DeviceContext->IASetIndexBuffer(meshResource->GetIndexBuffer().Get(), DXGI_FORMAT_R16_UINT, 0);
+
+		//描画方法（ライン）
+		pD3D11DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+		//コンスタントバッファの設定
+		ID3D11Buffer* pConstantBuffer = CBSimple::GetPtr()->GetBuffer();
+		ID3D11Buffer* pNullConstantBuffer = nullptr;
+		//頂点シェーダに渡す
+		pD3D11DeviceContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
+		//ピクセルシェーダに渡す
+		pD3D11DeviceContext->PSSetConstantBuffers(0, 1, &pConstantBuffer);
+		//シェーダの設定
+		pD3D11DeviceContext->VSSetShader(VSPCStatic::GetPtr()->GetShader(), nullptr, 0);
+		pD3D11DeviceContext->PSSetShader(PSPCStatic::GetPtr()->GetShader(), nullptr, 0);
+		//インプットレイアウトの設定
+		pD3D11DeviceContext->IASetInputLayout(VSPCStatic::GetPtr()->GetInputLayout());
+		//ブレンドステート
+		//透明処理しない
+		pD3D11DeviceContext->OMSetBlendState(RenderState->GetOpaque(), nullptr, 0xffffffff);
+		//デプスステンシルステート
+		pD3D11DeviceContext->OMSetDepthStencilState(RenderState->GetDepthDefault(), 0);
+		//ラスタライザステート(ワイアフレーム)
+		pD3D11DeviceContext->RSSetState(RenderState->GetWireframe());
+		pD3D11DeviceContext->DrawIndexed(meshResource->GetNumIndicis(), 0, 0);
+		//後始末
+		Dev->InitializeStates();
 	}
-	void TextureCollision::CollisionCall(const shared_ptr<Collision>& Src) {
+
+	inline float DouglasPeucker::CalcDistance(Vec2& start, Vec2& end, Vec2& point) {
+		float steX = end.x - start.x;
+		float steY = end.y - start.y;
+
+		float stpX = point.x - start.x;
+		float stpY = point.y - start.y;
+
+		float steLengthSqr = steX * steX + steY * steY;
+		if (steLengthSqr == 0.0f) {
+			return stpX * stpX + stpY * stpY;
+		}
+
+		float t = (stpX * steX + stpY * steY) / steLengthSqr;
+		t = std::clamp(t, 0.0f, 1.0f);
+
+		float closestX = start.x + steX * t;
+		float closestY = start.y + steY * t;
+
+		float distX = point.x - closestX;
+		float distY = point.y - closestY;
+
+		return distX * distX + distY * distY;
+	}
+	void DouglasPeucker::Initialize(const vector<int>& points, const CoordContext& context) {
+		count = 0;
+		m_Points = points;
+		m_Positions.resize(m_Points.size());
+		for (int i = 0; i < m_Points.size(); i++) {
+			m_Positions[i] = Vec2(static_cast<float>(points[i] % context.m_SizeX), static_cast<float>(points[i] / context.m_SizeX));
+		}
+	}
+	void DouglasPeucker::Calc(int start, int end, float epsilon, vector<int>& output) {
+		int calcSize = end - start;
+		if (calcSize <= 1) {
+			if (calcSize > 0) {
+				output.push_back(m_Points[start]);
+				output.push_back(m_Points[end]);
+			}
+			return;
+		}
+
+		float maxDist = -10000000.0f;
+		int index = -1;
+
+		Vec2& startPoint = m_Positions[start];
+		Vec2& endPoint = m_Positions[end];
+
+		for (int i = start + 1; i < end; i++) {
+			float dist = CalcDistance(startPoint, endPoint, m_Positions[i]);
+
+			if (dist > maxDist) {
+				maxDist = dist;
+				index = i;
+			}
+		}
+
+		if (maxDist > epsilon * epsilon) {
+			Calc(start,     index, epsilon, output);
+			output.pop_back();
+			Calc(index,       end, epsilon, output);
+		}
+		else {
+			output.push_back(m_Points[start]);
+			output.push_back(m_Points[end]);
+		}
 
 	}
-	bsm::Vec3 TextureCollision::GetCenterPosition()const {
-		return Vec3();
+
+
+	bool EarClipping::IsAngleThen180(const Vec3& point, const Vec3& a, const Vec3& b) {
+		return ((a.x - point.x) * (b.z - point.z) - (a.z - point.z) * (b.x - point.x)) > 0;
 	}
-	AABB TextureCollision::GetEnclosingAABB()const {
-		return AABB();
+	bool EarClipping::IsContainInTriangle(const Vec3& a, const Vec3& b, const Vec3& c, const Vec3& point) {
+		bool b1 = IsAngleThen180(a, b, point);
+		bool b2 = IsAngleThen180(b, c, point);
+		bool b3 = IsAngleThen180(c, a, point);
+
+		return (b1 == b2 && b2 == b3);
 	}
-	AABB TextureCollision::GetWrappedAABB()const {
-		return AABB();
+	vector<vector<Vec3>> EarClipping::Calc(const vector<Vec3>& points) {
+		if (points.size() < 3) return {};
+		vector<Vec3> ear = points;
+		vector<vector<Vec3>> triangles;
+		triangles.reserve(ear.size());
+		while (ear.size() > 3) {
+			for (int i = 0, size = (int)ear.size(); i < size; i++) {
+				int left, right;
+				left = i >= size - 1 ? 0 : i + 1;
+				right = i == 0 ? size - 1 : i - 1;
+
+				if (IsAngleThen180(ear[i], ear[right], ear[left])) {
+					bool isContained = false;
+					for (int j = 0; j < size; j++) {
+						if (j == i || j == left || j == right) continue;
+
+						if (IsContainInTriangle(ear[i], ear[left], ear[right], ear[j])) {
+							isContained = true;
+						}
+					}
+					if (!isContained) {
+						triangles.push_back({ ear[i], ear[left], ear[right] });
+						ear.erase(ear.begin() + i);
+						break;
+					}
+				}
+			}
+		}
+		triangles.push_back({ ear[0], ear[1], ear[2] });
+
+		return triangles;
 	}
 
+	void TextureMeshManager::Reload() {
+		vector<thread> threads;
+		for (auto& meshCollision : m_ReloadMeshCollisions) {
+			meshCollision->ProcessGPU();
+			thread t([&]() { meshCollision->ProcessCPU(); });
+			threads.push_back(move(t));
+		}
+
+		for (auto& t : threads) {
+			t.join();
+		}
+		m_ReloadMeshCollisions.clear();
+	}
+
+	vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> InkConnectChecker::CheckConnect() {
+		vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> result;
+		for (auto& weakSupply : m_PowerSupplies) {
+			auto supply = weakSupply.lock();
+			if (!supply) continue;
+
+			for (auto& weakCollision : m_TextureCollisions) {
+				auto collision = weakCollision.lock();
+				if (!collision) return;
+
+				auto& supplyCollision = supply->GetComponent<Collision>();
+				auto supplyAABB = supplyCollision->GetWrappedAABB();
+				
+			}
+		}
+		return result;
+	}
 }
 //end basecross

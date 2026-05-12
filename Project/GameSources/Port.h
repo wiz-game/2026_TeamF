@@ -9,23 +9,24 @@
 #include "Electrified.h"
 
 namespace basecross {
-	class PowerSupply;
-	class Port : public Electrified
+	class Port : public GameObject
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<PNTStaticDraw> m_staticDraw;
-		std::shared_ptr<PowerSupply> m_powerSupply;
 
-		Vec3 m_pos = Vec3(1.0f, 0.0f, 4.0f);
+		Vec3 m_pos;
 		Vec3 m_scale = Vec3(1.0f, 0.1f, 1.0f);
 
 		bool isConnect = false;
+		bool isPower = false;
 
 	public:
 		// ステージを引数にしたコンストラクタ【必須】
-		Port(const std::shared_ptr<Stage>& stage) :
-			Electrified(stage) // ステージをGameObjectに渡す【必須】
+		Port(const std::shared_ptr<Stage>& stage,
+			const Vec3& pos) :
+			GameObject(stage), // ステージをGameObjectに渡す【必須】
+			m_pos(pos)
 		{
 		}
 
@@ -38,8 +39,12 @@ namespace basecross {
 		{
 			return isConnect;
 		}
+
+		void SetisPower(bool power)
+		{
+			isPower = power;
+		}
 	};
 
 }
-//end basecross
-
+//end basecross}

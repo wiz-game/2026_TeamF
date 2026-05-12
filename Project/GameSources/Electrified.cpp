@@ -1,61 +1,59 @@
 /*!
 @file Electrified.cpp
-@brief キャラクターなど実体
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ螳滉ｽ・
 */
 
 #include "stdafx.h"
 #include "Electrified.h"
 #include "PowerSupply.h"
+#include "GameObject.h"
 
 namespace basecross{
 
-	//初期化
-	void Electrified::OnCreate()
+	//外部から電力を貰う
+	void Electrified::InjectEnergy(float amount)
 	{
+		m_nextEnergy += amount;
 	}
 
-	void Electrified::OnCollisionEnter(shared_ptr<GameObject>& info)
+	//毎フレーム通電更新
+	void Electrified::UpdateElectrifed()
 	{
-		targets.push_back(info);
-	}
+		m_energy = m_nextEnergy;
+		m_nextEnergy = 0.0f;
 
-	void Electrified::OnCollisionExit(shared_ptr<GameObject>& info)
-	{
-		targets.erase(std::remove(targets.begin(), targets.end(), info), targets.end());
-	}
+		if (m_energy <= 0.0f)return;
 
-	void Electrified::Electrify(shared_ptr<GameObject>& target)
-	{
-
-		// PowerSupply を持っているか確認
-		//auto power = target->GetComponent<PowerSupply>();
-		//if (!power) return;
-
-		// フレーム時間を考慮して流量を決定
-		float delta = App::GetApp()->GetElapsedTime();
-
-		// 電気を受け取る
-		//float received = power->ConsumeElect(delta);
-
-		//if (received > 0.0f)
-		//{
-		//}
-	}
-
-	void Electrified::OnUpdate()
-	{
-		if (!m_isSource) isPower = false;// 電源でない場合は電気を受け取る前にリセット
-
-		if (isPower) {
-			for (auto& target : targets) {
-				//Electrify(target);
-				//相手がElectrified（またはその継承クラス）か確認
-				auto targetElect = std::dynamic_pointer_cast<Electrified>(target);
-				if (targetElect) {
-					targetElect->isPower = true;// 電気を伝える
+		for (auto& w : m_contactObjects)
+		{
+			if(auto obj = w.lock())
+			{
+				if (auto elec = obj->GetComponent<Electrified>())
+				{
+					elec->InjectEnergy(m_energy);
 				}
 			}
 		}
+	}
+
+	//接触開始
+	void Electrified::OnElectrifiedEnter(std::shared_ptr<GameObject>& other)
+	{
+		m_contactObjects.push_back(other);
+	}
+
+	//接触終了
+	void Electrified::OnElectrifiedExit(std::shared_ptr<GameObject>& other)
+	{
+		m_contactObjects.erase(
+			std::remove_if(
+				m_contactObjects.begin(), 
+				m_contactObjects.end(),
+				[&](const std::weak_ptr<GameObject>& w) {
+					return w.lock() == other;
+				}),
+			m_contactObjects.end()
+		);
 	}
 }
 //end basecross

@@ -30,6 +30,7 @@ namespace basecross
 		Vec3 m_pos;
 		Vec3 m_scale;
 
+
 		void OnCreate() override;	//初期設定用
 		void OnUpdate() override;	//更新用
 	};

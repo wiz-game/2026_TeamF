@@ -1,10 +1,11 @@
 /*!
-@file UpDownFloor.h
-@brief 上下する床
+@file BeltConveyor.h
+@brief ベルトコンベアー
 */
 
 #pragma once
 #include "stdafx.h"
+#include "FloorDecision.h"
 
 namespace basecross {
 
@@ -12,9 +13,9 @@ namespace basecross {
 	class Port;
 
 	//--------------------------------------------------------------------------------------
-	//	class UpDownFloor : public GameObject;
+	//	class BeltConveyor : public GameObject;
 	//--------------------------------------------------------------------------------------
-	class UpDownFloor : public GameObject
+	class BeltConveyor : public GameObject
 	{
 		std::shared_ptr<Transform> m_transform;
 		std::shared_ptr<PNTDXModelDraw> m_draw;
@@ -24,20 +25,25 @@ namespace basecross {
 		std::shared_ptr<Player> m_player;
 		std::shared_ptr<Port> m_port;
 
-		Vec3 m_pos = Vec3(0.0f, 0.0f, 5.0f);
-		Vec3 m_scale = Vec3(2.0f, 0.2f, 2.0f);
+		std::shared_ptr<FloorDecision> m_floorDec;
 
-		float m_moveSpeed = 1.0f;
+		Vec3 m_pos = Vec3(2.0f,-0.5f,0.0f);
+		Vec3 m_scale = Vec3(1.5f, 0.1f, 5.0f);
 
-		bool m_isUp = false;
+		float m_speed = 2.0f;
+		float m_limitDist;
+
+		bool m_isMove = false;
 
 	public:
 		// 構築と破棄
-		UpDownFloor(const shared_ptr<Stage>& stage) :
-			GameObject(stage)
+		BeltConveyor(const shared_ptr<Stage>& stage,
+			shared_ptr<Port> port) :
+			GameObject(stage),
+			m_port(port)
 		{
 		}
-		virtual ~UpDownFloor()
+		virtual ~BeltConveyor()
 		{
 		}
 
@@ -45,16 +51,6 @@ namespace basecross {
 		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
 
-		bool GetIsUp() const
-		{
-			return m_isUp;
-		}
-
-		float GetMoveSpeed() const
-		{
-			return m_moveSpeed;
-		}
 	};
-
 }
 //end basecross

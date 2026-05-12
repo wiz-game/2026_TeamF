@@ -1,6 +1,6 @@
 /*!
 @file Scene.cpp
-@brief シーン実装
+@brief 繧ｷ繝ｼ繝ｳ螳溯｣・
 */
 
 #include "stdafx.h"
@@ -9,20 +9,17 @@
 #include "JoltManager.h"
 #include "Scene.h"
 #include "game_controller.h"
+#include "GameProgressManager.h"
 
 namespace basecross{
 
 	//--------------------------------------------------------------------------------------
-	///	ゲームシーン
+	///	
 	//--------------------------------------------------------------------------------------
 	void Scene::CreateResourses() {
-		// アプリケーションオブジェクトを取得する
 		auto& app = App::GetApp();
 
-		// メディアフォルダーのパスを取得する
 		auto mediaPath = app->GetDataDirWString();
-
-		// リソースの読込
 	}
 
 	void Scene::OnCreate(){
@@ -33,35 +30,57 @@ namespace basecross{
 			GameController::EnableGyro(true);
 			GameController::StartVibration(0.0f, 10.0f);
 
-			// 背景色を設定
-			SetClearColor(Col4(0.0f, 0.11328125f, 0.2578125, 1.0f)); // ミッドナイトブルー
+			//ステージ数1で初期化
+			GameProgressManager::Get().Initialize(3);
+
+			SetClearColor(Col4(0.0f, 0.11328125f, 0.2578125, 1.0f));
 			
-			//リソース作成
 			CreateResourses();
 
-
-			//自分自身にイベントを送る
-			//これによりゲームステージのオブジェクトがCreate時にシーンにアクセスできる
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToProtoStage");
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
 		}
 		catch (...) {
 			throw;
 		}
 	}
-
+	void Scene::OnUpdate() {
+		SceneBase::OnUpdate();
+		GameController::Update();
+	}
 	Scene::~Scene() {
 		JoltManager::StaticTerminate();
 	}
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
 		if (event->m_MsgStr == L"ToGameStage") {
-			//ゲームステージの設定
 			ResetActiveStage<GameStage>();
 		}
 		if (event->m_MsgStr == L"ToProtoStage") {
-			//ゲームステージの設定
 			ResetActiveStage<ProtoStage>();
 		}
+		if (event->m_MsgStr == L"ToGoalStage") {
+			ResetActiveStage<GoalStage>();
+		}
+
+		//仮で設定。後々やり方変える
+		if (event->m_MsgStr == L"ToGameStage0") {
+			ResetActiveStage<ProtoStage>();
+		}
+		if (event->m_MsgStr == L"ToGameStage1") {
+			ResetActiveStage<GameStage>();
+		}
+		if (event->m_MsgStr == L"ToGameStage2") {
+			ResetActiveStage<GoalStage>();
+		}
+
+
+		if (event->m_MsgStr == L"ToTitleStage") {
+			ResetActiveStage<TitleStage>();
+		}
+		if (event->m_MsgStr == L"ToSelectStage") {
+			ResetActiveStage<SelectStage>();
+		}
+
 	}
 
 	void Scene::OnDestroy() {
