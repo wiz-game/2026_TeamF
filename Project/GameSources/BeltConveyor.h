@@ -6,6 +6,7 @@
 #pragma once
 #include "stdafx.h"
 #include "FloorDecision.h"
+#include "BeltConveyorTex.h"
 
 namespace basecross {
 
@@ -26,6 +27,7 @@ namespace basecross {
 		std::shared_ptr<Port> m_port;
 
 		std::shared_ptr<FloorDecision> m_floorDec;
+		std::shared_ptr<BeltConveyorTex> m_texObj;//テクスチャオブジェクト
 
 		Vec3 m_pos = Vec3(2.0f,-0.5f,0.0f);
 		Vec3 m_scale = Vec3(1.5f, 0.1f, 5.0f);

@@ -39,7 +39,6 @@
 
 #include "TrapDoor.h"
 #include "TrapDoorAxis.h"
-#include "OffsetObject.h"
 
 #include "BaseEnemy.h"
 #include "DrEnemy.h"
@@ -49,3 +48,4 @@
 #include "SoundManager.h"
 
 #include "BeltConveyor.h"
+#include "BeltConveyorTex.h"

@@ -57,24 +57,42 @@ namespace basecross {
 			{
 			case MoveAxis::X:
 				newPos.x += m_speed * delta;
-				if (newPos.x > m_pos.x + m_limitDist || newPos.x < m_pos.x - m_limitDist)
+				if (newPos.x > m_pos.x + m_limitDist)
 				{
+					newPos.x = m_pos.x + m_limitDist; // 強制的に限界地へ
+					m_speed *= -1.0f;
+				}
+				else if(newPos.x < m_pos.x - m_limitDist)
+				{
+					newPos.x = m_pos.x - m_limitDist; // 強制的に限界地へ
 					m_speed *= -1.0f;
 				}
 
 				break;
 			case MoveAxis::Y:
 				newPos.y += m_speed * delta;
-				if (newPos.y > m_pos.y + m_limitDist || newPos.y < m_pos.y - m_limitDist)
+				if (newPos.y > m_pos.y + m_limitDist)
 				{
+					newPos.y = m_pos.y + m_limitDist; // 強制的に限界地へ
+					m_speed *= -1.0f;
+				}
+				else if (newPos.y < m_pos.y - m_limitDist)
+				{
+					newPos.y = m_pos.y - m_limitDist; // 強制的に限界地へ
 					m_speed *= -1.0f;
 				}
 
 				break;
 			case MoveAxis::Z:
 				newPos.z += m_speed * delta;
-				if (newPos.z > m_pos.z + m_limitDist || newPos.z < m_pos.z - m_limitDist)
+				if (newPos.z > m_pos.z + m_limitDist)
 				{
+					newPos.z = m_pos.z + m_limitDist; // 強制的に限界地へ
+					m_speed *= -1.0f;
+				}
+				else if (newPos.z < m_pos.z - m_limitDist)
+				{
+					newPos.z = m_pos.z - m_limitDist; // 強制的に限界地へ
 					m_speed *= -1.0f;
 				}
 
