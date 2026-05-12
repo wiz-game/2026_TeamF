@@ -39,6 +39,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectShader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProtoStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)UpDownFloor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureCollision.h" />
   </ItemGroup>
@@ -72,6 +73,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProtoStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)StageObjBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UpDownFloor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />

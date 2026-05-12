@@ -60,7 +60,7 @@ namespace basecross{
 		}
 		if (event->m_MsgStr == L"ToProtoStage") {
 			//ゲームステージの設定
-			ResetActiveStage<ProtoStage>();
+			ResetActiveStage<GameStageBase>();
 		}
 	}
 

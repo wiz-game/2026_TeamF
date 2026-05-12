@@ -60,7 +60,7 @@ namespace basecross {
 
 			rb->Initialize(settings);
 
-			m_floor = AddGameObject<Floor>();
+			m_floor = AddGameObject<Floor>(Vec3(5,0,5), Vec3(), Vec3());
 
 			AddGameObject<PowerSupply>();
 			AddGameObject<Port>();

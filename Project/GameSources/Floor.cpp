@@ -8,6 +8,19 @@
 
 namespace basecross
 {
+	Floor::Floor
+	(
+		const std::shared_ptr<Stage>& stage,
+		const Vec3& Scale,
+		const Vec3& rot,
+		const Vec3& Position
+	) :
+		StageObjBase(stage, Scale, rot, Position),
+		m_pos(Position),
+		m_scale(Scale)
+	{
+	}
+
 	void Floor::OnCreate()
 	{
 		//Drawコンポーネント
