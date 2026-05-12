@@ -8,7 +8,7 @@
 #include "JoltManager.h"
 
 namespace basecross {
-	
+	class Floor;
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
@@ -18,6 +18,7 @@ namespace basecross {
 		shared_ptr<Player> m_Player;
 		void CreateViewLight(); //ビューの作成
 
+		vector<shared_ptr<Floor>> m_TestFloors;
 	public:
 		//構築と破棄
 		GameStage() :Stage(){}

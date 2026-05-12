@@ -7,28 +7,85 @@
 #include "Project.h"
 #include <filesystem>
 
-namespace basecross{
-	
+namespace basecross {
 
-	TextureCollision::TextureCollision(const shared_ptr<GameObject>& ptr) : Component(ptr){}
+	TextureCollision::TextureCollision(const shared_ptr<GameObject>& ptr) : Component(ptr) {}
 
 	void TextureCollision::OnCreate() {
+		ID3D11Texture2D* texResource = nullptr;
+		D3D11_TEXTURE2D_DESC srvDesc;
+		GetSrvResource(&texResource, &srvDesc);
+		if (!texResource) {
+			return;
+		}
 
-		vector<VertexPositionColor> vertices = {
-			{{0.0f,0.0f,0.0f},{1,1,1}},
-			{{0.0f,0.0f,1.0f},{1,1,1}}
-		};
-		vector<uint16_t> indices{
-			0,1
-		};
+		m_TextureContext.m_SizeX = srvDesc.Width;
+		m_TextureContext.m_SizeY = srvDesc.Height;
 
-		App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
+		int textureFullSize = m_TextureContext.m_SizeX * m_TextureContext.m_SizeY;
+		m_CB.width = m_TextureContext.m_SizeX;
+		m_CB.height = m_TextureContext.m_SizeY;
+
+		m_Labels.resize(textureFullSize);
+
+		m_LabelBuffer = make_shared<BufferContext>(sizeof(int), textureFullSize);
+		if(!m_LabelBuffer->CreateUAV()) {
+			int checker = 0;
+		}
+		if(!m_LabelBuffer->CreateSRV()) {
+			int checker = 0;
+		}
+
+		m_LabelOutputBuffer = make_shared<BufferContext>(sizeof(int), textureFullSize);
+		if(!m_LabelOutputBuffer->CreateSRV()) {
+			int checker = 0;
+		}
+		if(!m_LabelOutputBuffer->CreateUAV()){
+			int checker = 0;
+		}
+
+		m_ConvertFlagBuffer = make_shared<BufferContext>(sizeof(int), 1);
+		if (!m_ConvertFlagBuffer->CreateUAV()) {
+			int checker = 0;
+		}
+
+		//シェーダー初期化
+		m_MaskShader = make_shared<DX11ComputeShader>();
+		m_UnionFind1Shader = make_shared<DX11ComputeShader>();
+		m_UnionFind2Shader = make_shared<DX11ComputeShader>();
+
+		m_MaskShader->Initialize({ 8,8,1,m_TextureContext.m_SizeX,m_TextureContext.m_SizeY,1 });
+		m_UnionFind1Shader->Initialize({ 8,8,1,m_TextureContext.m_SizeX,m_TextureContext.m_SizeY,1 });
+		m_UnionFind2Shader->Initialize({ 8,8,1,m_TextureContext.m_SizeX,m_TextureContext.m_SizeY,1 });
+
+		m_MaskShader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
+		m_UnionFind1Shader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
+		m_UnionFind2Shader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
+
+		auto object = GetGameObject();
+		auto draw = object->GetComponent<SmBaseDraw>();
+		//srvから情報を取得
+		auto srv = draw->GetTextureResource()->GetShaderResourceView();
+
+		//SRV,UAVの場所を仮で取っておく
+		m_MaskShader->AddSRV(srv.Get());
+		m_MaskShader->AddUAV(m_LabelBuffer->m_UAV.Get());
+		m_MaskShader->SetShader(GenerateMaskShader::GetPtr()->GetShader());
+
+		m_UnionFind1Shader->AddSRV(m_LabelBuffer->m_SRV.Get());
+		m_UnionFind1Shader->AddUAV(m_LabelOutputBuffer->m_UAV.Get());
+		m_UnionFind1Shader->SetShader(UnionFindFirst::GetPtr()->GetShader());
+
+		m_UnionFind2Shader->AddSRV(m_LabelBuffer->m_SRV.Get());
+		m_UnionFind2Shader->AddUAV(m_LabelOutputBuffer->m_UAV.Get());
+		m_UnionFind2Shader->SetShader(UnionFindSecond::GetPtr()->GetShader());
+
+		InkConnectChecker::Get().AddTextureCollision(GetThis<TextureCollision>());
 	}
 	void TextureCollision::OnUpdate() {
 
 	}
 	void TextureCollision::OnDraw() {
-		CreateMeshCollision();
 		for (auto& triangles : m_ContourTriangles) {
 			for (auto& triangle : triangles) {
 				Vec3 dir = triangle[1] - triangle[0];
@@ -58,170 +115,86 @@ namespace basecross{
 		(*texture)->GetDesc(desc);
 	}
 
-	void TextureCollision::CreateAlphaMask(BufferContext& bufferContext, CoordContext& coordContext) {
-		auto& app = App::GetApp();
-		auto deviceResource = app->GetDeviceResources();
-		auto device = deviceResource->GetD3DDevice();
-		auto context = deviceResource->GetD3DDeviceContext();
-
-		//設定されているテスクチャデータを取得(本来はインクのSRVをここで取得)
-		ID3D11Texture2D* texResource = nullptr;
-		D3D11_TEXTURE2D_DESC srvDesc;
-		GetSrvResource(&texResource, &srvDesc);
-		if (!texResource) {
-			return;
-		}
-
-		coordContext.m_SizeX = srvDesc.Width;
-		coordContext.m_SizeY = srvDesc.Height;
-
-		int maskSize = coordContext.m_SizeX * coordContext.m_SizeY;
-
-		auto object = GetGameObject();
-		auto draw = object->GetComponent<SmBaseDraw>();
-
-		//srvから情報を取得
-		auto srv = draw->GetTextureResource()->GetShaderResourceView();
-		//入力はテクスチャなので入力型は適当にint
-		DX11ComputeShader<int> shader = DX11ComputeShader<int>();
-		bufferContext = BufferContext(sizeof(int), maskSize);
-		bufferContext.CreateUAV();
-		bufferContext.CreateSRV();
-
-		shader.AddUAV(bufferContext.m_UAV.Get());
-		shader.AddSRV(srv.Get());
-
-		shader.Initialize({ 8,8,1,coordContext.m_SizeX,coordContext.m_SizeY,1 });
-		shader.SetShader(GenerateMaskShader::GetPtr()->GetShader());
-
-		TextureSizeConstantData cb;
-		cb.width = coordContext.m_SizeX;
-		cb.height = coordContext.m_SizeY;
-		shader.SetConstantBuffer(cb, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
-
-		shader.Execute();
+	void TextureCollision::CreateAlphaMask() {
+		m_MaskShader->Execute();
 	}
-
-	void TextureCollision::CreateMeshCollision() {
+	void TextureCollision::ProcessCPU() {
 		auto start = std::chrono::steady_clock::now();
+		int labelSize = (int)m_Labels.size();
 
-		//カラーマスク抽出
-		BufferContext labelBuffer = {};
-		CreateAlphaMask(labelBuffer, m_TextureContext);
+		vector<char> checkList(labelSize, 0);
+		vector<int> groupId;
+		groupId.reserve(20);
+		for (int i = 0; i < labelSize; i++) {
+			int& label = m_Labels[i];
+			if (label != -1 && checkList[label] != 1) {
+				groupId.push_back(i);
+				checkList[label] = 1;
+			}
+		}
 
 		auto end = std::chrono::steady_clock::now();
-		auto maskDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
-		start = std::chrono::steady_clock::now();
-
-		//マスクの塊をグループ化
-		vector<int> cellLabels(m_TextureContext.m_SizeX * m_TextureContext.m_SizeY, 0);
-		DX11ComputeShader<int> shader = DX11ComputeShader<int>();
-		int labelSize = (int)cellLabels.size();
-
-		BufferContext cellLabelOutput = BufferContext(sizeof(int), labelSize);
-		cellLabelOutput.CreateSRV();
-		cellLabelOutput.CreateUAV();
-
-		BufferContext convertFlag = BufferContext(sizeof(int), 1);
-		convertFlag.CreateUAV();
-
-		shader.AddSRV(labelBuffer.m_SRV.Get());
-		shader.AddUAV(cellLabelOutput.m_UAV.Get());
-
-		shader.Initialize({ 8,8,1,m_TextureContext.m_SizeX,m_TextureContext.m_SizeY,1 });
-		shader.SetShader(UnionFindFirst::GetPtr()->GetShader());
-		TextureSizeConstantData cb;
-		cb.width = m_TextureContext.m_SizeX;
-		cb.height = m_TextureContext.m_SizeY;
-		shader.SetConstantBuffer(cb, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
-
-		end = std::chrono::steady_clock::now();
-		auto shaderInitializeDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
-		start = std::chrono::steady_clock::now();
-
-		shader.Execute();
-		swap(labelBuffer, cellLabelOutput);
-		shader.SetShader(UnionFindSecond::GetPtr()->GetShader());
-
-		shader.AddUAV(convertFlag.m_UAV.Get());
-		const int maxLoop = m_TextureContext.m_SizeX + m_TextureContext.m_SizeY;
-		const int checkDuration = 50;
-		for (int i = 0; i < maxLoop; i++) {
-			shader.SetSRV(0, labelBuffer.m_SRV.Get());
-			shader.SetUAV(0, cellLabelOutput.m_UAV.Get());
-			shader.Execute();
-			swap(labelBuffer, cellLabelOutput);
-
-			int flag = 0;
-			convertFlag.ReadBuffer(&flag);
-			if (flag == 0) {
-				break;
-			}
-			convertFlag.ResetUAV();
-		}
-		labelBuffer.ReadBuffer(cellLabels.data());
-		end = std::chrono::steady_clock::now();
-		auto shaderDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
-		start = std::chrono::steady_clock::now();
-		
-		
-		vector<IndexInfo> indexGroup;
-		indexGroup.reserve(labelSize);
-		for (int i = 0; i < labelSize; i++) {
-			int& label = cellLabels[i];
-			if (label != -1) {
-				indexGroup.push_back({ i,label });
-			}
-		}
-		sort(indexGroup.begin(), indexGroup.end(), [&](const IndexInfo& a, const IndexInfo& b) {return a.label < b.label; });
-
-		
-		vector<GroupInfo> groups;
-		groups.reserve(100);
-
-		if (!indexGroup.empty()) {
-			int startIndex = 0;
-			int currentId = indexGroup[0].label;
-			int  i = 1;
-			for (size_t size = indexGroup.size(); i < size; i++) {
-				int newId = indexGroup[i].label;
-				if (newId != currentId) {
-					groups.push_back({ currentId,startIndex,i - startIndex });
-					currentId = newId;
-					startIndex = i;
-				}
-			}
-			groups.push_back({ currentId,startIndex,i - startIndex });
-		}
-
-		end = std::chrono::steady_clock::now();
 		auto mappingDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
 		start = std::chrono::steady_clock::now();
 		//メッシュ作成
-		CreateTextureMesh(cellLabels, groups, m_TextureContext);
+		CreateTextureMesh(m_Labels, groupId, m_TextureContext);
 		end = std::chrono::steady_clock::now();
 		auto createMeshDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
 
-		float allDuration = maskDuration + shaderInitializeDuration + shaderDuration + mappingDuration + createMeshDuration;
+		float allDuration = mappingDuration + createMeshDuration;
 		int checker = 0;
 	}
+	void TextureCollision::ProcessGPU() {
+		auto start = std::chrono::steady_clock::now();
 
-	void TextureCollision::CreateTextureMesh(vector<int>& cells, vector<GroupInfo>& groups, CoordContext& context) {
+		//カラーマスク抽出
+		m_MaskShader->Execute();
+
+		auto end = std::chrono::steady_clock::now();
+		auto maskDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+
+		start = std::chrono::steady_clock::now();
+
+		m_UnionFind1Shader->Execute();
+		swap(m_LabelBuffer, m_LabelOutputBuffer);
+
+		const int maxLoop = 16;
+		const int checkDuration = 50;
+		for (int i = 0; i < maxLoop; i++) {
+			m_UnionFind2Shader->SetSRV(0, m_LabelBuffer->m_SRV.Get());
+			m_UnionFind2Shader->SetUAV(0, m_LabelOutputBuffer->m_UAV.Get());
+			m_UnionFind2Shader->Execute();
+			swap(m_LabelBuffer, m_LabelOutputBuffer);
+		}
+		for (int i = 0; i < m_TextureContext.m_SizeX * m_TextureContext.m_SizeY; i++) {
+			int o = 0;
+		}
+		m_LabelBuffer->ReadBuffer(m_Labels.data());
+		end = std::chrono::steady_clock::now();
+		auto shaderDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
+
+		float allDuration = maskDuration + shaderDuration;
+		int checker = 0;
+	}
+	void TextureCollision::CreateMeshCollision() {
+		ProcessGPU();
+		ProcessCPU();
+	}
+
+	void TextureCollision::CreateTextureMesh(vector<int>& cells, vector<int>& groupIDs, CoordContext& context) {
 		auto start = std::chrono::steady_clock::now();
 
 		//塊の輪郭抽出
 		m_Contours.clear();
-		m_Contours.resize(groups.size());
+		m_Contours.resize(groupIDs.size());
 		vector<Vec2> findIndices = {
 			{ 0,-1},{  1,-1},{ 1,0},{ 1, 1},
 			{ 0, 1},{ -1, 1},{-1,0},{-1,-1},
 		};
 		
 		int page = 1;
-		vector<thread> contourThreads;
-
-		for (int i = 0; i < groups.size();i++) {
-			GetContour(cells, groups[i], m_Contours[i]);
+		for (int i = 0; i < groupIDs.size();i++) {
+			GetContour(cells, groupIDs[i], m_Contours[i]);
 		}
 		auto end = std::chrono::steady_clock::now();
 		auto contourDuration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
@@ -231,11 +204,15 @@ namespace basecross{
 
 		float totalDouglasDuration = 0.0f;
 		float totalEarClippingDuration = 0.0f;
+		vector<int> tempContour;
+
+		DouglasPeucker douglasPeucker;
 		//頂点最適化
 		for (auto& contour : m_Contours) {
 			start = std::chrono::steady_clock::now();
-			vector<int> tempContour;
-			DouglasPeucker::Calc(contour, 0, (int)contour.size() - 1, 2.0, m_TextureContext, tempContour);
+			douglasPeucker.Initialize(contour, m_TextureContext);
+			tempContour.clear();
+			douglasPeucker.Calc(0, (int)contour.size() - 1, 2.0f, tempContour);
 			contour = tempContour;
 			end = std::chrono::steady_clock::now();
 			auto duration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
@@ -250,7 +227,7 @@ namespace basecross{
 		}
 		int checker = 0;
 	}
-	void TextureCollision::GetContour(vector<int>& cells,GroupInfo& group, vector<int>& out) {
+	void TextureCollision::GetContour(vector<int>& cells,int& groupID, vector<int>& out) {
 		struct Vec2Int {
 			int x, y;
 		};
@@ -259,10 +236,10 @@ namespace basecross{
 			{ 0, 1},{ -1, 1},{-1,0},{-1,-1},
 		};
 
-		int startIndex = group.id;
+		int startIndex = groupID;
 		int currentIndex = startIndex;
 		int befIndex = -1;
-		out.reserve(group.count);
+		out.reserve(cells.size() * 0.5f);
 
 		int count = 0;
 		int checkDir = 6;
@@ -280,7 +257,7 @@ namespace basecross{
 				if (findIndices[dir].y == 1 && y >= (int)m_TextureContext.m_SizeY - 1) continue;
 
 				int index = currentIndex + findIndices[dir].y * m_TextureContext.m_SizeX + findIndices[dir].x;
-				if (cells[index] != -1 && cells[index] == group.id) {
+				if (cells[index] != -1 && cells[index] == groupID) {
 					befIndex = currentIndex;
 					currentIndex = index;
 					out.push_back(index);
@@ -403,38 +380,55 @@ namespace basecross{
 		Dev->InitializeStates();
 	}
 
-	int DouglasPeucker::count = 0;
+	inline float DouglasPeucker::CalcDistance(Vec2& start, Vec2& end, Vec2& point) {
+		float steX = end.x - start.x;
+		float steY = end.y - start.y;
 
-	float DouglasPeucker::CalcDistance(Vec2& start, Vec2& end, Vec2& point) {
-		Vec2 startToEnd = end - start;
-		Vec2 startToPoint = point - start;
+		float stpX = point.x - start.x;
+		float stpY = point.y - start.y;
 
-		float sTeDot = startToEnd.dot(startToEnd);
-		if (sTeDot == 0) return startToPoint.lengthSqr();
+		float steLengthSqr = steX * steX + steY * steY;
+		if (steLengthSqr == 0.0f) {
+			return stpX * stpX + stpY * stpY;
+		}
 
-		float t = startToPoint.dot(startToEnd) / sTeDot;
-		t = max(0.0f, min(1.0f, t));
+		float t = (stpX * steX + stpY * steY) / steLengthSqr;
+		t = std::clamp(t, 0.0f, 1.0f);
 
-		Vec2 closest = start + startToEnd * t;
+		float closestX = start.x + steX * t;
+		float closestY = start.y + steY * t;
 
-		return (point - closest).lengthSqr();
+		float distX = point.x - closestX;
+		float distY = point.y - closestY;
+
+		return distX * distX + distY * distY;
 	}
-	void DouglasPeucker::Calc(const vector<int>& points, int start, int end, float epsilon, const CoordContext& context, vector<int>& output) {
-		if (end - start <= 1) {
-			vector<int> result = { points[start],points[end] };
-			output.insert(output.end(), result.begin(), result.end());
+	void DouglasPeucker::Initialize(const vector<int>& points, const CoordContext& context) {
+		count = 0;
+		m_Points = points;
+		m_Positions.resize(m_Points.size());
+		for (int i = 0; i < m_Points.size(); i++) {
+			m_Positions[i] = Vec2(static_cast<float>(points[i] % context.m_SizeX), static_cast<float>(points[i] / context.m_SizeX));
+		}
+	}
+	void DouglasPeucker::Calc(int start, int end, float epsilon, vector<int>& output) {
+		int calcSize = end - start;
+		if (calcSize <= 1) {
+			if (calcSize > 0) {
+				output.push_back(m_Points[start]);
+				output.push_back(m_Points[end]);
+			}
 			return;
 		}
-		count++;
+
 		float maxDist = -10000000.0f;
 		int index = -1;
 
-		Vec2 startPoint = Vec2(static_cast<float>(points[start] % context.m_SizeX), static_cast<float>(points[start] / context.m_SizeX));
-		Vec2 endPoint = Vec2(static_cast<float>(points[end] % context.m_SizeX), static_cast<float>(points[end] / context.m_SizeX));
+		Vec2& startPoint = m_Positions[start];
+		Vec2& endPoint = m_Positions[end];
 
 		for (int i = start + 1; i < end; i++) {
-			Vec2 point = Vec2(static_cast<float>(points[i] % context.m_SizeX), static_cast<float>(points[i] / context.m_SizeX));
-			float dist = CalcDistance(startPoint, endPoint, point);
+			float dist = CalcDistance(startPoint, endPoint, m_Positions[i]);
 
 			if (dist > maxDist) {
 				maxDist = dist;
@@ -443,18 +437,15 @@ namespace basecross{
 		}
 
 		if (maxDist > epsilon * epsilon) {
-			vector<int> result1, result2;
-			Calc(points, start,     index, epsilon, context, result1);
-			Calc(points, index,       end, epsilon, context, result2);
-
-			output.assign(result1.begin(), result1.end() - 1);
-			output.insert(output.end(), result2.begin(), result2.end());
+			Calc(start,     index, epsilon, output);
+			output.pop_back();
+			Calc(index,       end, epsilon, output);
 		}
 		else {
-
-			vector<int> result = { points[start],points[end] };
-			output.insert(output.end(), result.begin(), result.end());
+			output.push_back(m_Points[start]);
+			output.push_back(m_Points[end]);
 		}
+
 	}
 
 
@@ -499,6 +490,38 @@ namespace basecross{
 		triangles.push_back({ ear[0], ear[1], ear[2] });
 
 		return triangles;
+	}
+
+	void TextureMeshManager::Reload() {
+		vector<thread> threads;
+		for (auto& meshCollision : m_ReloadMeshCollisions) {
+			meshCollision->ProcessGPU();
+			thread t([&]() { meshCollision->ProcessCPU(); });
+			threads.push_back(move(t));
+		}
+
+		for (auto& t : threads) {
+			t.join();
+		}
+		m_ReloadMeshCollisions.clear();
+	}
+
+	vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> InkConnectChecker::CheckConnect() {
+		vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> result;
+		for (auto& weakSupply : m_PowerSupplies) {
+			auto supply = weakSupply.lock();
+			if (!supply) continue;
+
+			for (auto& weakCollision : m_TextureCollisions) {
+				auto collision = weakCollision.lock();
+				if (!collision) return;
+
+				auto& supplyCollision = supply->GetComponent<Collision>();
+				auto supplyAABB = supplyCollision->GetWrappedAABB();
+				
+			}
+		}
+		return result;
 	}
 }
 //end basecross
