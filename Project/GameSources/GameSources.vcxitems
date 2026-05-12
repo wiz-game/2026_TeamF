@@ -54,6 +54,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Singleton.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UpDownFloor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureCollision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoorAxis.h" />
@@ -102,6 +104,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)StageObjBase.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UpDownFloor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoorAxis.cpp" />

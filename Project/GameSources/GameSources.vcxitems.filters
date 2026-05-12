@@ -117,6 +117,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp">
       <Filter>Enemy</Filter>
     <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameStageBase.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)StageObjBase.cpp">
       <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
@@ -241,6 +243,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h">
       <Filter>Enemy</Filter>
     <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameStageBase.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h">
       <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
