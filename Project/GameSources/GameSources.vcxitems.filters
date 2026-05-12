@@ -107,7 +107,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)OffsetObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BaseEnemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
@@ -116,11 +115,13 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp">
       <Filter>Enemy</Filter>
-    <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp">
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStageBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StageObjBase.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UpDownFloor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
@@ -233,7 +234,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h">
       <Filter>Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)OffsetObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
@@ -242,11 +242,13 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h">
       <Filter>Enemy</Filter>
-    <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h">
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStageBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UpDownFloor.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl">
