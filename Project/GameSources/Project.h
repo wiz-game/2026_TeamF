@@ -12,13 +12,15 @@
 #include "Character.h"
 #include "ComputeShader.h"
 #include "Player.h"
-#include "Floor.h"
 
+#include "StageObjBase.h"
+#include "Floor.h"
 #include "PowerSupply.h"
 #include "Port.h"
 #include "Goal.h"
 #include "MoveFloor.h"
 
+#include "GameStageBase.h"
 #include "GameStage.h"
 #include "GameStageBase.h"
 #include "ProtoStage.h"
