@@ -19,7 +19,8 @@ namespace basecross {
 
 	void DrEnemy::OnUpdate()
 	{
-
+		BaseEnemy::UpdateInkDrow();
 	}
+
 }
 //end basecross
