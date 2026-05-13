@@ -14,9 +14,6 @@ namespace basecross {
 
 	struct TrapDoorAxisDesc
 	{	//	デフォルトの値
-		Vec3 pos = Vec3(0.0f, 0.0f, 0.0f);
-		Vec3 scale = Vec3(2.0f, 0.1f, 2.0f);
-		Vec3 initialRotation = Vec3(0.0f, 0.0f, 0.0f);
 		MoveAxis axis = MoveAxis::Y;
 		float speed = 0.01f;
 		std::shared_ptr<Port> port = nullptr;
@@ -25,7 +22,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	class TrapDoorAxis : public GameObject;
 	//--------------------------------------------------------------------------------------
-	class TrapDoorAxis : public GameObject
+	class TrapDoorAxis : public StageObjBase
 	{
 		std::shared_ptr<Transform> m_trans;
 		std::shared_ptr<PNTStaticDraw> m_staticDraw;
@@ -34,10 +31,9 @@ namespace basecross {
 
 		std::shared_ptr<TrapDoor> m_trapDoor;
 
-		Vec3 m_pos;
-		Vec3 m_scale;
 		Vec3 m_initialRotation;
 		Vec3 m_trapDoorScale;
+		Vec3 m_scale;
 
 		Vec3 m_rotateVec;
 
@@ -49,11 +45,13 @@ namespace basecross {
 	public:
 		// 構築と破棄
 		TrapDoorAxis(const shared_ptr<Stage>& stage,
+			const Vec3& Scale,
+			const Vec3& Rot,
+			const Vec3& Position,
 			const TrapDoorAxisDesc& desc) :
-			GameObject(stage),
-			m_pos(desc.pos),
-			m_trapDoorScale(desc.scale),
-			m_initialRotation(desc.initialRotation),
+			StageObjBase(stage, Scale, Rot, Position),
+			m_trapDoorScale(Scale),
+			m_initialRotation(Rot),
 			m_moveAxis(desc.axis),
 			m_speed(desc.speed),
 			m_port(desc.port),
