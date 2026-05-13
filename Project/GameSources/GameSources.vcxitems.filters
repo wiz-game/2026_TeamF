@@ -121,7 +121,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)StageObjBase.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)UpDownFloor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
@@ -248,7 +247,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)UpDownFloor.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl">

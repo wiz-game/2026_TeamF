@@ -27,7 +27,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	class MoveFloor : public GameObject;
 	//--------------------------------------------------------------------------------------
-	class MoveFloor : public GameObject
+	class MoveFloor : public StageObjBase
 	{
 		std::shared_ptr<Transform> m_transform;
 		std::shared_ptr<PNTDXModelDraw> m_draw;
@@ -50,9 +50,13 @@ namespace basecross {
 
 	public:
 		// 構築と破棄
-		MoveFloor(const shared_ptr<Stage>& stage,
+		MoveFloor(
+			const shared_ptr<Stage>& StagePtr,
+			const Vec3& Scale,
+			const Vec3& Rot,
+			const Vec3& Pos,
 			const MoveFloorDesc& desc) :
-			GameObject(stage),
+			StageObjBase(StagePtr, Scale, Rot, Pos),
 			m_pos(desc.pos),
 			m_scale(desc.scale),
 			m_moveAxis(desc.axis),

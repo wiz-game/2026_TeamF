@@ -514,7 +514,7 @@ namespace basecross {
 
 			for (auto& weakCollision : m_TextureCollisions) {
 				auto collision = weakCollision.lock();
-				if (!collision) return;
+				if (!collision) continue;
 
 				auto& supplyCollision = supply->GetComponent<Collision>();
 				auto supplyAABB = supplyCollision->GetWrappedAABB();

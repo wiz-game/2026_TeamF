@@ -10,7 +10,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	class Goal : public GameObject;
 	//--------------------------------------------------------------------------------------
-	class Goal : public GameObject
+	class Goal : public StageObjBase
 	{
 		std::shared_ptr<Transform> m_transform;
 		std::shared_ptr<PNTDXModelDraw> m_draw;
@@ -24,11 +24,15 @@ namespace basecross {
 
 	public:
 		// 構築と破棄
-		Goal(const shared_ptr<Stage>& stage,
-			const Vec3& pos,
-			std::shared_ptr<Port> port) :
-			GameObject(stage),
-			m_pos(pos),
+		Goal(
+			const shared_ptr<Stage>& StagePtr,
+			const Vec3& Scale,
+			const Vec3& Rot,
+			const Vec3& Pos,
+			std::shared_ptr<Port> port
+		) :
+			StageObjBase(StagePtr, Scale, Rot, Pos),
+			m_pos(Pos),
 			m_port(port)
 		{
 		}
