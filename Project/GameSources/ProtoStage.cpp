@@ -126,31 +126,31 @@ namespace basecross {
 
 			//動く床の初期設定
 			MoveFloorDesc moveFloorY;
-			moveFloorY.pos = Vec3(0.0f, 1.5f, 5.5f);
+			moveFloorY.pos = Vec3(0.0f, -0.5f, 5.5f);
 			moveFloorY.scale = Vec3(2.0f, 0.1f, 2.0f);
 			moveFloorY.axis = MoveAxis::Y;		//移動する軸の指定
 			moveFloorY.speed = 1.0f;			//移動速度
-			moveFloorY.limitDist = 2.05f;		//移動上限
+			moveFloorY.limitDist = 3.0f;		//移動上限
 			moveFloorY.port = moveFloor_port;	//portの指定
 			AddGameObject<MoveFloor>(moveFloorY);
 
 
 			MoveFloorDesc moveFloorX;
-			moveFloorX.pos = Vec3(3.5f, 2.5f, 5.5f);
+			moveFloorX.pos = Vec3(2.0f, 2.5f, 5.5f);
 			moveFloorX.scale = Vec3(2.0f, 0.1f, 2.0f);
 			moveFloorX.axis = MoveAxis::X;
 			moveFloorX.speed = -1.0f;
-			moveFloorX.limitDist = 1.5f;
+			moveFloorX.limitDist = 3.0f;
 			moveFloorX.port = moveFloor_port;
 			AddGameObject<MoveFloor>(moveFloorX);
 
 
 			MoveFloorDesc moveFloorZ;
-			moveFloorZ.pos = Vec3(6.5f, 2.5f, 7.0f);
+			moveFloorZ.pos = Vec3(6.5f, 2.5f, 5.5f);
 			moveFloorZ.scale = Vec3(2.0f, 0.1f, 2.0f);
 			moveFloorZ.axis = MoveAxis::Z;
 			moveFloorZ.speed = 1.0f;
-			moveFloorZ.limitDist = 1.5f;
+			moveFloorZ.limitDist = 3.0f;
 			moveFloorZ.port = moveFloor_port;
 			AddGameObject<MoveFloor>(moveFloorZ);
 

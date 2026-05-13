@@ -52,9 +52,14 @@ namespace basecross {
 		virtual void OnCollisionExcute(shared_ptr<GameObject>& info) override;
 		virtual void OnCollisionExit(shared_ptr<GameObject>& info) override;
 
-		bool GetisPower() const
+		bool GetIsPower() const
 		{
 			return isPower;
+		}
+
+		void SetIsPower(bool power)
+		{
+			isPower = power;
 		}
 	};
 
