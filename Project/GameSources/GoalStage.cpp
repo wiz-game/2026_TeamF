@@ -54,11 +54,11 @@ namespace basecross {
 
 		auto CntlVec = app->GetInputDevice().GetControlerVec();
 
-		scene->SetDebugString(L"GoalStage \n Abutton -> ProtoStage");
+		scene->SetDebugString(L"GoalStage \n Abutton -> TitleStage");
 
 		if (CntlVec[0].wPressedButtons && XINPUT_GAMEPAD_A)
 		{
-			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToProtoStage");
+			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToTitleStage");
 		}
 	}
 

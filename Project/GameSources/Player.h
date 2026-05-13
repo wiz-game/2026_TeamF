@@ -45,6 +45,7 @@ class MoveFloor;
 		bool m_isGround;
 		
 	public :
+
 		Player
 		(
 			const std::shared_ptr<Stage>& stage,

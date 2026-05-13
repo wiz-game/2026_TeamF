@@ -118,7 +118,7 @@ namespace basecross {
 		if (auto otherCloud = std::dynamic_pointer_cast<InkCloud>(info))
 		{
 			// 相手が通電していて自分がしていなければ、電気をもらう
-			if (otherCloud->GetisPower() && !this->isPower)
+			if (otherCloud->GetIsPower() && !this->isPower)
 			{
 				this->isPower = true;
 				this->m_powerTimer = otherCloud->m_powerTimer - 0.2f;

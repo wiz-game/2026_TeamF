@@ -16,6 +16,7 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyorTex.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ComputeShader.h" />
@@ -63,6 +64,7 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)BaseEnemy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyorTex.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CharacterController.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ComputeShader.cpp" />

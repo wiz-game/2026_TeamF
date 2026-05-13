@@ -50,3 +50,4 @@
 #include "SoundManager.h"
 
 #include "BeltConveyor.h"
+#include "BeltConveyorTex.h"
