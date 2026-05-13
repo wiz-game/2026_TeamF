@@ -67,11 +67,11 @@ namespace basecross {
 
 			rb->Initialize(settings);
 
-			m_floor = AddGameObject<Floor>(Vec3(5,0,5), Vec3(), Vec3());
+			//AddGameObject<Floor>(Vec3(5,0,5), Vec3(), Vec3());
 
-			AddGameObject<PowerSupply>();
-			AddGameObject<Port>();
-			AddGameObject<Goal>();
+			//AddGameObject<PowerSupply>();
+			//AddGameObject<Port>();
+			//AddGameObject<Goal>();
 			//AddGameObject<UpDownFloor>();
 
 			//プロトタイプ用地面作成
@@ -92,9 +92,9 @@ namespace basecross {
 			//rb->Initialize(settings);
 
 			//地面						position				scale
-			AddGameObject<Floor>(Vec3(0.0f, -1.0f, 0.0f), Vec3(8, 1, 15));
-			AddGameObject<Floor>(Vec3(10.0f, 2.0f, 15.0f), Vec3(8.0f, 0.5f, 10.0f));
-			AddGameObject<Floor>(Vec3(10.0f, 2.0f, 29.0f), Vec3(8.0f, 0.5f, 10.0f));
+			AddGameObject<Floor>(Vec3(8, 1, 15), Vec3(0), Vec3(0.0f, -1.0f, 0.0f) );
+			AddGameObject<Floor>( Vec3(8.0f, 0.5f, 10.0f), Vec3(0),Vec3(10.0f, 2.0f, 15.0f));
+			AddGameObject<Floor>( Vec3(8.0f, 0.5f, 10.0f), Vec3(0), Vec3(10.0f, 2.0f, 29.0f));
 
 
 			AddGameObject<PowerSupply>(Vec3(0.0f, -0.3f, -4.0f));
@@ -154,7 +154,8 @@ namespace basecross {
 			moveFloorZ.port = moveFloor_port;
 			AddGameObject<MoveFloor>(moveFloorZ);
 
-			AddGameObject<BeltConveyor>(moveFloor_port);
+			//									Scale			Rotation		Position			portの指定
+			AddGameObject<BeltConveyor>(Vec3(1.0f, 0.1f, 5.0f), Vec3(0,XM_PIDIV2,0), Vec3(3.0f, -0.5f, 0.0f), moveFloor_port);
 
 		}
 		catch (...) {

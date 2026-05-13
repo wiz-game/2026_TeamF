@@ -14,9 +14,11 @@ namespace basecross
 			float x = params.radiusX * cosf(radian);
 			float z = params.radiusZ * sinf(radian);
 
+			float halfH = params.height / 2.0f; // ベルトコンベアの板ポリの中心を原点にするために、高さの半分を計算する
+
 			//テクスチャの向きを９０度回転させるために、x方向の頂点とz方向の頂点を両方作成する
-			vertices.push_back({ Vec3(x, params.height, z), Vec2(0.0f, i / fSides) }); // x方向の頂点
-			vertices.push_back({ Vec3(x, 0.0f, z), Vec2(params.textureLoops, i / fSides) }); // z方向の頂点
+			vertices.push_back({ Vec3(x, halfH, z), Vec2(0.0f, i / fSides) }); // x方向の頂点
+			vertices.push_back({ Vec3(x, -halfH, z), Vec2(params.textureLoops, i / fSides) }); // z方向の頂点
 		}
 
 		uint16_t baseIndices[] = {
@@ -48,7 +50,7 @@ namespace basecross
 		drawComp->SetSamplerState(SamplerState::AnisotropicWrap);// 異方性フィルタリングを使用する
 
 		auto trans = GetComponent<Transform>();
-		trans->SetRotation(Vec3(0.0f, 0.0f, XM_PIDIV2));// ベルトコンベアの板ポリを横向きにする
+		//trans->SetRotation(Vec3(0.0f, 0.0f, XM_PIDIV2));// ベルトコンベアの板ポリを横向きにする
 
 		SetAlphaActive(true); // 透過処理を有効にする
 	}

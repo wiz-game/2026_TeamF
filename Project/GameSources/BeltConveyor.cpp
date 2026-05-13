@@ -14,6 +14,7 @@ namespace basecross {
 		m_transform = GetComponent<Transform>();
 		m_transform->SetPosition(m_pos);
 		m_transform->SetScale(m_scale);
+		m_transform->SetRotation(m_rot);
 
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTDXModelDraw>();
@@ -54,7 +55,8 @@ namespace basecross {
 
 		auto trans = m_texObj->GetComponent<Transform>();
 		auto pos = m_transform->GetPosition();
-		trans->SetPosition(Vec3(pos.x + m_scale.x / 2.0f, pos.y + 0.1f, pos.z));
+		trans->SetPosition(Vec3(pos.x, pos.y + 0.1f, pos.z));
+		trans->SetRotation(Vec3(m_rot.x, m_rot.y, m_rot.z + XM_PIDIV2));
 	}
 
 	void BeltConveyor::OnUpdate()
@@ -65,20 +67,26 @@ namespace basecross {
 		bool isConnect = m_port->GetConnect();
 		float delta = App::GetApp()->GetElapsedTime();
 		Vec3 pos = m_transform->GetPosition();
-		Vec3 newPos = pos; // 移動後の位置を計算するための変数
 
 		//通電していれば床が動く
 		if (isConnect)
 		{
 			m_isMove = true;
-			m_floorDec->SetCurrentMoveVec(Vec3(0, 0, m_speed * delta));
 
+			//ベルトコンベアの回転から、移動方向を算出する
+			float dx = sinf(m_rot.y);
+			float dz = cosf(m_rot.y);
+			Vec3 direction(dx, 0, dz);
+
+			Vec3 movePos = direction * m_speed * delta; // 移動量を計算する
+
+			m_floorDec->SetCurrentMoveVec(movePos);
 			m_texObj->SetUVOffsetSpeed(Vec2(0, -m_speed * delta));
 		}
 		else
 		{
 			m_isMove = false;
-			m_floorDec->SetCurrentMoveVec(Vec3(0, 0, 0));
+			m_floorDec->SetCurrentMoveVec(Vec3(0));
 			m_texObj->SetUVOffsetSpeed(Vec2(0, 0));
 
 		}
