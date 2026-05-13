@@ -13,7 +13,7 @@ namespace basecross {
 	//ビューとライトの作成
 	void GameStageBase::CreateViewLight() {
 		// カメラの設定
-		auto camera = ObjectFactory::Create<Camera>();
+		auto camera = ObjectFactory::Create<MainCamera>();
 		camera->SetEye(Vec3(0.0f, 8.0f, -8.0f));
 		camera->SetAt(Vec3(0.0f, 0.0f, 0.0f));
 
@@ -24,6 +24,16 @@ namespace basecross {
 		//マルチライトの作成
 		auto light = CreateLight<MultiLight>();
 		light->SetDefaultLighting(); //デフォルトのライティングを指定
+
+		vector<VertexPositionColor> vertices = {
+			{{0.0f,0.0f,0.0f},{1,1,1}},
+			{{0.0f,0.0f,1.0f},{1,1,1}}
+		};
+		vector<uint16_t> indices{
+			0,1
+		};
+
+		App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
 	}
 
 	void GameStageBase::OnCreate()
@@ -56,8 +66,17 @@ namespace basecross {
 			default:
 				break;
 			case ENUM_ObjType::T_Floor:
-					AddStaticObj(StaticParams(*date));
-					break;
+				AddStaticObj(StaticParams(*date));
+				break;
+			case ENUM_ObjType::T_Player:
+				AddPlayerObj(PlayerParams(*date));
+				break;
+			case ENUM_ObjType::T_Port:
+				AddPortObj(ElectricObjBaseParams(*date));
+				break;
+			case ENUM_ObjType::T_Goal:
+				AddGoalObj(ElectricObjBaseParams(*date));
+				break;
 			}
 		}
 	}
@@ -65,8 +84,12 @@ namespace basecross {
 	GameStageBase::ENUM_ObjType GameStageBase::ToStageObjType(const wstring& objType)
 	{
 		if (objType == L"Box")  return ENUM_ObjType::T_Box;
+		if (objType == L"Player")  return ENUM_ObjType::T_Player;
 		if (objType == L"Floor") return ENUM_ObjType::T_Floor;
 		if (objType == L"Wall")  return ENUM_ObjType::T_Wall;
+		if (objType == L"Port")  return ENUM_ObjType::T_Port;
+		if (objType == L"Goal")  return ENUM_ObjType::T_Goal;
+
 
 		return ENUM_ObjType::T_Unknown;
 	}
@@ -98,6 +121,20 @@ namespace basecross {
 		return params;
 	}
 
+	GameStageBase::STRUCT_PlayerParams GameStageBase::PlayerParams(JsonObject& json)
+	{
+		STRUCT_PlayerParams params;
+		BaseParams(json, params.StageObjParams);
+		return params;
+	}
+
+	GameStageBase::STRUCT_ElectricObjBaseParams GameStageBase::ElectricObjBaseParams(JsonObject& json)
+	{
+		STRUCT_ElectricObjBaseParams params;
+		BaseParams(json, params.StageObjParams);
+		return params;
+	}
+	
 	//GameStageBase::SUTRUCT_BoxParams GameStageBase::BoxParams(JsonObject& json, STRUCT_BaseParams params)
 	//{
 	//	SUTRUCT_BoxParams boxParams;
@@ -117,6 +154,28 @@ namespace basecross {
 			AddGameObject<Floor>(params.Scale, params.Rot, params.Pos);
 			break;
 		}
+	}
+
+	void GameStageBase::AddPlayerObj(STRUCT_PlayerParams params)
+	{
+		auto playerPtr = AddGameObject<Player>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos);
+
+		auto view = GetView();
+		auto camera = view->GetTargetCamera();
+		auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
+		mainCamera->SetTarget(playerPtr);
+	}
+
+	void GameStageBase::AddPortObj(STRUCT_ElectricObjBaseParams params)
+	{
+		auto portPtr = AddGameObject<Port>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos);
+		Map_Ports[params.portID] = portPtr;
+	}
+
+	void GameStageBase::AddGoalObj(STRUCT_ElectricObjBaseParams params)
+	{
+		if (!Map_Ports[params.portID])return;
+		AddGameObject<Goal>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.portID]);
 	}
 }
 //end basecross

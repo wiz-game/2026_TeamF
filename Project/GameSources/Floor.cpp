@@ -13,10 +13,10 @@ namespace basecross
 		const std::shared_ptr<Stage>& stage,
 		const Vec3& Scale,
 		const Vec3& rot,
-		const Vec3& Position
+		const Vec3& Pos
 	) :
-		StageObjBase(stage, Scale, rot, Position),
-		m_pos(Position),
+		StageObjBase(stage, Scale, rot, Pos),
+		m_pos(Pos),
 		m_scale(Scale)
 	{
 	}

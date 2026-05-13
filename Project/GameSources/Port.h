@@ -9,7 +9,7 @@
 #include "Electrified.h"
 
 namespace basecross {
-	class Port : public GameObject
+	class Port : public StageObjBase
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
@@ -23,10 +23,15 @@ namespace basecross {
 
 	public:
 		// ステージを引数にしたコンストラクタ【必須】
-		Port(const std::shared_ptr<Stage>& stage,
-			const Vec3& pos) :
-			GameObject(stage), // ステージをGameObjectに渡す【必須】
-			m_pos(pos)
+		Port(
+			const shared_ptr<Stage>& StagePtr,
+			const Vec3& Scale,
+			const Vec3& Rot,
+			const Vec3& Pos
+		) :
+			StageObjBase(StagePtr, Scale, Rot, Pos), // ステージをGameObjectに渡す【必須】
+			m_pos(Pos),
+			m_scale(Scale)
 		{
 		}
 
