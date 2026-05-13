@@ -21,12 +21,15 @@ namespace basecross {
 
 	public:
 		// 構築と破棄
-		Goal(const shared_ptr<Stage>& stage,
+		Goal(
+			const shared_ptr<Stage>& StagePtr,
 			const Vec3& Scale,
 			const Vec3& Rot,
-			const Vec3& Position,
-			shared_ptr<Port> port) :
-			StageObjBase(stage, Scale, Rot, Position), 
+			const Vec3& Pos,
+			std::shared_ptr<Port> port
+		) :
+			StageObjBase(StagePtr, Scale, Rot, Pos),
+			m_pos(Pos),
 			m_port(port)
 		{
 		}

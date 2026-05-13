@@ -48,8 +48,9 @@ namespace basecross {
 			CreateViewLight();
 			App::GetApp()->RegisterTexture(L"InkTest",App::GetApp()->GetDataDirWString() +  L"Texture/Test/InkCollisionTest3.png");
 
-			m_Player = AddGameObject<Player>();
+			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3());
 			AddGameObject<InkDraw>();
+
 			//AddGameObject<PowerSupply>(Vec3(0.0f, -0.3f, -4.0f));
 			//AddGameObject<Port>(Vec3(0.0f, -0.3f, 3.0f));
 

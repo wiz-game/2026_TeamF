@@ -42,7 +42,7 @@ namespace basecross {
 			CreateViewLight();
 
 			//プレイヤー作成
-			m_Player = AddGameObject<Player>();
+			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3());
 			//SetSharedGameObject(L"Player", m_Player);
 
 			//カメラ取得
@@ -66,6 +66,7 @@ namespace basecross {
 			settings.objectLayer = Layers::NON_MOVING;
 
 			rb->Initialize(settings);
+
 
 			//AddGameObject<Floor>(Vec3(5,0,5), Vec3(), Vec3());
 

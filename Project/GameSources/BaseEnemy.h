@@ -27,7 +27,8 @@ namespace basecross {
 
 		enum class State {
 			Idle,
-			Move,
+			Patrol,
+			BetWeen,
 			Drow,
 			Erase,
 		};
@@ -41,13 +42,19 @@ namespace basecross {
 		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<Transform> m_transform; // トランスフォームコンポーネント
 
-		float m_moveSpeed; // 移動速度
+		float m_moveSpeed = 1.0f; // 移動速度
+		float m_range = 5.0f;//徘徊範囲
 		float m_srachRange; // 探索範囲
+		float m_diatance;
+
+		Vec3 m_origin;
+		Vec3 m_targetPos;
 
 		State m_state; // 現在の状態
 
 		virtual void UpdateIdle(); // 待機状態の更新
-		virtual void UpdateMove(); // 移動状態の更新
+		virtual void UpdatePatrol(); // 徘徊移動の更新
+		virtual void UpdateBetWeen();//２点移動の更新
 		virtual void UpdateInkDrow(); // 描画状態の更新
 		virtual void UpdateInkErase(); // 消去状態の更新
 	};

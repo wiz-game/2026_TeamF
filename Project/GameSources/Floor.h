@@ -19,7 +19,7 @@ namespace basecross
 			const shared_ptr<Stage>& StagePtr,
 			const Vec3& Scale,
 			const Vec3& Rot,
-			const Vec3& Position
+			const Vec3& Pos
 		);
 
 		virtual ~Floor(){}
