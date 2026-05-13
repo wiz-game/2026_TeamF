@@ -19,9 +19,6 @@ namespace basecross {
 		std::shared_ptr<Player> m_player;
 		std::shared_ptr<Port> m_port = nullptr;
 
-		Vec3 m_pos;
-		Vec3 m_scale = Vec3(3.0f, 3.0f, 0.5f);
-
 	public:
 		// 構築と破棄
 		Goal(

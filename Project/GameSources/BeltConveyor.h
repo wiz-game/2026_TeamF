@@ -14,7 +14,7 @@ namespace basecross {
 	class Port;
 
 	//--------------------------------------------------------------------------------------
-	//	class BeltConveyor : public GameObject;
+	//	class BeltConveyor : public StageObjBase;
 	//--------------------------------------------------------------------------------------
 	class BeltConveyor : public StageObjBase
 	{
