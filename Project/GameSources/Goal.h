@@ -29,7 +29,6 @@ namespace basecross {
 			std::shared_ptr<Port> port
 		) :
 			StageObjBase(StagePtr, Scale, Rot, Pos),
-			m_pos(Pos),
 			m_port(port)
 		{
 		}
