@@ -64,6 +64,30 @@
     }
 },
 {
+    "type": "MoveFloor",
+    "position": {
+        "x": 14.279999732971192,
+        "y": 0.5,
+        "z": 6.699999809265137
+    },
+    "scale": {
+        "x": 5.0,
+        "y": 1.0,
+        "z": 5.0
+    },
+    "rotationEuler": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "childObjectData": {
+        "Axis": 1,
+        "Speed": 0.0,
+        "LimitDistance": 0.0,
+        "PortID": 0
+    }
+},
+{
     "type": "Floor",
     "position": {
         "x": 14.279999732971192,

@@ -43,11 +43,6 @@ namespace basecross {
 
 	}
 
-	void GameStageBase::OnUpdate()
-	{
-
-	}
-
 	void GameStageBase::StageDateRoad(int num)
 	{
 		wstring path = App::GetApp()->GetDataDirWString() + L"StageDatas/" + L"StageData" + to_wstring(num) + L".json";
@@ -77,6 +72,9 @@ namespace basecross {
 			case ENUM_ObjType::T_Goal:
 				AddGoalObj(ElectricObjBaseParams(*date));
 				break;
+			case ENUM_ObjType::T_MoveFloor:
+				AddMoveFloorObj(MoveFloorParams(*date));
+				break;
 			}
 		}
 	}
@@ -89,6 +87,7 @@ namespace basecross {
 		if (objType == L"Wall")  return ENUM_ObjType::T_Wall;
 		if (objType == L"Port")  return ENUM_ObjType::T_Port;
 		if (objType == L"Goal")  return ENUM_ObjType::T_Goal;
+		if (objType == L"MoveFloor")  return ENUM_ObjType::T_MoveFloor;
 
 
 		return ENUM_ObjType::T_Unknown;
@@ -132,6 +131,37 @@ namespace basecross {
 	{
 		STRUCT_ElectricObjBaseParams params;
 		BaseParams(json, params.StageObjParams);
+		auto childObjectData = json.At<JsonObject>(L"childObjectData");
+		params.portID = childObjectData->At<JsonNumber>(L"PortID")->GetIntValue();
+		return params;
+	}
+
+	GameStageBase::STRUCT_MoveFloorParams GameStageBase::MoveFloorParams(JsonObject& json)
+	{
+		STRUCT_MoveFloorParams params;
+		BaseParams(json, params.StageObjParams);
+
+		auto childObjectData = json.At<JsonObject>(L"childObjectData");
+		float axisStr = childObjectData->At<JsonNumber>(L"Axis")->GetFloatValue();
+		switch ((int)axisStr)
+		{
+		default:
+			break;
+		case 0:
+			params.axis = MoveAxis::X;
+			break;
+		case 1:
+			params.axis = MoveAxis::Y;
+			break;
+		case 2:
+			params.axis = MoveAxis::Z;
+			break;
+		}
+
+		params.speed = childObjectData->At<JsonNumber>(L"Speed")->GetFloatValue();
+		params.limitDist = childObjectData->At<JsonNumber>(L"LimitDistance")->GetFloatValue();
+		params.portID = childObjectData->At<JsonNumber>(L"PortID")->GetIntValue();
+
 		return params;
 	}
 	
@@ -176,6 +206,17 @@ namespace basecross {
 	{
 		if (!Map_Ports[params.portID])return;
 		AddGameObject<Goal>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.portID]);
+	}
+
+	void GameStageBase::AddMoveFloorObj(STRUCT_MoveFloorParams params)
+	{
+		MoveFloorDesc desc;
+		desc.axis = params.axis;
+		desc.limitDist = params.limitDist;
+		desc.speed = params.speed;
+		desc.port = Map_Ports[params.portID];
+
+		AddGameObject<MoveFloor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, desc);
 	}
 }
 //end basecross

@@ -16,8 +16,6 @@ namespace basecross {
 
 	struct MoveFloorDesc
 	{	//	デフォルトの値
-		Vec3 pos = Vec3(0.0f, -0.5f, 5.5f);
-		Vec3 scale = Vec3(2.0f, 0.1f, 2.0f);
 		MoveAxis axis = MoveAxis::Y;
 		float speed = 1.0f;
 		float limitDist = 3.0f;
@@ -55,10 +53,11 @@ namespace basecross {
 			const Vec3& Scale,
 			const Vec3& Rot,
 			const Vec3& Pos,
-			const MoveFloorDesc& desc) :
+			const MoveFloorDesc& desc
+		) :
 			StageObjBase(StagePtr, Scale, Rot, Pos),
-			m_pos(desc.pos),
-			m_scale(desc.scale),
+			m_pos(Pos),
+			m_scale(Scale),
 			m_moveAxis(desc.axis),
 			m_speed(desc.speed),
 			m_limitDist(desc.limitDist),

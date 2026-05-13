@@ -27,6 +27,7 @@ namespace basecross {
 			T_Wall,
 			T_Goal,
 			T_Port,
+			T_MoveFloor,
 			T_Unknown,
 		};
 
@@ -52,6 +53,16 @@ namespace basecross {
 			int portID;
 		};
 
+		//上下する床のパラメーター
+		struct STRUCT_MoveFloorParams
+		{
+			STRUCT_BaseParams StageObjParams;
+			MoveAxis axis;
+			float speed;
+			float limitDist;
+			int portID;
+		};
+
 		//テスト用のパラメータ
 		//struct SUTRUCT_BoxParams
 		//{
@@ -66,7 +77,6 @@ namespace basecross {
 		virtual ~GameStageBase() {}		
 		void CreateViewLight();
 		void OnCreate();
-		void OnUpdate();
 		void StageDateRoad(int num);
 
 		//オブジェクトタイプをwstringからENUMに変換
@@ -84,6 +94,9 @@ namespace basecross {
 		//portが接続できるオブジェクトの基本のパラメーターの取得
 		GameStageBase::STRUCT_ElectricObjBaseParams ElectricObjBaseParams(JsonObject& json);
 
+		//上下する床のパラメーターの取得
+		GameStageBase::STRUCT_MoveFloorParams MoveFloorParams(JsonObject& json);
+
 		//ボックスのパラメータの取得
 		//SUTRUCT_BoxParams BoxParams(JsonObject& json, STRUCT_BaseParams params);
 
@@ -99,6 +112,8 @@ namespace basecross {
 		//ゴールオブジェクトの生成
 		void AddGoalObj(STRUCT_ElectricObjBaseParams params);
 
+		//上下する床オブジェクトの生成
+		void AddMoveFloorObj(STRUCT_MoveFloorParams params);
 	};
 }
 //end basecross
