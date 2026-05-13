@@ -20,6 +20,7 @@ namespace basecross {
 		std::shared_ptr<GameObject> m_owner = nullptr;//親になるオブジェクト
 
 		Vec3 m_currentMoveVec;
+		bool m_isPlayerOn = false;//プレイヤーが乗っているかどうか
 
 	public:
 		// 構築と破棄
@@ -46,6 +47,11 @@ namespace basecross {
 		void SetCurrentMoveVec(const Vec3& v)
 		{
 			m_currentMoveVec = v;
+		}
+
+		bool GetIsPlayerOn() const
+		{
+			return m_isPlayerOn;
 		}
 	};
 
