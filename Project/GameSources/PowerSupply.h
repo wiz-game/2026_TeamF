@@ -35,6 +35,7 @@ namespace basecross {
 		void OnCreate() override;
 		void OnUpdate() override;
 		void OnCollisionEnter(std::shared_ptr<GameObject>& obj);	//インクとの当たり判定
+		void OnCollisionExit(std::shared_ptr<GameObject>& obj);	//インクとの当たり判定
 
 		bool GetConnect() const
 		{
