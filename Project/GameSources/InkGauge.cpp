@@ -19,7 +19,7 @@ namespace basecross
 		};
 		m_indices = {
 			0,1,2,
-			2,1,3 
+			1,3,2
 		};
 		m_draw = AddComponent<PCTSpriteDraw>(m_vertices,m_indices);
 		m_trans = GetComponent<Transform>();
@@ -53,4 +53,28 @@ namespace basecross
 			m_draw->UpdateVertices(m_vertices);
 		}
 	}
+
+
+	//ゲージ後ろ
+	//void GaugeBack::OnCreate()
+	//{
+	//	float ink = m_currentInk / m_maxInk;
+
+	//	m_width = m_maxInk * 10 * 2 * ink;
+	//	m_height = 25.0f / 2.0f;
+	//	m_vertices =
+	//	{
+	//		{Vec3(m_offsetPos.x, m_offsetPos.y, 0), m_color,Vec2(0, 0)},
+	//		{Vec3(m_offsetPos.x, m_height + m_offsetPos.y, 0) , m_color,Vec2(0, 1)},
+	//		{Vec3(m_width + m_offsetPos.x, m_offsetPos.y, 0) , m_color,Vec2(1, 0)},
+	//		{Vec3(m_width + m_offsetPos.x, m_height + m_offsetPos.y, 0) , m_color,Vec2(1, 1)}
+	//	};
+	//	m_indices = {
+	//		0,1,2,
+	//		2,1,3
+	//	};
+	//	m_draw = AddComponent<PCTSpriteDraw>(m_vertices, m_indices);
+	//	m_draw->SetDiffuse(m_color);
+	//	m_trans = GetComponent<Transform>();
+	//}
 }

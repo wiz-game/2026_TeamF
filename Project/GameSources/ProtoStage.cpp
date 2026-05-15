@@ -52,6 +52,7 @@ namespace basecross {
 			mainCamera->SetTarget(m_Player);
 
 			//UI作成
+			//auto gaugeBack = AddGameObject<GaugeBack>();
 			auto gauge = AddGameObject<InkGauge>();
 
 			//プロトタイプ用地面作成

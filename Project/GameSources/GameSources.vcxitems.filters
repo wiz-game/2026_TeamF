@@ -110,6 +110,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BaseEnemy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)OffsetObject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
@@ -225,6 +229,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h">
       <Filter>Sprite</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DrEnemy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)OffsetObject.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl">
