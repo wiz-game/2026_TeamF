@@ -58,6 +58,10 @@ namespace basecross
 	//ゲージ後ろ
 	void GaugeBack::OnCreate()
 	{
+		auto& app = App::GetApp();
+		auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+		app->RegisterTexture(L"Gauge", path + L"Gauge.png"); // 画像ファイルを読み込んでアセットとして登録する
+
 		float ink = m_currentInk / m_maxInk;
 
 		m_width = m_maxInk * 10 * 2 * ink;
@@ -74,6 +78,8 @@ namespace basecross
 			2,1,3
 		};
 		m_draw = AddComponent<PCTSpriteDraw>(m_vertices, m_indices);
+
+		m_draw->SetTextureResource(L"Gauge");
 		m_draw->SetDiffuse(m_color);
 		m_trans = GetComponent<Transform>();
 	}
