@@ -10,6 +10,36 @@
 #include "CharacterController.h"
 
 namespace basecross{
+	Player::Player
+	(
+		const std::shared_ptr<Stage>& stage,
+		const Vec3& Scale,
+		const Vec3& Rot,
+		const Vec3& Position
+	) :
+		StageObjBase(stage, Scale, Rot, Position),
+		m_height(1.0f),
+		m_radius(0.49f),
+		m_moveSpeed(0.0f),
+		m_maxSpeed(5.0f),
+		m_accel(0.99f),
+		m_pos(Position),
+		m_forward(Vec3(0)),
+		m_velocity(Vec3(0)),
+		m_ink(0.0f),
+		m_inkMax(15.0f),
+		m_inkDecrease(0.9f),
+		m_isDraw(true),
+		m_fade(0.0f),
+		m_externalVelocity(Vec3(0)),
+		m_gravity(-9.8f),
+		m_isGround(false)
+	{
+	}
+
+	Player::~Player()
+	{
+	}
 	// �ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾌ擾ｿｽ�ｽ�ｽ�ｽﾝ抵ｿｽ
 	void Player::OnCreate()
 	{

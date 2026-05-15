@@ -66,14 +66,17 @@ namespace basecross{
 		}
 
 		//���Őݒ�B��X�����ς���
+		//if (event->m_MsgStr == L"ToGameStage0") {
+		//	ResetActiveStage<ProtoStage>();
+		//}
+		//if (event->m_MsgStr == L"ToGameStage1") {
+		//	ResetActiveStage<GameStage>();
+		//}
+		//if (event->m_MsgStr == L"ToGameStage2") {
+		//	ResetActiveStage<GoalStage>();
+		//}
 		if (event->m_MsgStr == L"ToGameStage0") {
-			ResetActiveStage<ProtoStage>();
-		}
-		if (event->m_MsgStr == L"ToGameStage1") {
-			ResetActiveStage<GameStage>();
-		}
-		if (event->m_MsgStr == L"ToGameStage2") {
-			ResetActiveStage<GoalStage>();
+			ResetActiveStage<GameStageBase>();
 		}
 
 

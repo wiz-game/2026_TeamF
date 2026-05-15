@@ -9,12 +9,13 @@
 #include "PNTDXModelDraw.h"
 #include "InkCloud.h"
 #include "FloorDecision.h"
+#include "StageObjBase.h"
 
 namespace basecross {
 
 class MoveFloor;
 
-	class Player : public GameObject 
+	class Player : public StageObjBase 
 	{
 		std::weak_ptr<MainCamera> m_camera;
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
@@ -44,29 +45,19 @@ class MoveFloor;
 		bool m_isGround;
 		
 	public :
-		Player(const std::shared_ptr<Stage>& stage) :
-			GameObject(stage),
-			m_height(1.0f),
-			m_radius(0.49f),
-			m_moveSpeed(0.0f),
-			m_maxSpeed(5.0f),
-			m_accel(0.99f),
-			m_pos(Vec3(0.0f, 0.5f, 0.0f)),
-			m_forward(Vec3(0)),
-			m_velocity(Vec3(0)),
-			m_ink(0.0f),
-			m_inkMax(15.0f),
-			m_inkDecrease(0.9f),
-			m_isDraw(true),
-			m_fade(0.0f),
-			m_externalVelocity(Vec3(0)),
-			m_gravity(-9.8f),
-			m_isGround(false)
-		{
-		}
 
-		void OnCreate() override;
-		void OnUpdate() override;
+		Player
+		(
+			const std::shared_ptr<Stage>& stage,
+			const Vec3& Scale,
+			const Vec3& Rot,
+			const Vec3& Position
+		);
+
+		virtual ~Player();
+
+		void OnCreate();
+		void OnUpdate();
 
 		void OnMove();
 		void DropInk();
@@ -82,9 +73,9 @@ class MoveFloor;
 			return m_ink;
 		}
 
-		void OnCollisionEnter(std::shared_ptr<GameObject>& obj) override;
-		void OnCollisionExcute(std::shared_ptr<GameObject>& obj) override;
-		void OnCollisionExit(std::shared_ptr<GameObject>& obj)override;
+		void OnCollisionEnter(std::shared_ptr<GameObject>& obj);
+		void OnCollisionExcute(std::shared_ptr<GameObject>& obj);
+		void OnCollisionExit(std::shared_ptr<GameObject>& obj);
 
 		void UpdateMoveFloor(const Vec3& movePos);
 

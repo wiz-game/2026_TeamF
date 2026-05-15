@@ -16,5 +16,9 @@ namespace basecross {
 		BaseEnemy::m_draw->SetDiffuse(Col4(0.0f, 0.0f, 1.0f, 1.0f));
 	}
 
+	void ErEnemy::OnUpdate()
+	{
+		BaseEnemy::UpdateInkErase();
+	}
 }
 //end basecross
