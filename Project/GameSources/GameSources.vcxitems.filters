@@ -89,6 +89,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Box.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SkyCube.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h" />
@@ -172,6 +174,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Box.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SkyCube.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl">
@@ -181,6 +185,15 @@
       <Filter>ComputeShader\HLSL</Filter>
     </FxCompile>
     <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindSecond.hlsl">
+      <Filter>ComputeShader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)InkVertexShader.hlsl">
+      <Filter>ComputeShader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)InkPixelShader.hlsl">
+      <Filter>ComputeShader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSPNTInkDraw.hlsl">
       <Filter>ComputeShader\HLSL</Filter>
     </FxCompile>
   </ItemGroup>

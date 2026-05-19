@@ -166,6 +166,8 @@ namespace basecross {
 			//									Scale			Rotation		Position			portの指定
 			AddGameObject<BeltConveyor>(Vec3(1.0f, 0.1f, 5.0f), Vec3(0,0,0), Vec3(3.0f, -0.5f, 0.0f), nullptr);
 
+			//スカイボックス
+			AddGameObject<SkyCube>(L"SKYBOX");
 		}
 		catch (...) {
 			throw;

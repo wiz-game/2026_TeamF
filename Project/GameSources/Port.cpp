@@ -30,6 +30,7 @@ namespace basecross {
 		coll->SetAfterCollision(AfterCollision::None);
 
 		AddComponent<Electrified>();
+		InkConnectChecker::Get().AddPort(GetThis<Port>());
 	}
 
 	// 更新処理

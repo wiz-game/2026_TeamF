@@ -54,3 +54,4 @@
 
 #include "BeltConveyor.h"
 #include "BeltConveyorTex.h"
+#include "SkyCube.h"
