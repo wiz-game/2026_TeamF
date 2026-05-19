@@ -107,7 +107,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)OffsetObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BaseEnemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
@@ -116,9 +115,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp">
       <Filter>Enemy</Filter>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SkyCube.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
@@ -231,7 +233,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h">
       <Filter>Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)OffsetObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
@@ -240,9 +241,12 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h">
       <Filter>Enemy</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SkyCube.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl">
@@ -252,6 +256,15 @@
       <Filter>ComputeShader\HLSL</Filter>
     </FxCompile>
     <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindSecond.hlsl">
+      <Filter>ComputeShader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)InkVertexShader.hlsl">
+      <Filter>ComputeShader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)InkPixelShader.hlsl">
+      <Filter>ComputeShader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSPNTInkDraw.hlsl">
       <Filter>ComputeShader\HLSL</Filter>
     </FxCompile>
   </ItemGroup>

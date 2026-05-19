@@ -133,6 +133,8 @@ namespace basecross {
 
 			AddGameObject<BeltConveyor>(moveFloor_port);
 
+			//スカイボックス
+			AddGameObject<SkyCube>(L"SKYBOX");
 		}
 		catch (...) {
 			throw;

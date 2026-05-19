@@ -27,7 +27,7 @@ namespace basecross {
 
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetAfterCollision(AfterCollision::None);
-
+		InkConnectChecker::Get().AddPort(GetThis<Port>());
 	}
 
 	// 更新処理
