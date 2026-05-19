@@ -35,16 +35,11 @@ namespace basecross
 		if (m_player)
 		{
 			float actualInk = m_player->GetInk();
-			float inkDec = 0.9f * delta;
 			m_ink = m_maxInk / m_width;
+			m_unitWidth = actualInk / m_ink * 2;
 
-			float ratio = (m_maxInk > 0) ? static_cast<float>(m_currentInk) / m_maxInk : 0.0f;
-			//float targetWidth = 
-
-			float interPol = 0.2f;
-
-			m_vertices[2].position.x = (actualInk / m_ink) * 2 + m_offsetPos.x;
-			m_vertices[3].position.x = (actualInk / m_ink) * 2 + m_offsetPos.x;
+			m_vertices[2].position.x = m_unitWidth + m_offsetPos.x;
+			m_vertices[3].position.x = m_unitWidth + m_offsetPos.x;
 
 		}
 

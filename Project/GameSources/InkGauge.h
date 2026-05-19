@@ -34,7 +34,7 @@ namespace basecross
 			m_ink(15.0f),
 			m_width(0.0f),
 			m_height(0.0f),
-			m_unitWidth(1.0f),
+			m_unitWidth(0.0f),
 			m_offsetPos(Vec2(-100.0f,-15.0f))
 		{
 		}
