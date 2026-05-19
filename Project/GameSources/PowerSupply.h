@@ -6,10 +6,11 @@
 #pragma once
 #include "stdafx.h"
 #include "PNTDXModelDraw.h"
+#include "StageObjBase.h"
 #include "Electrified.h"
 
 namespace basecross {
-	class PowerSupply : public GameObject
+	class PowerSupply : public StageObjBase
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
@@ -24,11 +25,16 @@ namespace basecross {
 	public:
 		// ステージを引数にしたコンストラクタ【必須】
 		PowerSupply(const std::shared_ptr<Stage>& stage,
-			const Vec3& pos) :
-			GameObject(stage),
-			m_pos(pos)
+			const Vec3& Scale,
+			const Vec3& Rot,
+			const Vec3& Pos
+		) :
+			StageObjBase(stage, Scale, Rot,Pos),
+			m_pos(Pos)
 		{
 		}
+
+		
 
 		void OnCreate() override; // 初期設定用の関数(UnityのStartメソッドに相当)
 		void OnUpdate() override; // 毎フレーム実行される関数(UnityのUpdateメソッドに相当)
