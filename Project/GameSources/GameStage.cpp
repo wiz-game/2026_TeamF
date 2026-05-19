@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "Project.h"
 #include "game_controller.h"
+
 namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体
@@ -48,7 +49,7 @@ namespace basecross {
 			CreateViewLight();
 			App::GetApp()->RegisterTexture(L"InkTest",App::GetApp()->GetDataDirWString() +  L"Texture/Test/InkCollisionTest3.png");
 
-			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3());
+			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3(),float(10.0f));
 			AddGameObject<InkDraw>();
 
 			//AddGameObject<PowerSupply>(Vec3(0.0f, -0.3f, -4.0f));
@@ -59,20 +60,20 @@ namespace basecross {
 			auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
 			mainCamera->SetTarget(m_Player);
 
-			float sizeX = 4.0f, sizeZ = 7.5f;
-			for (int i = 0; i < 2; i++) {
-				for (int j = 0; j < 2; j++) {
-					float x = -sizeX + j * sizeX * 2.0f;
-					float y = -1.0f;
-					float z = -sizeZ + i * sizeZ * 2.0f;
+			//float sizeX = 4.0f, sizeZ = 7.5f;
+			//for (int i = 0; i < 2; i++) {
+			//	for (int j = 0; j < 2; j++) {
+			//		float x = -sizeX + j * sizeX * 2.0f;
+			//		float y = -1.0f;
+			//		float z = -sizeZ + i * sizeZ * 2.0f;
 
-					auto floor = AddGameObject<Floor>(Vec3(8, 1, 15), Vec3(0), Vec3(x, y, z));
-					auto draw = floor->GetComponent<SmBaseDraw>();
-					draw->SetTextureResource(L"InkTest");
-					floor->AddComponent<TextureCollision>();
-					m_TestFloors.push_back(floor);
-				}
-			}
+			//		auto floor = AddGameObject<Floor>(Vec3(8, 1, 15), Vec3(0), Vec3(x, y, z));
+			//		auto draw = floor->GetComponent<SmBaseDraw>();
+			//		draw->SetTextureResource(L"InkTest");
+			//		floor->AddComponent<TextureCollision>();
+			//		m_TestFloors.push_back(floor);
+			//	}
+			//}
 
 			
 		}
@@ -83,18 +84,18 @@ namespace basecross {
 
 	void GameStage::OnUpdate()
 	{
-		// アプリケーションオブジェクトを取得
-		auto& app = App::GetApp();
-		GameController::Update();
-		for (auto& floor : m_TestFloors) {
-			TextureMeshManager::Get().AddReload(floor->GetComponent<TextureCollision>());
-		}
+		//// アプリケーションオブジェクトを取得
+		//auto& app = App::GetApp();
+		//GameController::Update();
+		//for (auto& floor : m_TestFloors) {
+		//	TextureMeshManager::Get().AddReload(floor->GetComponent<TextureCollision>());
+		//}
 	}
 
 	void GameStage::OnUpdate2()
 	{
-		m_jphManger.Update(1.0f / 60.0f);
-		TextureMeshManager::Get().Reload();
+		//m_jphManger.Update(1.0f / 60.0f);
+		//TextureMeshManager::Get().Reload();
 	}
 
 	void GameStage::OnDraw()

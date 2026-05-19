@@ -42,7 +42,7 @@ namespace basecross {
 			CreateViewLight();
 
 			//プレイヤー作成
-			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3());
+			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3(),float(10.0f));
 			//SetSharedGameObject(L"Player", m_Player);
 
 			//カメラ取得
@@ -98,8 +98,8 @@ namespace basecross {
 			AddGameObject<Floor>( Vec3(8.0f, 0.5f, 10.0f), Vec3(0), Vec3(10.0f, 2.0f, 29.0f));
 
 
-			AddGameObject<PowerSupply>(Vec3(0.0f, -0.3f, -4.0f));
-			AddGameObject<PowerSupply>(Vec3(10.0f, 2.4f, 11.0f));
+			AddGameObject<PowerSupply>(Vec3(0.0f, -0.3f, -4.0f), Vec3(), Vec3());
+			AddGameObject<PowerSupply>(Vec3(10.0f, 2.4f, 11.0f), Vec3(), Vec3());
 
 			//port										position
 			auto moveFloor_port = AddGameObject<Port>(Vec3(0.0f, -0.3f, 3.0f),Vec3(),Vec3());
