@@ -125,7 +125,7 @@ namespace basecross {
 			TrapDoorAxisDesc moveDoorY;
 			moveDoorY.axis = MoveAxis::X;
 			moveDoorY.speed = -0.01f;
-			moveDoorY.port = trapDoor_port;
+			moveDoorY.port = nullptr;
 			AddGameObject<TrapDoorAxis>(Vec3(2.0f, 0.1f, 4.0f), Vec3(XM_PIDIV2, 0.0f, 0.0f), Vec3(10.0f, 2.2f, 20.0f), moveDoorY);
 
 
@@ -157,7 +157,7 @@ namespace basecross {
 			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(7.0f, 2.5f,5.5f),  moveFloorZ);
 
 			//									Scale			Rotation		Position			portの指定
-			AddGameObject<BeltConveyor>(Vec3(1.0f, 0.1f, 5.0f), Vec3(0,0,0), Vec3(3.0f, -0.5f, 0.0f), moveFloor_port);
+			AddGameObject<BeltConveyor>(Vec3(1.0f, 0.1f, 5.0f), Vec3(0,0,0), Vec3(3.0f, -0.5f, 0.0f), nullptr);
 		}
 		catch (...) {
 			throw;

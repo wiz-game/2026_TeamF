@@ -30,9 +30,9 @@ namespace basecross {
 
 		};
 
-
+		
 	private:
-		std::vector<VertexPositionTexture> vertices; // 頂点データを保持するベクター
+		std::vector<VertexPositionNormalTexture> vertices; // 頂点データを保持するベクター
 		InitParams params; // 初期化パラメータを保持する構造体
 
 	public:
