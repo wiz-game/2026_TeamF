@@ -60,10 +60,7 @@ namespace basecross {
 			{
 			default:
 				break;
-			case ENUM_ObjType::T_Box:
-				AddGameObject<Box>(StaticParams(*date));
-				break;
-			case ENUM_ObjType::T_Floor:
+			case ENUM_ObjType::T_Box: case ENUM_ObjType::T_Floor:
 				AddStaticObj(StaticParams(*date));
 				break;
 			case ENUM_ObjType::T_Player:
@@ -271,7 +268,7 @@ namespace basecross {
 		desc.speed = params.Speed;
 		desc.port = Map_Ports[params.PortID];
 
-		AddGameObject<TrapDoorAxisDesc>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, desc);
+		AddGameObject<TrapDoorAxis>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, desc);
 	}
 
 }
