@@ -51,9 +51,13 @@ namespace basecross {
 		MoveFloor(const shared_ptr<Stage>& stage,
 			const Vec3& Scale,
 			const Vec3& Rot,
-			const Vec3& Position,
-			const MoveFloorDesc& desc) :
-			StageObjBase(stage, Scale, Rot, Position),
+
+			const Vec3& Pos,
+			const MoveFloorDesc& desc
+		) :
+			StageObjBase(StagePtr, Scale, Rot, Pos),
+			m_pos(Pos),
+			m_scale(Scale),
 			m_moveAxis(desc.axis),
 			m_speed(desc.speed),
 			m_limitDist(desc.limitDist),

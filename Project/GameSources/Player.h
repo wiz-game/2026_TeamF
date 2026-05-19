@@ -51,7 +51,8 @@ class MoveFloor;
 			const std::shared_ptr<Stage>& stage,
 			const Vec3& Scale,
 			const Vec3& Rot,
-			const Vec3& Position
+			const Vec3& Position,
+			const float& InkMax
 		);
 
 		virtual ~Player();

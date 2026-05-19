@@ -42,7 +42,7 @@ namespace basecross {
 			CreateViewLight();
 
 			//プレイヤー作成
-			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3());
+			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3(),float(10.0f));
 			//SetSharedGameObject(L"Player", m_Player);
 
 			//カメラ取得
@@ -108,6 +108,7 @@ namespace basecross {
 
 			//Goal					scale			rotation		position			portの指定(nullptrの場合最初から表示)
 			AddGameObject<Goal>(Vec3(3.0f,3.0f,0.5f), Vec3(0), Vec3(10.0f, 4.0f, 33.0f), goal_port);
+
 			
 			//左に開く扉
 			auto leftDoor = AddGameObject<GoalDoor>(
@@ -134,20 +135,25 @@ namespace basecross {
 			moveFloorY.speed = 1.0f;			//移動速度
 			moveFloorY.limitDist = 3.0f;		//移動上限
 			moveFloorY.port = moveFloor_port;	//portの指定
+
 			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(0.0f, -0.5f, 5.5f),  moveFloorY);
+
 
 			MoveFloorDesc moveFloorX;
 			moveFloorX.axis = MoveAxis::X;
 			moveFloorX.speed = 1.0f;
 			moveFloorX.limitDist = -3.0f;
 			moveFloorX.port = moveFloor_port;
+
 			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(5.0f, 2.5f, 5.5f), moveFloorX);
+
 
 			MoveFloorDesc moveFloorZ;
 			moveFloorZ.axis = MoveAxis::Z;
 			moveFloorZ.speed = -1.0f;
 			moveFloorZ.limitDist = 3.0f;
 			moveFloorZ.port = moveFloor_port;
+
 			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(7.0f, 2.5f,5.5f),  moveFloorZ);
 
 			//									Scale			Rotation		Position			portの指定

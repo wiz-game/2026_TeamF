@@ -43,11 +43,6 @@ namespace basecross {
 
 	}
 
-	void GameStageBase::OnUpdate()
-	{
-
-	}
-
 	void GameStageBase::StageDateRoad(int num)
 	{
 		wstring path = App::GetApp()->GetDataDirWString() + L"StageDatas/" + L"StageData" + to_wstring(num) + L".json";
@@ -65,6 +60,9 @@ namespace basecross {
 			{
 			default:
 				break;
+			case ENUM_ObjType::T_Box:
+				AddGameObject<Box>(StaticParams(*date));
+				break;
 			case ENUM_ObjType::T_Floor:
 				AddStaticObj(StaticParams(*date));
 				break;
@@ -76,6 +74,15 @@ namespace basecross {
 				break;
 			case ENUM_ObjType::T_Goal:
 				AddGoalObj(ElectricObjBaseParams(*date));
+				break;
+			case ENUM_ObjType::T_MoveFloor:
+				AddMoveFloorObj(MoveFloorParams(*date));
+				break;
+			case ENUM_ObjType::T_PowerSupply:
+				AddPowerSupplyObj(StaticParams(*date));
+				break;
+			case ENUM_ObjType::T_TrapDoor:
+
 				break;
 			}
 		}
@@ -89,6 +96,7 @@ namespace basecross {
 		if (objType == L"Wall")  return ENUM_ObjType::T_Wall;
 		if (objType == L"Port")  return ENUM_ObjType::T_Port;
 		if (objType == L"Goal")  return ENUM_ObjType::T_Goal;
+		if (objType == L"MoveFloor")  return ENUM_ObjType::T_MoveFloor;
 
 
 		return ENUM_ObjType::T_Unknown;
@@ -124,6 +132,8 @@ namespace basecross {
 	GameStageBase::STRUCT_PlayerParams GameStageBase::PlayerParams(JsonObject& json)
 	{
 		STRUCT_PlayerParams params;
+		auto childObjectData = json.At<JsonObject>(L"childObjectData");
+		params.InkMax = childObjectData->At<JsonNumber>(L"InkMax")->GetFloatValue();
 		BaseParams(json, params.StageObjParams);
 		return params;
 	}
@@ -132,6 +142,62 @@ namespace basecross {
 	{
 		STRUCT_ElectricObjBaseParams params;
 		BaseParams(json, params.StageObjParams);
+		auto childObjectData = json.At<JsonObject>(L"childObjectData");
+		params.PortID = childObjectData->At<JsonNumber>(L"PortID")->GetIntValue();
+		return params;
+	}
+
+	GameStageBase::STRUCT_MoveFloorParams GameStageBase::MoveFloorParams(JsonObject& json)
+	{
+		STRUCT_MoveFloorParams params;
+		BaseParams(json, params.StageObjParams);
+
+		auto childObjectData = json.At<JsonObject>(L"childObjectData");
+		float axisStr = childObjectData->At<JsonNumber>(L"Axis")->GetFloatValue();
+		switch ((int)axisStr)
+		{
+		default:
+			break;
+		case 0:
+			params.Axis = MoveAxis::X;
+			break;
+		case 1:
+			params.Axis = MoveAxis::Y;
+			break;
+		case 2:
+			params.Axis = MoveAxis::Z;
+			break;
+		}
+
+		params.Speed = childObjectData->At<JsonNumber>(L"Speed")->GetFloatValue();
+		params.LimitDist = childObjectData->At<JsonNumber>(L"LimitDistance")->GetFloatValue();
+		params.PortID = childObjectData->At<JsonNumber>(L"PortID")->GetIntValue();
+
+		return params;
+	}
+
+	GameStageBase::STRUCT_TrapDoorAxis GameStageBase::TrapDoorAxisParams(JsonObject& json)
+	{
+		STRUCT_TrapDoorAxis params;
+		BaseParams(json, params.StageObjParams);
+		auto childObjectData = json.At<JsonObject>(L"childObjectData");
+		float axisStr = childObjectData->At<JsonNumber>(L"Axis")->GetFloatValue();
+		switch ((int)axisStr)
+		{
+		default:
+			break;
+		case 0:
+			params.Axis = MoveAxis::X;
+			break;
+		case 1:
+			params.Axis = MoveAxis::Y;
+			break;
+		case 2:
+			params.Axis = MoveAxis::Z;
+			break;
+		}
+		params.Speed = childObjectData->At<JsonNumber>(L"Speed")->GetFloatValue();
+		params.PortID = childObjectData->At<JsonNumber>(L"PortID")->GetIntValue();
 		return params;
 	}
 	
@@ -153,12 +219,15 @@ namespace basecross {
 		case ENUM_ObjType::T_Floor:
 			AddGameObject<Floor>(params.Scale, params.Rot, params.Pos);
 			break;
+		case ENUM_ObjType::T_Box:
+			AddGameObject<Box>(params.Scale, params.Rot, params.Pos);
+			break;
 		}
 	}
 
 	void GameStageBase::AddPlayerObj(STRUCT_PlayerParams params)
 	{
-		auto playerPtr = AddGameObject<Player>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos);
+		auto playerPtr = AddGameObject<Player>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, params.InkMax);
 
 		auto view = GetView();
 		auto camera = view->GetTargetCamera();
@@ -169,13 +238,41 @@ namespace basecross {
 	void GameStageBase::AddPortObj(STRUCT_ElectricObjBaseParams params)
 	{
 		auto portPtr = AddGameObject<Port>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos);
-		Map_Ports[params.portID] = portPtr;
+		Map_Ports[params.PortID] = portPtr;
 	}
+
 
 	void GameStageBase::AddGoalObj(STRUCT_ElectricObjBaseParams params)
 	{
-		if (!Map_Ports[params.portID])return;
-		AddGameObject<Goal>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.portID]);
+		if (!Map_Ports[params.PortID])return;
+		AddGameObject<Goal>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID]);
 	}
+
+	void GameStageBase::AddMoveFloorObj(STRUCT_MoveFloorParams params)
+	{
+		MoveFloorDesc desc;
+		desc.axis = params.Axis;
+		desc.limitDist = params.LimitDist;
+		desc.speed = params.Speed;
+		desc.port = Map_Ports[params.PortID];
+
+		AddGameObject<MoveFloor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, desc);
+	}
+
+	void GameStageBase::AddPowerSupplyObj(STRUCT_BaseParams params)
+	{
+		AddGameObject<PowerSupply>(params.Scale, params.Rot, params.Pos);
+	}
+
+	void GameStageBase::AddTrapDoorObj(STRUCT_TrapDoorAxis params)
+	{
+		TrapDoorAxisDesc desc;
+		desc.axis = params.Axis;
+		desc.speed = params.Speed;
+		desc.port = Map_Ports[params.PortID];
+
+		AddGameObject<TrapDoorAxisDesc>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, desc);
+	}
+
 }
 //end basecross
