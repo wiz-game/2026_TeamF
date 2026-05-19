@@ -16,10 +16,6 @@ namespace basecross {
 		m_transform->SetScale(m_scale);
 		m_transform->SetRotation(m_rot);
 
-		// ドローコンポーネントを追加
-		m_draw = AddComponent<PNTDXModelDraw>();
-		//m_draw->SetMeshResource(L"DEFAULT_CUBE");
-
 		m_staticDraw = AddComponent<PNTStaticDraw>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
 		m_staticDraw->SetEmissive(Col4(0, 0, 1, 1));
