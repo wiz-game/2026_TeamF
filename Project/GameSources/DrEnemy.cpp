@@ -51,26 +51,39 @@ namespace basecross {
             }
         }
 
+        Vec3 myPos = m_transform->GetPosition();
+        shared_ptr<Port> nearesPort = nullptr;
         float minDist = FLT_MAX;
 
         for (auto& port : ports)
         {
-            for (auto& supply : supplies)
+            float dist = (port->GetComponent<Transform>()->GetPosition() - myPos).length();
+
+            if (dist < minDist)
             {
-                Vec3 pPos = port->GetComponent<Transform>()->GetPosition();
-                Vec3 sPos = supply->GetComponent<Transform>()->GetPosition();
-
-                float dist = (pPos - sPos).length();
-
-                if (dist < minDist)
-                {
-                    minDist = dist;
-                    m_pointA = pPos;
-                    m_pointB = sPos;
-                }
+                minDist = dist;
+                nearesPort = port;
             }
         }
 
+        shared_ptr<PowerSupply> nearesSupply = nullptr;
+        minDist = FLT_MAX;
+
+        Vec3 portPos = nearesPort->GetComponent<Transform>()->GetPosition();
+
+        for (auto& supply : supplies)
+        {
+            float dist = (supply->GetComponent<Transform>()->GetPosition() - portPos).lengthSqr();
+
+            if (dist < minDist)
+            {
+                minDist = dist;
+                nearesSupply = supply;
+            }
+
+            m_pointA = portPos;
+            m_pointB = nearesSupply->GetComponent<Transform>()->GetPosition();
+        }
     }
 
     void DrEnemy::UpdateBetWeen()
