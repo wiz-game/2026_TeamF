@@ -14,6 +14,7 @@ namespace basecross {
 		m_transform = GetComponent<Transform>();
 		m_transform->SetPosition(m_pos);
 		m_transform->SetScale(m_scale);
+		m_transform->SetRotation(m_rot);
 
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTDXModelDraw>();

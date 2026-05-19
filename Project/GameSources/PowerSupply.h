@@ -8,6 +8,7 @@
 #include "PNTDXModelDraw.h"
 #include "StageObjBase.h"
 #include "Electrified.h"
+#include "StageObjBase.h"
 
 namespace basecross {
 	class PowerSupply : public StageObjBase
@@ -15,9 +16,6 @@ namespace basecross {
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<PNTStaticDraw> m_staticDraw;
-
-		Vec3 m_pos;
-		Vec3 m_scale = Vec3(1.0f, 0.1f, 1.0f);
 
 		bool isConnect = false;
 		bool isPower = true;

@@ -23,7 +23,7 @@ namespace basecross {
 	};
 
 	//--------------------------------------------------------------------------------------
-	//	class MoveFloor : public GameObject;
+	//	class MoveFloor : public StageObjBase;
 	//--------------------------------------------------------------------------------------
 	class MoveFloor : public StageObjBase
 	{
@@ -37,21 +37,21 @@ namespace basecross {
 
 		std::shared_ptr<FloorDecision> m_floorDec;
 
-		Vec3 m_pos;
-		Vec3 m_scale;
-
 		MoveAxis m_moveAxis;//どの軸に動くか
 		float m_speed;
 		float m_limitDist;
 
 		bool m_isUp = false;
+		float m_stopTimer = 0.0f;
+		const float PAUSE_TIME = 0.5f; // 停止時間
+
 
 	public:
 		// 構築と破棄
-		MoveFloor(
-			const shared_ptr<Stage>& StagePtr,
+		MoveFloor(const shared_ptr<Stage>& stage,
 			const Vec3& Scale,
 			const Vec3& Rot,
+
 			const Vec3& Pos,
 			const MoveFloorDesc& desc
 		) :

@@ -7,7 +7,7 @@
 #include "PowerSupply.h"
 #include "Project.h"
 #include "game_controller.h"
-#include "InkDraw.h"
+#include "Project.h"
 
 namespace basecross {
 	// 初期設定
@@ -18,6 +18,7 @@ namespace basecross {
 
 		m_transform->SetPosition(m_pos);
 		m_transform->SetScale(m_scale);
+		m_transform->SetRotation(m_rot);
 
 		// ドローコンポーネントを追加
 		m_draw = AddComponent<PNTDXModelDraw>();

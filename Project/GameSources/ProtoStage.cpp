@@ -98,31 +98,35 @@ namespace basecross {
 			AddGameObject<Floor>( Vec3(8.0f, 0.5f, 10.0f), Vec3(0), Vec3(10.0f, 2.0f, 29.0f));
 
 
-			AddGameObject<PowerSupply>(Vec3(0.0f, -0.3f, -4.0f), Vec3(), Vec3());
-			AddGameObject<PowerSupply>(Vec3(10.0f, 2.4f, 11.0f), Vec3(), Vec3());
+			AddGameObject<PowerSupply>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(0.0f, -0.3f, -4.0f));
+			AddGameObject<PowerSupply>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 11.0f));
 
-			//port										position
-			auto moveFloor_port = AddGameObject<Port>(Vec3(0.0f, -0.3f, 3.0f),Vec3(),Vec3());
-			auto trapDoor_port = AddGameObject<Port>(Vec3(10.0f, 2.4f, 15.0f), Vec3(), Vec3());
-			auto goal_port = AddGameObject<Port>(Vec3(10.0f, 2.4f, 25.0f), Vec3(), Vec3());
+			//port										scale				rotation		position
+			auto moveFloor_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(0.0f, -0.3f, 3.0f));
+			auto trapDoor_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 15.0f));
+			auto goal_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 25.0f));
 
-			//Goal					position			portの指定(nullptrの場合最初から表示)
-			AddGameObject<Goal>(Vec3(10.0f, 4.0f, 33.0f),Vec3(),Vec3(), goal_port);
+			//Goal					scale			rotation		position			portの指定(nullptrの場合最初から表示)
+			AddGameObject<Goal>(Vec3(3.0f,3.0f,0.5f), Vec3(0), Vec3(10.0f, 4.0f, 33.0f), goal_port);
+
 			
 			//左に開く扉
-			auto leftDoor = AddGameObject<GoalDoor>(Vec3(8.0f, 4.0f, 30.0f), goal_port, Vec3(-1, 0, 0));
+			auto leftDoor = AddGameObject<GoalDoor>(
+				Vec3(4.0f, 5.0f, 1.0f), Vec3(0), Vec3(8.0f, 4.0f, 30.0f), //Scale, Rotation, Position
+				goal_port, 
+				Vec3(-1, 0, 0));//移動する方向を指定。
 			//右に開く扉
-			auto rightDoor = AddGameObject<GoalDoor>(Vec3(12.0f, 4.0f, 30.0f), goal_port, Vec3(1, 0, 0));
+			auto rightDoor = AddGameObject<GoalDoor>(
+				Vec3(4.0f, 5.0f, 1.0f), Vec3(0), Vec3(12.0f, 4.0f, 30.0f), 
+				goal_port,
+				Vec3(1, 0, 0));
 
 			//トラップドアの初期設定
 			TrapDoorAxisDesc moveDoorY;
-			moveDoorY.pos = Vec3(10.0f, 2.2f, 20.0f);
-			moveDoorY.scale = Vec3(2.0f, 0.1f, 4.0f);
-			moveDoorY.initialRotation = Vec3(XM_PIDIV2, 0.0f, 0.0f);
 			moveDoorY.axis = MoveAxis::X;
 			moveDoorY.speed = -0.01f;
 			moveDoorY.port = trapDoor_port;
-			AddGameObject<TrapDoorAxis>(moveDoorY);
+			AddGameObject<TrapDoorAxis>(Vec3(2.0f, 0.1f, 4.0f), Vec3(XM_PIDIV2, 0.0f, 0.0f), Vec3(10.0f, 2.2f, 20.0f), moveDoorY);
 
 
 			//動く床の初期設定
@@ -131,25 +135,29 @@ namespace basecross {
 			moveFloorY.speed = 1.0f;			//移動速度
 			moveFloorY.limitDist = 3.0f;		//移動上限
 			moveFloorY.port = moveFloor_port;	//portの指定
-			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(), Vec3(0.0f, -0.5f, 5.5f), moveFloorY);
+
+			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(0.0f, -0.5f, 5.5f),  moveFloorY);
+
 
 			MoveFloorDesc moveFloorX;
 			moveFloorX.axis = MoveAxis::X;
-			moveFloorX.speed = -1.0f;
-			moveFloorX.limitDist = 3.0f;
+			moveFloorX.speed = 1.0f;
+			moveFloorX.limitDist = -3.0f;
 			moveFloorX.port = moveFloor_port;
-			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f),Vec3(), Vec3(2.0f, 2.5f, 5.5f),moveFloorX);
+
+			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(5.0f, 2.5f, 5.5f), moveFloorX);
 
 
 			MoveFloorDesc moveFloorZ;
 			moveFloorZ.axis = MoveAxis::Z;
-			moveFloorZ.speed = 1.0f;
+			moveFloorZ.speed = -1.0f;
 			moveFloorZ.limitDist = 3.0f;
 			moveFloorZ.port = moveFloor_port;
-			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f),Vec3(),Vec3(6.5f, 2.5f, 5.5f),moveFloorZ);
+
+			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(7.0f, 2.5f,5.5f),  moveFloorZ);
 
 			//									Scale			Rotation		Position			portの指定
-			AddGameObject<BeltConveyor>(Vec3(1.0f, 0.1f, 5.0f), Vec3(0,XM_PIDIV2,0), Vec3(3.0f, -0.5f, 0.0f), moveFloor_port);
+			AddGameObject<BeltConveyor>(Vec3(1.0f, 0.1f, 5.0f), Vec3(0,0,0), Vec3(3.0f, -0.5f, 0.0f), moveFloor_port);
 		}
 		catch (...) {
 			throw;
