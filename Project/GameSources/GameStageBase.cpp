@@ -260,7 +260,15 @@ namespace basecross {
 		desc.axis = params.Axis;
 		desc.limitDist = params.LimitDist;
 		desc.speed = params.Speed;
-		desc.port = Map_Ports[params.PortID];
+
+		if (params.PortID==-1)
+		{
+			desc.port = nullptr;
+		}
+		else
+		{
+			desc.port = Map_Ports[params.PortID];
+		}
 
 		AddGameObject<MoveFloor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, desc);
 	}
