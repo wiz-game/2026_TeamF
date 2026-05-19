@@ -55,7 +55,6 @@ namespace basecross {
 			StageObjBase(stage, Scale, Rot, Position),
 			m_trapDoorScale(Scale),
 			m_initialRotation(Rot),
-			m_pos(Pos),
 			m_moveAxis(desc.axis),
 			m_speed(desc.speed),
 			m_port(desc.port),
