@@ -131,6 +131,7 @@ namespace basecross {
 			moveFloorZ.port = moveFloor_port;
 			AddGameObject<MoveFloor>(moveFloorZ);
 
+			AddGameObject<DrEnemy>();
 		}
 		catch (...) {
 			throw;
