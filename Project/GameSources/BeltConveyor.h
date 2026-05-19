@@ -33,6 +33,8 @@ namespace basecross {
 		float m_limitDist;
 
 		bool m_isMove = false;
+		bool isConnect = false;
+
 
 	public:
 		// 構築と破棄

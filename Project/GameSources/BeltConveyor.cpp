@@ -57,10 +57,16 @@ namespace basecross {
 
 	void BeltConveyor::OnUpdate()
 	{
-		if (!m_port) return; // ポートがいなければ何もしない
+		if (m_port)
+		{
+			isConnect = m_port->GetConnect();
+		}
+		else
+		{
+			isConnect = true;
+		}
 
 		auto scene = App::GetApp()->GetScene<Scene>();
-		bool isConnect = m_port->GetConnect();
 		float delta = App::GetApp()->GetElapsedTime();
 		Vec3 pos = m_transform->GetPosition();
 
