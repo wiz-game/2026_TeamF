@@ -12,15 +12,13 @@ namespace basecross
 {
 	class Port;
 
-	class GoalDoor : public GameObject
+	class GoalDoor : public StageObjBase
 	{
 		std::shared_ptr<PNTStaticDraw> m_draw;
 		std::shared_ptr<Transform> m_trans;
 		std::shared_ptr<Port> m_port = nullptr;
 
-		Vec3 m_pos;
 		Vec3 m_startPos;//移動開始時の座標
-		Vec3 m_scale;
 
 		Vec3 m_moveDir;//移動する方向
 		bool m_isOpen;
@@ -28,14 +26,14 @@ namespace basecross
 
 	public:
 		GoalDoor(const std::shared_ptr<Stage> stage,
-			const Vec3& pos,
+			const Vec3& Scale,
+			const Vec3& Rot,
+			const Vec3& Position,
 			std::shared_ptr<Port> port,
 			const Vec3& moveDir) :
-			GameObject(stage),
-			m_pos(pos),
+			StageObjBase(stage, Scale, Rot, Position),
 			m_port(port),
 			m_moveDir(moveDir),
-			m_scale(Vec3(4.0f,5.0f,1.0f)),
 			m_speed(0.05f),
 			m_startPos(m_pos)
 		{

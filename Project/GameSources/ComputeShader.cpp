@@ -56,7 +56,7 @@ namespace basecross {
     BufferContext::BufferContext() {
 
     }
-    BufferContext::BufferContext(UINT bufferSize, UINT arraySize) : m_BufferSize(bufferSize),m_ArraySize(arraySize) {
+    BufferContext::BufferContext(size_t bufferSize, size_t arraySize) : m_BufferSize(bufferSize),m_ArraySize(arraySize) {
         auto devResource = App::GetApp()->GetDeviceResources();
         auto device = devResource->GetD3DDevice();
 
@@ -112,7 +112,7 @@ namespace basecross {
         }
     }
 
-    UINT BufferContext::GetFullDataSize() const {
+    size_t BufferContext::GetFullDataSize() const {
         return m_BufferSize * m_ArraySize;
     }
 }

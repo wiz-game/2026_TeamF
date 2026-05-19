@@ -1,101 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)CharacterController.cpp">
-      <Filter>CharacterController</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ComputeShader.cpp">
-      <Filter>ComputeShader</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)DXModel.cpp">
-      <Filter>DXModel</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp">
-      <Filter>DXModel</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp">
-      <Filter>Jolt</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp">
-      <Filter>Jolt</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Json.cpp">
-      <Filter>Json</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
-      <Filter>DXModel</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Electrified.cpp">
-      <Filter>ElectField</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)game_controller.cpp">
-      <Filter>SDL</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp">
-      <Filter>Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ProtoStage.cpp">
-      <Filter>Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp">
-      <Filter>Ink</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Goal.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)MoveFloor.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)PowerSupply.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Port.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)TextureCollision.cpp">
-      <Filter>Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
-      <Filter>BaseCrossDefault</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp">
-      <Filter>BaseCrossDefault</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp">
-      <Filter>BaseCrossDefault</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp">
-      <Filter>BaseCrossDefault</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)GoalStage.cpp">
-      <Filter>Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)InkCloud.cpp">
-      <Filter>Ink</Filter>
-    </ClCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindFirst.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindSecond.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BaseEnemy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)CharacterController.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ComputeShader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DXModel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Electrified.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FloorDecision.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameProgressManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStageBase.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)game_controller.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Goal.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GoalDoor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GoalStage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkCloud.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MainCamera.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)FloorDecision.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)GoalDoor.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoor.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoorAxis.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Json.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Port.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PowerSupply.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProtoStage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MoveFloor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp">
       <Filter>Stage</Filter>
@@ -107,7 +51,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)OffsetObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BaseEnemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
@@ -117,106 +60,59 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameStageBase.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)StageObjBase.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextureCollision.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoorAxis.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyorTex.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Box.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
-      <Filter>CharacterController</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ComputeShader.h">
-      <Filter>ComputeShader</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h">
-      <Filter>DXModel</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h">
-      <Filter>DXModel</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)JoltLayers.h">
-      <Filter>Jolt</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)JoltManager.h">
-      <Filter>Jolt</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)JoltRigidBody.h">
-      <Filter>Jolt</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Json.h">
-      <Filter>Json</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
-      <Filter>DXModel</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Electrified.h">
-      <Filter>ElectField</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)game_controller.h">
-      <Filter>SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h">
-      <Filter>Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ProtoStage.h">
-      <Filter>Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)InkDraw.h">
-      <Filter>Ink</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Goal.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)MoveFloor.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)PowerSupply.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Port.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Player.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)TextureCollision.h">
-      <Filter>Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
-      <Filter>BaseCrossDefault</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Project.h">
-      <Filter>BaseCrossDefault</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectBehavior.h">
-      <Filter>BaseCrossDefault</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectShader.h">
-      <Filter>BaseCrossDefault</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)GoalStage.h">
-      <Filter>Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)InkCloud.h">
-      <Filter>Ink</Filter>
-    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ComputeShader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DrEnemy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Electrified.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FloorDecision.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameProgressManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStageBase.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)game_controller.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Goal.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GoalDoor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GoalStage.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkCloud.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkDraw.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)JoltLayers.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)JoltManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)JoltRigidBody.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MainCamera.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)FloorDecision.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)GoalDoor.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoor.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoorAxis.h">
-      <Filter>Object</Filter>
-    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Json.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Port.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PowerSupply.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Project.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectBehavior.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectShader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProtoStage.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MoveFloor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Singleton.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h">
@@ -229,7 +125,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h">
       <Filter>Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)OffsetObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
@@ -238,6 +133,14 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h">
       <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameStageBase.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Box.h">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -303,5 +206,10 @@
     <Filter Include="Enemy">
       <UniqueIdentifier>{78e9f82c-b201-40cd-aade-7de963f80bb2}</UniqueIdentifier>
     </Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextureCollision.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoorAxis.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyorTex.h" />
   </ItemGroup>
 </Project>

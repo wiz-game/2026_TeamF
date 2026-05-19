@@ -56,10 +56,10 @@ namespace basecross {
         ComPtr<ID3D11UnorderedAccessView> m_UAV;
         ComPtr<ID3D11Buffer> m_ReadBackBuffer;
         D3D11_BUFFER_DESC m_InputDesc;
-        UINT m_BufferSize;
-        UINT m_ArraySize;
+        size_t m_BufferSize;
+        size_t m_ArraySize;
         BufferContext();
-        BufferContext(UINT bufferSize, UINT arraySize);
+        BufferContext(size_t bufferSize, size_t arraySize);
 
         bool CreateSRV();
         bool CreateUAV();
@@ -69,10 +69,9 @@ namespace basecross {
         void Upload(void* data);
         void ReadBuffer(void* data);
 
-        UINT GetFullDataSize() const;
+        size_t GetFullDataSize() const;
     };
 
-    template<typename InputType>
     class DX11ComputeShader {
         ComPtr<ID3D11Buffer> m_ConstantBuffer;
         ComPtr<ID3D11ComputeShader> m_Shader;
@@ -83,6 +82,8 @@ namespace basecross {
         ThreadGroupContext m_ThreadGroupContext;
 
         void Bind(ID3D11DeviceContext2* context) {
+            context->CSSetShader(m_Shader.Get(), nullptr, 0);
+
             vector<ID3D11ShaderResourceView*> shaderViews;
             for (auto& srv : m_SRVs) {
                 shaderViews.push_back(srv.Get());
@@ -94,12 +95,16 @@ namespace basecross {
                 accessViews.push_back(uav.Get());
             }
             context->CSSetUnorderedAccessViews(0, (UINT)accessViews.size(),accessViews.data(), nullptr);
+
+            if (m_ConstantBuffer) {
+                context->CSSetConstantBuffers(0, 1, m_ConstantBuffer.GetAddressOf());
+            }
         }
         void UnBind(ID3D11DeviceContext2* context) {
-            vector<ID3D11UnorderedAccessView*> accessViewNULL(m_UAVs.size(), nullptr);
-            context->CSSetUnorderedAccessViews(0, (UINT)accessViewNULL.size(), accessViewNULL.data(), nullptr);
-            vector < ID3D11ShaderResourceView*> shaderViewNULL(m_SRVs.size(), nullptr);
-            context->CSSetShaderResources(0, (UINT)shaderViewNULL.size(), shaderViewNULL.data());
+            ID3D11UnorderedAccessView* accessViewNulls[8]{};
+            ID3D11ShaderResourceView* shaderViewNulls[8]{};
+            context->CSSetUnorderedAccessViews(0, 8, accessViewNulls, nullptr);
+            context->CSSetShaderResources(0, 8, shaderViewNulls);
         }
     public:
         DX11ComputeShader(){}
@@ -116,8 +121,6 @@ namespace basecross {
             auto devResource = App::GetApp()->GetDeviceResources();
             auto devContext = devResource->GetD3DDeviceContext();
 
-            //シェーダーのバインドを解除(一応)
-            UnBind(devContext);
             //シェーダーのバインド
             Bind(devContext);
 
@@ -126,6 +129,8 @@ namespace basecross {
                 m_ThreadGroupContext.GetDispatchCountX(),
                 m_ThreadGroupContext.GetDispatchCountY(),
                 m_ThreadGroupContext.GetDispatchCountZ());
+            //待ち
+            devContext->Flush();
 
             //シェーダーのバインドを解除
             UnBind(devContext);
@@ -138,15 +143,9 @@ namespace basecross {
 
             m_ConstantBuffer = buffur;
             devContext->UpdateSubresource(m_ConstantBuffer.Get(), 0, nullptr, &cb, 0, 0);
-            devContext->CSSetConstantBuffers(0, 1, m_ConstantBuffer.GetAddressOf());
         }
         void SetShader(ComPtr<ID3D11ComputeShader> shader) {
             m_Shader = shader;
-
-            auto devResource = App::GetApp()->GetDeviceResources();
-            auto devContext = devResource->GetD3DDeviceContext();
-            //コンピュータシェーダーの設定
-            devContext->CSSetShader(m_Shader.Get(), nullptr, 0);
         }
         
         void AddSRV(ID3D11ShaderResourceView* srv) {

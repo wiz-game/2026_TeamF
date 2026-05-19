@@ -1,27 +1,15 @@
 /*!
-@file Player.cpp
-@brief プレイヤーなど実体
+@file Foo.cpp
+@brief キャラクターなど実体
 */
 
 #include "stdafx.h"
 #include "Project.h"
 
-namespace basecross
-{
-	Floor::Floor
-	(
-		const std::shared_ptr<Stage>& stage,
-		const Vec3& Scale,
-		const Vec3& rot,
-		const Vec3& Pos
-	) :
-		StageObjBase(stage, Scale, rot, Pos),
-		m_pos(Pos),
-		m_scale(Scale)
-	{
-	}
+namespace basecross {
 
-	void Floor::OnCreate()
+	//初期化
+	void Box::OnCreate()
 	{
 		//Drawコンポーネント
 		m_draw = AddComponent<PNTStaticDraw>();
@@ -35,13 +23,9 @@ namespace basecross
 		m_trans->SetScale(m_scale);
 		m_trans->SetRotation(m_rot);
 
-
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetFixed(true);
 	}
 
-	void Floor::OnUpdate()
-	{
-
-	}
 }
+//end basecross

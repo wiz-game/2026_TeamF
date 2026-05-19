@@ -1,27 +1,22 @@
 /*!
-@file MoveFloor.h
-@brief 上下する床
+@file BeltConveyor.h
+@brief ベルトコンベアー
 */
 
 #pragma once
 #include "stdafx.h"
 #include "FloorDecision.h"
+#include "BeltConveyorTex.h"
 
 namespace basecross {
-	enum class MoveAxis { X, Y, Z };
 
-	struct MoveFloorDesc
-	{	//	デフォルトの値
-		MoveAxis axis = MoveAxis::Y;
-		float speed = 1.0f;
-		float limitDist = 3.0f;
-		std::shared_ptr<Port> port = nullptr;
-	};
+	class Player;
+	class Port;
 
 	//--------------------------------------------------------------------------------------
-	//	class MoveFloor : public StageObjBase;
+	//	class BeltConveyor : public StageObjBase;
 	//--------------------------------------------------------------------------------------
-	class MoveFloor : public StageObjBase
+	class BeltConveyor : public StageObjBase
 	{
 		std::shared_ptr<Transform> m_transform;
 		std::shared_ptr<PNTDXModelDraw> m_draw;
@@ -32,33 +27,27 @@ namespace basecross {
 		std::shared_ptr<Port> m_port;
 
 		std::shared_ptr<FloorDecision> m_floorDec;
+		std::shared_ptr<BeltConveyorTex> m_texObj;//テクスチャオブジェクト
 
-		MoveAxis m_moveAxis;//どの軸に動くか
-		float m_speed;
+		float m_speed = 2.0f;
 		float m_limitDist;
 
-		bool m_isUp = false;
-		float m_stopTimer = 0.0f;
-		const float PAUSE_TIME = 0.5f; // 停止時間
+		bool m_isMove = false;
 		bool isConnect = false;
+
 
 	public:
 		// 構築と破棄
-		MoveFloor(
-			const shared_ptr<Stage>& stage,
+		BeltConveyor(const shared_ptr<Stage>& stage,
 			const Vec3& Scale,
 			const Vec3& Rot,
-			const Vec3& Pos,
-			const MoveFloorDesc& desc
-		) :
-			StageObjBase(stage, Scale, Rot, Pos),
-			m_moveAxis(desc.axis),
-			m_speed(desc.speed),
-			m_limitDist(desc.limitDist),
-			m_port(desc.port)
+			const Vec3& Position,
+			shared_ptr<Port> port) :
+			StageObjBase(stage,Scale,Rot,Position),
+			m_port(port)
 		{
 		}
-		virtual ~MoveFloor()
+		virtual ~BeltConveyor()
 		{
 		}
 
