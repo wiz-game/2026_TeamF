@@ -14,6 +14,7 @@
 #include "Player.h"
 
 #include "StageObjBase.h"
+#include "Box.h"
 #include "Floor.h"
 #include "PowerSupply.h"
 #include "Port.h"

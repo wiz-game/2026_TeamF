@@ -11,13 +11,17 @@ namespace basecross {
 	void InkCloud::OnCreate()
 	{
 		AddTag(L"InkCloud");
-
-		auto electrified = AddComponent<Electrified>();
+		AddComponent<Electrified>();
 	}
 
 	void InkCloud::OnUpdate()
 	{
 		auto delta = App::GetApp()->GetElapsedTime();
+		auto elec = GetComponent<Electrified>();
+		//電流の更新
+		elec->UpdateElectrified();
+		isPower = elec->IsPowered();//電流が流れているかどうかを更新
+
 		if (isPower)
 		{
 			m_powerTimer += delta;
@@ -33,15 +37,25 @@ namespace basecross {
 			float effectDuration = 0.5f; // 1周期のうち、光っている時間
 
 			for (auto& ink : m_inkList) {
-				// 現在のタイマーが発光期間内であれば光らせる
-				if (m_powerTimer < effectDuration) {
-					// 時間の経過とともに少しずつ暗くする（フェードアウト）
-					float alpha = 1.0f - (m_powerTimer / effectDuration);
-					ink->SetInkColor(1, 1, 0, alpha);
-				}
-				else {
-					// 発光期間を過ぎたら次の周期まで黒
-					ink->SetInkColor(0, 0, 0, 1);
+				for (size_t i = 0; i < m_inkList.size(); i++) 
+				{
+					// 各インクの位置に応じて、タイマーをずらす（例: インクの位置に基づいて遅延を計算）
+					float delay = (i * 0.1f); // インクごとに0.1秒の遅延
+					float localTimer = fmod(m_powerTimer + delay, cycleTime);
+
+					// タイマーが負の値になる可能性があるため、正の値に変換
+					if(localTimer < 0)	localTimer += cycleTime;
+
+					// 現在のタイマーが発光期間内であれば光らせる
+					if (localTimer < effectDuration) {
+						// 時間の経過とともに少しずつ暗くする（フェードアウト）
+						float alpha = 1.0f - (localTimer / effectDuration);
+						ink->SetInkColor(1, 1, 0, alpha);
+					}
+					else {
+						// 発光期間を過ぎたら次の周期まで黒
+						ink->SetInkColor(0, 0, 0, 1);
+					}
 				}
 			}
 		}
@@ -102,36 +116,22 @@ namespace basecross {
 
 	void InkCloud::OnCollisionEnter(std::shared_ptr<GameObject>& info)
 	{
-		if (auto powerSupply = std::dynamic_pointer_cast<PowerSupply>(info))
+		if (auto elec = GetComponent<Electrified>(false))
 		{
-			bool power = powerSupply->GetisPower();
-			isPower = power;
-		}
-		// port
-		if (auto port = std::dynamic_pointer_cast<Port>(info))
-		{
-			port->SetisPower(isPower);
-			//m_wasPower = true;
-		}
-
-		//自分自身都の判定
-		if (auto otherCloud = std::dynamic_pointer_cast<InkCloud>(info))
-		{
-			// 相手が通電していて自分がしていなければ、電気をもらう
-			if (otherCloud->GetIsPower() && !this->isPower)
-			{
-				this->isPower = true;
-				this->m_powerTimer = otherCloud->m_powerTimer - 0.2f;
-			}
+			//リストに追加
+			elec->OnElectrifiedEnter(info);
 		}
 	}
 	void InkCloud::OnCollisionExcute(shared_ptr<GameObject>& info)
 	{
-		OnCollisionEnter(info);
 	}
 
 	void InkCloud::OnCollisionExit(shared_ptr<GameObject>& info)
 	{
+		if (auto elec = GetComponent<Electrified>(false))
+		{
+			elec->OnElectrifiedExit(info);
+		}
 	}
 
 }

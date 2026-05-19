@@ -8,10 +8,6 @@
 #include "FloorDecision.h"
 
 namespace basecross {
-
-	class Player;
-	class Port;
-
 	enum class MoveAxis { X, Y, Z };
 
 	struct MoveFloorDesc
@@ -44,16 +40,18 @@ namespace basecross {
 		bool m_isUp = false;
 		float m_stopTimer = 0.0f;
 		const float PAUSE_TIME = 0.5f; // 停止時間
-
+		bool isConnect = false;
 
 	public:
 		// 構築と破棄
-		MoveFloor(const shared_ptr<Stage>& stage,
+		MoveFloor(
+			const shared_ptr<Stage>& stage,
 			const Vec3& Scale,
 			const Vec3& Rot,
-			const Vec3& Position,
-			const MoveFloorDesc& desc) :
-			StageObjBase(stage, Scale, Rot, Position),
+			const Vec3& Pos,
+			const MoveFloorDesc& desc
+		) :
+			StageObjBase(stage, Scale, Rot, Pos),
 			m_moveAxis(desc.axis),
 			m_speed(desc.speed),
 			m_limitDist(desc.limitDist),

@@ -14,6 +14,7 @@ namespace basecross {
 
 	struct TrapDoorAxisDesc
 	{	//	デフォルトの値
+
 		MoveAxis axis = MoveAxis::Y;
 		float speed = 0.01f;
 		std::shared_ptr<Port> port = nullptr;
@@ -41,9 +42,11 @@ namespace basecross {
 		float m_speed;
 
 		bool m_isMove = false; //トラップドアが動いたかどうか
+		bool isConnect = false;
 
 	public:
 		// 構築と破棄
+
 		TrapDoorAxis(const shared_ptr<Stage>& stage,
 			const Vec3& Scale,
 			const Vec3& Rot,

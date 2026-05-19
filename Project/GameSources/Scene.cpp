@@ -1,6 +1,6 @@
 /*!
 @file Scene.cpp
-@brief シーン実裁E
+@brief 繧ｷ繝ｼ繝ｳ螳溯｣・
 */
 
 #include "stdafx.h"
@@ -30,7 +30,7 @@ namespace basecross{
 			GameController::EnableGyro(true);
 			GameController::StartVibration(0.0f, 10.0f);
 
-			//�X�e�[�W��1�ŏ�����
+			//ステージ数1で初期化
 			GameProgressManager::Get().Initialize(3);
 
 			SetClearColor(Col4(0.0f, 0.11328125f, 0.2578125, 1.0f));
@@ -65,10 +65,10 @@ namespace basecross{
 			ResetActiveStage<GoalStage>();
 		}
 
-		//���Őݒ�B��X�����ς���
-		//if (event->m_MsgStr == L"ToGameStage0") {
-		//	ResetActiveStage<ProtoStage>();
-		//}
+		//仮で設定。後々やり方変える
+		if (event->m_MsgStr == L"ToGameStage0") {
+			ResetActiveStage<ProtoStage>();
+		}
 		//if (event->m_MsgStr == L"ToGameStage1") {
 		//	ResetActiveStage<GameStage>();
 		//}
@@ -76,7 +76,7 @@ namespace basecross{
 		//	ResetActiveStage<GoalStage>();
 		//}
 		if (event->m_MsgStr == L"ToGameStage0") {
-			ResetActiveStage<GameStageBase>();
+			ResetActiveStage<ProtoStage>();
 		}
 
 
