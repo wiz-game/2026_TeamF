@@ -10,27 +10,26 @@
 
 namespace basecross{
 
-	//外部から電力を貰う
-	void Electrified::InjectEnergy(float amount)
-	{
-		m_nextEnergy += amount;
-	}
-
 	//毎フレーム通電更新
-	void Electrified::UpdateElectrifed()
+	void Electrified::UpdateElectrified()
 	{
-		m_energy = m_nextEnergy;
-		m_nextEnergy = 0.0f;
+		//電源元なら常にON、そうでなければ受け取った状態を反映
+		m_currentPowered = m_isSource || m_nextPowered;
 
-		if (m_energy <= 0.0f)return;
+		//次フレームの状態をリセット
+		m_nextPowered = false;
 
+		//通電していないなら隣に伝えない
+		if (!m_currentPowered)return;
+
+		//接触している相手に電気を伝える
 		for (auto& w : m_contactObjects)
 		{
 			if(auto obj = w.lock())
 			{
-				if (auto elec = obj->GetComponent<Electrified>())
+				if (auto elec = obj->GetComponent<Electrified>(false))
 				{
-					elec->InjectEnergy(m_energy);
+					elec->SetPowered();
 				}
 			}
 		}
@@ -39,7 +38,10 @@ namespace basecross{
 	//接触開始
 	void Electrified::OnElectrifiedEnter(std::shared_ptr<GameObject>& other)
 	{
-		m_contactObjects.push_back(other);
+		if (other->GetComponent<Electrified>(false))
+		{
+			m_contactObjects.push_back(other);
+		}
 	}
 
 	//接触終了

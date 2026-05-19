@@ -40,6 +40,7 @@ namespace basecross {
 		bool m_isUp = false;
 		float m_stopTimer = 0.0f;
 		const float PAUSE_TIME = 0.5f; // 停止時間
+		bool isConnect = false;
 
 	public:
 		// 構築と破棄

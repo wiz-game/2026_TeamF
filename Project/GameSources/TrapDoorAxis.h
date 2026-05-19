@@ -42,6 +42,7 @@ namespace basecross {
 		float m_speed;
 
 		bool m_isMove = false; //トラップドアが動いたかどうか
+		bool isConnect = false;
 
 	public:
 		// 構築と破棄

@@ -16,10 +16,6 @@ namespace basecross {
 		m_transform->SetScale(m_scale);
 		m_transform->SetRotation(m_rot);
 
-		// ドローコンポーネントを追加
-		m_draw = AddComponent<PNTDXModelDraw>();
-		//m_draw->SetMeshResource(L"DEFAULT_CUBE");
-
 		m_staticDraw = AddComponent<PNTStaticDraw>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
 		m_staticDraw->SetEmissive(Col4(0, 0, 1, 1));
@@ -61,10 +57,16 @@ namespace basecross {
 
 	void BeltConveyor::OnUpdate()
 	{
-		if (!m_port) return; // ポートがいなければ何もしない
+		if (m_port)
+		{
+			isConnect = m_port->GetConnect();
+		}
+		else
+		{
+			isConnect = true;
+		}
 
 		auto scene = App::GetApp()->GetScene<Scene>();
-		bool isConnect = m_port->GetConnect();
 		float delta = App::GetApp()->GetElapsedTime();
 		Vec3 pos = m_transform->GetPosition();
 

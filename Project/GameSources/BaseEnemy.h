@@ -47,8 +47,11 @@ namespace basecross {
 		float m_srachRange; // 探索範囲
 		float m_diatance;
 
-		Vec3 m_origin;
+		Vec3 m_origin;//UpdatePatrolのメンバ変数
 		Vec3 m_targetPos;
+
+		Vec3 m_pointA;//UpdateBetWeenのメンバ変数
+		Vec3 m_pointB;
 
 		State m_state; // 現在の状態
 
