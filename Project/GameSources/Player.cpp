@@ -15,7 +15,8 @@ namespace basecross{
 		const std::shared_ptr<Stage>& stage,
 		const Vec3& Scale,
 		const Vec3& Rot,
-		const Vec3& Position
+		const Vec3& Position,
+		const float& InkMax
 	) :
 		StageObjBase(stage, Scale, Rot, Position),
 		m_height(1.0f),
@@ -27,7 +28,7 @@ namespace basecross{
 		m_forward(Vec3(0)),
 		m_velocity(Vec3(0)),
 		m_ink(0.0f),
-		m_inkMax(10.0f),
+		m_inkMax(InkMax),
 		m_inkDecrease(0.9f),
 		m_isDraw(true),
 		m_fade(0.0f),
