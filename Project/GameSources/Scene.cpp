@@ -73,7 +73,8 @@ namespace basecross{
 		//	ResetActiveStage<GoalStage>();
 		//}
 		if (event->m_MsgStr == L"ToGameStage0") {
-			ResetActiveStage<ProtoStage>();
+			//ResetActiveStage<ProtoStage>();
+			ResetActiveStage<GameStageBase>();
 		}
 
 
