@@ -514,9 +514,12 @@ namespace basecross {
 
 	void TextureMeshManager::Reload() {
 		vector<thread> threads;
+		for (int i = 0, size = m_ReloadMeshCollisions.size(); i < size; i++) {
+			
+		}
 		for (auto& meshCollision : m_ReloadMeshCollisions) {
 			meshCollision->ProcessGPU();
-			thread t([&]() { meshCollision->ProcessCPU(); });
+			thread t([meshCollision]() { meshCollision->ProcessCPU(); });
 			threads.push_back(move(t));
 		}
 
