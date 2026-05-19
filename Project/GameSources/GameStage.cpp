@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "Project.h"
 #include "game_controller.h"
+
 namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体
@@ -48,7 +49,7 @@ namespace basecross {
 			CreateViewLight();
 			App::GetApp()->RegisterTexture(L"InkTest",App::GetApp()->GetDataDirWString() +  L"Texture/Test/InkCollisionTest3.png");
 
-			m_Player = AddGameObject<Player>();
+			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3(),float(10.0f));
 			AddGameObject<InkDraw>();
 			AddGameObject<PowerSupply>(Vec3(0.0f, -0.5f, -4.0f));
 			AddGameObject<Port>(Vec3(0.0f, -0.5f, 3.0f));
@@ -125,8 +126,8 @@ namespace basecross {
 
 	void GameStage::OnUpdate2()
 	{
-		m_jphManger.Update(1.0f / 60.0f);
-		TextureMeshManager::Get().Reload();
+		//m_jphManger.Update(1.0f / 60.0f);
+		//TextureMeshManager::Get().Reload();
 	}
 
 	void GameStage::OnDraw()

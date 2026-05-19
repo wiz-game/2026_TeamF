@@ -14,10 +14,7 @@ namespace basecross {
 		m_transform = GetComponent<Transform>();
 		m_transform->SetPosition(m_pos);
 		m_transform->SetScale(m_scale);
-
-		// ドローコンポーネントを追加
-		m_draw = AddComponent<PNTDXModelDraw>();
-		//m_draw->SetMeshResource(L"DEFAULT_CUBE");
+		m_transform->SetRotation(m_rot);
 
 		m_staticDraw = AddComponent<PNTStaticDraw>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
@@ -31,26 +28,69 @@ namespace basecross {
 		try
 		{	// objectの取得
 			m_player = GetStage()->GetSharedGameObject<Player>(L"Player");
+
+			auto& app = App::GetApp();
+			auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+			app->RegisterTexture(L"BeltConveyor", path + L"BeltConveyor.png"); // 画像ファイルを読み込んでアセットとして登録する
 		}
 		catch (...) {
 		}
+
+		BeltConveyorTex::InitParams params;
+		params.textureKey = L"BeltConveyor"; // テクスチャリソースのキー
+		params.sides = 16; // 円形の分割数
+		params.height = m_scale.x; // オーラの高さ
+		params.radiusX = m_scale.y; // xの半径
+		params.radiusZ = m_scale.z / 2.0f + 0.1f; // zの半径
+		params.topColor = Col4(0.0f, 0.0f, 0.0f, 1.0f); // 上部の色
+		params.bottomColor = Col4(0.0f, 0.0f, 0.0f, 1.0f); // 下部の色
+		params.uvOffsetSpeed = Vec2(0.0f, 0.0f); // UVアニメーションの秒速
+		params.textureLoops = 1.0f; // テクスチャの「u座標」
+
+		m_texObj = GetStage()->AddGameObject<BeltConveyorTex>(params);
+
+		auto trans = m_texObj->GetComponent<Transform>();
+		auto pos = m_transform->GetPosition();
+		trans->SetPosition(Vec3(pos.x, pos.y + 0.1f, pos.z));
+		trans->SetRotation(Vec3(m_rot.x, m_rot.y, m_rot.z + XM_PIDIV2));
 	}
 
 	void BeltConveyor::OnUpdate()
 	{
-		if (!m_port) return; // ポートがいなければ何もしない
+		if (m_port)
+		{
+			isConnect = m_port->GetConnect();
+		}
+		else
+		{
+			isConnect = true;
+		}
 
 		auto scene = App::GetApp()->GetScene<Scene>();
-		bool isConnect = m_port->GetConnect();
 		float delta = App::GetApp()->GetElapsedTime();
 		Vec3 pos = m_transform->GetPosition();
-		Vec3 newPos = pos; // 移動後の位置を計算するための変数
 
 		//通電していれば床が動く
 		if (isConnect)
 		{
 			m_isMove = true;
-			m_floorDec->SetCurrentMoveVec(Vec3(0, 0, m_speed * delta));
+
+			//ベルトコンベアの回転から、移動方向を算出する
+			float dx = sinf(m_rot.y);
+			float dz = cosf(m_rot.y);
+			Vec3 direction(dx, 0, dz);
+
+			Vec3 movePos = direction * m_speed * delta; // 移動量を計算する
+
+			m_floorDec->SetCurrentMoveVec(movePos);
+			m_texObj->SetUVOffsetSpeed(Vec2(0, -m_speed * delta));
+		}
+		else
+		{
+			m_isMove = false;
+			m_floorDec->SetCurrentMoveVec(Vec3(0));
+			m_texObj->SetUVOffsetSpeed(Vec2(0, 0));
+
 		}
 	}
 }

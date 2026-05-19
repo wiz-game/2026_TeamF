@@ -66,7 +66,7 @@ namespace basecross {
 		}
 		//選択決定(A)
 		if (GameController::IsTrigger_ButtonDown()) {
-			PostEvent(0.0f, GetThis<SelectStage>(), app->GetScene<Scene>(), L"ToGameStage" + to_wstring(m_SelectIndex));
+			PostEvent(0.2f, GetThis<SelectStage>(), app->GetScene<Scene>(), L"ToGameStage" + to_wstring(m_SelectIndex));
 		}
 	}
 }

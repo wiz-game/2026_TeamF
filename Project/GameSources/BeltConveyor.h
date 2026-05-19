@@ -6,6 +6,7 @@
 #pragma once
 #include "stdafx.h"
 #include "FloorDecision.h"
+#include "BeltConveyorTex.h"
 
 namespace basecross {
 
@@ -13,9 +14,9 @@ namespace basecross {
 	class Port;
 
 	//--------------------------------------------------------------------------------------
-	//	class BeltConveyor : public GameObject;
+	//	class BeltConveyor : public StageObjBase;
 	//--------------------------------------------------------------------------------------
-	class BeltConveyor : public GameObject
+	class BeltConveyor : public StageObjBase
 	{
 		std::shared_ptr<Transform> m_transform;
 		std::shared_ptr<PNTDXModelDraw> m_draw;
@@ -26,20 +27,23 @@ namespace basecross {
 		std::shared_ptr<Port> m_port;
 
 		std::shared_ptr<FloorDecision> m_floorDec;
-
-		Vec3 m_pos = Vec3(2.0f,-0.5f,0.0f);
-		Vec3 m_scale = Vec3(1.5f, 0.1f, 5.0f);
+		std::shared_ptr<BeltConveyorTex> m_texObj;//テクスチャオブジェクト
 
 		float m_speed = 2.0f;
 		float m_limitDist;
 
 		bool m_isMove = false;
+		bool isConnect = false;
+
 
 	public:
 		// 構築と破棄
 		BeltConveyor(const shared_ptr<Stage>& stage,
+			const Vec3& Scale,
+			const Vec3& Rot,
+			const Vec3& Position,
 			shared_ptr<Port> port) :
-			GameObject(stage),
+			StageObjBase(stage,Scale,Rot,Position),
 			m_port(port)
 		{
 		}

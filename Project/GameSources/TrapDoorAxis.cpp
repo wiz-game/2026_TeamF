@@ -34,10 +34,16 @@ namespace basecross {
 
 	void TrapDoorAxis::OnUpdate()
 	{
-		if (!m_port) return; // ポートがいなければ何もしない
+		if (m_port)
+		{
+			isConnect = m_port->GetConnect();
+		}
+		else
+		{
+			isConnect = true;
+		}
 
 		auto scene = App::GetApp()->GetScene<Scene>();
-		bool isConnect = m_port->GetConnect();
 		float delta = App::GetApp()->GetElapsedTime();
 
 		const float LIMIT_ANGLE = (m_speed > 0) ? XM_PIDIV2 : -XM_PIDIV2; //90度の制限

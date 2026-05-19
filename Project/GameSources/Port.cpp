@@ -11,6 +11,7 @@ namespace basecross {
 	// 初期設定
 	void Port::OnCreate()
 	{
+
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();
 
@@ -27,6 +28,8 @@ namespace basecross {
 
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetAfterCollision(AfterCollision::None);
+
+		AddComponent<Electrified>();
 		InkConnectChecker::Get().AddPort(GetThis<Port>());
 	}
 
@@ -35,29 +38,39 @@ namespace basecross {
 	{
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
+		auto elec = GetComponent<Electrified>();
+		//電流の更新
+		elec->UpdateElectrified();
+		auto power = elec->IsPowered();//電流が流れているかどうかを更新
 
+		// 電流の状態に応じて接続状態と色を更新
+		if (power)
+		{
+			isConnect = true;
+			m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
+		}
+		else
+		{
+			isConnect = false;
+			m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
+		}
 	}
 
 	void Port::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
 	{
-		if (auto ink = std::dynamic_pointer_cast<InkCloud>(obj))
+		if (auto elec = GetComponent<Electrified>(false))
 		{
-			auto power = ink->GetisPower();
-			if (power)
-			{
-				isConnect = true;
-				m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
-			}
-			else
-			{
-				isConnect = false;
-				m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
-			}
+			//リストに追加
+			elec->OnElectrifiedEnter(obj);
 		}
 	}
 
-	void Port::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
+	void Port::OnCollisionExit(std::shared_ptr<GameObject>& obj)
 	{
+		if (auto elec = GetComponent<Electrified>(false))
+		{
+			elec->OnElectrifiedExit(obj);
+		}
 	}
 }
 //end basecross
