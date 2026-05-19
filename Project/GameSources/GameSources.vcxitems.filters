@@ -71,6 +71,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoorAxis.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyorTex.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Box.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h" />
@@ -134,6 +137,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStageBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Box.h">
       <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>

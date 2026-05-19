@@ -5,6 +5,7 @@
 
 #include "stdafx.h"
 #include "PowerSupply.h"
+#include "Project.h"
 #include "game_controller.h"
 #include "Project.h"
 
