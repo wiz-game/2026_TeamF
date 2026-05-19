@@ -37,6 +37,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GoalStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)InkCloud.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)InkDraw.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkGauge.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltLayers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltRigidBody.h" />
@@ -91,6 +92,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GoalStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InkCloud.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkGauge.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MainCamera.cpp" />
