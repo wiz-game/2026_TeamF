@@ -10,6 +10,8 @@ namespace basecross {
 		Vec3 m_rot;
 		Vec3 m_pos;
 
+		float a;
+
 	protected:
 		StageObjBase
 		(
