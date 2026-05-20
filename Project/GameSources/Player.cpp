@@ -111,7 +111,7 @@ namespace basecross{
 			PostEvent(0.0f, GetThis<Player>(), scene, L"ToProtoStage");
 		}
 
-		if (m_ink < 0)
+		if (m_ink <= 0)
 		{
 			PostEvent(0.0f, GetThis<Player>(), scene, L"ToGameOverStage");
 		}

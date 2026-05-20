@@ -78,6 +78,7 @@ namespace basecross {
 		if (diffX < 1.8f && diffY < 1.8f && diffZ < 0.45f)
 		{
 			scene->SetDebugString(L"Goal");
+			scene->SetResultInk(m_player->GetInk(),m_player->GetMaxInk());
 			PostEvent(0.0f, GetThis<Goal>(), scene, L"ToGoalStage");
 		}
 
