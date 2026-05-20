@@ -28,7 +28,7 @@ namespace basecross
 			0,1,2,
 			1,3,2
 		};
-		m_draw = AddComponent<PCTSpriteDraw>(m_vertices,m_indices);
+		m_draw = AddComponent<PCTSpriteDraw>(m_vertices, m_indices);
 		m_draw->SetTextureResource(L"Gauge");
 		m_trans = GetComponent<Transform>();
 	}
@@ -55,14 +55,16 @@ namespace basecross
 		{
 			m_draw->UpdateVertices(m_vertices);
 		}
+
+		if (m_ink <= m_maxInk * 0.3f)
+			ChangeGaugeColor();
 	}
 
 	void InkGauge::ChangeGaugeColor()
 	{
-		if (m_gaugeInk <= 3.0f)
-		{
-
-		}
+		Col4 col = Col4(1.0f, 0.0f, 0.0f, 0.0f);
+		m_draw->SetDiffuse(col);
+		m_draw->SetEmissive(col);
 	}
 
 
