@@ -13,7 +13,6 @@ namespace basecross
 		//Drawコンポーネント
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
-		m_draw->SetTextureResource(L"marble");
 
 		//Transformコンポーネント
 		m_trans = GetComponent<Transform>();

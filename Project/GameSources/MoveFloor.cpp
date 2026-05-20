@@ -20,6 +20,7 @@ namespace basecross {
 		m_staticDraw = AddComponent<PNTStaticDraw>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
 		m_staticDraw->SetEmissive(Col4(0, 0, 0, 1));
+		m_staticDraw->SetDiffuse(Col4(0, 0, 0, 1));
 		m_staticDraw->SetOwnShadowActive(true);
 
 		auto shadowMap = AddComponent<Shadowmap>();
