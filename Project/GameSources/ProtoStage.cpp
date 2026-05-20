@@ -155,7 +155,7 @@ namespace basecross {
 			moveFloorZ.port = moveFloor_port;
 
 
-			AddGameObject<DrEnemy>();
+			//AddGameObject<DrEnemy>();
 
 			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(7.0f, 2.5f,5.5f),  moveFloorZ);
 
