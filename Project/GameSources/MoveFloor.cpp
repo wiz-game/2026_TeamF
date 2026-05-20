@@ -17,12 +17,13 @@ namespace basecross {
 		m_transform->SetRotation(m_rot);
 
 		// ドローコンポーネントを追加
-		m_draw = AddComponent<PNTDXModelDraw>();
-		//m_draw->SetMeshResource(L"DEFAULT_CUBE");
-
 		m_staticDraw = AddComponent<PNTStaticDraw>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
 		m_staticDraw->SetEmissive(Col4(0, 0, 0, 1));
+		m_staticDraw->SetOwnShadowActive(true);
+
+		auto shadowMap = AddComponent<Shadowmap>();
+		shadowMap->SetMeshResource(L"DEFAULT_CUBE");
 
 		m_coll = AddComponent<CollisionObb>();
 		m_coll->SetFixed(true);
