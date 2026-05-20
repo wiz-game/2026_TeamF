@@ -88,7 +88,8 @@ namespace basecross {
 		auto& app = App::GetApp();
 		GameController::Update();
 
-		if (GameController::IsPressed_ButtonLeft()) {
+		bool isXButton = GameController::IsPressed_ButtonLeft(), isYButton = GameController::IsPressed_ButtonUp();
+		if (isXButton || isYButton) {
 			Vec3 playerPosition = m_Player->GetComponent<Transform>()->GetPosition();
 			for (auto& floor : m_TestFloors) {
 				auto draw = floor->GetComponent<InkDrawComponentTest>();
@@ -109,7 +110,12 @@ namespace basecross {
 
 					Vec2 point = Vec2(dist.x / (floorScale.x), dist.y / (floorScale.z));
 					point.y = 1.0f - point.y;
-					draw->AddDrawPoint(point);
+					if (isXButton) {
+						draw->AddDrawPoint(point);
+					}
+					if (isYButton) {
+						draw->AddDrawPoint(point, true);
+					}
 				}
 			}
 			int floorID = rand() % m_TestFloors.size();

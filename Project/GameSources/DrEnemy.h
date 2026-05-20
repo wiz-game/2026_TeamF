@@ -29,11 +29,16 @@ namespace basecross {
 		//virtual void OnDraw() override; // 描画
 
 	protected :
-		virtual void UpdateBetWeen() override;
+		virtual void UpdateInkDrow() override; // インクの移動描画
 
 	private :
 		void SetUpBetWnnePoints();
 		bool m_toB = true;
+
+		// インク用
+		float m_inkInterval = 0.2f;
+		float m_inkTimer = 0.0f;
+
 	};
 
 }
