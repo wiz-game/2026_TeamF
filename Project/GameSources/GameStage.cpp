@@ -66,7 +66,7 @@ namespace basecross {
 					float y = -1.0f;
 					float z = -sizeZ + i * sizeZ * 2.0f;
 
-					auto floor = AddGameObject<Floor>(Vec3(x, y, z),Vec3(0), Vec3(sizeX * 2, 1, sizeX * 2));
+					auto floor = AddGameObject<Floor>(Vec3(sizeX * 2, 1, sizeX * 2),Vec3(0), Vec3(x, y, z));
 					auto draw = floor->GetComponent<InkDrawComponentTest>();
 					draw->SetBrushSize(0.05f);
 					draw->SetTextureResource(L"SKYBOX");

@@ -17,7 +17,10 @@ namespace basecross {
 
 		m_staticDraw = AddComponent<PNTStaticDraw>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_SPHERE");
+		m_staticDraw->SetOwnShadowActive(true);
 
+		auto shadowMap = AddComponent<Shadowmap>();
+		shadowMap->SetMeshResource(L"DEFAULT_CUBE");
 		//auto coll = AddComponent<CollisionObb>();
 		//coll->SetDrawActive(true);
 

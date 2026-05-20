@@ -589,6 +589,12 @@ namespace basecross {
 		}
 		return false;
 	}
+
+	void InkConnectChecker::Initialize() {
+		m_Ports.clear();
+		m_PowerSupplies.clear();
+		m_TextureCollisions.clear();
+	}
 	vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> InkConnectChecker::CheckConnect() {
 		vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> result;
 		for (auto& weakSupply : m_PowerSupplies) {
