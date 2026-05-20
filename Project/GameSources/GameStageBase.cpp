@@ -39,8 +39,17 @@ namespace basecross {
 	void GameStageBase::OnCreate()
 	{
 		CreateViewLight();
-		StageDateRoad(1);
+		StageDateRoad(2);
 
+		//TrapDoorAxisDesc a;
+		//AddGameObject<TrapDoorAxis>(Vec3(1,1,1),Vec3(1,1,1),Vec3(1,1,1),a);
+
+		STRUCT_TrapDoorAxis b;
+		b.StageObjParams.Pos = Vec3(1, 1, 1);
+		b.StageObjParams.Rot = Vec3(0, 0, 0);
+		b.StageObjParams.Scale = Vec3(1, 1, 1);
+		AddTrapDoorObj(b);
+		AddGameObject<Box>(Vec3(1, 1, 1), Vec3(), Vec3(1, 1, 1));
 	}
 
 	void GameStageBase::StageDateRoad(int num)
@@ -79,7 +88,7 @@ namespace basecross {
 				AddPowerSupplyObj(StaticParams(*date));
 				break;
 			case ENUM_ObjType::T_TrapDoor:
-
+				AddTrapDoorObj(TrapDoorAxisParams(*date));
 				break;
 			}
 		}
@@ -94,8 +103,8 @@ namespace basecross {
 		if (objType == L"Port")  return ENUM_ObjType::T_Port;
 		if (objType == L"Goal")  return ENUM_ObjType::T_Goal;
 		if (objType == L"MoveFloor")  return ENUM_ObjType::T_MoveFloor;
-
-
+		if (objType == L"PowerSupply")  return ENUM_ObjType::T_PowerSupply;
+		if (objType == L"TrapDoorAxis")  return ENUM_ObjType::T_TrapDoor;
 		return ENUM_ObjType::T_Unknown;
 	}
 
@@ -114,9 +123,9 @@ namespace basecross {
 		params.Scale.z = scaleParams->At<JsonNumber>(L"z")->GetFloatValue();
 
 		auto rotParams = json.At<JsonObject>(L"rotationEuler");
-		params.Rot.x = rotParams->At<JsonNumber>(L"x")->GetFloatValue();
-		params.Rot.y = rotParams->At<JsonNumber>(L"y")->GetFloatValue();
-		params.Rot.z = rotParams->At<JsonNumber>(L"z")->GetFloatValue();
+		params.Rot.x = XMConvertToRadians(rotParams->At<JsonNumber>(L"x")->GetFloatValue());
+		params.Rot.y = XMConvertToRadians(rotParams->At<JsonNumber>(L"y")->GetFloatValue());
+		params.Rot.z = XMConvertToRadians(rotParams->At<JsonNumber>(L"z")->GetFloatValue());
 	}
 
 	GameStageBase::STRUCT_BaseParams GameStageBase::StaticParams(JsonObject& json)
@@ -251,7 +260,15 @@ namespace basecross {
 		desc.axis = params.Axis;
 		desc.limitDist = params.LimitDist;
 		desc.speed = params.Speed;
-		desc.port = Map_Ports[params.PortID];
+
+		if (params.PortID==-1)
+		{
+			desc.port = nullptr;
+		}
+		else
+		{
+			desc.port = Map_Ports[params.PortID];
+		}
 
 		AddGameObject<MoveFloor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, desc);
 	}

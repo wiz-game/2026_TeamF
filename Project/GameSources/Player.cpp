@@ -48,10 +48,14 @@ namespace basecross{
 		// �ｽg�ｽ�ｽ�ｽ�ｽ�ｽX�ｽt�ｽH�ｽ[�ｽ�ｽ�ｽR�ｽ�ｽ�ｽ|�ｽ[�ｽl�ｽ�ｽ�ｽg�ｽ�ｽ�ｽ謫ｾ�ｽ�ｽ�ｽﾄゑｿｽ�ｽ�ｽ
 		m_transform = GetComponent<Transform>();
 
-		m_transform->SetPosition(Vec3(0.0f, 0.05f, 0.0f));
+		m_transform->SetPosition(m_pos);
 		// �ｽh�ｽ�ｽ�ｽ[�ｽR�ｽ�ｽ�ｽ|�ｽ[�ｽl�ｽ�ｽ�ｽg�ｽ�ｽﾇ会ｿｽ
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
+		m_draw->SetOwnShadowActive(true);
+
+		auto shadowMap = AddComponent<Shadowmap>();
+		shadowMap->SetMeshResource(L"DEFAULT_SPHERE");
 
 		SetAlphaActive(true);
 		//m_draw->SetDiffuse(Col4(0, 0, 0, 1.0f));
@@ -105,6 +109,11 @@ namespace basecross{
 		if (m_pos.y <= -10.0f)
 		{
 			PostEvent(0.0f, GetThis<Player>(), scene, L"ToProtoStage");
+		}
+
+		if (m_ink < 0)
+		{
+			PostEvent(0.0f, GetThis<Player>(), scene, L"ToGameOverStage");
 		}
 
 		scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)

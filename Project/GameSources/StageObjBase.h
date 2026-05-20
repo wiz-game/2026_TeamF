@@ -3,14 +3,12 @@
 
 namespace basecross {
 
-	class StageObjBase:public GameObject
+	class StageObjBase :public GameObject
 	{
 	public:
 		Vec3 m_scale;
 		Vec3 m_rot;
 		Vec3 m_pos;
-
-		float a;
 
 	protected:
 		StageObjBase

@@ -38,6 +38,8 @@
 
 #include "InkCloud.h"
 #include "FloorDecision.h"
+
+#include "InkGauge.h"
 #include "GoalDoor.h"
 
 #include "TrapDoor.h"
@@ -52,3 +54,5 @@
 
 #include "BeltConveyor.h"
 #include "BeltConveyorTex.h"
+#include "SkyCube.h"
+#include "GameOverStage.h"

@@ -7,12 +7,13 @@
 #include "stdafx.h"
 #include "PNTDXModelDraw.h"
 #include "Electrified.h"
+#include "StageObjBase.h"
 
 namespace basecross {
 	class Port : public StageObjBase
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
-		std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
+		//std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<PNTStaticDraw> m_staticDraw;
 
 		bool isConnect = false;
