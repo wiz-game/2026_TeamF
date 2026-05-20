@@ -41,7 +41,7 @@ namespace basecross{
 
 			//自分自身にイベントを送る
 			//これによりゲームステージのオブジェクトがCreate時にシーンにアクセスできる
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToProtoStage");
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
 		}
 		catch (...) {
 			throw;
@@ -56,6 +56,7 @@ namespace basecross{
 	}
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
+		InkConnectChecker::Get().Initialize();
 		if (event->m_MsgStr == L"ToGameStage") {
 			ResetActiveStage<GameStage>();
 		}
@@ -67,9 +68,9 @@ namespace basecross{
 		}
 
 		//仮で設定。後々やり方変える
-		if (event->m_MsgStr == L"ToGameStage0") {
+		/*if (event->m_MsgStr == L"ToGameStage0") {
 			ResetActiveStage<ProtoStage>();
-		}
+		}*/
 		//if (event->m_MsgStr == L"ToGameStage1") {
 		//	ResetActiveStage<GameStage>();
 		//}
@@ -77,8 +78,8 @@ namespace basecross{
 		//	ResetActiveStage<GoalStage>();
 		//}
 		if (event->m_MsgStr == L"ToGameStage0") {
-			//ResetActiveStage<ProtoStage>();
-			ResetActiveStage<GameStageBase>();
+			ResetActiveStage<ProtoStage>();
+			//ResetActiveStage<GameStageBase>();
 		}
 
 

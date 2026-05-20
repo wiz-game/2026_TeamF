@@ -52,6 +52,10 @@ namespace basecross{
 		// �ｽh�ｽ�ｽ�ｽ[�ｽR�ｽ�ｽ�ｽ|�ｽ[�ｽl�ｽ�ｽ�ｽg�ｽ�ｽﾇ会ｿｽ
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
+		m_draw->SetOwnShadowActive(true);
+
+		auto shadowMap = AddComponent<Shadowmap>();
+		shadowMap->SetMeshResource(L"DEFAULT_SPHERE");
 
 		SetAlphaActive(true);
 		//m_draw->SetDiffuse(Col4(0, 0, 0, 1.0f));
