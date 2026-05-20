@@ -111,6 +111,11 @@ namespace basecross{
 			PostEvent(0.0f, GetThis<Player>(), scene, L"ToProtoStage");
 		}
 
+		if (m_ink < 0)
+		{
+			PostEvent(0.0f, GetThis<Player>(), scene, L"ToGameOverStage");
+		}
+
 		scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
 			+ L"\n"
 			+ L"ink残量 : " + std::to_wstring(m_ink)

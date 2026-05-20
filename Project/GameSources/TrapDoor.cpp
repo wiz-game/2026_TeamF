@@ -22,6 +22,7 @@ namespace basecross
 		//Drawコンポーネント
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
+		m_draw->SetTextureResource(L"marble");
 
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetFixed(true);

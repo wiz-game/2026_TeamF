@@ -16,18 +16,18 @@ namespace basecross {
     void DrEnemy::OnCreate()
     {
         BaseEnemy::OnCreate();
-        BaseEnemy::m_transform->SetPosition(0, 0, 0);
+        BaseEnemy::m_transform->SetPosition(-5, 0, 0);
         BaseEnemy::m_draw->SetDiffuse(Col4(0.0f, 1.0f, 0.0f, 1.0f));
 
         SetUpBetWnnePoints();
-
-        m_state = State::BetWeen;
+		m_transform->SetPosition(m_pointA);
+        m_state = State::Draw;
         m_moveSpeed = 2.0f;
     }
 
     void DrEnemy::OnUpdate()
     {
-        UpdateBetWeen();
+		BaseEnemy::OnUpdate();
     }
 
     void DrEnemy::SetUpBetWnnePoints()
@@ -81,36 +81,63 @@ namespace basecross {
                 nearesSupply = supply;
             }
 
+        }
+
+        if (nearesSupply)
+        {
             m_pointA = portPos;
             m_pointB = nearesSupply->GetComponent<Transform>()->GetPosition();
+
         }
+
     }
 
-    void DrEnemy::UpdateBetWeen()
+    void DrEnemy::UpdateInkDrow()
     {
-
-        auto delta = App::GetApp()->GetElapsedTime();
+		auto delta = App::GetApp()->GetElapsedTime();
 
         Vec3 pos = m_transform->GetPosition();
+		Vec3 target = m_toB ? m_pointB : m_pointA;
 
-        Vec3 target = m_toB ? m_pointB : m_pointA;
+        float fixedY = 0.0f;
+        pos.y = fixedY;
 
         Vec3 dir = target - pos;
         float dist = dir.length();
 
-        if (dist > 0.001f) {
-            dir.normalize();
+        if (dist > 0.001f)
+        {
+			dir.normalize();
         }
 
-        pos += dir * m_moveSpeed * delta;
+		pos += dir * m_moveSpeed * delta;
+        pos.y = fixedY;
         m_transform->SetPosition(pos);
 
-        // 到達判定
+		m_inkTimer += delta;
+
+        if (m_inkTimer >= m_inkInterval)
+        {
+			m_inkTimer = 0.0f;
+            Vec3 inkPos = pos;
+            inkPos.y -= 0.3f;
+
+			SpanInk(inkPos);
+        }
+
         if (dist < 0.5f)
         {
-            m_toB = !m_toB;
+            if (m_toB)
+            {
+                m_toB = false;
+            }
+            else
+            {
+                // 描き終わったら徘徊
+                m_state = State::Patrol;
+            }
         }
-    }
-
+       
+	}
 }
 //end basecross

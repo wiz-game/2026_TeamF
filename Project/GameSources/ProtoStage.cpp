@@ -42,7 +42,7 @@ namespace basecross {
 			CreateViewLight();
 
 			//プレイヤー作成
-			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3(),float(10.0f));
+			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3(),float(20.0f));
 			SetSharedGameObject(L"player", m_Player);
 
 			//カメラ取得

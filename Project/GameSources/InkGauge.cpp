@@ -6,10 +6,17 @@ namespace basecross
 {
 	void InkGauge::OnCreate()
 	{
-		float ink = m_currentInk / m_maxInk;
+		auto& app = App::GetApp();
+		auto stage = GetStage();
+		auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+		app->RegisterTexture(L"Gauge", path + L"Gauge.png"); // 画像ファイルを読み込んでアセットとして登録する
 
+		//インク最大値をプレイヤーから取得する
+		m_player = stage->GetSharedGameObject<Player>(L"player");
+		if (m_player) m_maxInk = m_player->GetMaxInk();
+
+		float ink = m_currentInk / m_maxInk;
 		m_width = m_maxInk * 10 * ink;
-		m_height = 25.0f / 2.0f;
 		m_vertices =
 		{
 			{Vec3(m_offsetPos.x, m_offsetPos.y, 0), m_color,Vec2(0, 0)},
@@ -21,7 +28,8 @@ namespace basecross
 			0,1,2,
 			1,3,2
 		};
-		m_draw = AddComponent<PCTSpriteDraw>(m_vertices,m_indices);
+		m_draw = AddComponent<PCTSpriteDraw>(m_vertices, m_indices);
+		m_draw->SetTextureResource(L"Gauge");
 		m_trans = GetComponent<Transform>();
 	}
 
@@ -34,9 +42,9 @@ namespace basecross
 		m_player = stage->GetSharedGameObject<Player>(L"player");
 		if (m_player)
 		{
-			float actualInk = m_player->GetInk();
-			m_ink = m_maxInk / m_width;
-			m_unitWidth = actualInk / m_ink * 2;
+			m_ink = m_player->GetInk();
+			m_gaugeInk = m_maxInk / m_width;
+			m_unitWidth = m_ink / m_gaugeInk * 2;
 
 			m_vertices[2].position.x = m_unitWidth + m_offsetPos.x;
 			m_vertices[3].position.x = m_unitWidth + m_offsetPos.x;
@@ -47,6 +55,16 @@ namespace basecross
 		{
 			m_draw->UpdateVertices(m_vertices);
 		}
+
+		if (m_ink <= m_maxInk * 0.3f)
+			ChangeGaugeColor();
+	}
+
+	void InkGauge::ChangeGaugeColor()
+	{
+		Col4 col = Col4(1.0f, 0.0f, 0.0f, 0.0f);
+		m_draw->SetDiffuse(col);
+		m_draw->SetEmissive(col);
 	}
 
 
@@ -56,11 +74,15 @@ namespace basecross
 		auto& app = App::GetApp();
 		auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
 		app->RegisterTexture(L"Gauge", path + L"Gauge.png"); // 画像ファイルを読み込んでアセットとして登録する
+		auto stage = GetStage();
+
+		//インク最大値をプレイヤーから取得する
+		m_player = stage->GetSharedGameObject<Player>(L"player");
+		if (m_player) m_maxInk = m_player->GetMaxInk();
 
 		float ink = m_currentInk / m_maxInk;
 
 		m_width = m_maxInk * 10 * 2 * ink;
-		m_height = 25.0f / 2.0f;
 		m_vertices =
 		{
 			{Vec3(m_offsetPos.x, m_offsetPos.y, 0), m_color,Vec2(0, 0)},
@@ -75,7 +97,7 @@ namespace basecross
 		m_draw = AddComponent<PCTSpriteDraw>(m_vertices, m_indices);
 
 		m_draw->SetTextureResource(L"Gauge");
-		m_draw->SetDiffuse(m_color);
+		//m_draw->SetDiffuse(m_color);
 		m_trans = GetComponent<Transform>();
 	}
 }

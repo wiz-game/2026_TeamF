@@ -32,10 +32,7 @@ namespace basecross {
 		case State::Patrol:
 			UpdatePatrol();
 			break;
-		case State::BetWeen:
-			UpdateBetWeen();
-			break;
-		case State::Drow:
+		case State::Draw:
 			UpdateInkDrow();
 			break;
 		case State::Erase:
@@ -56,7 +53,7 @@ namespace basecross {
 		auto delta = App::GetApp()->GetElapsedTime();
 		Vec3 pos = m_transform->GetPosition();
 
-		float fixedY = 1.0f;
+		float fixedY = 0.0f;
 		pos.y = fixedY;
 
 		Vec3 toTarget = m_targetPos - pos;
@@ -96,26 +93,20 @@ namespace basecross {
 		m_transform->SetPosition(pos);
 	}
 
-	void BaseEnemy::UpdateBetWeen()
-	{
-
-	}
-
 	void BaseEnemy::UpdateInkDrow()
 	{
-		Vec3 pos = m_transform->GetPosition();
-		auto delta = App::GetApp()->GetElapsedTime();
-		pos.x += 1.0 * delta;
-		m_transform->SetPosition(pos);
+		
 	}
 
 	void BaseEnemy::UpdateInkErase()
 	{
-		Vec3 pos = m_transform->GetPosition();
-		auto delta = App::GetApp()->GetElapsedTime();
-		pos.y += 1.0 * delta;
-		m_transform->SetPosition(pos);
+		
+	}
 
+	void BaseEnemy::SpanInk(const Vec3& pos)
+	{
+		auto ink = GetStage()->AddGameObject<InkDraw>();
+		ink->GetComponent<Transform>()->SetPosition(pos);
 	}
 }
 //end basecross
