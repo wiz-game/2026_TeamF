@@ -28,8 +28,7 @@ namespace basecross {
 		enum class State {
 			Idle,
 			Patrol,
-			BetWeen,
-			Drow,
+			Draw,
 			Erase,
 		};
 
@@ -57,9 +56,10 @@ namespace basecross {
 
 		virtual void UpdateIdle(); // 待機状態の更新
 		virtual void UpdatePatrol(); // 徘徊移動の更新
-		virtual void UpdateBetWeen();//２点移動の更新
 		virtual void UpdateInkDrow(); // 描画状態の更新
 		virtual void UpdateInkErase(); // 消去状態の更新
+
+		void SpanInk(const Vec3& pos);// インクをスポーンする関数
 	};
 
 }
