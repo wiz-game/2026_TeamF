@@ -74,6 +74,11 @@ class MoveFloor;
 			return m_ink;
 		}
 
+		float GetMaxInk()
+		{
+			return m_inkMax;
+		}
+
 		void OnCollisionEnter(std::shared_ptr<GameObject>& obj);
 		void OnCollisionExcute(std::shared_ptr<GameObject>& obj);
 		void OnCollisionExit(std::shared_ptr<GameObject>& obj);
