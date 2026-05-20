@@ -7,7 +7,8 @@
 #include "PowerSupply.h"
 #include "Project.h"
 #include "game_controller.h"
-
+#include "InkDraw.h"
+#include "TextureCollision.h"
 namespace basecross {
 	// 初期設定
 	void PowerSupply::OnCreate()
@@ -43,6 +44,10 @@ namespace basecross {
 		auto elec = AddComponent<Electrified>();
 		elec->SetAsSource(true);// 電源であることを設定
 		//isPower = true;
+		//coll->SetFixed(true);
+		isPower = true;// 電源であることを設定
+
+		InkConnectChecker::Get().AddPowerSupply(GetThis<PowerSupply>());
 	}
 
 	// 更新処理

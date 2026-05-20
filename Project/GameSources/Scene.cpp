@@ -20,6 +20,7 @@ namespace basecross{
 		auto& app = App::GetApp();
 
 		auto mediaPath = app->GetDataDirWString();
+		app->RegisterTexture(L"SKYBOX", mediaPath + L"Texture/SkyBox/SkyBox.png");
 	}
 
 	void Scene::OnCreate(){
@@ -37,7 +38,10 @@ namespace basecross{
 			
 			CreateResourses();
 
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
+
+			//自分自身にイベントを送る
+			//これによりゲームステージのオブジェクトがCreate時にシーンにアクセスできる
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToProtoStage");
 		}
 		catch (...) {
 			throw;
@@ -73,7 +77,8 @@ namespace basecross{
 		//	ResetActiveStage<GoalStage>();
 		//}
 		if (event->m_MsgStr == L"ToGameStage0") {
-			ResetActiveStage<ProtoStage>();
+			//ResetActiveStage<ProtoStage>();
+			ResetActiveStage<GameStageBase>();
 		}
 
 

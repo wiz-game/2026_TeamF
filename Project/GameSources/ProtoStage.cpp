@@ -43,13 +43,17 @@ namespace basecross {
 
 			//プレイヤー作成
 			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3(),float(10.0f));
-			//SetSharedGameObject(L"Player", m_Player);
+			SetSharedGameObject(L"player", m_Player);
 
 			//カメラ取得
 			auto view = GetView();
 			auto camera = view->GetTargetCamera();
 			auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
 			mainCamera->SetTarget(m_Player);
+
+			//UI作成
+			auto gaugeBack = AddGameObject<GaugeBack>();
+			auto gauge = AddGameObject<InkGauge>();
 
 			//プロトタイプ用地面作成
 			JPH::StaticCompoundShapeSettings compoundSettings;
@@ -162,6 +166,8 @@ namespace basecross {
 			//									Scale			Rotation		Position			portの指定
 			AddGameObject<BeltConveyor>(Vec3(1.0f, 0.1f, 5.0f), Vec3(0,0,0), Vec3(3.0f, -0.5f, 0.0f), nullptr);
 
+			//スカイボックス
+			AddGameObject<SkyCube>(L"SKYBOX");
 		}
 		catch (...) {
 			throw;

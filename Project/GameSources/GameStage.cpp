@@ -51,29 +51,29 @@ namespace basecross {
 
 			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3(),float(10.0f));
 			AddGameObject<InkDraw>();
-
-			//AddGameObject<PowerSupply>(Vec3(0.0f, -0.3f, -4.0f));
-			//AddGameObject<Port>(Vec3(0.0f, -0.3f, 3.0f));
+			AddGameObject<PowerSupply>(Vec3(0.0f, -0.5f, -4.0f));
+			AddGameObject<Port>(Vec3(0.0f, -0.5f, 3.0f));
 
 			auto view = GetView();
 			auto camera = view->GetTargetCamera();
 			auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
 			mainCamera->SetTarget(m_Player);
 
-			//float sizeX = 4.0f, sizeZ = 7.5f;
-			//for (int i = 0; i < 2; i++) {
-			//	for (int j = 0; j < 2; j++) {
-			//		float x = -sizeX + j * sizeX * 2.0f;
-			//		float y = -1.0f;
-			//		float z = -sizeZ + i * sizeZ * 2.0f;
+			float sizeX = 4.0f, sizeZ = 4.0f;
+			for (int i = 0; i < 2; i++) {
+				for (int j = 0; j < 2; j++) {
+					float x = -sizeX + j * sizeX * 2.0f;
+					float y = -1.0f;
+					float z = -sizeZ + i * sizeZ * 2.0f;
 
-			//		auto floor = AddGameObject<Floor>(Vec3(8, 1, 15), Vec3(0), Vec3(x, y, z));
-			//		auto draw = floor->GetComponent<SmBaseDraw>();
-			//		draw->SetTextureResource(L"InkTest");
-			//		floor->AddComponent<TextureCollision>();
-			//		m_TestFloors.push_back(floor);
-			//	}
-			//}
+					auto floor = AddGameObject<Floor>(Vec3(x, y, z), Vec3(sizeX * 2, 1, sizeX * 2));
+					auto draw = floor->GetComponent<InkDrawComponentTest>();
+					draw->SetBrushSize(0.05f);
+					draw->SetTextureResource(L"SKYBOX");
+					floor->AddComponent<TextureCollision>();
+					m_TestFloors.push_back(floor);
+				}
+			}
 
 			
 		}
@@ -84,12 +84,44 @@ namespace basecross {
 
 	void GameStage::OnUpdate()
 	{
-		//// アプリケーションオブジェクトを取得
-		//auto& app = App::GetApp();
-		//GameController::Update();
-		//for (auto& floor : m_TestFloors) {
-		//	TextureMeshManager::Get().AddReload(floor->GetComponent<TextureCollision>());
-		//}
+		// アプリケーションオブジェクトを取得
+		auto& app = App::GetApp();
+		GameController::Update();
+
+		if (GameController::IsPressed_ButtonLeft()) {
+			Vec3 playerPosition = m_Player->GetComponent<Transform>()->GetPosition();
+			for (auto& floor : m_TestFloors) {
+				auto draw = floor->GetComponent<InkDrawComponentTest>();
+				Vec3 hitPos;
+				TRIANGLE tempTri;
+				size_t temp;
+				if (draw->HitTestStaticMeshSphereTriangles(
+					SPHERE(playerPosition,1.0f), 
+					SPHERE(playerPosition + Vec3(0.0f,1.0f,0.0f),1.0f),
+					hitPos, tempTri, temp)) {
+
+					auto floorPosition = floor->GetComponent<Transform>()->GetPosition();
+					auto floorScale = floor->GetComponent<Transform>()->GetScale();
+
+					Vec2 floorPoint = Vec2(floorPosition.x - floorScale.x * 0.5f, floorPosition.z - floorScale.z * 0.5f);
+					Vec2 playerPoint = Vec2(playerPosition.x, playerPosition.z);
+					Vec2 dist = playerPoint - floorPoint;
+
+					Vec2 point = Vec2(dist.x / (floorScale.x), dist.y / (floorScale.z));
+					point.y = 1.0f - point.y;
+					draw->AddDrawPoint(point);
+				}
+			}
+			int floorID = rand() % m_TestFloors.size();
+			float posX = Util::RandZeroToOne();
+			float posY = Util::RandZeroToOne();
+
+			
+		}
+
+		for (auto& floor : m_TestFloors) {
+			//TextureMeshManager::Get().AddReload(floor->GetComponent<TextureCollision>());
+		}
 	}
 
 	void GameStage::OnUpdate2()

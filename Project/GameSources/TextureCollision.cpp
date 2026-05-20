@@ -63,9 +63,9 @@ namespace basecross {
 		m_UnionFind2Shader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
 
 		auto object = GetGameObject();
-		auto draw = object->GetComponent<SmBaseDraw>();
+		auto draw = object->GetComponent<InkDrawComponentTest>();
 		//srv‚©‚çî•ñ‚ðŽæ“¾
-		auto srv = draw->GetTextureResource()->GetShaderResourceView();
+		auto srv = draw->GetInkShaderResourceView();
 
 		//SRV,UAV‚ÌêŠ‚ð‰¼‚ÅŽæ‚Á‚Ä‚¨‚­
 		m_MaskShader->AddSRV(srv.Get());
@@ -86,28 +86,41 @@ namespace basecross {
 
 	}
 	void TextureCollision::OnDraw() {
-		for (auto& triangles : m_ContourTriangles) {
-			for (auto& triangle : triangles) {
-				Vec3 dir = triangle[1] - triangle[0];
-				float length = dir.length();
-				DrawLine(triangle[0], dir.normalize(), length);
-
-				dir = triangle[2] - triangle[1];
-				length = dir.length();
-				DrawLine(triangle[1], dir.normalize(), length);
-
-				dir = triangle[0] - triangle[2];
-				length = dir.length();
-				DrawLine(triangle[2], dir.normalize(), length);
+		for (int i = 0; i < m_ElectricContourIndices.size(); i++) {
+			if (m_ElectricContourIndices[i] != 0) {
+				DrawContour(i);
 			}
 		}
 	}
+	void TextureCollision::DrawContour(int index) {
+		for (auto& triangle : m_ContourTriangles[index]) {
+			Vec3 dir = triangle.m_B - triangle.m_A;
+			float length = dir.length();
+			DrawLine(triangle.m_A, dir.normalize(), length);
+
+			dir = triangle.m_C - triangle.m_B;
+			length = dir.length();
+			DrawLine(triangle.m_B, dir.normalize(), length);
+
+			dir = triangle.m_A - triangle.m_C;
+			length = dir.length();
+			DrawLine(triangle.m_C, dir.normalize(), length);
+		}
+	}
+	void TextureCollision::AddElectricIndex(int index) {
+		if (m_ElectricContourIndices.size() <= index) return;
+		m_ElectricContourIndices[index] = 1;
+	}
+	bool TextureCollision::IsElectrified(int index) {
+		if (m_ElectricContourIndices.size() <= index) return false;
+		return m_ElectricContourIndices[index];
+	}
 	void TextureCollision::GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc) {
 		auto object = GetGameObject();
-		auto draw = object->GetComponent<SmBaseDraw>();
-
+		auto draw = object->GetComponent<InkDrawComponentTest>(false);
+		if (!draw) return;
 		//srv‚©‚çî•ñ‚ðŽæ“¾
-		auto srv = draw->GetTextureResource()->GetShaderResourceView().Get();
+		auto srv = draw->GetInkShaderResourceView().Get();
 		ID3D11Resource* gpuResource = nullptr;
 		srv->GetResource(&gpuResource);
 
@@ -158,16 +171,12 @@ namespace basecross {
 		m_UnionFind1Shader->Execute();
 		swap(m_LabelBuffer, m_LabelOutputBuffer);
 
-		const int maxLoop = 16;
-		const int checkDuration = 50;
+		const int maxLoop = 32;
 		for (int i = 0; i < maxLoop; i++) {
 			m_UnionFind2Shader->SetSRV(0, m_LabelBuffer->m_SRV.Get());
 			m_UnionFind2Shader->SetUAV(0, m_LabelOutputBuffer->m_UAV.Get());
 			m_UnionFind2Shader->Execute();
 			swap(m_LabelBuffer, m_LabelOutputBuffer);
-		}
-		for (int i = 0; i < m_TextureContext.m_SizeX * m_TextureContext.m_SizeY; i++) {
-			int o = 0;
 		}
 		m_LabelBuffer->ReadBuffer(m_Labels.data());
 		end = std::chrono::steady_clock::now();
@@ -219,12 +228,13 @@ namespace basecross {
 			totalDouglasDuration += duration;
 
 			start = std::chrono::steady_clock::now();
-			vector<vector<Vec3>> triangles = EarClipping::Calc(CalcContourWorldPosition(contour));
+			vector<TRIANGLE> triangles = EarClipping::Calc(CalcContourWorldPosition(contour));
 			m_ContourTriangles.push_back(triangles);
 			end = std::chrono::steady_clock::now();
 			duration = std::chrono::duration_cast<chrono::microseconds>(end - start).count() / 1000.0f;
 			totalEarClippingDuration += duration;
 		}
+		m_ElectricContourIndices.resize(m_ContourTriangles.size(), 0);
 		int checker = 0;
 	}
 	void TextureCollision::GetContour(vector<int>& cells,int& groupID, vector<int>& out) {
@@ -257,7 +267,7 @@ namespace basecross {
 				if (findIndices[dir].y == 1 && y >= (int)m_TextureContext.m_SizeY - 1) continue;
 
 				int index = currentIndex + findIndices[dir].y * m_TextureContext.m_SizeX + findIndices[dir].x;
-				if (cells[index] != -1 && cells[index] == groupID) {
+				if ((cells[index] != -1 || cells[index] != groupID) && cells[index] == groupID) {
 					befIndex = currentIndex;
 					currentIndex = index;
 					out.push_back(index);
@@ -285,6 +295,12 @@ namespace basecross {
 			float px = (float)x / m_TextureContext.m_SizeX;
 			float py = (float)y / m_TextureContext.m_SizeY;
 			Vec3 vertexPosition = Vec3((px - 0.5f) * scale.x, scale.y * 0.5f, -(py - 0.5f) * scale.z);
+			if (x >= m_TextureContext.m_SizeX - 1 || m_Labels[vertexId + 1] == -1) {
+				vertexPosition.x += scale.x / m_TextureContext.m_SizeX;
+			}
+			if (y >= m_TextureContext.m_SizeY - 1 || m_Labels[vertexId + m_TextureContext.m_SizeX] == -1) {
+				vertexPosition.z -= scale.z / m_TextureContext.m_SizeY;
+			}
 
 			Vec3 worldPosition = vertexPosition + position;
 			worldPositions.push_back(worldPosition);
@@ -301,6 +317,7 @@ namespace basecross {
 	}
 
 	void TextureCollision::DrawLine(Vec3 position, Vec3 dir, float length) {
+		GenericDraw;
 		auto meshResource = App::GetApp()->GetResource<MeshResource>(L"DEFAULT_PC_LINE");
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto pD3D11DeviceContext = Dev->GetD3DDeviceContext();
@@ -404,7 +421,6 @@ namespace basecross {
 		return distX * distX + distY * distY;
 	}
 	void DouglasPeucker::Initialize(const vector<int>& points, const CoordContext& context) {
-		count = 0;
 		m_Points = points;
 		m_Positions.resize(m_Points.size());
 		for (int i = 0; i < m_Points.size(); i++) {
@@ -459,10 +475,10 @@ namespace basecross {
 
 		return (b1 == b2 && b2 == b3);
 	}
-	vector<vector<Vec3>> EarClipping::Calc(const vector<Vec3>& points) {
+	vector<TRIANGLE> EarClipping::Calc(const vector<Vec3>& points) {
 		if (points.size() < 3) return {};
 		vector<Vec3> ear = points;
-		vector<vector<Vec3>> triangles;
+		vector<TRIANGLE> triangles;
 		triangles.reserve(ear.size());
 		while (ear.size() > 3) {
 			for (int i = 0, size = (int)ear.size(); i < size; i++) {
@@ -480,23 +496,30 @@ namespace basecross {
 						}
 					}
 					if (!isContained) {
-						triangles.push_back({ ear[i], ear[left], ear[right] });
+						TRIANGLE triangle;
+						triangle.Set(ear[i], ear[left], ear[right], Mat4x4());
+						triangles.push_back(triangle);
 						ear.erase(ear.begin() + i);
 						break;
 					}
 				}
 			}
 		}
-		triangles.push_back({ ear[0], ear[1], ear[2] });
+		TRIANGLE triangle;
+		triangle.Set(ear[0], ear[1], ear[2], Mat4x4());
+		triangles.push_back(triangle);
 
 		return triangles;
 	}
 
 	void TextureMeshManager::Reload() {
 		vector<thread> threads;
+		for (int i = 0, size = m_ReloadMeshCollisions.size(); i < size; i++) {
+			
+		}
 		for (auto& meshCollision : m_ReloadMeshCollisions) {
 			meshCollision->ProcessGPU();
-			thread t([&]() { meshCollision->ProcessCPU(); });
+			thread t([meshCollision]() { meshCollision->ProcessCPU(); });
 			threads.push_back(move(t));
 		}
 
@@ -504,21 +527,91 @@ namespace basecross {
 			t.join();
 		}
 		m_ReloadMeshCollisions.clear();
+
+		InkConnectChecker::Get().CheckConnect();
 	}
 
+	bool InkConnectChecker::IsConnectedSupplyToInk(const OBB& supplyOBB, const AABB& supplyAABB, const vector<TRIANGLE>& triangles) {
+		for (auto& triangle : triangles) {
+			if (!HitTest::AABB_AABB(supplyAABB, triangle.GetWrappedAABB())) continue;
+			if (!HitTest::CollisionTestOBBTriangle(supplyOBB, triangle)) continue;
+			return true;
+		}
+		return false;
+	}
+	bool InkConnectChecker::IsConnectedInkToInk(const vector<TRIANGLE>& triangles,const shared_ptr<TextureCollision>& fromCollision) {
+		for (auto& weakCollision : m_TextureCollisions) {
+			auto collision = weakCollision.lock();
+			if (!collision/* || fromCollision.get() == collision.get()*/) continue;
+
+			size_t contourCount = collision->GetContourCount();
+			for (int i = 0; i < contourCount; i++) {
+				if (collision->IsElectrified(i)) continue;
+				auto otherTriangles = collision->GetTriangles(i);
+				bool isConnected = false;
+
+				for (auto& triangle : triangles) {
+					for (auto& otherTriangle : otherTriangles) {
+						if (!HitTest::AABB_AABB(triangle.GetWrappedAABB(), otherTriangle.GetWrappedAABB())) continue;
+						isConnected = true;
+						break;
+					}
+					if (isConnected) break;
+				}
+				if (isConnected) {
+					collision->AddElectricIndex(i);
+					IsConnectedInkToInk(otherTriangles, collision);
+					//return true;
+				}
+				
+			}
+		}
+		for (auto& weakPort : m_Ports) {
+			auto port = weakPort.lock();
+			if (!port) continue;
+			auto portCollision = port->GetComponent<CollisionObb>();
+			auto portAABB = portCollision->GetWrappedAABB();
+			auto portOBB = portCollision->GetObb();
+			if (IsConnectedInkToPort(portOBB, portAABB, triangles)) {
+				port->GetComponent<PNTStaticDraw>()->SetDiffuse(Col4(1, 0, 1, 1));
+			}
+			else {
+				//port->GetComponent<PNTStaticDraw>()->SetDiffuse(Col4(1, 0, 0, 1));
+			}
+		}
+		return false;
+	}
+	bool InkConnectChecker::IsConnectedInkToPort(const OBB& portOBB, const AABB& portAABB, const vector<TRIANGLE>& triangles) {
+		for (auto& triangle : triangles) {
+			if (!HitTest::AABB_AABB(portAABB, triangle.GetWrappedAABB())) continue;
+			if (!HitTest::CollisionTestOBBTriangle(portOBB, triangle)) continue;
+			return true;
+		}
+		return false;
+	}
 	vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> InkConnectChecker::CheckConnect() {
 		vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> result;
 		for (auto& weakSupply : m_PowerSupplies) {
 			auto supply = weakSupply.lock();
 			if (!supply) continue;
+			auto supplyCollision = supply->GetComponent<CollisionObb>();
+			auto supplyAABB = supplyCollision->GetWrappedAABB();
+			auto supplyOBB = supplyCollision->GetObb();
 
 			for (auto& weakCollision : m_TextureCollisions) {
 				auto collision = weakCollision.lock();
 				if (!collision) continue;
 
-				auto& supplyCollision = supply->GetComponent<Collision>();
-				auto supplyAABB = supplyCollision->GetWrappedAABB();
-				
+				size_t contourCount = collision->GetContourCount();
+				for (int i = 0; i < contourCount; i++) {
+					auto triangles = collision->GetTriangles(i);
+					bool isConnectedSupply = IsConnectedSupplyToInk(supplyOBB, supplyAABB, triangles);
+					
+					if (isConnectedSupply) {
+						collision->AddElectricIndex(i);
+						IsConnectedInkToInk(triangles, collision);
+					}
+				}
 			}
 		}
 		return result;
