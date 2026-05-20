@@ -30,8 +30,12 @@ namespace basecross {
 		m_transform->SetRotation(m_rot);
 
 		// ドローコンポーネントを追加
-		//m_draw = AddComponent<PNTDXModelDraw>();
-		//m_draw->SetMeshResource(L"DEFAULT_CUBE");
+		m_draw = AddComponent<PNTDXModelDraw>();
+		m_draw->SetMeshResource(L"DEFAULT_CUBE");
+		m_draw->SetOwnShadowActive(true);
+
+		auto shadowMap = AddComponent<Shadowmap>();
+		shadowMap->SetMeshResource(L"DEFAULT_CUBE");
 
 		m_staticDraw = AddComponent<PNTStaticDraw>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");

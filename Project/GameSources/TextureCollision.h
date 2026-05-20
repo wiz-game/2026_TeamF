@@ -114,6 +114,8 @@ namespace basecross{
 		bool IsConnectedInkToInk(const vector<TRIANGLE>& triangles, const shared_ptr<TextureCollision>& fromCollision);
 		bool IsConnectedInkToPort(const OBB& portOBB, const AABB& portAABB, const vector<TRIANGLE>& triangles);
 	public:
+
+		void Initialize();
 		vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> CheckConnect();
 
 		void AddTextureCollision(const shared_ptr<TextureCollision>& collision) {
