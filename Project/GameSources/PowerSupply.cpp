@@ -13,6 +13,15 @@ namespace basecross {
 	// 初期設定
 	void PowerSupply::OnCreate()
 	{
+		try
+		{
+			auto& app = App::GetApp();
+			auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+			app->RegisterTexture(L"PowerSupply", path + L"PowerSupply.png"); // 画像ファイルを読み込んでアセットとして登録する
+		}
+		catch (...) {
+		}
+
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();
 
@@ -31,6 +40,7 @@ namespace basecross {
 		m_staticDraw = AddComponent<PNTStaticDraw>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
 		m_staticDraw->SetDiffuse(Col4(0, 1, 0, 1));
+		m_staticDraw->SetTextureResource(L"PowerSupply");
 
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetAfterCollision(AfterCollision::None);

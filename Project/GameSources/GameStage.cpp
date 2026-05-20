@@ -51,8 +51,8 @@ namespace basecross {
 
 			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3(),float(10.0f));
 			AddGameObject<InkDraw>();
-			AddGameObject<PowerSupply>(Vec3(1.0f),Vec3(0.0f),Vec3(0.0f, -0.5f, -4.0f));
-			AddGameObject<Port>(Vec3(1.0f), Vec3(0.0f),Vec3(0.0f, -0.5f, 3.0f));
+			AddGameObject<PowerSupply>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(0.0f, -0.5f, -4.0f));
+			AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(0.0f, -0.5f, 3.0f));
 
 			auto view = GetView();
 			auto camera = view->GetTargetCamera();
@@ -66,7 +66,7 @@ namespace basecross {
 					float y = -1.0f;
 					float z = -sizeZ + i * sizeZ * 2.0f;
 
-					auto floor = AddGameObject<Floor>(Vec3(sizeX * 2, 1, sizeX * 2), Vec3(), Vec3(x, y, z));
+					auto floor = AddGameObject<Floor>(Vec3(sizeX * 2, 1, sizeX * 2),Vec3(0), Vec3(x, y, z));
 					auto draw = floor->GetComponent<InkDrawComponentTest>();
 					draw->SetBrushSize(0.05f);
 					draw->SetTextureResource(L"SKYBOX");

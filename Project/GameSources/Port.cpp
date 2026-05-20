@@ -6,26 +6,37 @@
 #include "stdafx.h"
 #include "Project.h"
 #include "game_controller.h"
+#include "Port.h"
 
 namespace basecross {
 	// 初期設定
 	void Port::OnCreate()
 	{
-
+		try
+		{
+			auto& app = App::GetApp();
+			auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+			app->RegisterTexture(L"Port", path + L"Port.png"); // 画像ファイルを読み込んでアセットとして登録する
+		}
+		catch (...) {
+		}
 		// トランスフォームコンポーネントを取得しておく
 		m_transform = GetComponent<Transform>();
 
 		m_transform->SetPosition(m_pos);
 		m_transform->SetScale(m_scale);
+		m_transform->SetRotation(m_rot);
 
 		// ドローコンポーネントを追加
-		m_draw = AddComponent<PNTDXModelDraw>();
-		m_draw->SetMeshResource(L"DEFAULT_CUBE");
+		//m_draw = AddComponent<PNTDXModelDraw>();
+		//m_draw->SetMeshResource(L"DEFAULT_CUBE");
 
 		m_staticDraw = AddComponent<PNTStaticDraw>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
 		m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
-
+		m_staticDraw->SetTextureResource(L"Port");
+		m_staticDraw->SetBlendState(BlendState::AlphaBlend);
+		
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetAfterCollision(AfterCollision::None);
 
