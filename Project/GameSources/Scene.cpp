@@ -66,6 +66,9 @@ namespace basecross{
 		if (event->m_MsgStr == L"ToGoalStage") {
 			ResetActiveStage<GoalStage>();
 		}
+		if (event->m_MsgStr == L"ToGameOverStage") {
+			ResetActiveStage<GameOverStage>();
+		}
 
 		//仮で設定。後々やり方変える
 		/*if (event->m_MsgStr == L"ToGameStage0") {
