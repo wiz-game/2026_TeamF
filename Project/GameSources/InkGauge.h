@@ -18,6 +18,7 @@ namespace basecross
 
 		float m_currentInk;
 		float m_maxInk;
+		float m_gaugeInk;
 		float m_ink;
 
 		float m_width;
@@ -30,7 +31,8 @@ namespace basecross
 		InkGauge(const std::shared_ptr<Stage>stage) :
 			GameObject(stage),
 			m_currentInk(10.0f),
-			m_maxInk(10.0f),
+			m_maxInk(0.0f),
+			m_gaugeInk(0.0f),
 			m_ink(0.0f),
 			m_width(0.0f),
 			m_height(0.0f),
@@ -45,6 +47,8 @@ namespace basecross
 
 		void OnCreate()override;
 		void OnUpdate()override;
+
+		void ChangeGaugeColor();
 	};
 
 	//ゲージ後ろ

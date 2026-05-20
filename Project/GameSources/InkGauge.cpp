@@ -6,8 +6,15 @@ namespace basecross
 {
 	void InkGauge::OnCreate()
 	{
-		float ink = m_currentInk / m_maxInk;
+		auto& app = App::GetApp();
+		auto stage = GetStage();
+		auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+		app->RegisterTexture(L"Gauge", path + L"Gauge.png"); // 画像ファイルを読み込んでアセットとして登録する
 
+		m_player = stage->GetSharedGameObject<Player>(L"player");
+		if (m_player) m_maxInk = m_player->GetMaxInk();
+
+		float ink = m_currentInk / m_maxInk;
 		m_width = m_maxInk * 10 * ink;
 		m_height = 25.0f / 2.0f;
 		m_vertices =
@@ -22,6 +29,7 @@ namespace basecross
 			1,3,2
 		};
 		m_draw = AddComponent<PCTSpriteDraw>(m_vertices,m_indices);
+		m_draw->SetTextureResource(L"Gauge");
 		m_trans = GetComponent<Transform>();
 	}
 
@@ -34,9 +42,9 @@ namespace basecross
 		m_player = stage->GetSharedGameObject<Player>(L"player");
 		if (m_player)
 		{
-			float actualInk = m_player->GetInk();
-			m_ink = m_maxInk / m_width;
-			m_unitWidth = actualInk / m_ink * 2;
+			m_ink = m_player->GetInk();
+			m_gaugeInk = m_maxInk / m_width;
+			m_unitWidth = m_ink / m_gaugeInk * 2;
 
 			m_vertices[2].position.x = m_unitWidth + m_offsetPos.x;
 			m_vertices[3].position.x = m_unitWidth + m_offsetPos.x;
@@ -46,6 +54,14 @@ namespace basecross
 		if (m_draw)
 		{
 			m_draw->UpdateVertices(m_vertices);
+		}
+	}
+
+	void InkGauge::ChangeGaugeColor()
+	{
+		if (m_gaugeInk <= 3.0f)
+		{
+
 		}
 	}
 
@@ -75,7 +91,7 @@ namespace basecross
 		m_draw = AddComponent<PCTSpriteDraw>(m_vertices, m_indices);
 
 		m_draw->SetTextureResource(L"Gauge");
-		m_draw->SetDiffuse(m_color);
+		//m_draw->SetDiffuse(m_color);
 		m_trans = GetComponent<Transform>();
 	}
 }
