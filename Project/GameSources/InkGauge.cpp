@@ -11,6 +11,7 @@ namespace basecross
 		auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
 		app->RegisterTexture(L"Gauge", path + L"Gauge.png"); // 画像ファイルを読み込んでアセットとして登録する
 
+		//インク最大値をプレイヤーから取得する
 		m_player = stage->GetSharedGameObject<Player>(L"player");
 		if (m_player) m_maxInk = m_player->GetMaxInk();
 
@@ -73,11 +74,15 @@ namespace basecross
 		auto& app = App::GetApp();
 		auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
 		app->RegisterTexture(L"Gauge", path + L"Gauge.png"); // 画像ファイルを読み込んでアセットとして登録する
+		auto stage = GetStage();
+
+		//インク最大値をプレイヤーから取得する
+		m_player = stage->GetSharedGameObject<Player>(L"player");
+		if (m_player) m_maxInk = m_player->GetMaxInk();
 
 		float ink = m_currentInk / m_maxInk;
 
 		m_width = m_maxInk * 10 * 2 * ink;
-		m_height = 25.0f / 2.0f;
 		m_vertices =
 		{
 			{Vec3(m_offsetPos.x, m_offsetPos.y, 0), m_color,Vec2(0, 0)},
