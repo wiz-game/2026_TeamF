@@ -16,7 +16,6 @@ namespace basecross
 
 		float ink = m_currentInk / m_maxInk;
 		m_width = m_maxInk * 10 * ink;
-		m_height = 25.0f / 2.0f;
 		m_vertices =
 		{
 			{Vec3(m_offsetPos.x, m_offsetPos.y, 0), m_color,Vec2(0, 0)},
