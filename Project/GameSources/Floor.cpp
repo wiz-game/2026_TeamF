@@ -5,7 +5,7 @@
 
 #include "stdafx.h"
 #include "Project.h"
-
+#include "InkDrawComponentTest.h"
 namespace basecross
 {
 	Floor::Floor
@@ -23,10 +23,18 @@ namespace basecross
 
 	void Floor::OnCreate()
 	{
+		try
+		{
+			auto& app = App::GetApp();
+			auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+			app->RegisterTexture(L"marble", path + L"marble.png"); // 画像ファイルを読み込んでアセットとして登録する
+		}
+		catch (...) {
+		}
 		//Drawコンポーネント
-		m_draw = AddComponent<PNTStaticDraw>();
+		m_draw = AddComponent<InkDrawComponentTest>(512,512);
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
-
+		m_draw->SetTextureResource(L"marble");
 		//Transformコンポーネント
 		m_trans = GetComponent<Transform>();
 

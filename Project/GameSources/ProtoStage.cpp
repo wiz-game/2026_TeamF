@@ -129,7 +129,7 @@ namespace basecross {
 			TrapDoorAxisDesc moveDoorY;
 			moveDoorY.axis = MoveAxis::X;
 			moveDoorY.speed = -0.01f;
-			moveDoorY.port = nullptr;
+			moveDoorY.port = trapDoor_port;
 			AddGameObject<TrapDoorAxis>(Vec3(2.0f, 0.1f, 4.0f), Vec3(XM_PIDIV2, 0.0f, 0.0f), Vec3(10.0f, 2.2f, 20.0f), moveDoorY);
 
 
@@ -166,6 +166,8 @@ namespace basecross {
 			//									Scale			Rotation		Position			portの指定
 			AddGameObject<BeltConveyor>(Vec3(1.0f, 0.1f, 5.0f), Vec3(0,0,0), Vec3(3.0f, -0.5f, 0.0f), nullptr);
 
+			//スカイボックス
+			AddGameObject<SkyCube>(L"SKYBOX");
 		}
 		catch (...) {
 			throw;
