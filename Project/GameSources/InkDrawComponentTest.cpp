@@ -52,8 +52,13 @@ namespace basecross{
 		deviceContext->ClearRenderTargetView(m_RenderTargetView.Get(), clearColor);
 	}
 
-	void InkDrawComponentTest::AddDrawPoint(const Vec2& points) {
-		m_DrawPoints.push_back(Vec4(points.x, points.y, 0.0f, 0.0f));
+	void InkDrawComponentTest::AddDrawPoint(const Vec2& points, bool eraser) {
+		if (eraser) {
+			m_DrawPoints.push_back(Vec4(points.x, points.y, 1.0f, 0.0f));
+		}
+		else {
+			m_DrawPoints.push_back(Vec4(points.x, points.y, 0.0f, 0.0f));
+		}
 	}
 	void InkDrawComponentTest::DrawInk() {
 		if (m_DrawPoints.size() <= 0) return;
@@ -132,7 +137,7 @@ namespace basecross{
 		auto PtrMeshResource = GetMeshResource();
 		if (PtrMeshResource) {
 			if (GetOwnShadowActive()) {
-				DrawStatic<VSPNTStaticShadow>(PtrMeshResource->GetMashData());
+				DrawStatic<VSPNTStatic>(PtrMeshResource->GetMashData());
 			}
 			else {
 				DrawStatic<VSPNTStatic>(PtrMeshResource->GetMashData());
