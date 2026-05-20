@@ -32,7 +32,7 @@ namespace basecross{
 
 		virtual void OnDraw()override;
 
-		void AddDrawPoint(const Vec2& points);
+		void AddDrawPoint(const Vec2& points,bool eraser = false);
 		void SetBrushSize(float size) {
 			m_Brush.m_Size = size;
 		}

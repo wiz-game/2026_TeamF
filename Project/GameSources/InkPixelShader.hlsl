@@ -16,6 +16,10 @@ float4 main(PSInput input) : SV_TARGET
     float dist = distance(input.uv, brushCenters[0].xy);
     if (dist <= brushSize)
     {
+        if (brushCenters[0].z > 0.0f)
+        {
+            return float4(0.0f, 0.0f, 0.0f, 0.0f);
+        }
         return float4(0.0f, 0.0f, 0.0f, 1.0f);
     }
     discard;
