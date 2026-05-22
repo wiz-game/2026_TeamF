@@ -18,6 +18,8 @@ namespace basecross {
 		shared_ptr<Player> m_Player;	//プレイヤー
 		void CreateViewLight(); //ビューの作成
 
+		bool m_isPause = false;
+
 	public:
 		//構築と破棄
 		ProtoStage() :Stage() {}
@@ -27,6 +29,8 @@ namespace basecross {
 		virtual void OnUpdate()override; //更新
 		virtual void OnUpdate2() override;
 		virtual void OnDraw()override; //描画
+
+		void Pause(bool isPause);
 	};
 }
 //end basecross

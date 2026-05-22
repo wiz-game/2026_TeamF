@@ -178,7 +178,14 @@ namespace basecross {
 	{
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
+		auto device = App::GetApp()->GetInputDevice();
+		auto& pad = device.GetControlerVec()[0];
 		GameController::Update();
+
+		if (pad.wPressedButtons & XINPUT_GAMEPAD_START)
+		{
+			Pause(!m_isPause);
+		}
 	}
 
 	void ProtoStage::OnUpdate2()
@@ -188,6 +195,16 @@ namespace basecross {
 
 	void ProtoStage::OnDraw()
 	{
+	}
+
+	void ProtoStage::Pause(bool isPause)
+	{
+		m_isPause = isPause;
+		auto objs = GetGameObjectVec();
+		for (auto& obj : objs)
+		{
+			obj->SetUpdateActive(!m_isPause);
+		}
 	}
 }
 //end basecross

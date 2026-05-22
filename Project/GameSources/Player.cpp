@@ -135,11 +135,8 @@ namespace basecross{
 		auto device = App::GetApp()->GetInputDevice();
 		auto& pad = device.GetControlerVec()[0];
 		Vec3 stickL(pad.fThumbLX, 0.0f, pad.fThumbLY);
-
 		auto key = device.GetKeyState();
-
-		//ElapsedTime�ｽ謫ｾ
-		auto delta = app->GetElapsedTime();
+		auto delta = app->GetElapsedTime();	//ElapsedTime
 
 		m_pos = m_transform->GetPosition();
 
@@ -192,6 +189,7 @@ namespace basecross{
 		
 		if (m_velocity.x <= m_maxSpeed || m_velocity.z <= m_maxSpeed)
 			m_velocity *= m_accel;
+
 		m_pos.x += m_moveSpeed * m_velocity.x * delta;
 		m_pos.z += m_moveSpeed * m_velocity.z * delta;
 		m_pos.y += m_velocity.y * delta;	//重力による落下
