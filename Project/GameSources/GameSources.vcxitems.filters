@@ -4,6 +4,8 @@
     <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindFirst.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindSecond.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSUpper.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSUpperShadow.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp" />

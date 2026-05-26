@@ -16,7 +16,7 @@ namespace basecross {
 		m_trans->SetScale(m_scale);
 
 		m_staticDraw = AddComponent<PNTStaticDraw>();
-		m_staticDraw->SetMeshResource(L"DEFAULT_SPHERE");
+		//m_staticDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
 		//auto coll = AddComponent<CollisionObb>();
 		//coll->SetDrawActive(true);
