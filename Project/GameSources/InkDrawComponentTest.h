@@ -17,7 +17,6 @@ namespace basecross{
 		ComPtr<ID3D11Texture2D> m_Texture;
 		ComPtr<ID3D11RenderTargetView> m_RenderTargetView;
 		ComPtr<ID3D11ShaderResourceView> m_ShaderResourceView;
-		ComPtr<ID3D11DepthStencilView> m_DepthStencilView;
 
 		D3D11_VIEWPORT m_View;
 

@@ -10,7 +10,7 @@ namespace basecross{
 	IMPLEMENT_DX11_VERTEX_SHADER(InkVertexShader, App::GetApp()->GetShadersPath() + L"InkVertexShader.cso")
 	IMPLEMENT_DX11_PIXEL_SHADER(InkPixelShader, App::GetApp()->GetShadersPath() + L"InkPixelShader.cso")
 	IMPLEMENT_DX11_PIXEL_SHADER(PNTPixelShader, App::GetApp()->GetShadersPath() + L"PSPNTInkDraw.cso")
-	IMPLEMENT_DX11_CONSTANT_BUFFER(CBBrushData)
+	IMPLEMENT_DX11_CONSTANT_BUFFER(CBBrushData);
 
 	InkDrawComponentTest::InkDrawComponentTest(const shared_ptr<GameObject>& ptr, UINT sizeX, UINT sizeY):PNTStaticDraw(ptr){
 		m_View = {};

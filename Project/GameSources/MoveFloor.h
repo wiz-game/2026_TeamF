@@ -32,6 +32,7 @@ namespace basecross {
 		std::shared_ptr<Port> m_port;
 
 		std::shared_ptr<FloorDecision> m_floorDec;
+		std::shared_ptr<SoundItem> m_MoveSound;
 
 		MoveAxis m_moveAxis;//どの軸に動くか
 		float m_speed;
@@ -65,6 +66,7 @@ namespace basecross {
 		virtual void OnCreate() override; // 初期化
 		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
+		virtual void OnDestroy() override;
 
 	};
 }

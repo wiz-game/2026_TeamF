@@ -16,7 +16,7 @@ namespace basecross {
 	{
 		std::vector<std::shared_ptr<InkDraw>> m_inkList;	//属するインクのリスト
 		std::shared_ptr<CollisionObb> m_combinedColl;	//統合された1つのコリジョン
-
+		std::shared_ptr<SoundItem> m_ElectricSound;
 		bool isPower;//自分に電流が流れているか
 
 		bool m_wasPower;//前フレームの通電状態
@@ -38,6 +38,7 @@ namespace basecross {
 		virtual void OnCreate() override; // 初期化
 		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
+		virtual void OnDestroy() override;
 
 		void AddInk(const std::shared_ptr<InkDraw>& newInk)
 		{

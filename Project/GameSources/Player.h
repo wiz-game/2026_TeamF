@@ -23,6 +23,8 @@ class MoveFloor;
 
 		std::shared_ptr<FloorDecision> m_floorDecision = nullptr;
 		std::shared_ptr<InkCloud> m_targetCloud;
+
+		std::shared_ptr<SoundItem> m_MoveSound;
 		float m_height;
 		float m_radius;
 
@@ -59,6 +61,7 @@ class MoveFloor;
 
 		void OnCreate();
 		void OnUpdate();
+		void OnDestroy();
 
 		void OnMove();
 		void DropInk();

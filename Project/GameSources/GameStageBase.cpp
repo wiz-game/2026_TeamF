@@ -123,9 +123,9 @@ namespace basecross {
 		params.Scale.z = scaleParams->At<JsonNumber>(L"z")->GetFloatValue();
 
 		auto rotParams = json.At<JsonObject>(L"rotationEuler");
-		params.Rot.x = XMConvertToRadians(rotParams->At<JsonNumber>(L"x")->GetFloatValue());
-		params.Rot.y = XMConvertToRadians(rotParams->At<JsonNumber>(L"y")->GetFloatValue());
-		params.Rot.z = XMConvertToRadians(rotParams->At<JsonNumber>(L"z")->GetFloatValue());
+		params.Rot.x = rotParams->At<JsonNumber>(L"x")->GetFloatValue();
+		params.Rot.y = rotParams->At<JsonNumber>(L"y")->GetFloatValue();
+		params.Rot.z = rotParams->At<JsonNumber>(L"z")->GetFloatValue();
 	}
 
 	GameStageBase::STRUCT_BaseParams GameStageBase::StaticParams(JsonObject& json)

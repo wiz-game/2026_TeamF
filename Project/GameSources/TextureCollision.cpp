@@ -542,7 +542,7 @@ namespace basecross {
 	bool InkConnectChecker::IsConnectedInkToInk(const vector<TRIANGLE>& triangles,const shared_ptr<TextureCollision>& fromCollision) {
 		for (auto& weakCollision : m_TextureCollisions) {
 			auto collision = weakCollision.lock();
-			if (!collision/* || fromCollision.get() == collision.get()*/) continue;
+			if (!collision) continue;
 
 			size_t contourCount = collision->GetContourCount();
 			for (int i = 0; i < contourCount; i++) {
