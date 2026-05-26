@@ -84,6 +84,13 @@ class MoveFloor;
 		void OnCollisionExit(std::shared_ptr<GameObject>& obj);
 
 		void UpdateMoveFloor(const Vec3& movePos);
+
+		void FixPositionY(float targetY)
+		{
+			m_pos.y = targetY;
+			m_velocity.y = 0.0f;
+			m_transform->SetPosition(m_pos);
+		}
 	};
 
 }

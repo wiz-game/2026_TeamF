@@ -31,11 +31,15 @@ namespace basecross {
 		m_coll->SetDrawActive(false);
 		m_coll->SetFixed(false);
 
+		m_lastPosition = m_transform->GetWorldPosition();
 	}
 
 	void FloorDecision::OnUpdate()
 	{
-
+		//現在の世界座標を取得し、前フレームからの移動差分を計算
+		Vec3 currentWorldPos = m_transform->GetWorldPosition();
+		m_currentMoveVec = currentWorldPos - m_lastPosition;
+		m_lastPosition = currentWorldPos;//次フレームのために保存
 	}
 
 	void FloorDecision::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
