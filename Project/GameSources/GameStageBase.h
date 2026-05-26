@@ -31,6 +31,7 @@ namespace basecross {
 			T_PowerSupply,
 			T_TrapDoor,
 			T_BeltConveyor,
+			T_GoalDoor,
 			T_Unknown,
 		};
 
@@ -76,6 +77,14 @@ namespace basecross {
 			int PortID;
 		};
 
+		//ゴールの扉のパラメーター
+		struct STRUCT_GoalDoorParams
+		{
+			STRUCT_BaseParams StageObjParams;
+			Vec3 MoveDir;
+			int PortID;
+		};
+
 		//テスト用のパラメータ
 		//struct SUTRUCT_BoxParams
 		//{
@@ -86,7 +95,7 @@ namespace basecross {
 		map<int, shared_ptr<Port>>Map_Ports;
 
 		////ステージ番号
-		int m_StageNum = 0;	
+		int m_StageNum = 1;	
 
 		//構築と破棄
 		GameStageBase() :Stage(){}
@@ -117,6 +126,10 @@ namespace basecross {
 
 		//トラップドアのパラメーターの取得
 		GameStageBase::STRUCT_TrapDoorAxis TrapDoorAxisParams(JsonObject& json);
+
+		//ゴールの扉のパラメーターの取得
+		GameStageBase::STRUCT_GoalDoorParams GoalDoorParams(JsonObject& json);
+
 		//ボックスのパラメータの取得
 		//SUTRUCT_BoxParams BoxParams(JsonObject& json, STRUCT_BaseParams params);
 
@@ -144,6 +157,8 @@ namespace basecross {
 		//ベルトコンベアオブジェクトの生成
 		void AddBeltConveyorObj(STRUCT_ElectricObjBaseParams params);
 
+		//ゴールの扉オブジェクトの生成
+		void AddGoalDoorObj(STRUCT_GoalDoorParams params);
 	};
 }
 //end basecross

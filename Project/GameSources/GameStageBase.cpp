@@ -93,6 +93,9 @@ namespace basecross {
 			case ENUM_ObjType::T_BeltConveyor:
 				AddBeltConveyorObj(ElectricObjBaseParams(*date));
 				break;
+			case ENUM_ObjType::T_GoalDoor:
+				AddGoalDoorObj(GoalDoorParams(*date));
+				break;
 			}
 		}
 	}
@@ -109,6 +112,7 @@ namespace basecross {
 		if (objType == L"PowerSupply")  return ENUM_ObjType::T_PowerSupply;
 		if (objType == L"TrapDoorAxis")  return ENUM_ObjType::T_TrapDoor;
 		if (objType == L"BeltConveyor")  return ENUM_ObjType::T_BeltConveyor;
+		if (objType == L"GoalDoor") return ENUM_ObjType::T_GoalDoor;
 		return ENUM_ObjType::T_Unknown;
 	}
 
@@ -210,6 +214,21 @@ namespace basecross {
 		params.PortID = childObjectData->At<JsonNumber>(L"PortID")->GetIntValue();
 		return params;
 	}
+
+	GameStageBase::STRUCT_GoalDoorParams GameStageBase::GoalDoorParams(JsonObject& json)
+	{
+		STRUCT_GoalDoorParams params;
+		BaseParams(json, params.StageObjParams);
+
+		auto childObjectData = json.At<JsonObject>(L"childObjectData");
+		auto moveDir = childObjectData->At<JsonObject>(L"MoveDir");
+		params.MoveDir.x = moveDir->At<JsonNumber>(L"x")->GetFloatValue();
+		params.MoveDir.y = moveDir->At<JsonNumber>(L"y")->GetFloatValue();
+		params.MoveDir.z = moveDir->At<JsonNumber>(L"z")->GetFloatValue();
+		params.PortID = childObjectData->At<JsonNumber>(L"PortID")->GetIntValue();
+
+		return params;
+	}
 	
 	//GameStageBase::SUTRUCT_BoxParams GameStageBase::BoxParams(JsonObject& json, STRUCT_BaseParams params)
 	//{
@@ -296,6 +315,14 @@ namespace basecross {
 	{
 		STRUCT_ElectricObjBaseParams desc;
 		AddGameObject<BeltConveyor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID]);
+	}
+
+	void GameStageBase::AddGoalDoorObj(STRUCT_GoalDoorParams params)
+	{
+		STRUCT_GoalDoorParams desc;
+		desc.MoveDir = params.MoveDir;
+		desc.PortID = params.PortID;
+		AddGameObject<GoalDoor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID], desc.MoveDir);
 	}
 
 }
