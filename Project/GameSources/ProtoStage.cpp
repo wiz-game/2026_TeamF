@@ -55,6 +55,9 @@ namespace basecross {
 			auto gaugeBack = AddGameObject<GaugeBack>();
 			auto gauge = AddGameObject<InkGauge>();
 
+			//ポーズメニュー作成
+			m_pauseMenu = ObjectFactory::Create<PauseMenu>(GetThis<Stage>());
+
 			//プロトタイプ用地面作成
 			JPH::StaticCompoundShapeSettings compoundSettings;
 			JPH::BoxShapeSettings floorShapeSettings(JPH::Vec3(8.0f, 1.0f, 15.0f) * 0.45f);
@@ -186,6 +189,11 @@ namespace basecross {
 		{
 			Pause(!m_isPause);
 		}
+
+		if (IsPause())
+		{
+			m_pauseMenu->OnUpdate();
+		}
 	}
 
 	void ProtoStage::OnUpdate2()
@@ -195,12 +203,16 @@ namespace basecross {
 
 	void ProtoStage::OnDraw()
 	{
+		if(IsPause())
+			m_pauseMenu->OnDraw();
 	}
 
 	void ProtoStage::Pause(bool isPause)
 	{
 		m_isPause = isPause;
 		auto objs = GetGameObjectVec();
+		auto view = GetView();
+		auto camera = view->GetTargetCamera();
 		for (auto& obj : objs)
 		{
 			obj->SetUpdateActive(!m_isPause);
