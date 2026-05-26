@@ -85,11 +85,16 @@ namespace basecross {
 
 		map<int, shared_ptr<Port>>Map_Ports;
 
+		////ステージ番号
+		int m_StageNum = 0;	
+
 		//構築と破棄
 		GameStageBase() :Stage(){}
 		virtual ~GameStageBase() {}		
 		void CreateViewLight();
 		void OnCreate();
+		void SetStageNum(int num);
+		int GetStageNum();
 		void StageDateRoad(int num);
 
 		//オブジェクトタイプをwstringからENUMに変換

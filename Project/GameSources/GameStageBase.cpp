@@ -39,7 +39,17 @@ namespace basecross {
 	void GameStageBase::OnCreate()
 	{
 		CreateViewLight();
-		StageDateRoad(1);
+		StageDateRoad(m_StageNum);
+	}
+
+	void GameStageBase::SetStageNum(int num)
+	{
+		m_StageNum = num;
+	}
+
+	int GameStageBase::GetStageNum()
+	{
+		return m_StageNum;
 	}
 
 	void GameStageBase::StageDateRoad(int num)
