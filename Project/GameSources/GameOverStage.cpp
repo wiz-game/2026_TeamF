@@ -1,6 +1,6 @@
 /*!
-@file GameStage.cpp
-@brief ゲームステージ実体
+@file GameOverStage.cpp
+@brief ゲームオーバーステージ実体
 */
 
 #include "stdafx.h"
@@ -12,7 +12,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 
 	//ビューとライトの作成
-	void GoalStage::CreateViewLight() {
+	void GameOverStage::CreateViewLight() {
 		// カメラの設定
 		auto camera = ObjectFactory::Create<Camera>();
 		camera->SetEye(Vec3(0.0f, 8.0f, -8.0f));
@@ -26,29 +26,16 @@ namespace basecross {
 		auto light = CreateLight<MultiLight>();
 		light->SetDefaultLighting(); //デフォルトのライティングを指定
 	}
-	void GoalStage::RegisterResources() {
-		auto& app = App::GetApp();
-		wstring mediaPath = App::GetApp()->GetDataDirWString();
-		app->RegisterTexture(L"GoalStage", mediaPath + L"Texture/GoalStage.png");
-	}
 
-	void GoalStage::OnCreate() {
+	void GameOverStage::OnCreate() {
 		try {
 			auto& app = App::GetApp();
-			auto scene = app->GetScene<Scene>();
+
+			// JoltPhysicsを初期化する
+			//m_jphManger.Initialize();
+
+			//ビューとライトの作成
 			CreateViewLight();
-			RegisterResources();
-
-			m_sprite = AddGameObject<Sprite>(L"GoalStage", Vec3(), Vec2(1280, 840), Anchor::Center);
-			
-			float ink = scene->GetResultInk();
-			float maxInk = scene->GetMaxInk();
-
-			int pasent = (ink / maxInk) * 100;
-
-			auto inkSprite = AddGameObject<NumberSprite>(L"NUMBER", Vec3(140.0f, -65.0f, 0.0f), Vec2(30, 50), 2);
-			inkSprite->SetDiffuse(Col4(0, 0, 0, 1));
-			inkSprite->UpdateNumber(pasent);
 
 		}
 		catch (...) {
@@ -56,25 +43,34 @@ namespace basecross {
 		}
 	}
 
-	void GoalStage::OnUpdate()
+	void GameOverStage::OnUpdate()
 	{
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
 		auto scene = app->GetScene<Scene>();
 		//GameController::Update();
-		
-		m_InputHandler.PushHandle(GetThis<GoalStage>());
+
+		m_InputHandler.PushHandle(GetThis<GameOverStage>());
 
 		auto CntlVec = app->GetInputDevice().GetControlerVec();
 
-		//scene->SetDebugString(L"GoalStage \n Abutton -> TitleStage");
+		scene->SetDebugString(L"GameOverStage		Player is Ink == 0 !!! \n Abutton -> TitleStage");
 
 		if (CntlVec[0].wPressedButtons && XINPUT_GAMEPAD_A)
 		{
-			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToTitleStage");
+			PostEvent(0.3f, GetThis<GameOverStage>(), scene, L"ToTitleStage");
 		}
 	}
-	void GoalStage::OnPushA()
+
+	void GameOverStage::OnUpdate2()
+	{
+	}
+
+	void GameOverStage::OnDraw()
+	{
+	}
+
+	void GameOverStage::OnPushA()
 	{
 	}
 }

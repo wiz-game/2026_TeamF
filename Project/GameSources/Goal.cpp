@@ -17,11 +17,12 @@ namespace basecross {
 		m_transform->SetRotation(m_rot);
 
 		// ドローコンポーネントを追加
-		m_draw = AddComponent<PNTDXModelDraw>();
-		//m_draw->SetMeshResource(L"DEFAULT_CUBE");
-
 		m_staticDraw = AddComponent<PNTStaticDraw>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
+		m_staticDraw->SetOwnShadowActive(true);
+
+		auto shadowMap = AddComponent<Shadowmap>();
+		shadowMap->SetMeshResource(L"DEFAULT_CUBE");
 
 		//nullptrだったら最初から描画
 		if (m_port == nullptr)
@@ -77,6 +78,7 @@ namespace basecross {
 		if (diffX < 1.8f && diffY < 1.8f && diffZ < 0.45f)
 		{
 			scene->SetDebugString(L"Goal");
+			scene->SetResultInk(m_player->GetInk(),m_player->GetMaxInk());
 			PostEvent(0.0f, GetThis<Goal>(), scene, L"ToGoalStage");
 		}
 

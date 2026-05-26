@@ -3773,6 +3773,14 @@ namespace basecross{
 			}
 			return CollisionTestObbObbSub(SrcObb, SrcVelocity,DestObb, StartTime, EndTime,HitTime);
 		}
+
+		static bool CollisionTestOBBTriangle(const OBB& obb, const TRIANGLE& triangle) {
+
+			return true;
+		}
+		static bool CollisionTestTriangle(const TRIANGLE& a, const TRIANGLE& b) {
+			return true;
+		}
 	};
 
 	inline AABB CAPSULE::GetWrappedAABB() const {

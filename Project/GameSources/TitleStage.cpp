@@ -29,7 +29,7 @@ namespace basecross {
 	void TitleStage::RegisterResources() {
 		auto& app = App::GetApp();
 		wstring mediaPath = App::GetApp()->GetDataDirWString();
-		app->RegisterTexture(L"TITLE", mediaPath + L"Texture/Title.png");
+		app->RegisterTexture(L"TITLE", mediaPath + L"Texture/Title1.png");
 	}
 	void TitleStage::OnCreate() {
 		try {
@@ -38,6 +38,7 @@ namespace basecross {
 			RegisterResources();
 
 			m_Title = AddGameObject<Sprite>(L"TITLE", Vec3(), Vec2(600, 200), Anchor::Center);
+			m_Title->MatchToScreenSize();
 		}
 		catch (...) {
 			throw;

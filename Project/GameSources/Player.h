@@ -74,15 +74,16 @@ class MoveFloor;
 			return m_ink;
 		}
 
+		float GetMaxInk()
+		{
+			return m_inkMax;
+		}
+
 		void OnCollisionEnter(std::shared_ptr<GameObject>& obj);
 		void OnCollisionExcute(std::shared_ptr<GameObject>& obj);
 		void OnCollisionExit(std::shared_ptr<GameObject>& obj);
 
 		void UpdateMoveFloor(const Vec3& movePos);
-
-		// �ｽO�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾌ移難ｿｽ�ｽ�ｽ�ｽ�ｽ�ｽZ�ｽ�ｽ�ｽ�ｽﾖ撰ｿｽ
-		//void AddExternalMove(const Vec3& move);
-		//void SetExternalVelocity(const Vec3& v) { m_externalVelocity = v; }
 	};
 
 }

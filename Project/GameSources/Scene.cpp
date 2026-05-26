@@ -20,6 +20,7 @@ namespace basecross{
 		auto& app = App::GetApp();
 
 		auto mediaPath = app->GetDataDirWString();
+		app->RegisterTexture(L"SKYBOX", mediaPath + L"Texture/SkyBox/SkyBox.png");
 	}
 
 	void Scene::OnCreate(){
@@ -40,7 +41,7 @@ namespace basecross{
 
 			//自分自身にイベントを送る
 			//これによりゲームステージのオブジェクトがCreate時にシーンにアクセスできる
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToProtoStage");
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
 		}
 		catch (...) {
 			throw;
@@ -55,6 +56,7 @@ namespace basecross{
 	}
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
+		InkConnectChecker::Get().Initialize();
 		if (event->m_MsgStr == L"ToGameStage") {
 			ResetActiveStage<GameStage>();
 		}
@@ -64,20 +66,23 @@ namespace basecross{
 		if (event->m_MsgStr == L"ToGoalStage") {
 			ResetActiveStage<GoalStage>();
 		}
+		if (event->m_MsgStr == L"ToGameOverStage") {
+			ResetActiveStage<GameOverStage>();
+		}
 
 		//仮で設定。後々やり方変える
-		if (event->m_MsgStr == L"ToGameStage0") {
+		/*if (event->m_MsgStr == L"ToGameStage0") {
 			ResetActiveStage<ProtoStage>();
+		}*/
+		if (event->m_MsgStr == L"ToGameStage1") {
+			ResetActiveStage<GameStage>();
 		}
-		//if (event->m_MsgStr == L"ToGameStage1") {
-		//	ResetActiveStage<GameStage>();
-		//}
 		//if (event->m_MsgStr == L"ToGameStage2") {
 		//	ResetActiveStage<GoalStage>();
 		//}
 		if (event->m_MsgStr == L"ToGameStage0") {
-			//ResetActiveStage<ProtoStage>();
-			ResetActiveStage<GameStageBase>();
+			ResetActiveStage<ProtoStage>();
+			//ResetActiveStage<GameStageBase>();
 		}
 
 

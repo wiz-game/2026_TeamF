@@ -16,18 +16,18 @@ namespace basecross {
     void DrEnemy::OnCreate()
     {
         BaseEnemy::OnCreate();
-        BaseEnemy::m_transform->SetPosition(0, 0, 0);
+        BaseEnemy::m_transform->SetPosition(-5, 0, 0);
         BaseEnemy::m_draw->SetDiffuse(Col4(0.0f, 1.0f, 0.0f, 1.0f));
 
         SetUpBetWnnePoints();
-
-        m_state = State::BetWeen;
+		m_transform->SetPosition(m_pointA);
+        m_state = State::Draw;
         m_moveSpeed = 2.0f;
     }
 
     void DrEnemy::OnUpdate()
     {
-        UpdateBetWeen();
+		BaseEnemy::OnUpdate();
     }
 
     void DrEnemy::SetUpBetWnnePoints()
@@ -51,53 +51,93 @@ namespace basecross {
             }
         }
 
+        Vec3 myPos = m_transform->GetPosition();
+        shared_ptr<Port> nearesPort = nullptr;
         float minDist = FLT_MAX;
 
         for (auto& port : ports)
         {
-            for (auto& supply : supplies)
+            float dist = (port->GetComponent<Transform>()->GetPosition() - myPos).length();
+
+            if (dist < minDist)
             {
-                Vec3 pPos = port->GetComponent<Transform>()->GetPosition();
-                Vec3 sPos = supply->GetComponent<Transform>()->GetPosition();
-
-                float dist = (pPos - sPos).length();
-
-                if (dist < minDist)
-                {
-                    minDist = dist;
-                    m_pointA = pPos;
-                    m_pointB = sPos;
-                }
+                minDist = dist;
+                nearesPort = port;
             }
+        }
+
+        shared_ptr<PowerSupply> nearesSupply = nullptr;
+        minDist = FLT_MAX;
+
+        Vec3 portPos = nearesPort->GetComponent<Transform>()->GetPosition();
+
+        for (auto& supply : supplies)
+        {
+            float dist = (supply->GetComponent<Transform>()->GetPosition() - portPos).lengthSqr();
+
+            if (dist < minDist)
+            {
+                minDist = dist;
+                nearesSupply = supply;
+            }
+
+        }
+
+        if (nearesSupply)
+        {
+            m_pointA = portPos;
+            m_pointB = nearesSupply->GetComponent<Transform>()->GetPosition();
+
         }
 
     }
 
-    void DrEnemy::UpdateBetWeen()
+    void DrEnemy::UpdateInkDrow()
     {
-
-        auto delta = App::GetApp()->GetElapsedTime();
+		auto delta = App::GetApp()->GetElapsedTime();
 
         Vec3 pos = m_transform->GetPosition();
+		Vec3 target = m_toB ? m_pointB : m_pointA;
 
-        Vec3 target = m_toB ? m_pointB : m_pointA;
+        float fixedY = 0.0f;
+        pos.y = fixedY;
 
         Vec3 dir = target - pos;
         float dist = dir.length();
 
-        if (dist > 0.001f) {
-            dir.normalize();
+        if (dist > 0.001f)
+        {
+			dir.normalize();
         }
 
-        pos += dir * m_moveSpeed * delta;
+		pos += dir * m_moveSpeed * delta;
+        pos.y = fixedY;
         m_transform->SetPosition(pos);
 
-        // 到達判定
+		m_inkTimer += delta;
+
+        if (m_inkTimer >= m_inkInterval)
+        {
+			m_inkTimer = 0.0f;
+            Vec3 inkPos = pos;
+            inkPos.y -= 0.3f;
+
+			SpanInk(inkPos);
+        }
+
         if (dist < 0.5f)
         {
-            m_toB = !m_toB;
+            if (m_toB)
+            {
+                m_toB = false;
+            }
+            else
+            {
+                // 描き終わったら徘徊
+                m_state = State::Patrol;
+            }
         }
-    }
-
+       
+	}
 }
 //end basecross
