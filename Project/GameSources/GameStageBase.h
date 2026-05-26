@@ -30,6 +30,7 @@ namespace basecross {
 			T_MoveFloor,
 			T_PowerSupply,
 			T_TrapDoor,
+			T_BeltConveyor,
 			T_Unknown,
 		};
 
@@ -134,6 +135,9 @@ namespace basecross {
 
 		//トラップドアオブジェクトの生成
 		void AddTrapDoorObj(STRUCT_TrapDoorAxis params);
+
+		//ベルトコンベアオブジェクトの生成
+		void AddBeltConveyorObj(STRUCT_ElectricObjBaseParams params);
 
 	};
 }

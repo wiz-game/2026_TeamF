@@ -40,16 +40,6 @@ namespace basecross {
 	{
 		CreateViewLight();
 		StageDateRoad(1);
-
-		//TrapDoorAxisDesc a;
-		//AddGameObject<TrapDoorAxis>(Vec3(1,1,1),Vec3(1,1,1),Vec3(1,1,1),a);
-
-		STRUCT_TrapDoorAxis b;
-		b.StageObjParams.Pos = Vec3(1, 1, 1);
-		b.StageObjParams.Rot = Vec3(0, 0, 0);
-		b.StageObjParams.Scale = Vec3(1, 1, 1);
-		AddTrapDoorObj(b);
-		AddGameObject<Box>(Vec3(1, 1, 1), Vec3(), Vec3(1, 1, 1));
 	}
 
 	void GameStageBase::StageDateRoad(int num)
@@ -90,6 +80,9 @@ namespace basecross {
 			case ENUM_ObjType::T_TrapDoor:
 				AddTrapDoorObj(TrapDoorAxisParams(*date));
 				break;
+			case ENUM_ObjType::T_BeltConveyor:
+				AddBeltConveyorObj(ElectricObjBaseParams(*date));
+				break;
 			}
 		}
 	}
@@ -105,6 +98,7 @@ namespace basecross {
 		if (objType == L"MoveFloor")  return ENUM_ObjType::T_MoveFloor;
 		if (objType == L"PowerSupply")  return ENUM_ObjType::T_PowerSupply;
 		if (objType == L"TrapDoorAxis")  return ENUM_ObjType::T_TrapDoor;
+		if (objType == L"BeltConveyor")  return ENUM_ObjType::T_BeltConveyor;
 		return ENUM_ObjType::T_Unknown;
 	}
 
@@ -122,7 +116,7 @@ namespace basecross {
 		params.Scale.y = scaleParams->At<JsonNumber>(L"y")->GetFloatValue();
 		params.Scale.z = scaleParams->At<JsonNumber>(L"z")->GetFloatValue();
 
-		auto rotParams = json.At<JsonObject>(L"rotationEuler");
+		auto rotParams = json.At<JsonObject>(L"rotation");
 		params.Rot.x = rotParams->At<JsonNumber>(L"x")->GetFloatValue();
 		params.Rot.y = rotParams->At<JsonNumber>(L"y")->GetFloatValue();
 		params.Rot.z = rotParams->At<JsonNumber>(L"z")->GetFloatValue();
@@ -286,6 +280,12 @@ namespace basecross {
 		desc.port = Map_Ports[params.PortID];
 
 		AddGameObject<TrapDoorAxis>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, desc);
+	}
+
+	void GameStageBase::AddBeltConveyorObj(STRUCT_ElectricObjBaseParams params)
+	{
+		STRUCT_ElectricObjBaseParams desc;
+		AddGameObject<BeltConveyor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID]);
 	}
 
 }
