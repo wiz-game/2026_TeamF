@@ -5,7 +5,7 @@
 
 #pragma once
 #include "stdafx.h"
-
+#include "Floor.h"
 namespace basecross {
 
 
@@ -45,6 +45,13 @@ namespace basecross {
 		float m_range = 5.0f;//徘徊範囲
 		float m_srachRange; // 探索範囲
 		float m_diatance;
+		float m_groundY = 0.0f;
+		float m_heightOffset = 0.0f;
+		float m_rayLength = 5.0f;
+
+		int m_groundCount = 0;
+
+		bool m_isGround = true; // 地面にいるかどうか
 
 		Vec3 m_origin;//UpdatePatrolのメンバ変数
 		Vec3 m_targetPos;
@@ -60,6 +67,9 @@ namespace basecross {
 		virtual void UpdateInkErase(); // 消去状態の更新
 
 		void SpanInk(const Vec3& pos);// インクをスポーンする関数
+		void OnCollisionEnter(shared_ptr<GameObject>& obj);
+		void OnCollisionExit(shared_ptr<GameObject>& obj);
+		void UpdateGroundRay(); // 地面との接触を更新する関数
 	};
 
 }
