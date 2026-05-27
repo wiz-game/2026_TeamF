@@ -97,7 +97,9 @@ namespace basecross {
 			//rb->Initialize(settings);
 
 			//地面						position				scale
-			AddGameObject<Floor>(Vec3(8, 1, 15), Vec3(0), Vec3(0.0f, -1.0f, 0.0f) );
+			AddGameObject<Floor>(Vec3(8, 1, 8), Vec3(0), Vec3(0.0f, -1.0f, 4.0f) );
+			AddGameObject<Floor>(Vec3(8, 1, 8), Vec3(0), Vec3(0.0f, -1.0f, -4.0f));
+
 			AddGameObject<Floor>( Vec3(8.0f, 0.5f, 10.0f), Vec3(0),Vec3(10.0f, 2.0f, 15.0f));
 			AddGameObject<Floor>( Vec3(8.0f, 0.5f, 10.0f), Vec3(0), Vec3(10.0f, 2.0f, 29.0f));
 			AddGameObject<Floor>(Vec3(8.0f, 0.5f, 15.0f), Vec3(0), Vec3(0.0f, -1.0f, 26.0f));
