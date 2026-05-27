@@ -5,7 +5,7 @@
 
 #pragma once
 #include "stdafx.h"
-#include "PNTDXModelDraw.h"
+#include "Texture2DrawComp.h"
 #include "Electrified.h"
 #include "StageObjBase.h"
 
@@ -13,8 +13,7 @@ namespace basecross {
 	class Port : public StageObjBase
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
-		//std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
-		std::shared_ptr<PNTStaticDraw> m_staticDraw;
+		std::shared_ptr<Texture2DrawComp> m_staticDraw;
 
 		bool isConnect = false;
 		bool isPower = false;
@@ -44,20 +43,5 @@ namespace basecross {
 			isPower = power;
 		}
 	};
-
-	class UpperDrawCom : public PNTStaticDraw
-	{
-	public:
-		UpperDrawCom(const shared_ptr<GameObject>& stage) :
-			PNTStaticDraw(stage)
-		{
-		}
-
-		virtual void OnDraw() override;
-	};
-	DECLARE_DX11_PIXEL_SHADER(UpperPixelSheder)
-	DECLARE_DX11_PIXEL_SHADER(UpperShadowPixelSheder)
-
-
 }
 //end basecross}

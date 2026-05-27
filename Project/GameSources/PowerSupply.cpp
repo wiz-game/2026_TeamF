@@ -30,9 +30,9 @@ namespace basecross {
 		m_transform->SetRotation(m_rot);
 
 		// ドローコンポーネントを追加
-		m_staticDraw = AddComponent<UpperDrawCom>();
+		m_staticDraw = AddComponent<UpperDrawComp>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
-		m_staticDraw->SetDiffuse(Col4(0, 1, 0, 1));
+		m_staticDraw->SetDiffuse(Col4(0, 0, 0, 1));
 		m_staticDraw->SetTextureResource(L"PowerSupply");
 		m_staticDraw->SetOwnShadowActive(true);
 
