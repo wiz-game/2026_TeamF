@@ -6,6 +6,7 @@ namespace basecross
 {
 	class PauseMenu :public GameObject
 	{
+		std::vector<shared_ptr<SpriteGeneric>> m_menuText;
 		std::vector<shared_ptr<SpriteGeneric>> m_menuButton;
 
 		int m_selectMenu;	//選択中のメニュー

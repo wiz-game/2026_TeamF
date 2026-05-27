@@ -10,13 +10,21 @@ namespace basecross
 		auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
 		app->RegisterTexture(L"Pause", path + L"Pause.png"); // 画像ファイルを読み込んでアセットとして登録する
 
-		//ゲーム再開ボタン
-		auto cancelButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
-		cancelButton->SetSize(400.0f, 200.0f, Vec2(0.5f, 0.5f));
-		cancelButton->SetPos(Vec3(0, 200, 0));
-		cancelButton->SetTexture(L"Pause");
-		cancelButton->SetColor(Col4(1, 1, 1, 1));
-		m_menuButton.push_back(cancelButton);
+		//ポーズ
+		auto PauseText = ObjectFactory::Create<SpriteGeneric>(GetStage());
+		PauseText->SetSize(400.0f, 200.0f, Vec2(0.5f, 0.5f));
+		PauseText->SetPos(Vec3(0, 200, 0));
+		PauseText->SetTexture(L"Pause");
+		PauseText->SetColor(Col4(1, 1, 1, 1));
+		m_menuText.push_back(PauseText);
+
+		//タイトルボタン
+		auto titleButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
+		titleButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
+		titleButton->SetPos(Vec3(0, 0, 0));
+		titleButton->SetTexture(L"Pause");
+		titleButton->SetColor(Col4(1, 1, 1, 1));
+		m_menuButton.push_back(titleButton);
 	}
 
 	void PauseMenu::OnUpdate()
@@ -26,6 +34,10 @@ namespace basecross
 
 	void PauseMenu::OnDraw()
 	{
+		for (auto obj : m_menuText)
+		{
+			obj->OnDraw();
+		}
 		for (auto obj : m_menuButton)
 		{
 			obj->OnDraw();
@@ -65,6 +77,7 @@ namespace basecross
 			switch (m_selectMenu)
 			{
 			case 1:
+
 				break;
 			case 2:
 				PostEvent(0.1f, GetThis<PauseMenu>(), scene, L"ToTitleStage");
