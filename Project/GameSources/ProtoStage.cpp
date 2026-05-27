@@ -203,13 +203,16 @@ namespace basecross {
 
 	void ProtoStage::OnDraw()
 	{
-		if(IsPause())
+		if (IsPause())
+		{
 			m_pauseMenu->OnDraw();
+		}
 	}
 
 	void ProtoStage::Pause(bool isPause)
 	{
 		m_isPause = isPause;
+
 		auto objs = GetGameObjectVec();
 		auto view = GetView();
 		auto camera = view->GetTargetCamera();

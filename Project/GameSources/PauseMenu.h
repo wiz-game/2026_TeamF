@@ -6,13 +6,17 @@ namespace basecross
 {
 	class PauseMenu :public GameObject
 	{
-		std::shared_ptr<SpriteGeneric>m_cancel;
+		std::vector<shared_ptr<SpriteGeneric>> m_menuButton;
 
-		int m_select;
+		int m_selectMenu;	//選択中のメニュー
+		int m_menuNum;		//メニュー数
+		bool m_lock;
 	public:
 		PauseMenu(const std::shared_ptr<Stage>stage) :
 			GameObject(stage),
-			m_select(0)
+			m_selectMenu(0),
+			m_menuNum(2),
+			m_lock(false)
 		{
 		}
 
@@ -23,5 +27,7 @@ namespace basecross
 		void OnCreate()override;
 		void OnUpdate()override;
 		void OnDraw()override;
+
+		void SelectMenu();
 	};
 }
