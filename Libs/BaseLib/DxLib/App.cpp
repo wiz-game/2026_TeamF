@@ -202,7 +202,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	struct AudioResource::Impl {
 		WAVEFORMATEX m_WaveFormat;	//ウェブフォーマット
-		vector<BYTE> m_SoundData;	//データ
+		vector<byte> m_SoundData;	//データ
 		wstring m_FileName;		//ファイルへのパス
 		Impl(const wstring& FileName) :
 			m_FileName(FileName) {}
@@ -313,12 +313,12 @@ namespace basecross {
 				L"AudioResource::AudioResource()"
 			);
 
-			// 'm_duration' is in 100ns units; convert to seconds, and round up
+			// 'duration' is in 100ns units; convert to seconds, and round up
 			// to the nearest whole byte.
-			LONGLONG m_duration = propVariant.uhVal.QuadPart;
+			LONGLONG duration = propVariant.uhVal.QuadPart;
 			unsigned int maxStreamLengthInBytes =
 				static_cast<unsigned int>(
-				((m_duration * static_cast<ULONGLONG>(pImpl->m_WaveFormat.nAvgBytesPerSec)) + 10000000) /
+				((duration * static_cast<ULONGLONG>(pImpl->m_WaveFormat.nAvgBytesPerSec)) + 10000000) /
 					10000000
 					);
 
@@ -376,7 +376,7 @@ namespace basecross {
 	}
 	AudioResource::~AudioResource() {}
 
-	const vector<BYTE>& AudioResource::GetSoundData()const {
+	const vector<byte>& AudioResource::GetSoundData()const {
 		return pImpl->m_SoundData;
 	}
 
@@ -664,8 +664,6 @@ namespace basecross {
 				0, //メニューハンドル、子供のID
 				hInst,            //インスタンスハンドル
 				NULL);
-			ShowWindow(data::ChildHWnd, SW_SHOW);
-			UpdateWindow(data::ChildHWnd);
 			return data::ChildHWnd;
 		}
 
@@ -822,6 +820,16 @@ namespace basecross {
 				}
 			}
 			hr = data::Player->CreateMediaItemFromURL(MovieFileName.c_str(), FALSE, 0, NULL);
+
+			HBRUSH hNewBrush = CreateSolidBrush(RGB(31.0f / 255.0f, 30.0f / 255.0f, 71.0f / 255.0f));
+
+			SetClassLongPtr(hwnd, GCLP_HBRBACKGROUND, (LONG_PTR)hNewBrush);
+
+			// 再描画
+
+			InvalidateRect(hwnd, nullptr, TRUE);
+			UpdateWindow(hwnd);
+			ShowWindow(hwnd, SW_SHOW);
 		}
 
 		void OnSize()

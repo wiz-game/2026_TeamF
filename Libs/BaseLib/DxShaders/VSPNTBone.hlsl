@@ -20,6 +20,8 @@ void Skin(inout VSPNTBoneInput vin, uniform int boneCount)
 	vin.norm = mul(vin.norm, (float3x3)skinning);
 }
 
+
+
 PSPNTInput main(VSPNTBoneInput input)
 {
 	PSPNTInput result;

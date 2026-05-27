@@ -95,8 +95,8 @@ namespace basecross {
 		fTemp2 = fTemp1 * fTemp1;
 		fTemp3 = fTemp2 * fTemp1;
 		fRet = (fTemp3 * start) +
-			(3 * fTemp2 * fCurrentCalc * (c->m_startValue + start)) +
-			(3 * fTemp1 * fCurrentCalc * fCurrentCalc * (c->m_endValue + end)) +
+			(3 * fTemp2 * fCurrentCalc * (c->startValue + start)) +
+			(3 * fTemp1 * fCurrentCalc * fCurrentCalc * (c->endValue + end)) +
 			(fCurrentCalc * fCurrentCalc * fCurrentCalc * end);
 
 		return fRet;
@@ -115,8 +115,8 @@ namespace basecross {
 		float result =
 			(2 * t3 - 3 * t2 + 1) * start +
 			(-2 * t3 + 3 * t2) * end +
-			(t3 - 2 * t2 + time) * (c->m_startValue - start) +
-			(t3 - t2) * (c->m_endValue - end);
+			(t3 - 2 * t2 + time) * (c->startValue - start) +
+			(t3 - t2) * (c->endValue - end);
 		return result;
 	}
 
@@ -263,9 +263,9 @@ namespace basecross {
 						vector<wstring> strvec;
 						Util::WStrToTokenVector(strvec, curvestr, L' ');
 						im.curve.startTime = (float)_wtof(strvec[0].c_str());
-						im.curve.m_startValue = (float)_wtof(strvec[1].c_str());
+						im.curve.startValue = (float)_wtof(strvec[1].c_str());
 						im.curve.endTime = (float)_wtof(strvec[2].c_str());
-						im.curve.m_endValue = (float)_wtof(strvec[3].c_str());
+						im.curve.endValue = (float)_wtof(strvec[3].c_str());
 					}
 					im.val = SS5Util::TextToFloat(pXMLDOMNode, L"value");
 					pImpl->line.push_back(im);

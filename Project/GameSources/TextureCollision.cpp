@@ -534,7 +534,7 @@ namespace basecross {
 	bool InkConnectChecker::IsConnectedSupplyToInk(const OBB& supplyOBB, const AABB& supplyAABB, const vector<TRIANGLE>& triangles) {
 		for (auto& triangle : triangles) {
 			if (!HitTest::AABB_AABB(supplyAABB, triangle.GetWrappedAABB())) continue;
-			if (!HitTest::CollisionTestOBBTriangle(supplyOBB, triangle)) continue;
+			//if (!HitTest::CollisionTestOBBTriangle(supplyOBB, triangle)) continue;
 			return true;
 		}
 		return false;
@@ -584,7 +584,7 @@ namespace basecross {
 	bool InkConnectChecker::IsConnectedInkToPort(const OBB& portOBB, const AABB& portAABB, const vector<TRIANGLE>& triangles) {
 		for (auto& triangle : triangles) {
 			if (!HitTest::AABB_AABB(portAABB, triangle.GetWrappedAABB())) continue;
-			if (!HitTest::CollisionTestOBBTriangle(portOBB, triangle)) continue;
+			//if (!HitTest::CollisionTestOBBTriangle(portOBB, triangle)) continue;
 			return true;
 		}
 		return false;

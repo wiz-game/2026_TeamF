@@ -21,6 +21,8 @@ namespace basecross{
 
 		auto mediaPath = app->GetDataDirWString();
 		app->RegisterTexture(L"SKYBOX", mediaPath + L"Texture/SkyBox/SkyBox.png");
+
+
 	}
 
 	void Scene::OnCreate(){

@@ -740,6 +740,7 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		const vector< weak_ptr<GameObject> >& GetGroupVector() const;
+		vector< weak_ptr<GameObject> >& GetGroupVectors() const;
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	グループ内のゲームオブジェクトを得る

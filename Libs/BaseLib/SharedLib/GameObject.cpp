@@ -27,7 +27,7 @@ namespace basecross {
 		else {
 			if (ExceptionActive) {
 				throw BaseException(
-					L"所属ステージがnullです。自分自身がステージではありませんか？",
+					L"所属ステージがnullです",
 					L"if (!shptr)",
 					L"GameObject::GetStage()"
 				);
@@ -219,7 +219,6 @@ namespace basecross {
 		~Impl() {}
 	};
 
-
 	//--------------------------------------------------------------------------------------
 	//	class GameObjectGroup;
 	//--------------------------------------------------------------------------------------
@@ -230,6 +229,9 @@ namespace basecross {
 	GameObjectGroup::~GameObjectGroup() {}
 	//アクセサ
 	const vector< weak_ptr<GameObject> >& GameObjectGroup::GetGroupVector() const {
+		return pImpl->m_Group;
+	}
+	vector< weak_ptr<GameObject> >& GameObjectGroup::GetGroupVectors() const {
 		return pImpl->m_Group;
 	}
 	shared_ptr<GameObject> GameObjectGroup::at(size_t index) {
@@ -396,7 +398,7 @@ namespace basecross {
 			if (ResKey == L"") {
 				throw BaseException(
 					L"テクスチャキーが空白です",
-					L"if (ResKey == L\"\"",
+					L"if (ResKey == L""",
 					L"Particle::SetTextureResource()"
 				);
 			}
@@ -1250,6 +1252,7 @@ namespace basecross {
 			float RightZ = RightPos.z;
 			return (LeftZ > RightZ);
 		};
+
 		std::sort(pImpl->m_SpriteVec.begin(), pImpl->m_SpriteVec.end(), funcSprite);
 
 		for (auto it = DrawLayers.begin(); it != DrawLayers.end(); it++) {
@@ -1529,11 +1532,6 @@ namespace basecross {
 			App::GetApp()->RegisterResource(L"DEFAULT_PNTnT_SQUARE", MeshResource::CreateMeshResource(new_pntnt_vertices, indices, false));
 			vertices.clear();
 			indices.clear();
-			MeshUtill::CreateSquare(2.0f, vertices, indices);
-			ConvertVertex(vertices, new_pc_vertices, new_pn_vertices, new_pt_vertices, new_pntnt_vertices);
-			App::GetApp()->RegisterResource(L"DEFAULT_PT_SQUARE_2", MeshResource::CreateMeshResource(new_pt_vertices, indices, false));
-			vertices.clear();
-			indices.clear();
 
 			MeshUtill::CreateCube(1.0f, vertices, indices);
 			ConvertVertex(vertices, new_pc_vertices, new_pn_vertices, new_pt_vertices, new_pntnt_vertices);
@@ -1675,9 +1673,6 @@ namespace basecross {
 			vertices.clear();
 			indices.clear();
 			col_vertices.clear();
-
-
-
 		}
 		catch (...) {
 			throw;
@@ -2041,7 +2036,7 @@ namespace basecross {
 					str += Util::IntToWStr(x);
 					str += L",";
 					str += Util::IntToWStr(z);
-					str += L"\nCost: ";
+					str += L"?nCost: ";
 					str += Util::IntToWStr(pImpl->m_CellVec[x][z].m_Cost);
 
 					if (Pos.z < viewport.MinDepth || Pos.z > viewport.MaxDepth) {
@@ -2254,13 +2249,5 @@ namespace basecross {
 			throw;
 		}
 	}
-
-
-
-
-
-
-
-
 }
 //end basecross

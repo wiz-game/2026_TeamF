@@ -35,8 +35,12 @@ namespace basecross {
 					SoundManager::Get().Stop(m_ElectricSound);
 				}
 				m_ElectricSound = SoundManager::Get().PlaySE(L"ELECTRIC", 0.1f);
+				
 			}
-
+			if (m_ElectricEffectHandle == -1) {
+				Vec3 effectPosition = GetComponent<Transform>()->GetPosition() + Vec3();
+				EffectManager::g_Instance->PlayEffect(m_ElectricEffectHandle, L"ELECTRIC", effectPosition, 0.0f);
+			}
 			// 電流移動のエフェクト計算
 			float effectDuration = 0.5f; // 1周期のうち、光っている時間
 

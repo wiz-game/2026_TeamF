@@ -21,14 +21,15 @@ namespace basecross {
 
 		bool m_wasPower;//前フレームの通電状態
 		float m_powerTimer;//通電してからの経過時間
-
+		int m_ElectricEffectHandle;
 	public:
 		// 構築と破棄
 		InkCloud(const shared_ptr<Stage>& stage) :
 			GameObject(stage),
 			isPower(false),
 			m_wasPower(false),
-			m_powerTimer(0.0f)
+			m_powerTimer(0.0f),
+			m_ElectricEffectHandle(-1)
 		{
 		}
 		virtual ~InkCloud()

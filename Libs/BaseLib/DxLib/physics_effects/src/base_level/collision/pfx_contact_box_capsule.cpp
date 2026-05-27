@@ -28,7 +28,8 @@ enum BoxCapsSepAxisType
 };
 
 //-------------------------------------------------------------------------------------------------
-// voronoiTol: bevels Voronoi planes slightly which helps when features are parallel.
+// voronoiTol: bevels Voronoi planes slightly 
+// helps when features are parallel.
 //-------------------------------------------------------------------------------------------------
 
 static const PfxFloat voronoiTol = -1.0e-5f;

@@ -436,7 +436,7 @@ namespace basecross {
 		/*!
 		@brief	計算時、XYZどのスケールを使用するかを設定する(x: 0,y: 1,z: 2)。デフォルトx
 		@param[in]	s	計算時、XYZどのスケールを使用するか
-		@return	
+		@return
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetCalcScaling(CalcScaling s);

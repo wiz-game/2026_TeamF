@@ -24,6 +24,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DrEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Electrified.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h" />
@@ -79,6 +80,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Electrified.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp" />
