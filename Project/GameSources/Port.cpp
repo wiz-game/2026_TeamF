@@ -34,7 +34,7 @@ namespace basecross {
 
 		m_staticDraw = AddComponent<Texture2DrawComp>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
-		m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
+		m_staticDraw->SetDiffuse(Col4(0, 0, 0, 1));
 		m_staticDraw->SetTextureResource(L"Port");
 		m_staticDraw->SetTexture2(L"Black");
 		m_staticDraw->SetBlendState(BlendState::AlphaBlend);

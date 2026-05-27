@@ -29,7 +29,7 @@ namespace basecross {
 		// ドローコンポーネントを追加
 		m_staticDraw = AddComponent<Texture2DrawComp>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
-		m_staticDraw->SetEmissive(Col4(1, 1, 1, 1));
+		//m_staticDraw->SetEmissive(Col4(1, 1, 1, 1));
 		m_staticDraw->SetDiffuse(Col4(1, 1, 1, 1));
 		m_staticDraw->SetTextureResource(L"MoveFloor");
 		m_staticDraw->SetTexture2(L"Black");
