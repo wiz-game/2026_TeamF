@@ -16,7 +16,7 @@ namespace basecross {
     void DrEnemy::OnCreate()
     {
         BaseEnemy::OnCreate();
-        BaseEnemy::m_transform->SetPosition(8, 7, 12);
+        BaseEnemy::m_transform->SetPosition(0, 1, 0);
         m_origin = m_transform->GetPosition();
         BaseEnemy::m_draw->SetDiffuse(Col4(0.0f, 1.0f, 0.0f, 1.0f));
 
