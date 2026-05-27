@@ -23,18 +23,9 @@ namespace basecross
 
 	void Floor::OnCreate()
 	{
-		try
-		{
-			auto& app = App::GetApp();
-			auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
-			app->RegisterTexture(L"marble", path + L"marble.png"); // 画像ファイルを読み込んでアセットとして登録する
-		}
-		catch (...) {
-		}
 		//Drawコンポーネント
 		m_draw = AddComponent<PNTStaticDraw>(/*512,512*/);
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
-		m_draw->SetTextureResource(L"marble");
 		m_draw->SetOwnShadowActive(true);
 
 		auto shadowMap = AddComponent<Shadowmap>();

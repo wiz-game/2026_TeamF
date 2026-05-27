@@ -17,6 +17,7 @@ namespace basecross {
 			auto& app = App::GetApp();
 			auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
 			app->RegisterTexture(L"Port", path + L"Port.png"); // 画像ファイルを読み込んでアセットとして登録する
+			app->RegisterTexture(L"Black", path + L"Black.png"); // 画像ファイルを読み込んでアセットとして登録する
 		}
 		catch (...) {
 		}
@@ -31,10 +32,11 @@ namespace basecross {
 		//m_draw = AddComponent<PNTDXModelDraw>();
 		//m_draw->SetMeshResource(L"DEFAULT_CUBE");
 
-		m_staticDraw = AddComponent<PNTStaticDraw>();
+		m_staticDraw = AddComponent<Texture2DrawComp>();
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
-		m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
+		m_staticDraw->SetDiffuse(Col4(0, 0, 0, 1));
 		m_staticDraw->SetTextureResource(L"Port");
+		m_staticDraw->SetTexture2(L"Black");
 		m_staticDraw->SetBlendState(BlendState::AlphaBlend);
 		
 		auto coll = AddComponent<CollisionObb>();
@@ -63,7 +65,7 @@ namespace basecross {
 		else
 		{
 			isConnect = false;
-			m_staticDraw->SetDiffuse(Col4(1, 0, 0, 1));
+			m_staticDraw->SetDiffuse(Col4(0, 0, 0, 1));
 		}
 	}
 

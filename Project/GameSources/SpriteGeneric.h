@@ -73,6 +73,11 @@ namespace basecross
 		void SetColor(Col4 col)
 		{
 			m_color = col;
+			if (m_draw)
+			{
+				m_draw->SetDiffuse(m_color);
+				m_draw->SetEmissive(m_color);
+			}
 		}
 	};
 }

@@ -10,6 +10,16 @@ namespace basecross
 {
 	void TrapDoor::OnCreate()
 	{
+		try
+		{
+			auto& app = App::GetApp();
+			auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+			app->RegisterTexture(L"MoveFloor", path + L"MoveFloor.png"); // 画像ファイルを読み込んでアセットとして登録する
+			app->RegisterTexture(L"Black", path + L"Black.png"); // 画像ファイルを読み込んでアセットとして登録する
+		}
+		catch (...) {
+		}
+
 		//Transformコンポーネント
 		m_trans = GetComponent<Transform>();
 
@@ -20,9 +30,17 @@ namespace basecross
 
 		
 		//Drawコンポーネント
-		m_draw = AddComponent<PNTStaticDraw>();
+		m_draw = AddComponent<Texture2DrawComp>();
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
-		m_draw->SetTextureResource(L"marble");
+		m_draw->SetTextureResource(L"MoveFloor");
+		m_draw->SetTexture2(L"Black");
+		m_draw->SetDiffuse(Col4(1, 1, 1, 1));
+
+
+		m_draw->SetOwnShadowActive(true);
+
+		auto shadowMap = AddComponent<Shadowmap>();
+		shadowMap->SetMeshResource(L"DEFAULT_CUBE");
 
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetFixed(true);
@@ -30,7 +48,16 @@ namespace basecross
 
 	void TrapDoor::OnUpdate()
 	{
+		if (m_isMove)
+		{
+			m_draw->SetDiffuse(Col4(1, 1, 0, 1));
 
+		}
+		else
+		{
+			m_draw->SetDiffuse(Col4(1, 1, 1, 1));
+
+		}
 	}
 
 	//初期化
