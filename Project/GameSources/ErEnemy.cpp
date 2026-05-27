@@ -12,7 +12,7 @@ namespace basecross {
 	void ErEnemy::OnCreate()
 	{
 		BaseEnemy::OnCreate();
-		BaseEnemy::m_transform->SetPosition(-5, 1, 0);
+		BaseEnemy::m_transform->SetPosition(0, 1, 0);
 		BaseEnemy::m_draw->SetDiffuse(Col4(0.0f, 0.0f, 1.0f, 1.0f));
 	}
 
