@@ -26,16 +26,29 @@ namespace basecross {
 		auto light = CreateLight<MultiLight>();
 		light->SetDefaultLighting(); //デフォルトのライティングを指定
 	}
+	void GoalStage::RegisterResources() {
+		auto& app = App::GetApp();
+		wstring mediaPath = App::GetApp()->GetDataDirWString();
+		app->RegisterTexture(L"GoalStage", mediaPath + L"Texture/GoalStage.png");
+	}
 
 	void GoalStage::OnCreate() {
 		try {
 			auto& app = App::GetApp();
-
-			// JoltPhysicsを初期化する
-			//m_jphManger.Initialize();
-
-			//ビューとライトの作成
+			auto scene = app->GetScene<Scene>();
 			CreateViewLight();
+			RegisterResources();
+
+			m_sprite = AddGameObject<Sprite>(L"GoalStage", Vec3(), Vec2(1280, 840), Anchor::Center);
+			
+			float ink = scene->GetResultInk();
+			float maxInk = scene->GetMaxInk();
+
+			int pasent = (ink / maxInk) * 100;
+
+			auto inkSprite = AddGameObject<NumberSprite>(L"NUMBER", Vec3(140.0f, -65.0f, 0.0f), Vec2(30, 50), 2);
+			inkSprite->SetDiffuse(Col4(0, 0, 0, 1));
+			inkSprite->UpdateNumber(pasent);
 
 		}
 		catch (...) {
@@ -54,22 +67,13 @@ namespace basecross {
 
 		auto CntlVec = app->GetInputDevice().GetControlerVec();
 
-		scene->SetDebugString(L"GoalStage \n Abutton -> TitleStage");
+		//scene->SetDebugString(L"GoalStage \n Abutton -> TitleStage");
 
 		if (CntlVec[0].wPressedButtons && XINPUT_GAMEPAD_A)
 		{
 			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToTitleStage");
 		}
 	}
-
-	void GoalStage::OnUpdate2()
-	{
-	}
-
-	void GoalStage::OnDraw()
-	{
-	}
-
 	void GoalStage::OnPushA()
 	{
 	}

@@ -45,5 +45,19 @@ namespace basecross {
 		}
 	};
 
+	class UpperDrawCom : public PNTStaticDraw
+	{
+	public:
+		UpperDrawCom(const shared_ptr<GameObject>& stage) :
+			PNTStaticDraw(stage)
+		{
+		}
+
+		virtual void OnDraw() override;
+	};
+	DECLARE_DX11_PIXEL_SHADER(UpperPixelSheder)
+	DECLARE_DX11_PIXEL_SHADER(UpperShadowPixelSheder)
+
+
 }
 //end basecross}

@@ -20,6 +20,7 @@ namespace basecross {
 		std::shared_ptr<GameObject> m_owner = nullptr;//親になるオブジェクト
 
 		Vec3 m_currentMoveVec;
+		Vec3 m_lastPosition;
 		bool m_isPlayerOn = false;//プレイヤーが乗っているかどうか
 
 	public:
@@ -28,7 +29,8 @@ namespace basecross {
 			const shared_ptr<GameObject> owner) :
 			GameObject(stage),
 			m_owner(owner),
-			m_currentMoveVec(0)
+			m_currentMoveVec(0),
+			m_lastPosition(0)
 		{
 		}
 		virtual ~FloorDecision()
