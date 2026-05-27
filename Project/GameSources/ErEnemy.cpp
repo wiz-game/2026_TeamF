@@ -18,7 +18,32 @@ namespace basecross {
 
 	void ErEnemy::OnUpdate()
 	{
-		BaseEnemy::UpdatePatrol();
+		UpdateInkErase();
+	}
+
+	void ErEnemy::UpdateInkErase()
+	{
+		auto stage = GetStage();
+
+		std::vector<std::shared_ptr<GameObject>> inkObjs;
+		stage->GetUsedTagObjectVec(L"InkDraw", inkObjs);
+
+		Vec3 pos = m_transform->GetPosition();
+
+		for (auto& obj : inkObjs)
+		{
+			auto ink = std::dynamic_pointer_cast<InkDraw>(obj);
+			if (!ink) continue;
+
+			Vec3 inkPos = ink->GetComponent<Transform>()->GetPosition();
+
+			float distance = (pos - inkPos).length();
+
+			if (distance < 2.0f)
+			{
+				ink->DestroyGameObject();
+			}
+		}
 	}
 }
 //end basecross
