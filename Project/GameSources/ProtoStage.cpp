@@ -155,9 +155,14 @@ namespace basecross {
 			moveFloorZ.speed = -1.0f;
 			moveFloorZ.limitDist = 3.0f;
 			moveFloorZ.port = moveFloor_port;
+<<<<<<< HEAD
 			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(7.0f, 2.5f,5.5f),  moveFloorZ);
 
 			//AddGameObject<DrEnemy>();
+=======
+
+			//AddGameObject<DrEnemy>(L"DrEnemy");
+>>>>>>> Asuka
 
 			//									Scale			Rotation		Position			portの指定
 			AddGameObject<BeltConveyor>(Vec3(2.0f, 0.1f, 5.0f), Vec3(0,0,0), Vec3(0.0f, -0.7f, 16.0f), nullptr);
