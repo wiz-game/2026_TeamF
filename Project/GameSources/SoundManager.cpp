@@ -9,7 +9,9 @@
 namespace basecross {
 	void SoundManager::RegisterSounds() {
 		m_Audio = App::GetApp()->GetXAudio2Manager();
-
+		RegisterSound(L"PLAYER_MOVE", L"PlayerMove.wav");
+		RegisterSound(L"ELECTRIC", L"Electric.wav");
+		RegisterSound(L"ELEVATER_MOVE", L"ElevatorMove.wav");
 	}
 	void SoundManager::RegisterSound(const wstring& key, const wstring& fileName) {
 		wstring path = App::GetApp()->GetDataDirWString() + L"Sounds/";
@@ -17,16 +19,20 @@ namespace basecross {
 		auto audioRes = App::GetApp()->RegisterWav(key, path + fileName);
 		m_SoundKeys.push_back(key);
 	}
-	void SoundManager::PlayLoopSE(const wstring& key, const float volume) {
+	shared_ptr<SoundItem> SoundManager::PlayLoopSE(const wstring& key, const float volume) {
 		if (find(m_SoundKeys.begin(), m_SoundKeys.end(), key) != m_SoundKeys.end()) {
 			auto se = m_Audio->Start(key, XAUDIO2_LOOP_INFINITE, volume * m_SEVolume);
-			m_PlayingSE.insert(pair<wstring, shared_ptr<SoundItem>>(key, se));
+			m_PlayerSE.push_back(se);
+			return se;
 		}
+		return nullptr;
 	}
-	void SoundManager::StopLoopSE(const wstring& key) {
-		if (m_PlayingSE.find(key) != m_PlayingSE.end()) {
-			m_Audio->Stop(m_PlayingSE[key]);
-			m_PlayingSE.erase(key);
+	void SoundManager::StopLoopSE(const shared_ptr<SoundItem>& soundItem) {
+		if (!soundItem) return;
+		auto it = find(m_PlayerSE.begin(), m_PlayerSE.end(), soundItem);
+		if (it != m_PlayerSE.end()) {
+			m_Audio->Stop(soundItem);
+			m_PlayerSE.erase(it);
 		}
 	}
 	shared_ptr<SoundItem> SoundManager::PlaySE(const wstring& key, const float volume) {
@@ -45,6 +51,9 @@ namespace basecross {
 		}
 		m_Bgm = m_Audio->Start(key, XAUDIO2_LOOP_INFINITE, volume * m_BGMVolume);
 		return m_Bgm;
+	}
+	void SoundManager::Stop(const shared_ptr<SoundItem>& soundItem) {
+		soundItem->m_SourceVoice->Stop();
 	}
 	void SoundManager::SetBGMVolume() {
 		if (m_Bgm != nullptr) {
@@ -71,10 +80,10 @@ namespace basecross {
 		}
 	void SoundManager::StopAll() {
 		StopBGM();
-		for (auto se : m_PlayingSE) {
-			m_Audio->Stop(se.second);
+		for (auto se : m_PlayerSE) {
+			m_Audio->Stop(se);
 		}
-		m_PlayingSE.clear();
+		m_PlayerSE.clear();
 	}
 	bool SoundManager::IsSoundRunning(const shared_ptr<SoundItem>& soundItem) {
 		if (soundItem->m_SourceVoice) {

@@ -41,6 +41,11 @@ namespace basecross {
 			//ビューとライトの作成
 			CreateViewLight();
 
+			AddGameObject<EffectManager>();
+
+			wstring mediaPath = App::GetApp()->GetDataDirWString();
+			EffectManager::g_Instance->RegisterResource(L"ELECTRIC", mediaPath + L"Effects/Electric1.efk");
+
 			//プレイヤー作成
 			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3(),float(20.0f));
 			SetSharedGameObject(L"player", m_Player);
@@ -194,6 +199,7 @@ namespace basecross {
 
 			//スカイボックス
 			AddGameObject<SkyCube>(L"SKYBOX");
+			
 		}
 		catch (...) {
 			throw;
@@ -214,6 +220,7 @@ namespace basecross {
 
 	void ProtoStage::OnDraw()
 	{
+		//EffectManager::g_Instance->OnDraw();
 	}
 }
 //end basecross

@@ -1,0 +1,11 @@
+diff a/Libs/BaseLib/Dx11FullLib/DrawComponentsEx.h b/Libs/BaseLib/Dx11FullLib/DrawComponentsEx.h	(rejected hunks)
+@@ -858,7 +858,8 @@
+ 		//--------------------------------------------------------------------------------------
+ 		/*!
+ 		@brief	�C���f�b�N�X���L�����ǂ����`�F�b�N����i�����Ȃ��O�j
+-		@param[in] whichLight ���C�g�̃C���f�b�N�X
++		@param[in] 
++		Light ���C�g�̃C���f�b�N�X
+ 		@return	�Ȃ�
+ 		*/
+ 		//--------------------------------------------------------------------------------------

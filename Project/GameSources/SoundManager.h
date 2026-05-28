@@ -15,11 +15,12 @@ namespace basecross{
 	public:
 		void RegisterSounds();
 		void RegisterSound(const wstring& key, const wstring& fileName);
-		void PlayLoopSE(const wstring& key, const float volume = 1.0f);
-		void StopLoopSE(const wstring& key);
+		shared_ptr<SoundItem> PlayLoopSE(const wstring& key, const float volume = 1.0f);
+		void StopLoopSE(const shared_ptr<SoundItem>& soundItem);
 
 		shared_ptr<SoundItem> PlaySE(const wstring& key, const float volume = 5.0f);
 		shared_ptr<SoundItem> PlayBGM(const wstring& key, const float volume = 1.0f);
+		void Stop(const shared_ptr<SoundItem>& soundItem);
 		void StopAll();
 		void StopBGM();
 		void PauseBGM(bool flag);
@@ -55,7 +56,8 @@ namespace basecross{
 		shared_ptr<XAudio2Manager> m_Audio;
 		shared_ptr<SoundItem> m_Bgm;
 
-		map<wstring, shared_ptr<SoundItem>> m_PlayingSE;
+		vector<shared_ptr<SoundItem>> m_PlayerSE;
+		//map<wstring, shared_ptr<SoundItem>> m_PlayingSE;
 
 		float m_SEVolume;
 		float m_BGMVolume;

@@ -21,6 +21,8 @@ namespace basecross{
 
 		auto mediaPath = app->GetDataDirWString();
 		app->RegisterTexture(L"SKYBOX", mediaPath + L"Texture/SkyBox/SkyBox.png");
+
+
 	}
 
 	void Scene::OnCreate(){
@@ -31,6 +33,7 @@ namespace basecross{
 			GameController::EnableGyro(true);
 			GameController::StartVibration(0.0f, 10.0f);
 
+			SoundManager::Get().RegisterSounds();
 			//ステージ数1で初期化
 			GameProgressManager::Get().Initialize(3);
 
@@ -50,6 +53,10 @@ namespace basecross{
 	void Scene::OnUpdate() {
 		SceneBase::OnUpdate();
 		GameController::Update();
+	}
+	void Scene::OnDraw() {
+		SceneBase::OnDraw();
+		TextureMeshManager::Get().Reload();
 	}
 	Scene::~Scene() {
 		JoltManager::StaticTerminate();

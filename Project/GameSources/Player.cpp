@@ -124,7 +124,11 @@ namespace basecross{
 			+ L"\n"
 			+ L" m_FloorDecision : " + (m_floorDecision ? L"Valid" : L"null"));
 	}
-
+	void Player::OnDestroy() {
+		if (m_MoveSound) {
+			SoundManager::Get().StopLoopSE(m_MoveSound);
+		}
+	}
 	void Player::OnMove()
 	{
 		auto& app = App::GetApp();
@@ -178,7 +182,14 @@ namespace basecross{
 			m_forward.z = sinf(forwardAngle);
 
 			m_velocity += m_forward * delta;
-;			//cc->SetLinearVelocity(m_moveSpeed * m_velocity * m_moveDir);
+			//cc->SetLinearVelocity(m_moveSpeed * m_velocity * m_moveDir);
+			if (!m_MoveSound) {
+				m_MoveSound = SoundManager::Get().PlayLoopSE(L"PLAYER_MOVE", 0.5f);
+			}
+		}
+		else {
+			SoundManager::Get().StopLoopSE(m_MoveSound);
+			m_MoveSound = nullptr;
 		}
 
 		if (m_isGround)
@@ -192,6 +203,8 @@ namespace basecross{
 		
 		if (m_velocity.x <= m_maxSpeed || m_velocity.z <= m_maxSpeed)
 			m_velocity *= m_accel;
+
+		
 		m_pos.x += m_moveSpeed * m_velocity.x * delta;
 		m_pos.z += m_moveSpeed * m_velocity.z * delta;
 		if (!m_isGround)
