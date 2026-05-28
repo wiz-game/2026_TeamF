@@ -11,8 +11,9 @@ namespace basecross{
 	IMPLEMENT_DX11_PIXEL_SHADER(InkPixelShader, App::GetApp()->GetShadersPath() + L"InkPixelShader.cso")
 	IMPLEMENT_DX11_PIXEL_SHADER(PNTPixelShader, App::GetApp()->GetShadersPath() + L"PSPNTInkDraw.cso")
 	IMPLEMENT_DX11_CONSTANT_BUFFER(CBBrushData);
+	IMPLEMENT_DX11_CONSTANT_BUFFER(CBTimeBuffer);
 
-	InkDrawComponentTest::InkDrawComponentTest(const shared_ptr<GameObject>& ptr, UINT sizeX, UINT sizeY):PNTStaticDraw(ptr){
+	InkDrawComponentTest::InkDrawComponentTest(const shared_ptr<GameObject>& ptr, UINT sizeX, UINT sizeY) :PNTStaticDraw(ptr), m_TimeBuffer{} {
 		m_View = {};
 		m_View.Width = sizeX;
 		m_View.Height = sizeY;
@@ -60,6 +61,34 @@ namespace basecross{
 			m_DrawPoints.push_back(Vec4(points.x, points.y, 0.0f, 0.0f));
 		}
 	}
+
+	void InkDrawComponentTest::SetNormalMap(const wstring& texKey) {
+		TexMetadata metadata;
+		ScratchImage image;
+
+		ThrowIfFailed(
+			DirectX::LoadFromDDSFile(texKey.c_str(), 0, &metadata, image),
+			L"テクスチャの読み込みに失敗しました",
+			texKey,
+			L"Texture::Impl::Impl()"
+		);
+
+		auto Dev = App::GetApp()->GetDeviceResources();
+		ID3D11Device* pDx11Device = Dev->GetD3DDevice();
+		ID3D11DeviceContext* pID3D11DeviceContex = Dev->GetD3DDeviceContext();
+		std::mutex Mutex;
+		Util::DemandCreate(m_NormalMap, Mutex, [&](ID3D11ShaderResourceView** pResult) -> HRESULT
+			{
+				// 画像からシェーダリソースViewの作成
+				HRESULT hr = ThrowIfFailed(CreateShaderResourceView(pDx11Device, image.GetImages(), image.GetImageCount(), metadata, pResult),
+					L"シェーダーリソースビューを作成できません",
+					L"if( FAILED( CreateShaderResourceView() ) )",
+					L"Texture::Impl::Impl()"
+					);
+				return hr;
+			});
+	}
+
 	void InkDrawComponentTest::DrawInk() {
 		if (m_DrawPoints.size() <= 0) return;
 		MeshPrimData data = App::GetApp()->GetResource<MeshResource>(L"DEFAULT_PT_SQUARE_2")->GetMashData();
@@ -86,11 +115,13 @@ namespace basecross{
 
 		//コンスタントバッファの更新
 		pD3D11DeviceContext->UpdateSubresource(CBBrushData::GetPtr()->GetBuffer(), 0, nullptr, &m_Brush, 0, 0);
+		pD3D11DeviceContext->UpdateSubresource(CBTimeBuffer::GetPtr()->GetBuffer(), 0, nullptr, &m_TimeBuffer, 0, 0);
 		//コンスタントバッファの設定
-		ID3D11Buffer* pConstantBuffer = CBBrushData::GetPtr()->GetBuffer();
+		ID3D11Buffer* psConstantBuffers[2] = { CBBrushData::GetPtr()->GetBuffer() ,CBTimeBuffer::GetPtr()->GetBuffer() };
+
 		ID3D11Buffer* pNullConstantBuffer = nullptr;
 		//ピクセルシェーダに渡す
-		pD3D11DeviceContext->PSSetConstantBuffers(0, 1, &pConstantBuffer);
+		pD3D11DeviceContext->PSSetConstantBuffers(0, 2, psConstantBuffers);
 		//ストライドとオフセット
 		UINT stride = data.m_NumStride;
 		UINT offset = 0;
@@ -116,6 +147,11 @@ namespace basecross{
 		TextureMeshManager::Get().AddReload(GetGameObject()->GetComponent<TextureCollision>());
 		m_DrawPoints.clear();
 	}
+
+	void InkDrawComponentTest::OnUpdate() {
+		m_TimeBuffer.m_Time += App::GetApp()->GetElapsedTime();
+	}
+
 	void InkDrawComponentTest::OnDraw() {
 		auto deviceRes = App::GetApp()->GetDeviceResources();
 		auto deviceContext = deviceRes->GetD3DDeviceContext();

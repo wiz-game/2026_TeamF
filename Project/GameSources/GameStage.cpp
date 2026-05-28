@@ -48,6 +48,7 @@ namespace basecross {
 			//ビューとライトの作成
 			CreateViewLight();
 			App::GetApp()->RegisterTexture(L"InkTest",App::GetApp()->GetDataDirWString() +  L"Texture/Test/InkCollisionTest3.png");
+			//App::GetApp()->RegisterTexture(L"InkNormalMap", App::GetApp()->GetDataDirWString() + L"Texture/Test/InkNormalMap.jpg");
 
 			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3(),float(10.0f));
 			AddGameObject<InkDraw>();
@@ -68,6 +69,7 @@ namespace basecross {
 
 					auto floor = AddGameObject<Floor>(Vec3(sizeX * 2, 1, sizeX * 2),Vec3(0), Vec3(x, y, z));
 					auto draw = floor->GetComponent<InkDrawComponentTest>();
+					draw->SetNormalMap(App::GetApp()->GetDataDirWString() + L"Texture/Test/InkNormalMap.dds");
 					draw->SetBrushSize(0.05f);
 					//draw->SetTextureResource(L"SKYBOX");
 					floor->AddComponent<TextureCollision>();

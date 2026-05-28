@@ -13,15 +13,22 @@ namespace basecross{
 		int m_CenterCount;
 		float padding[2];
 	};
+	struct TimeBuffer {
+		float m_Time = 0.0f;
+		int padding[3];
+	};
 	class InkDrawComponentTest : public PNTStaticDraw {
 		ComPtr<ID3D11Texture2D> m_Texture;
 		ComPtr<ID3D11RenderTargetView> m_RenderTargetView;
 		ComPtr<ID3D11ShaderResourceView> m_ShaderResourceView;
 
+		ComPtr<ID3D11ShaderResourceView> m_NormalMap;
+
 		D3D11_VIEWPORT m_View;
 
 		vector<Vec4> m_DrawPoints;
 		BrushData m_Brush;
+		TimeBuffer m_TimeBuffer;
 		void CreateTexture(UINT sizeX, UINT sizeY);
 
 		void DrawInk();
@@ -29,6 +36,7 @@ namespace basecross{
 		InkDrawComponentTest(const shared_ptr<GameObject>& ptr, UINT sizeX, UINT sizeY);
 		~InkDrawComponentTest();
 
+		virtual void OnUpdate()override;
 		virtual void OnDraw()override;
 
 		void AddDrawPoint(const Vec2& points,bool eraser = false);
@@ -39,6 +47,7 @@ namespace basecross{
 			return m_ShaderResourceView;
 		}
 
+		void SetNormalMap(const wstring& texKey);
 
 		template<typename T_VShader>
 		void DrawStatic(const MeshPrimData& data) {
@@ -81,10 +90,12 @@ namespace basecross{
 			pD3D11DeviceContext->UpdateSubresource(CBSimple::GetPtr()->GetBuffer(), 0, nullptr, &SmCb, 0, 0);
 			//コンスタントバッファの設定
 			ID3D11Buffer* pConstantBuffer = CBSimple::GetPtr()->GetBuffer();
+			ID3D11Buffer* psConstantBuffers[2] = { pConstantBuffer ,CBTimeBuffer::GetPtr()->GetBuffer() };
 			ID3D11Buffer* pNullConstantBuffer = nullptr;
 			//頂点シェーダに渡す
 			pD3D11DeviceContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
 			//ピクセルシェーダに渡す
+			//pD3D11DeviceContext->PSSetConstantBuffers(0, 2, psConstantBuffers);
 			pD3D11DeviceContext->PSSetConstantBuffers(0, 1, &pConstantBuffer);
 			//ストライドとオフセット
 			UINT stride = data.m_NumStride;
@@ -102,7 +113,10 @@ namespace basecross{
 			RenderState->SetDepthStencilState(pD3D11DeviceContext, GetDepthStencilState());
 			//テクスチャとサンプラー
 			if (shTex) {
-				ID3D11ShaderResourceView* srv[2] = { shTex->GetShaderResourceView().Get(),m_ShaderResourceView.Get() };
+				ID3D11ShaderResourceView* srv[2] = { 
+					shTex->GetShaderResourceView().Get(),
+					m_ShaderResourceView.Get(),
+					/*m_NormalMap.Get()*/};
 				pD3D11DeviceContext->PSSetShaderResources(0, 2, srv);
 				//サンプラーを設定
 				RenderState->SetSamplerState(pD3D11DeviceContext, GetSamplerState(), 0);
@@ -147,5 +161,6 @@ namespace basecross{
 	DECLARE_DX11_PIXEL_SHADER(PNTPixelShader)
 	DECLARE_DX11_VERTEX_SHADER(InkVertexShader,VertexPositionTexture)
 	DECLARE_DX11_CONSTANT_BUFFER(CBBrushData, BrushData)
+	DECLARE_DX11_CONSTANT_BUFFER(CBTimeBuffer,TimeBuffer)
 }
 //end basecross
