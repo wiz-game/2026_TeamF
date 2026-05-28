@@ -158,6 +158,9 @@ JPH_OBJECT_STREAM;JPH_DISABLE_CUSTOM_ALLOCATOR;_HAS_STD_BYTE=0;NDEBUG;_WINDOWS;%
     <FxCompile Update="C:\Local\Game Programing Files\BaseCross\2026_前期制作\Project\GameSources\GenerateMaskShader.hlsl">
       <FileType>Document</FileType>
     </FxCompile>
+    <FxCompile Update="C:\Users\shiro\WIZ\3年前期チーム制作 2026-TeamF\Project\GameSources\PSTexture2.hlsl">
+      <FileType>Document</FileType>
+    </FxCompile>
     <FxCompile Update="C:\wiz\ゲーム制作\BaseCross11_2026\Project\GameSources\UnionFindFirst.hlsl">
       <FileType>Document</FileType>
     </FxCompile>

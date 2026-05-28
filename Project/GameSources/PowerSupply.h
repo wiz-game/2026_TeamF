@@ -5,16 +5,18 @@
 
 #pragma once
 #include "stdafx.h"
-#include "PNTDXModelDraw.h"
+#include "Texture2DrawComp.h"
 #include "StageObjBase.h"
 #include "Electrified.h"
 
 namespace basecross {
+	class Texture2DrawComp;
+
 	class PowerSupply : public StageObjBase
 	{
 		std::shared_ptr<Transform> m_transform; // トランスフォームはよく使うのでメンバにしておく
 		//std::shared_ptr<PNTDXModelDraw> m_draw; // ドローコンポーネント
-		std::shared_ptr<PNTStaticDraw> m_staticDraw;
+		std::shared_ptr<Texture2DrawComp> m_staticDraw;
 
 		bool isConnect = false;
 		bool isPower = true;

@@ -5,6 +5,10 @@
     <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindSecond.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)InkFresnelPixelShader.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSUpper.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSUpperShadow.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSTexture2.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSTexture2Shadow.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp" />
@@ -98,6 +102,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameOverStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Texture2DrawComp.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UpperDrawComp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h" />
@@ -191,6 +197,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameOverStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Texture2DrawComp.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UpperDrawComp.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl">

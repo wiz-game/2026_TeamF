@@ -88,9 +88,12 @@ class MoveFloor;
 
 		void UpdateMoveFloor(const Vec3& movePos);
 
-		// �ｽO�ｽ�ｽ�ｽ�ｽ�ｽ�ｽﾌ移難ｿｽ�ｽ�ｽ�ｽ�ｽ�ｽZ�ｽ�ｽ�ｽ�ｽﾖ撰ｿｽ
-		//void AddExternalMove(const Vec3& move);
-		//void SetExternalVelocity(const Vec3& v) { m_externalVelocity = v; }
+		void FixPositionY(float targetY)
+		{
+			m_pos.y = targetY;
+			m_velocity.y = 0.0f;
+			m_transform->SetPosition(m_pos);
+		}
 	};
 
 }

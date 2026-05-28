@@ -13,7 +13,7 @@ namespace basecross
 
 	class TrapDoor : public GameObject
 	{
-		std::shared_ptr<PNTStaticDraw> m_draw;
+		std::shared_ptr<Texture2DrawComp> m_draw;
 		std::shared_ptr<Transform> m_trans;
 
 		std::shared_ptr<GameObject> m_owner;

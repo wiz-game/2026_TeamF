@@ -13,6 +13,8 @@ namespace basecross{
 	//--------------------------------------------------------------------------------------
 	class Scene : public SceneBase
 	{
+		float m_playerInk;
+		float m_playerMaxInk;
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief ÉäÉ\Å[ÉXÇÃçÏê¨
@@ -57,6 +59,23 @@ namespace basecross{
 		virtual void OnEvent(const shared_ptr<Event>& event) override;
 
 		virtual void OnDestroy()override;
+
+		void SetResultInk(float ink, float maxInk)
+		{
+			m_playerInk = ink;
+			m_playerMaxInk = maxInk;
+		}
+
+		float GetResultInk() const
+		{
+			return m_playerInk;
+		}
+
+		float GetMaxInk() const
+		{
+			return m_playerMaxInk;
+		}
+
 	};
 
 }

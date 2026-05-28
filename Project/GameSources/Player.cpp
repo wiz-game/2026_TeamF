@@ -111,7 +111,7 @@ namespace basecross{
 			PostEvent(0.0f, GetThis<Player>(), scene, L"ToProtoStage");
 		}
 
-		if (m_ink < 0)
+		if (m_ink <= 0)
 		{
 			PostEvent(0.0f, GetThis<Player>(), scene, L"ToGameOverStage");
 		}
@@ -207,8 +207,10 @@ namespace basecross{
 		
 		m_pos.x += m_moveSpeed * m_velocity.x * delta;
 		m_pos.z += m_moveSpeed * m_velocity.z * delta;
-		m_pos.y += m_velocity.y * delta;	//重力による落下
-
+		if (!m_isGround)
+		{
+			m_pos.y += m_velocity.y * delta;	//重力による落下
+		}
 		m_transform->SetPosition(m_pos);
 	}
 
