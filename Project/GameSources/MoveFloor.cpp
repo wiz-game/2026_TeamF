@@ -71,9 +71,11 @@ namespace basecross {
 		//通電していれば床が動く
 		if (isConnect)
 		{
+			if (!m_MoveSound) {
+				m_MoveSound = SoundManager::Get().PlayLoopSE(L"ELEVATER_MOVE",0.1f);
+			}
 			m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
 			m_staticDraw->SetEmissive(Col4(1, 1, 0, 1));
-
 
 			if (m_stopTimer > 0.0f)
 			{
@@ -269,8 +271,10 @@ namespace basecross {
 			m_floorDec->SetCurrentMoveVec(Vec3(0, 0, 0)); // 通電していないときは移動量をゼロにする
 		}
 	}
-
-
-
+	void MoveFloor::OnDestroy() {
+		if (m_MoveSound) {
+			SoundManager::Get().StopLoopSE(m_MoveSound);
+		}
+	}
 }
 //end basecross

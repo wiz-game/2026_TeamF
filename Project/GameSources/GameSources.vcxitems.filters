@@ -4,6 +4,7 @@
     <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindFirst.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindSecond.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)InkFresnelPixelShader.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)PSUpper.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)PSUpperShadow.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)PSTexture2.hlsl" />
@@ -100,6 +101,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyCube.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameOverStage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Texture2DrawComp.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UpperDrawComp.cpp" />
   </ItemGroup>
@@ -194,6 +196,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyCube.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameOverStage.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Texture2DrawComp.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)UpperDrawComp.h" />
   </ItemGroup>

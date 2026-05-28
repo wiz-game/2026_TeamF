@@ -83,7 +83,7 @@ namespace basecross {
 	void  Collision::RemoveExcludeCollisionGameObject(const shared_ptr<GameObject>& obj) {
 		for (auto it = pImpl->m_ExcludeCollisionGameObjects.begin();
 			it != pImpl->m_ExcludeCollisionGameObjects.end();
-			it++ ) 
+			it++)
 		{
 			auto shobj = (*it).lock();
 			if (shobj && (shobj == obj)) {
@@ -190,9 +190,9 @@ namespace basecross {
 			return;
 		}
 		auto WorldMat = GetGameObject()->GetComponent<Transform>()->GetWorldMatrix();
-		if (WorldMat.nearEqual(pImpl->m_SleepCheckWorldMatrix,0.01)) {
-			float m_elapsedTime = App::GetApp()->GetElapsedTime();
-			pImpl->m_SleepCheckTimer += m_elapsedTime;
+		if (WorldMat.nearEqual(pImpl->m_SleepCheckWorldMatrix, 0.01)) {
+			float elapsedTime = App::GetApp()->GetElapsedTime();
+			pImpl->m_SleepCheckTimer += elapsedTime;
 			if (pImpl->m_SleepCheckTimer >= pImpl->m_SleepTime) {
 				pImpl->m_IsSleep = true;
 			}
@@ -449,7 +449,7 @@ namespace basecross {
 		CAPSULE DestBeforeCap = DestColl->GetBeforeCapsule();
 		//ŠÈˆÕ“I‚È”»’è
 		bsm::Vec3 ret;
-		if (!HitTest::SPHERE_CAPSULE(SrcSphere, DestCap,ret)) {
+		if (!HitTest::SPHERE_CAPSULE(SrcSphere, DestCap, ret)) {
 			return;
 		}
 		bsm::Vec3 SpanVelocity = SrcVelocity - DestVelocity;
@@ -816,8 +816,8 @@ namespace basecross {
 		CAPSULE DestCapsule = DestColl->GetCapsule();
 		CAPSULE DestBeforeCapsule = DestColl->GetBeforeCapsule();
 		//ŠÈˆÕ“I‚È”»’è
-		bsm::Vec3 ret1,ret2;
-		if (!HitTest::CAPSULE_CAPSULE(SrcCapsule, DestCapsule, ret1,ret2)) {
+		bsm::Vec3 ret1, ret2;
+		if (!HitTest::CAPSULE_CAPSULE(SrcCapsule, DestCapsule, ret1, ret2)) {
 			return;
 		}
 		bsm::Vec3 SpanVelocity = SrcVelocity - DestVelocity;
@@ -1007,28 +1007,28 @@ namespace basecross {
 
 	OBB CollisionObb::GetObb() const {
 		auto TransPtr = GetGameObject()->GetComponent<Transform>();
-//		if (pImpl->m_FirstCalc) {
-			pImpl->m_WorldMatrix = TransPtr->GetWorldMatrix();
-			bsm::Mat4x4 MatBase;
-			MatBase.scale(bsm::Vec3(pImpl->m_Size, pImpl->m_Size, pImpl->m_Size));
-			MatBase *= pImpl->m_WorldMatrix;
-			pImpl->m_WorldObb = OBB(bsm::Vec3(pImpl->m_Size, pImpl->m_Size, pImpl->m_Size), MatBase);
-			pImpl->m_FirstCalc = false;
-//		}
+		//		if (pImpl->m_FirstCalc) {
+		pImpl->m_WorldMatrix = TransPtr->GetWorldMatrix();
+		bsm::Mat4x4 MatBase;
+		MatBase.scale(bsm::Vec3(pImpl->m_Size, pImpl->m_Size, pImpl->m_Size));
+		MatBase *= pImpl->m_WorldMatrix;
+		pImpl->m_WorldObb = OBB(bsm::Vec3(pImpl->m_Size, pImpl->m_Size, pImpl->m_Size), MatBase);
+		pImpl->m_FirstCalc = false;
+		//		}
 		return pImpl->m_WorldObb;
 	}
 
 
 	OBB CollisionObb::GetBeforeObb() const {
 		auto TransPtr = GetGameObject()->GetComponent<Transform>();
-//		if (pImpl->m_FirstBeforeCalc) {
-			pImpl->m_BeforeWorldMatrix = TransPtr->GetBeforeWorldMatrix();
-			bsm::Mat4x4 MatBase;
-			MatBase.scale(bsm::Vec3(pImpl->m_Size, pImpl->m_Size, pImpl->m_Size));
-			MatBase *= pImpl->m_BeforeWorldMatrix;
-			pImpl->m_BeforeWorldObb = OBB(bsm::Vec3(pImpl->m_Size, pImpl->m_Size, pImpl->m_Size), MatBase);
-			pImpl->m_FirstBeforeCalc = false;
-//		}
+		//		if (pImpl->m_FirstBeforeCalc) {
+		pImpl->m_BeforeWorldMatrix = TransPtr->GetBeforeWorldMatrix();
+		bsm::Mat4x4 MatBase;
+		MatBase.scale(bsm::Vec3(pImpl->m_Size, pImpl->m_Size, pImpl->m_Size));
+		MatBase *= pImpl->m_BeforeWorldMatrix;
+		pImpl->m_BeforeWorldObb = OBB(bsm::Vec3(pImpl->m_Size, pImpl->m_Size, pImpl->m_Size), MatBase);
+		pImpl->m_FirstBeforeCalc = false;
+		//		}
 		return pImpl->m_BeforeWorldObb;
 	}
 
@@ -1278,8 +1278,6 @@ namespace basecross {
 	AABB CollisionObb::GetWrappedAABB()const {
 		return GetObb().GetWrappedAABB();
 	}
-
-
 
 	void CollisionObb::OnDraw() {
 		GenericDraw Draw;

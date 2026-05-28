@@ -8,7 +8,7 @@ cbuffer ShadowmapConstantBuffer : register( b0 )
 	float4x4 World				: packoffset(c0);
 	float4x4 View				: packoffset(c4);
 	float4x4 Projection				: packoffset(c8);
-    float4x3 Bones[512]              : packoffset(c12);
+    float4x3 Bones[72]              : packoffset(c12);
 };
 
 struct VS_INPUT

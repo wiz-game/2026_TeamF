@@ -29,6 +29,5 @@ float4 main(PSInputPixelLightingTx pin) : SV_Target0
 		ApplyFog(color, pin.PositionWS.w);
 	}
 
-
 	return color;
 }

@@ -10,6 +10,34 @@ cbuffer Brush : register(b0)
     float brushSize;
     int count;
 }
+cbuffer TimeBuffer : register(b1)
+{
+    float time;
+}
+
+
+float random(float2 p)
+{
+    return frac(sin(dot(p, float2(12.9898, 78.233))) * 43758.5453);
+}
+
+float noise(float2 p)
+{
+    float2 i = floor(p);
+    float2 f = frac(p);
+
+    float a = random(i);
+    float b = random(i + float2(1, 0));
+    float c = random(i + float2(0, 1));
+    float d = random(i + float2(1, 1));
+
+    float2 u = f * f * (3.0 - 2.0 * f);
+
+    return lerp(a, b, u.x) +
+           (c - a) * u.y * (1.0 - u.x) +
+           (d - b) * u.x * u.y;
+}
+
 float4 main(PSInput input) : SV_TARGET
 {
     
@@ -20,7 +48,11 @@ float4 main(PSInput input) : SV_TARGET
         {
             return float4(0.0f, 0.0f, 0.0f, 0.0f);
         }
-        return float4(0.0f, 0.0f, 0.0f, 1.0f);
+        
+        float3 color = float3(1.0f, 1.0f, 1.0f);
+        float alpha = 1.0f;
+        
+        return float4(color, alpha);
     }
     discard;
     return float4(0.0f, 0.0f, 0.0f, 0.0f);
