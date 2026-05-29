@@ -10,9 +10,23 @@ namespace basecross
 {
 	void GoalDoor::OnCreate()
 	{
+		try
+		{
+			auto& app = App::GetApp();
+			auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+			app->RegisterTexture(L"GoalDoor", path + L"GoalDoor.png"); // 画像ファイルを読み込んでアセットとして登録する
+			app->RegisterTexture(L"Black", path + L"Black.png"); // 画像ファイルを読み込んでアセットとして登録する
+		}
+		catch (...) {
+		}
+
 		//Drawコンポーネント
-		m_draw = AddComponent<PNTStaticDraw>();
+		m_draw = AddComponent<Texture2DrawComp>();
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
+		m_draw->SetTextureResource(L"GoalDoor");
+		m_draw->SetTexture2(L"Black");
+		m_draw->SetBlendMode(BlendMode::Z_Axis);
+
 		m_draw->SetOwnShadowActive(true);
 
 		auto shadowMap = AddComponent<Shadowmap>();
