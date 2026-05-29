@@ -116,13 +116,13 @@ namespace basecross{
 			PostEvent(0.0f, GetThis<Player>(), scene, L"ToGameOverStage");
 		}
 
-		scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
-			+ L"\n"
-			+ L"ink残量 : " + std::to_wstring(m_ink)
-			+ L"\n"
-			+ L"isGround : " + (m_isGround ? L"true" : L"false")
-			+ L"\n"
-			+ L" m_FloorDecision : " + (m_floorDecision ? L"Valid" : L"null"));
+		//scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
+		//	+ L"\n"
+		//	+ L"ink残量 : " + std::to_wstring(m_ink)
+		//	+ L"\n"
+		//	+ L"isGround : " + (m_isGround ? L"true" : L"false")
+		//	+ L"\n"
+		//	+ L" m_FloorDecision : " + (m_floorDecision ? L"Valid" : L"null"));
 	}
 
 	void Player::OnMove()
@@ -251,16 +251,16 @@ namespace basecross{
 
 	void Player::OnDied()
 	{
-		auto& app = App::GetApp();
-		std::wstringstream wss(L"");
+		//auto& app = App::GetApp();
+		//std::wstringstream wss(L"");
 
-		wss << m_ink;
+		//wss << m_ink;
 
-		if (m_ink <= 0)
-		{
-			wss << L"\n" << L"Died!!\n";
-		}
-		app->GetScene<Scene>()->SetDebugString(wss.str());
+		//if (m_ink <= 0)
+		//{
+		//	wss << L"\n" << L"Died!!\n";
+		//}
+		//app->GetScene<Scene>()->SetDebugString(wss.str());
 	}
 
 	//移動量を取得する関数

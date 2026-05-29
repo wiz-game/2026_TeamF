@@ -17,10 +17,10 @@ namespace basecross
 
 		m_vertices =
 		{
-			{Vec3(left, top, 0.0f), m_color,Vec2(0.0f, 0.0f)},
-			{Vec3(right, top, 0.0f) , m_color,Vec2(1.0f, 0.0f)},
-			{Vec3(left, bottom, 0.0f) , m_color,Vec2(0.0f, 1.0f)},
-			{Vec3(right, bottom, 0.0f) , m_color,Vec2(1.0f, 1.0f)}
+			{Vec2(left, top), m_color,Vec2(0.0f, 0.0f)},
+			{Vec2(right, top) , m_color,Vec2(1.0f, 0.0f)},
+			{Vec2(left, bottom) , m_color,Vec2(0.0f, 1.0f)},
+			{Vec2(right, bottom) , m_color,Vec2(1.0f, 1.0f)}
 		};
 		m_indices = {
 			0,1,2,

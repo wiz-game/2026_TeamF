@@ -64,7 +64,7 @@ namespace basecross
 			}
 		}
 
-		void SetPos(Vec3 pos)
+		void SetPos(Vec2 pos)
 		{
 			m_pos = pos;
 			m_trans->SetPosition(m_pos);
