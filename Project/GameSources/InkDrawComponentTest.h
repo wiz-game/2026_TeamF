@@ -90,7 +90,6 @@ namespace basecross{
 			pD3D11DeviceContext->UpdateSubresource(CBSimple::GetPtr()->GetBuffer(), 0, nullptr, &SmCb, 0, 0);
 			//コンスタントバッファの設定
 			ID3D11Buffer* pConstantBuffer = CBSimple::GetPtr()->GetBuffer();
-			ID3D11Buffer* psConstantBuffers[2] = { pConstantBuffer ,CBTimeBuffer::GetPtr()->GetBuffer() };
 			ID3D11Buffer* pNullConstantBuffer = nullptr;
 			//頂点シェーダに渡す
 			pD3D11DeviceContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
@@ -115,7 +114,7 @@ namespace basecross{
 			if (shTex) {
 				ID3D11ShaderResourceView* srv[2] = { 
 					shTex->GetShaderResourceView().Get(),
-					m_ShaderResourceView.Get(),
+					m_ShaderResourceView.Get()
 					/*m_NormalMap.Get()*/};
 				pD3D11DeviceContext->PSSetShaderResources(0, 2, srv);
 				//サンプラーを設定
