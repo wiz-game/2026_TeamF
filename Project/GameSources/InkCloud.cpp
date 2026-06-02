@@ -134,5 +134,15 @@ namespace basecross {
 		}
 	}
 
+	void InkCloud::DestroyAllInk()
+	{
+		for (auto& ink : m_inkList)
+		{
+			if (ink)
+				ink->DestroyGameObject();
+			ink->SetDrawActive(false);
+		}
+		m_inkList.clear();
+	}
 }
 //end basecross

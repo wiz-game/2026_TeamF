@@ -41,7 +41,8 @@ namespace basecross {
 
 			if (diff.lengthSqr() < 5.0f)
 			{
-				ink->SetDrawActive(false);
+				ink->DestroyAllInk();
+				ink->DestroyGameObject();
 			}
 		}
 	}
