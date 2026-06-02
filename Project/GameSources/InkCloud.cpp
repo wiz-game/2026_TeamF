@@ -134,16 +134,5 @@ namespace basecross {
 		}
 	}
 
-	void InkCloud::RemoveInk(const std::shared_ptr<InkDraw>& ink)
-	{
-		auto it = std::find(m_inkList.begin(), m_inkList.end(), ink);
-
-		if (it != m_inkList.end())
-		{
-			(*it)->DestroyGameObject(); // オブジェクト削除
-			m_inkList.erase(it);        // リストから削除
-		}
-	}
-
 }
 //end basecross

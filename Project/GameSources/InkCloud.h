@@ -62,7 +62,6 @@ namespace basecross {
 			isPower = power;
 		}
 
-		void RemoveInk(const std::shared_ptr<InkDraw>& ink);
 	};
 
 }
