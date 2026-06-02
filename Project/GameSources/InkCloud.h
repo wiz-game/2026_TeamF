@@ -62,6 +62,7 @@ namespace basecross {
 			isPower = power;
 		}
 
+		void DestroyAllInk();
 	};
 
 }
