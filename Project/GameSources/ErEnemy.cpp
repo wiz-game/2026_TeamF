@@ -26,22 +26,22 @@ namespace basecross {
 		auto stage = GetStage();
 
 		std::vector<std::shared_ptr<GameObject>> inkObjs;
-		stage->GetUsedTagObjectVec(L"InkDraw", inkObjs);
+		stage->GetUsedTagObjectVec(L"InkCloud", inkObjs);
 
 		Vec3 pos = m_transform->GetPosition();
 
 		for (auto& obj : inkObjs)
 		{
-			auto ink = std::dynamic_pointer_cast<InkDraw>(obj);
+			auto ink = std::dynamic_pointer_cast<InkCloud>(obj);
 			if (!ink) continue;
 
 			Vec3 inkPos = ink->GetComponent<Transform>()->GetPosition();
 
-			float distance = (pos - inkPos).length();
+			Vec3 diff = pos - inkPos;
 
-			if (distance < 2.0f)
+			if (diff.lengthSqr() < 5.0f)
 			{
-				ink->DestroyGameObject();
+				ink->SetDrawActive(false);
 			}
 		}
 	}
