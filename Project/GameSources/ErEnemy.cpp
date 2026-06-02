@@ -39,7 +39,7 @@ namespace basecross {
 
 			Vec3 diff = pos - inkPos;
 
-			if (diff.lengthSqr() < 5.0f)
+			if (diff.lengthSqr() < 1.0f)
 			{
 				ink->DestroyAllInk();
 				ink->DestroyGameObject();
