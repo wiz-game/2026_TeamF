@@ -112,7 +112,6 @@ namespace basecross {
 
 	void BaseEnemy::UpdateChase()
 	{
-
 	}
 
 	void BaseEnemy::UpdateInkDrow(){}
