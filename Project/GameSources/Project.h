@@ -58,3 +58,5 @@
 #include "GameOverStage.h"
 #include "PauseMenu.h"
 #include "SpriteGeneric.h"
+#include "EffectManager.h"
+

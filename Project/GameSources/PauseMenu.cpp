@@ -128,24 +128,24 @@ namespace basecross
 		{
 			if (stickY > threshold || pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
 			{
+				m_selectMenu = (m_selectMenu == 1) ? m_menuNum : m_selectMenu - 1;
 				//上移動
 				m_selectIndex = m_selectIndex--;
 				if (m_selectIndex < 0)
 				{
 					m_selectIndex = static_cast<int>(m_menuPosList.size()) - 1;
 				}
-				m_selectMenu = (m_selectMenu == 1) ? m_menuNum : m_selectMenu - 1;
 				m_lock = true;
 			}
 			else if (stickY < -threshold || pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
 			{
+				m_selectMenu = (m_selectMenu % m_menuNum) + 1;
 				//下移動
 				m_selectIndex = m_selectIndex++;
-				if (m_selectIndex >= m_menuPosList.size()) // 最下段のメニューから下に移動した場合、最上段に移動する
+				if (m_selectIndex >= m_menuPosList.size())
 				{
 					m_selectIndex = 0;
 				}
-				m_selectMenu = (m_selectMenu % m_menuNum) + 1;
 				m_lock = true;
 			}
 		}
@@ -163,6 +163,7 @@ namespace basecross
 				break;
 			case 2:
 				//リトライ
+				PostEvent(0.1f, GetThis<PauseMenu>(), scene, L"ToProtoStage");
 				break;
 			case 3:
 				//設定

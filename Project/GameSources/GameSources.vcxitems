@@ -24,6 +24,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DrEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Electrified.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h" />
@@ -83,6 +84,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Electrified.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp" />
@@ -132,6 +134,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="$(MSBuildThisFileDirectory)InkFresnelPixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="$(MSBuildThisFileDirectory)InkPixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

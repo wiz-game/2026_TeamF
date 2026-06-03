@@ -4,6 +4,7 @@
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
+#include "DrawComponentsEx.h"
 
 namespace basecross {
 
@@ -343,7 +344,7 @@ namespace basecross {
 	bool BcBaseDraw::GetMultiMeshIsDraw(size_t index) const {
 		if (index >= pImpl->m_BcDrawObject.m_MultiMeshDrawVec.size()) {
 			throw BaseException(
-				L"インデックスがマルチメッシュのメッシュ数を超えてます",
+				L"",
 				L"if (index >= pImpl->m_BcDrawObject.m_MultiMeshDrawVec.size())",
 				L"BcBaseDraw::GetMultiMeshIsDraw()"
 			);
@@ -353,7 +354,7 @@ namespace basecross {
 	void BcBaseDraw::SetMultiMeshIsDraw(size_t index, bool b) {
 		if (index >= pImpl->m_BcDrawObject.m_MultiMeshDrawVec.size()) {
 			throw BaseException(
-				L"インデックスがマルチメッシュのメッシュ数を超えてます",
+				L"",
 				L"if (index >= pImpl->m_BcDrawObject.m_MultiMeshDrawVec.size())",
 				L"BcBaseDraw::SetMultiMeshIsDraw()"
 			);
@@ -500,7 +501,7 @@ namespace basecross {
 		if (whichLight < 0 || whichLight >= BcDrawObject::MaxDirectionalLights)
 		{
 			throw BaseException(
-				L"ライトのインデックスが範囲外です",
+				L"",
 				L"if (whichLight < 0 || whichLight >= Impl::MaxDirectionalLights)",
 				L"Bc3DDraw::ValidateLightIndex()"
 			);
@@ -677,18 +678,28 @@ namespace basecross {
 	}
 	const wstring& BcBaseDraw::GetCurrentAnimation() const {
 		return pImpl->m_BcDrawObject.m_CurrentAnimeName;
-
 	}
 
 	float BcBaseDraw::GetCurrentAnimationTime() const {
 		return pImpl->m_BcDrawObject.m_CurrentAnimeTime;
 	}
+	float BcBaseDraw::GetAnimationTime(const wstring& AnimName) {
+		auto& AnimData = pImpl->m_BcDrawObject.m_AnimationMap[AnimName];
+		float length = AnimData.m_SampleLength;
+		float perSecond = AnimData.m_SamplesParSecond;
 
+		return length / perSecond;
+		
+	}
 	bool BcBaseDraw::IsTargetAnimeEnd() const {
 		auto& AnimData = pImpl->m_BcDrawObject.GetAnimationData();
 		return AnimData.m_IsAnimeEnd;
 	}
 
+	bool BcBaseDraw::GetAnimeLoop() const {
+		auto& AnimData = pImpl->m_BcDrawObject.GetAnimationData();
+		return AnimData.m_IsLoop;
+	}
 
 	bool BcBaseDraw::UpdateAnimation(float ElapsedTime) {
 		return pImpl->m_BcDrawObject.UpdateAnimation(ElapsedTime);
@@ -712,7 +723,7 @@ namespace basecross {
 	vector< bsm::Mat4x4 >& BcBaseDraw::GetVecMultiLocalBones(size_t index) {
 		if (pImpl->m_BcDrawObject.m_MultiLocalBonesMatrix.size() <= index) {
 			throw BaseException(
-				L"インデックスが上限を超えてます",
+				L"",
 				L"if (pImpl->m_BcDrawObject.m_MultiLocalBonesMatrix.size() <= index)",
 				L"BcBaseDraw::GetVecMultiLocalBones"
 			);
@@ -737,15 +748,16 @@ namespace basecross {
 		GetStaticMeshLocalPositions(vertices);
 		//ワールド行列の反映
 		auto WorldMat = GetGameObject()->GetComponent<Transform>()->GetWorldMatrix();
+		auto meshMat = GetMeshToTransformMatrix();
 		for (auto& v : vertices) {
-			v *= WorldMat;
+			v *= WorldMat + meshMat;
 		}
 	}
 
 	bool BcBaseDraw::HitTestStaticMeshSegmentTriangles(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos, bsm::Vec3& HitPoint,
 		TRIANGLE& RetTri, size_t& RetIndex) {
 		GetStaticMeshWorldPositions(pImpl->m_BcDrawObject.m_TempPositions);
-		for (size_t i = 0; i < pImpl->m_BcDrawObject.m_TempPositions.size(); i += 3) {
+		for (size_t i = 0,size = pImpl->m_BcDrawObject.m_TempPositions.size(); i < size; i += 3) {
 			TRIANGLE tri;
 			tri.m_A = pImpl->m_BcDrawObject.m_TempPositions[i];
 			tri.m_B = pImpl->m_BcDrawObject.m_TempPositions[i + 1];
@@ -754,6 +766,7 @@ namespace basecross {
 				//三角形が無効なら次にうつる
 				continue;
 			}
+
 			bsm::Vec3 ret;
 			float t;
 			if (HitTest::SEGMENT_TRIANGLE(StartPos, EndPos, tri, ret, t)) {

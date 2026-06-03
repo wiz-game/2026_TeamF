@@ -674,7 +674,7 @@ namespace DirectX
 
         CMSE_IMAGE1_SRGB            = 0x1,
         CMSE_IMAGE2_SRGB            = 0x2,
-            // Indicates that image needs gamma correction before comparision
+            // Indicates that image needs gamma correction m_Before comparision
 
         CMSE_IGNORE_RED             = 0x10,
         CMSE_IGNORE_GREEN           = 0x20,
@@ -684,7 +684,7 @@ namespace DirectX
 
         CMSE_IMAGE1_X2_BIAS         = 0x100,
         CMSE_IMAGE2_X2_BIAS         = 0x200,
-            // Indicates that image should be scaled and biased before comparison (i.e. UNORM -> SNORM)
+            // Indicates that image should be scaled and biased m_Before comparison (i.e. UNORM -> SNORM)
     };
 
     HRESULT __cdecl ComputeMSE(_In_ const Image& image1, _In_ const Image& image2, _Out_ float& mse, _Out_writes_opt_(4) float* mseV, _In_ DWORD flags = 0) noexcept;

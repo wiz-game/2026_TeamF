@@ -41,6 +41,11 @@ namespace basecross {
 			//ビューとライトの作成
 			CreateViewLight();
 
+			AddGameObject<EffectManager>();
+
+			wstring mediaPath = App::GetApp()->GetDataDirWString();
+			EffectManager::g_Instance->RegisterResource(L"ELECTRIC", mediaPath + L"Effects/Electric1.efk");
+
 			//プレイヤー作成
 			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3(),float(20.0f));
 			SetSharedGameObject(L"player", m_Player);
@@ -99,8 +104,10 @@ namespace basecross {
 
 			//rb->Initialize(settings);
 
-			//地面						position				scale
-			AddGameObject<Floor>(Vec3(8, 1, 15), Vec3(0), Vec3(0.0f, -1.0f, 0.0f) );
+			//地面					scale						position
+			AddGameObject<Floor>(Vec3(8, 1, 8), Vec3(0), Vec3(0.0f, -1.0f, 3.5f) );
+			AddGameObject<Floor>(Vec3(8, 1, 8), Vec3(0), Vec3(0.0f, -1.0f, -4.5f));
+
 			AddGameObject<Floor>( Vec3(8.0f, 0.5f, 10.0f), Vec3(0),Vec3(10.0f, 2.0f, 15.0f));
 			AddGameObject<Floor>( Vec3(8.0f, 0.5f, 10.0f), Vec3(0), Vec3(10.0f, 2.0f, 29.0f));
 			AddGameObject<Floor>(Vec3(8.0f, 0.5f, 15.0f), Vec3(0), Vec3(0.0f, -1.0f, 26.0f));
@@ -195,6 +202,7 @@ namespace basecross {
 
 			//スカイボックス
 			AddGameObject<SkyCube>(L"SKYBOX");
+			
 		}
 		catch (...) {
 			throw;
@@ -244,6 +252,7 @@ namespace basecross {
 		{
 			obj->SetUpdateActive(!m_isPause);
 		}
+		//EffectManager::g_Instance->OnDraw();
 	}
 }
 //end basecross

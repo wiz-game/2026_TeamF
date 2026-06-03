@@ -5,7 +5,7 @@
 
 #pragma once
 #include "stdafx.h"
-#include "PNTDXModelDraw.h"
+#include "Texture2DrawComp.h"
 
 
 namespace basecross
@@ -14,7 +14,7 @@ namespace basecross
 
 	class GoalDoor : public StageObjBase
 	{
-		std::shared_ptr<PNTStaticDraw> m_draw;
+		std::shared_ptr<Texture2DrawComp> m_draw;
 		std::shared_ptr<Transform> m_trans;
 		std::shared_ptr<Port> m_port = nullptr;
 

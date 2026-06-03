@@ -28,14 +28,39 @@ float4 main(PSPNTInputShadow input) : SV_TARGET
     float4 RetColor = (saturate(dot(N1, -lightdir)) * Diffuse) + Emissive;
     RetColor += input.specular;
     RetColor.a = Diffuse.a;
-    if (Activeflags.x && dot(N1, float3(0, 1, 0)) > 0.99f)
+    
+    //判定用フラグ
+    bool isFirstTexture = false;
+    
+    if (Activeflags.x)
     {
-		//テクスチャとデフィーズからライティングを作成
+        // Activeflags.y が 1.0 ＝ Z軸判定モード（ゴールの扉など）
+        if (Activeflags.y > 0.5f)
+        {
+            // Z軸方向（前後両方）を向いているか判定
+            if (abs(dot(N1, float3(0, 0, 1))) > 0.99f)
+            {
+                isFirstTexture = true;
+            }
+        }
+        // Activeflags.y が 0.0 ＝ 従来のY軸上向き判定モード
+        else
+        {
+            // Y軸上向きを向いているか判定
+            if (dot(N1, float3(0, 1, 0)) > 0.99f)
+            {
+                isFirstTexture = true;
+            }
+        }
+    }
+    
+    //まとめてテクスチャをサンプリング
+    if (isFirstTexture)
+    {
         RetColor = g_texture.Sample(g_sampler, input.tex) * RetColor;
     }
     else
     {
-		//テクスチャとデフィーズからライティングを作成
         RetColor = g_texture2.Sample(g_sampler, input.tex) * RetColor;
     }
     RetColor = saturate(RetColor);
