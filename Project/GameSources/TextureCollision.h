@@ -50,6 +50,7 @@ namespace basecross{
 		void IndexToCoord(int index, int width, int& x, int& y);
 		void CoordToIndex(int& index, int x, int y, int width);
 
+		bool IsContour(int current,vector<int>& cells, int& groupID);
 		void GetContour(vector<int>& cells,int& groupID, vector<int>& out);
 		vector<Vec3> CalcContourWorldPosition(const vector<int>& contour);
 
@@ -68,6 +69,8 @@ namespace basecross{
 		size_t GetContourCount()const { return m_ContourTriangles.size(); }
 		vector<TRIANGLE> GetTriangles(int index) { return m_ContourTriangles[index]; }
 		void DrawContour(int index);
+
+		void ClearElectricIndex();
 		void AddElectricIndex(int index);
 		bool IsElectrified(int index);
 	};

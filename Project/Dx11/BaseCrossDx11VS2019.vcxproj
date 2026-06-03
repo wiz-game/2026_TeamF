@@ -125,6 +125,7 @@ JPH_OBJECT_STREAM;JPH_DISABLE_CUSTOM_ALLOCATOR;_HAS_STD_BYTE=0;NDEBUG;_WINDOWS;%
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)External\SDL3\lib\x64;$(SolutionDir)External\Jolt\lib\Release\</AdditionalLibraryDirectories>
       <AdditionalDependencies>Jolt.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ShowProgress>LinkVerbose</ShowProgress>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>

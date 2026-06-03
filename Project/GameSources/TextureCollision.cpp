@@ -107,6 +107,11 @@ namespace basecross {
 			DrawLine(triangle.m_C, dir.normalize(), length);
 		}
 	}
+	void TextureCollision::ClearElectricIndex() {
+		for (auto& index : m_ElectricContourIndices) {
+			index = 0;
+		}
+	}
 	void TextureCollision::AddElectricIndex(int index) {
 		if (m_ElectricContourIndices.size() <= index) return;
 		m_ElectricContourIndices[index] = 1;
@@ -237,6 +242,21 @@ namespace basecross {
 		m_ElectricContourIndices.resize(m_ContourTriangles.size(), 0);
 		int checker = 0;
 	}
+
+	bool TextureCollision::IsContour(int current, vector<int>& cells, int& groupID) {
+		struct Vec2Int {
+			int x, y;
+		};
+		vector<Vec2Int> findIndices = {
+			{ 0,-1},{  1,-1},{ 1,0},{ 1, 1},
+			{ 0, 1},{ -1, 1},{-1,0},{-1,-1},
+		};
+
+		for (int i = 0; i < 8; i++) {
+
+		}
+		return false;
+	}
 	void TextureCollision::GetContour(vector<int>& cells,int& groupID, vector<int>& out) {
 		struct Vec2Int {
 			int x, y;
@@ -253,7 +273,8 @@ namespace basecross {
 
 		int count = 0;
 		int checkDir = 6;
-
+		
+		vector<char> visited(cells.size(), 0);
 		do {
 			for (int i = 0; i < 8; i++) {
 				int dir = (checkDir + i) % 8;
@@ -267,11 +288,13 @@ namespace basecross {
 				if (findIndices[dir].y == 1 && y >= (int)m_TextureContext.m_SizeY - 1) continue;
 
 				int index = currentIndex + findIndices[dir].y * m_TextureContext.m_SizeX + findIndices[dir].x;
-				if ((cells[index] != -1 || cells[index] != groupID) && cells[index] == groupID) {
+				int currentID = cells[index];
+				if (currentID == groupID && index != befIndex) {
+					visited[index] = 1;
 					befIndex = currentIndex;
 					currentIndex = index;
 					out.push_back(index);
-					checkDir = (dir + 6) % 8;
+					checkDir = (dir + 4) % 8 + 1;
 					break;
 				}
 			}
@@ -534,7 +557,7 @@ namespace basecross {
 	bool InkConnectChecker::IsConnectedSupplyToInk(const OBB& supplyOBB, const AABB& supplyAABB, const vector<TRIANGLE>& triangles) {
 		for (auto& triangle : triangles) {
 			if (!HitTest::AABB_AABB(supplyAABB, triangle.GetWrappedAABB())) continue;
-			//if (!HitTest::CollisionTestOBBTriangle(supplyOBB, triangle)) continue;
+			if (!HitTest::CollisionTestOBBTriangle(supplyOBB, triangle)) continue;
 			return true;
 		}
 		return false;
@@ -553,6 +576,7 @@ namespace basecross {
 				for (auto& triangle : triangles) {
 					for (auto& otherTriangle : otherTriangles) {
 						if (!HitTest::AABB_AABB(triangle.GetWrappedAABB(), otherTriangle.GetWrappedAABB())) continue;
+						if (!HitTest::CollisionTestTriangle(triangle, otherTriangle)) continue;
 						isConnected = true;
 						break;
 					}
@@ -584,7 +608,7 @@ namespace basecross {
 	bool InkConnectChecker::IsConnectedInkToPort(const OBB& portOBB, const AABB& portAABB, const vector<TRIANGLE>& triangles) {
 		for (auto& triangle : triangles) {
 			if (!HitTest::AABB_AABB(portAABB, triangle.GetWrappedAABB())) continue;
-			//if (!HitTest::CollisionTestOBBTriangle(portOBB, triangle)) continue;
+			if (!HitTest::CollisionTestOBBTriangle(portOBB, triangle)) continue;
 			return true;
 		}
 		return false;
@@ -596,6 +620,14 @@ namespace basecross {
 		m_TextureCollisions.clear();
 	}
 	vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> InkConnectChecker::CheckConnect() {
+		//’Ê“dî•ñ‚ð‰Šú‰»
+		for (auto& weakCollision : m_TextureCollisions) {
+			auto collision = weakCollision.lock();
+			if (!collision) continue;
+
+			collision->ClearElectricIndex();
+		}
+
 		vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> result;
 		for (auto& weakSupply : m_PowerSupplies) {
 			auto supply = weakSupply.lock();
