@@ -11,7 +11,12 @@
 #include "InkDrawComponentTest.h"
 #include "Port.h"
 namespace basecross{
-
+	class DebugLog {
+		static string m_SaveFilename;
+	public:
+		static void Save();
+		static vector<CONTROLER_STATE> Load(const string& filename);
+	};
 	struct CoordContext {
 		UINT m_SizeX = 0;
 		UINT m_SizeY = 0;

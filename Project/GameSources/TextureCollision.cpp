@@ -9,6 +9,43 @@
 
 namespace basecross {
 
+	void DebugLog::Save() {
+		if (m_SaveFilename.empty()) {
+			auto now = chrono::system_clock::now();
+			time_t t = chrono::system_clock::to_time_t(now);
+
+			tm localTime = {};
+			localtime_s(&localTime, &t);
+
+			stringstream ss;
+
+			ss << put_time(&localTime,"%Y_%m_%d_%H_%M_%S");
+
+			m_SaveFilename = "Log_" + ss.str() + ".txt";
+		}
+
+		ofstream ofs(m_SaveFilename, ios::binary | ios::app);
+
+		auto device = App::GetApp()->GetInputDevice();
+		auto pad = device.GetControlerVec()[0];
+		if (ofs) {
+			ofs.write(reinterpret_cast<const char*>(&pad), sizeof(pad));
+		}
+	}
+	vector<CONTROLER_STATE> DebugLog::Load(const string& filename) {
+		ifstream ifs(filename, ios::binary);
+		if (!ifs) return {};
+
+		vector<CONTROLER_STATE> states;
+		CONTROLER_STATE state;
+		while (ifs.read(reinterpret_cast<char*>(&state), sizeof(state))) {
+			states.push_back(state);
+		}
+
+		return states;
+	}
+
+
 	TextureCollision::TextureCollision(const shared_ptr<GameObject>& ptr) : Component(ptr) {}
 
 	void TextureCollision::OnCreate() {
@@ -251,13 +288,24 @@ namespace basecross {
 			{ 0,-1},{  1,-1},{ 1,0},{ 1, 1},
 			{ 0, 1},{ -1, 1},{-1,0},{-1,-1},
 		};
+		int x, y;
+		x = current % m_TextureContext.m_SizeX;
+		y = current / m_TextureContext.m_SizeX;
 
+		if (x == 0 || x == (int)m_TextureContext.m_SizeX - 1 || y == 0 || y == (int)m_TextureContext.m_SizeY - 1) {
+			return true;
+		}
 		for (int i = 0; i < 8; i++) {
-
+			int index = current + findIndices[i].y * m_TextureContext.m_SizeX + findIndices[i].x;
+			if (cells[index] != groupID || cells[index] == -1) {
+				return true;
+			}
 		}
 		return false;
 	}
 	void TextureCollision::GetContour(vector<int>& cells,int& groupID, vector<int>& out) {
+		out.reserve(cells.size() * 0.5f);
+		vector<char> visited(cells.size(), 0);
 		struct Vec2Int {
 			int x, y;
 		};
@@ -268,39 +316,40 @@ namespace basecross {
 
 		int startIndex = groupID;
 		int currentIndex = startIndex;
-		int befIndex = -1;
-		out.reserve(cells.size() * 0.5f);
+		visited[currentIndex] = 1;
 
-		int count = 0;
-		int checkDir = 6;
-		
-		vector<char> visited(cells.size(), 0);
+		out.push_back(currentIndex);
+		int beforeDir = 2;
 		do {
+
 			for (int i = 0; i < 8; i++) {
-				int dir = (checkDir + i) % 8;
+				int dir = (beforeDir + i) % 8;
+				int next = currentIndex + findIndices[dir].y * m_TextureContext.m_SizeX + findIndices[dir].x;
 
-				int x, y;
-				x = currentIndex % m_TextureContext.m_SizeX;
-				y = currentIndex / m_TextureContext.m_SizeX;
-				if (findIndices[dir].x == -1 && x <= 0) continue;
-				if (findIndices[dir].x == 1 && x >= (int)m_TextureContext.m_SizeX - 1) continue;
-				if (findIndices[dir].y == -1 && y <= 0) continue;
-				if (findIndices[dir].y == 1 && y >= (int)m_TextureContext.m_SizeY - 1) continue;
+				int x = next % m_TextureContext.m_SizeX;
+				int y = next / m_TextureContext.m_SizeX;
 
-				int index = currentIndex + findIndices[dir].y * m_TextureContext.m_SizeX + findIndices[dir].x;
-				int currentID = cells[index];
-				if (currentID == groupID && index != befIndex) {
-					visited[index] = 1;
-					befIndex = currentIndex;
-					currentIndex = index;
-					out.push_back(index);
-					checkDir = (dir + 4) % 8 + 1;
+				if (x < 0 || x > m_TextureContext.m_SizeX - 1 || y < 0 || y > m_TextureContext.m_SizeY - 1) {
+					continue;
+				}
+				int nextID = cells[next];
+				if (nextID == groupID && IsContour(next,cells,groupID)) {
+					visited[next] = 1;
+					beforeDir = (dir + 6) % 8;
+					currentIndex = next;
+					out.push_back(currentIndex);
+					if (startIndex == currentIndex) {
+						int checker = 0;
+					}
 					break;
 				}
 			}
+			if (startIndex == currentIndex) {
+				int checker = 0;
+			}
+		} while (startIndex != currentIndex);
 
-			count++;
-		} while (currentIndex != startIndex);
+		out.pop_back();
 	}
 
 	vector<Vec3> TextureCollision::CalcContourWorldPosition(const vector<int>& contour) {
@@ -514,7 +563,7 @@ namespace basecross {
 					for (int j = 0; j < size; j++) {
 						if (j == i || j == left || j == right) continue;
 
-						if (IsContainInTriangle(ear[i], ear[left], ear[right], ear[j])) {
+						if (IsContainInTriangle(ear[right], ear[i], ear[left], ear[j])) {
 							isContained = true;
 						}
 					}
