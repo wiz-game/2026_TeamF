@@ -139,8 +139,10 @@ namespace basecross {
 		for (auto& ink : m_inkList)
 		{
 			if (ink)
+			{
+				ink->SetDrawActive(false);
 				ink->DestroyGameObject();
-			ink->SetDrawActive(false);
+			}
 		}
 		m_inkList.clear();
 	}
