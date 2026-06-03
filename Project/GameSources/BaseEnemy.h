@@ -28,6 +28,7 @@ namespace basecross {
 		enum class State {
 			Idle,
 			Patrol,
+			Chase,
 			Draw,
 			Erase,
 		};
@@ -63,6 +64,7 @@ namespace basecross {
 
 		virtual void UpdateIdle(); // 待機状態の更新
 		virtual void UpdatePatrol(); // 徘徊移動の更新
+		virtual void UpdateChase(); // 追跡の更新
 		virtual void UpdateInkDrow(); // 描画状態の更新
 		virtual void UpdateInkErase(); // 消去状態の更新
 
