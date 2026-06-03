@@ -41,6 +41,9 @@ namespace basecross {
 		case State::Patrol:
 			UpdatePatrol();
 			break;
+		case State::Chase:
+			UpdateChase();
+			break;
 		case State::Draw:
 			UpdateInkDrow();
 			break;
@@ -105,6 +108,11 @@ namespace basecross {
 		}
 
 		m_transform->SetPosition(pos);
+	}
+
+	void BaseEnemy::UpdateChase()
+	{
+
 	}
 
 	void BaseEnemy::UpdateInkDrow(){}
