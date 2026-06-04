@@ -20,6 +20,8 @@ namespace basecross{
 		m_draw->SetDiffuse(Col4(m_color));
 		m_draw->SetEmissive(Col4(m_color));
 
+		AddTag(L"InkDraw");
+
 		//auto coll = AddComponent<CollisionObb>();
 		//coll->SetAfterCollision(AfterCollision::None);
 	}

@@ -999,6 +999,7 @@ namespace basecross {
 				world.identity();
 			}
 			ret.clear();
+			ret.reserve(m_MeshPrimData.m_Vertices.size());
 			for (auto& v : m_MeshPrimData.m_Vertices) {
 				bsm::Vec3 pos;
 				pos = v.position;

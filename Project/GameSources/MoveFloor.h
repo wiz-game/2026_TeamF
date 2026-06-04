@@ -6,6 +6,7 @@
 #pragma once
 #include "stdafx.h"
 #include "FloorDecision.h"
+#include "Texture2DrawComp.h"
 
 namespace basecross {
 	enum class MoveAxis { X, Y, Z };
@@ -24,14 +25,14 @@ namespace basecross {
 	class MoveFloor : public StageObjBase
 	{
 		std::shared_ptr<Transform> m_transform;
-		std::shared_ptr<PNTDXModelDraw> m_draw;
-		std::shared_ptr<PNTStaticDraw> m_staticDraw;
+		std::shared_ptr<Texture2DrawComp> m_staticDraw;
 		std::shared_ptr<CollisionObb> m_coll;
 
 		std::shared_ptr<Player> m_player;
 		std::shared_ptr<Port> m_port;
 
 		std::shared_ptr<FloorDecision> m_floorDec;
+		std::shared_ptr<SoundItem> m_MoveSound;
 
 		MoveAxis m_moveAxis;//どの軸に動くか
 		float m_speed;
@@ -65,7 +66,9 @@ namespace basecross {
 		virtual void OnCreate() override; // 初期化
 		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
+		virtual void OnDestroy() override;
 
 	};
+
 }
 //end basecross

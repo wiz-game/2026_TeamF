@@ -210,6 +210,69 @@ namespace basecross {
 		CalculateMatrix();
 	}
 
+	void Camera::ShakeStart(float time, float msg)
+	{
+		m_Duration = time; // 振動の持続時間（秒）
+		m_InitialDuration = time;
+		m_Magnitude = msg; // 振動の強さ
+		m_IsShaking = true;
+	}
+
+	Vec3 Camera::ShakeCameraMove()
+	{
+		auto& app = App::GetApp();
+		float elapsed = app->GetElapsedTime();
+
+		if (m_IsShaking) {
+			if (m_Duration <= 0.0f)
+			{
+				m_IsShaking = false;
+				m_Duration = 0.0f;
+				return Vec3(0);
+			}
+
+			m_Duration = max(0.0f, m_Duration - elapsed);
+
+			// 残り時間に応じて減衰率（0→1→0）
+			float progress = m_Duration / m_InitialDuration;      // [1→0]
+			float damper = 1.0f - std::pow(progress-1, 2); // 山形カーブ
+
+			// -1.0～1.0 のランダム値を生成
+			auto randUnit = []() {
+				return (static_cast<float>(std::rand()) / RAND_MAX) * 2.0f - 1.0f;
+				};
+
+			float offsetX = randUnit() * m_Magnitude * damper;
+			float offsetY = randUnit() * m_Magnitude * damper;
+			return Vec3(offsetX, offsetY, 0);
+		}
+		return Vec3(0); // 振動がない場合はゼロベクトルを返す
+	}
+	
+	bool Camera::CalcViewInPosition(Vec3 position) {
+
+		XMVECTOR position4 = XMVectorSet(position.x, position.y, position.z, 1.0f);
+		auto viewProj = XMMatrixMultiply(GetViewMatrix(), GetProjMatrix());
+		// 1. ViewProj変換
+		XMVECTOR clipSpace = XMVector4Transform(position4, viewProj);
+
+		float w = XMVectorGetW(clipSpace);
+		if (fabs(w) < 1e-6f) return false;
+
+		// 2. NDCへ変換（透視除算）
+		clipSpace = XMVectorScale(clipSpace, 1.0f / w);
+
+
+		// 3. NDC範囲チェック（-1?1に入っていれば画面内）
+		bool isVisible =
+			XMVectorGetX(clipSpace) >= -1.0f && XMVectorGetX(clipSpace) <= 1.0f &&
+			XMVectorGetY(clipSpace) >= -1.0f && XMVectorGetY(clipSpace) <= 1.0f &&
+			XMVectorGetZ(clipSpace) >= 0.0f && XMVectorGetZ(clipSpace) <= 1.0f;
+
+		return isVisible;
+	}
+
+
 	//--------------------------------------------------------------------------------------
 	//	ビューのアイテム
 	//--------------------------------------------------------------------------------------

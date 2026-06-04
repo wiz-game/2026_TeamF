@@ -18,7 +18,7 @@ float4 main(PSPNTInput input) : SV_TARGET
 	Light += input.specular;
 	Light.a = Diffuse.a;
 	if (Activeflags.x) {
-        Light = g_texture.Sample(g_sampler, input.tex) * Light;
-    }
+		Light = g_texture.Sample(g_sampler, input.tex) * Light;
+	}
 	return Light;
 }

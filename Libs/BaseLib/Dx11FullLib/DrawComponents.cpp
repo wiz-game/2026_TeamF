@@ -1709,7 +1709,6 @@ namespace basecross {
 		return AnimData.m_IsAnimeEnd;
 	}
 
-
 	bool SmBaseDraw::UpdateAnimation(float ElapsedTime) {
 		return pImpl->m_SmDrawObject.UpdateAnimation(ElapsedTime);
 
@@ -1809,7 +1808,7 @@ namespace basecross {
 			v *= WorldMat;
 		}
 	}
-
+	
 	bool SmBaseDraw::HitTestStaticMeshSegmentTriangles(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos, bsm::Vec3& HitPoint,
 		TRIANGLE& RetTri, size_t& RetIndex) {
 		GetStaticMeshWorldPositions(pImpl->m_SmDrawObject.m_TempPositions);
@@ -1822,6 +1821,7 @@ namespace basecross {
 				//三角形が無効なら次にうつる
 				continue;
 			}
+			
 			bsm::Vec3 ret;
 			float t;
 			if (HitTest::SEGMENT_TRIANGLE(StartPos, EndPos, tri, ret, t)) {
@@ -1979,6 +1979,11 @@ namespace basecross {
 		return false;
 	}
 
+
+	bool SmBaseDraw::GetAnimeLoop(){
+		auto& AnimData = pImpl->m_SmDrawObject.GetAnimationData();
+		return AnimData.m_IsLoop;
+	}
 
 	//--------------------------------------------------------------------------------------
 	///	PCStatic描画コンポーネント

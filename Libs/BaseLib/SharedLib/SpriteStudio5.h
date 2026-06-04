@@ -301,16 +301,16 @@ namespace basecross {
 	struct SsCurve
 	{
 		float	startTime;		///< 始点キーの時間から制御点の時間へのオフセット値。Ｘ軸に当たる。
-		float	m_startValue;		///< 始点キーの値から	〃	。Ｙ軸	〃
+		float	startValue;		///< 始点キーの値から	〃	。Ｙ軸	〃
 		float	endTime;		///< 終点キーの時間から制御点の時間へのオフセット値。Ｘ軸に当たる。
-		float	m_endValue;		///< 終点キーの値から	〃	。Ｙ軸	〃
+		float	endValue;		///< 終点キーの値から	〃	。Ｙ軸	〃
 
 		float	startKeyTime;	///< [ワークパラメータ] 始点キーの時間 計算時のみ使用
 		float	endKeyTime;		///< [ワークパラメータ] 終点キーの時間 計算時のみ使用
 
 		bool	syncStartEnd;	///< [編集用パラメータ]カーブエディタでの編集時に始点・終点ハンドルを同期して動かすか？
 
-		SsCurve() : startTime(0.f), m_startValue(0.f), endTime(0.f), m_endValue(0.f), startKeyTime(0.f), endKeyTime(0.f), syncStartEnd(false){}
+		SsCurve() : startTime(0.f), startValue(0.f), endTime(0.f), endValue(0.f), startKeyTime(0.f), endKeyTime(0.f), syncStartEnd(false){}
 		~SsCurve(){}
 
 	};
