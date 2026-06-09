@@ -8,10 +8,19 @@
 
 namespace basecross
 {
+	//struct A {
+	//	Vec3 k;
+	//	int padding;
+	//};
+	enum class BlendMode {
+		Y_Up,	//０：Y軸向き判定
+		Z_Axis,	//１：ｚ軸向き判定
+	};
 	class Texture2DrawComp : public PNTStaticDraw
 	{
 
 		shared_ptr<TextureResource> m_texture;
+		BlendMode m_blendMode = BlendMode::Y_Up;
 
 	public:
 		Texture2DrawComp(const shared_ptr<GameObject>& draw) :
@@ -19,6 +28,8 @@ namespace basecross
 		{
 		}
 
+		//モード変更の関数
+		void SetBlendMode(BlendMode mode) { m_blendMode = mode; }
 		virtual void OnDraw() override;
 		void SetTexture2(const wstring& TextureKey)
 		{
@@ -62,6 +73,10 @@ namespace basecross
 					SmCb.ActiveFlg.x = 0;
 				}
 			}
+
+
+			SmCb.ActiveFlg.y = static_cast<float>(m_blendMode);
+
 			//コンスタントバッファの更新
 			pD3D11DeviceContext->UpdateSubresource(CBSimple::GetPtr()->GetBuffer(), 0, nullptr, &SmCb, 0, 0);
 			//コンスタントバッファの設定
