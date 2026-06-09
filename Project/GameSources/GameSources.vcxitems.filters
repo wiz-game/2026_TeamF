@@ -9,6 +9,9 @@
     <FxCompile Include="$(MSBuildThisFileDirectory)PSUpperShadow.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)PSTexture2.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)PSTexture2Shadow.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)VSPNTInkDraw.hlsl">
+      <Filter>ComputeShader\HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp" />
@@ -104,6 +107,21 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Texture2DrawComp.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UpperDrawComp.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\common\shapes.cc">
+      <Filter>Poly2tri</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\cdt.cc">
+      <Filter>Poly2tri</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\sweep.cc">
+      <Filter>Poly2tri</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\sweep_context.cc">
+      <Filter>Poly2tri</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\advancing_front.cc">
+      <Filter>Poly2tri</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h" />
@@ -280,5 +298,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoorAxis.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyorTex.h" />
+    <Filter Include="Poly2tri">
+      <UniqueIdentifier>{94294ca7-a753-48d8-86d7-2cedd9867790}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
