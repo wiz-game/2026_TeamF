@@ -6,8 +6,8 @@ namespace basecross
 {
 	class PauseMenu :public GameObject
 	{
-		std::vector<shared_ptr<SpriteGeneric>> m_menuLabel;
-		std::vector<shared_ptr<SpriteGeneric>> m_menuButton;
+		std::vector<std::shared_ptr<SpriteGeneric>> m_menuLabel;
+		std::vector<std::shared_ptr<SpriteGeneric>> m_menuButton;
 		std::vector<Vec2> m_menuPosList;
 		std::shared_ptr<SpriteGeneric> m_menuCursor;
 
