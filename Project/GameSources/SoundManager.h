@@ -41,7 +41,7 @@ namespace basecross{
 		}
 		void BGMVolumeDown(float volume) {
 			m_BGMVolume -= volume;
-			m_BGMVolume = max(m_BGMVolume, 0);
+			m_BGMVolume = max(m_BGMVolume, 0.0f);
 			SetBGMVolume();
 		}
 		void BGMVolumeUp(float volume) {

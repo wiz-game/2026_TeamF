@@ -625,7 +625,9 @@ namespace bsm {
 	inline bool Flt3::isInfinite() const {
 		return XMVector3IsInfinite(*this);
 	}
-
+	inline Flt2& Flt3::XZ()const {
+		return Flt2(this->x, this->z);
+	}
 
 
 	//--------------------------------------------------------------------------------------
