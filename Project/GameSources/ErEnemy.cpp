@@ -14,11 +14,13 @@ namespace basecross {
 		BaseEnemy::OnCreate();
 		BaseEnemy::m_transform->SetPosition(0, 0, 0);
 		BaseEnemy::m_draw->SetDiffuse(Col4(0.0f, 0.0f, 1.0f, 1.0f));
+
+		m_state = State::Erase;
 	}
 
 	void ErEnemy::OnUpdate()
 	{
-		UpdateInkErase();
+		BaseEnemy::OnUpdate();
 	}
 
 	void ErEnemy::UpdateInkErase()

@@ -30,6 +30,7 @@ namespace basecross {
 
 	protected :
 		virtual void UpdateInkErase() override; // インクの消去
+		virtual void UpdatePatrol() override; // 徘徊
 	};
 
 }
