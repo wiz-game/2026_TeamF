@@ -3773,6 +3773,136 @@ namespace basecross{
 			}
 			return CollisionTestObbObbSub(SrcObb, SrcVelocity,DestObb, StartTime, EndTime,HitTime);
 		}
+
+		static bool CollisionTestOBBTriangle(const OBB& obb, const TRIANGLE& triangle) {
+			array<bsm::Vec3, 13> axis;
+			axis[0] = obb.m_Rot[0];
+			axis[1] = obb.m_Rot[1];
+			axis[2] = obb.m_Rot[2];
+			axis[3] = normalize(cross(triangle.m_B - triangle.m_A, triangle.m_C - triangle.m_A));
+
+			array<bsm::Vec3, 3> triangleVec = { triangle.m_B - triangle.m_A, triangle.m_C - triangle.m_B, triangle.m_A - triangle.m_C };
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 3; j++) {
+					axis[4 + j + i * 3] = cross(obb.m_Rot[i], triangleVec[j]);
+				}
+			}
+			for (int i = 0; i < 13; i++) {
+				bsm::Vec3 L = axis[i];
+
+				float proj = obb.m_Center.dot(L);
+				float radius = 
+					obb.m_Size.x * abs(obb.m_Rot[0].dot(L)) +
+					obb.m_Size.y * abs(obb.m_Rot[1].dot(L)) +
+					obb.m_Size.z * abs(obb.m_Rot[2].dot(L));
+
+				float obbMin = proj - radius;
+				float obbMax = proj + radius;
+
+				float v1 = triangle.m_A.dot(L);
+				float v2 = triangle.m_B.dot(L);
+				float v3 = triangle.m_C.dot(L);
+
+				float triangleMin = min(v1, min(v2, v3));
+				float triangleMax = max(v1, max(v2, v3));
+
+				if (obbMax < triangleMin || triangleMax < obbMin) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		static bool CollisionTestTriangle(const TRIANGLE& triangle1, const TRIANGLE& triangle2) {
+			array<bsm::Vec3, 11> axis;
+			axis[0] = normalize(cross(triangle1.m_B - triangle1.m_A, triangle1.m_C - triangle1.m_A));
+			axis[1] = normalize(cross(triangle2.m_B - triangle2.m_A, triangle2.m_C - triangle2.m_A));
+
+			if (abs(axis[0].dot(axis[1])) > 0.999f && abs((triangle2.m_A - triangle1.m_A).dot(axis[0])) < 1e-4f) {
+				return CollisionTestTriangle2D(triangle1, triangle2);
+			}
+
+			array<bsm::Vec3, 3> triangle1Vec = { triangle1.m_B - triangle1.m_A, triangle1.m_C - triangle1.m_B, triangle1.m_A - triangle1.m_C };
+			array<bsm::Vec3, 3> triangle2Vec = { triangle2.m_B - triangle2.m_A, triangle2.m_C - triangle2.m_B, triangle2.m_A - triangle2.m_C };
+
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 3; j++) {
+					axis[2 + j + i * 3] = cross(triangle1Vec[i], triangle2Vec[j]);
+				}
+			}
+
+			for (int i = 0; i < 11; i++) {
+				bsm::Vec3 L = axis[i];
+				if (L.lengthSqr() < 1e-6f) continue;
+
+				float a0 = triangle1.m_A.dot(L);
+				float a1 = triangle1.m_B.dot(L);
+				float a2 = triangle1.m_C.dot(L);
+
+				float b0 = triangle2.m_A.dot(L);
+				float b1 = triangle2.m_B.dot(L);
+				float b2 = triangle2.m_C.dot(L);
+
+				float triangleAMax = max(a0, max(a1, a2));
+				float triangleAMin = min(a0, min(a1, a2));
+				float triangleBMax = max(b0, max(b1, b2));
+				float triangleBMin = min(b0, min(b1, b2));
+
+				if (triangleAMax < triangleBMin || triangleBMax < triangleAMin) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		static bool CollisionTestTriangle2D(const TRIANGLE& triangle1, const TRIANGLE& triangle2) {
+			bsm::Vec2 a1 = triangle1.m_A.XZ();
+			bsm::Vec2 a2 = triangle1.m_B.XZ();
+			bsm::Vec2 a3 = triangle1.m_C.XZ();
+
+			bsm::Vec2 b1 = triangle2.m_A.XZ();
+			bsm::Vec2 b2 = triangle2.m_B.XZ();
+			bsm::Vec2 b3 = triangle2.m_C.XZ();
+
+			bsm::Vec2 av1 = a2 - a1;
+			bsm::Vec2 av2 = a3 - a2;
+			bsm::Vec2 av3 = a1 - a3;
+
+			bsm::Vec2 bv1 = b2 - b1;
+			bsm::Vec2 bv2 = b3 - b2;
+			bsm::Vec2 bv3 = b1 - b3;
+
+			array<bsm::Vec2, 6> axis;
+			axis[0] = bsm::Vec2(-av1.y, av1.x);
+			axis[1] = bsm::Vec2(-av2.y, av2.x);
+			axis[2] = bsm::Vec2(-av3.y, av3.x);
+			axis[3] = bsm::Vec2(-bv1.y, bv1.x);
+			axis[4] = bsm::Vec2(-bv2.y, bv2.x);
+			axis[5] = bsm::Vec2(-bv3.y, bv3.x);
+
+			for (int i = 0; i < 6; i++) {
+				bsm::Vec2 L = axis[i];
+				if (L.lengthSqr() < 1e-6f) continue;
+
+				float a0 = a1.dot(L);
+				float a1 = a2.dot(L);
+				float a2 = a3.dot(L);
+
+				float b0 = b1.dot(L);
+				float b1 = b2.dot(L);
+				float b2 = b3.dot(L);
+
+				float triangleAMax = max(a0, max(a1, a2));
+				float triangleAMin = min(a0, min(a1, a2));
+				float triangleBMax = max(b0, max(b1, b2));
+				float triangleBMin = min(b0, min(b1, b2));
+
+				if (triangleAMax < triangleBMin || triangleBMax < triangleAMin) {
+					return false;
+				}
+			}
+			return true;
+		}
 	};
 
 	inline AABB CAPSULE::GetWrappedAABB() const {

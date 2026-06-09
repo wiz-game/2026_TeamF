@@ -33,10 +33,11 @@ namespace basecross
 		}
 
 		//Drawコンポーネント
-		m_draw = AddComponent<PNTStaticDraw>(/*512,512*/);
+		//m_draw = AddComponent<PNTStaticDraw>();
+		m_draw = AddComponent<InkDrawComponentTest>(512,512,L"InkTest");
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
 		m_draw->SetTextureResource(L"Floor");
-		m_draw->SetOwnShadowActive(true);
+		//m_draw->SetOwnShadowActive(true);
 
 		auto shadowMap = AddComponent<Shadowmap>();
 		shadowMap->SetMeshResource(L"DEFAULT_CUBE");
