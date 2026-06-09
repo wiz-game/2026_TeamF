@@ -12,7 +12,7 @@ namespace basecross
 	{
 		std::weak_ptr<GameObject>m_target;
 
-		float m_eyePos[3] = { 0.0f,5.0f,10.0f };
+		float m_eyePos[3] = { 0.0f,25.0f,10.0f };
 		float m_angleX = XMConvertToRadians(45.0f);
 		float m_angleY;
 	public:
