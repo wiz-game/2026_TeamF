@@ -94,7 +94,7 @@ namespace basecross
 	{
 		SelectMenu();
 		//カーソル位置更新
-		Vec2 cursorPos = m_menuPosList[m_selectIndex];
+		Vec2 cursorPos = m_menuPosList[m_selectMenu - 1];
 		m_menuCursor->SetPos(cursorPos);
 	}
 
