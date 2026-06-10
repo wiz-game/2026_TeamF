@@ -29,11 +29,18 @@ namespace basecross{
 		vector<Vec4> m_DrawPoints;
 		BrushData m_Brush;
 		TimeBuffer m_TimeBuffer;
+
+
+		void CreateTexture2D(UINT sizeX, UINT sizeY);
+		void CreateTexture2D(D3D11_TEXTURE2D_DESC desc);
+		void CreateResource();
+
 		void CreateTexture(UINT sizeX, UINT sizeY);
+		void CreateTexture(const wstring& tex);
 
 		void DrawInk();
 	public:
-		InkDrawComponentTest(const shared_ptr<GameObject>& ptr, UINT sizeX, UINT sizeY);
+		InkDrawComponentTest(const shared_ptr<GameObject>& ptr, UINT sizeX, UINT sizeY,const wstring& tex = L"");
 		~InkDrawComponentTest();
 
 		virtual void OnUpdate()override;
@@ -65,7 +72,7 @@ namespace basecross{
 			//インプットレイアウトの設定
 			pD3D11DeviceContext->IASetInputLayout(T_VShader::GetPtr()->GetInputLayout());
 			//ピクセルシェーダ
-			pD3D11DeviceContext->PSSetShader(PNTPixelShader::GetPtr()->GetShader(), nullptr, 0);
+			pD3D11DeviceContext->PSSetShader(PNTInkPixelShader::GetPtr()->GetShader(), nullptr, 0);
 			//個別処理
 			SimpleConstants SmCb;
 			//コンスタントバッファの作成
@@ -90,7 +97,6 @@ namespace basecross{
 			pD3D11DeviceContext->UpdateSubresource(CBSimple::GetPtr()->GetBuffer(), 0, nullptr, &SmCb, 0, 0);
 			//コンスタントバッファの設定
 			ID3D11Buffer* pConstantBuffer = CBSimple::GetPtr()->GetBuffer();
-			ID3D11Buffer* psConstantBuffers[2] = { pConstantBuffer ,CBTimeBuffer::GetPtr()->GetBuffer() };
 			ID3D11Buffer* pNullConstantBuffer = nullptr;
 			//頂点シェーダに渡す
 			pD3D11DeviceContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
@@ -115,7 +121,7 @@ namespace basecross{
 			if (shTex) {
 				ID3D11ShaderResourceView* srv[2] = { 
 					shTex->GetShaderResourceView().Get(),
-					m_ShaderResourceView.Get(),
+					m_ShaderResourceView.Get()
 					/*m_NormalMap.Get()*/};
 				pD3D11DeviceContext->PSSetShaderResources(0, 2, srv);
 				//サンプラーを設定
@@ -157,9 +163,10 @@ namespace basecross{
 		}
 	};
 
-	DECLARE_DX11_PIXEL_SHADER(InkPixelShader)
-	DECLARE_DX11_PIXEL_SHADER(PNTPixelShader)
-	DECLARE_DX11_VERTEX_SHADER(InkVertexShader,VertexPositionTexture)
+	DECLARE_DX11_PIXEL_SHADER(InkDropPixelShader)
+	DECLARE_DX11_PIXEL_SHADER(PNTInkPixelShader)
+	DECLARE_DX11_VERTEX_SHADER(InkDropVertexShader,VertexPositionTexture)
+	DECLARE_DX11_VERTEX_SHADER(PNTInkVertexShader,VertexPositionNormalTexture)
 	DECLARE_DX11_CONSTANT_BUFFER(CBBrushData, BrushData)
 	DECLARE_DX11_CONSTANT_BUFFER(CBTimeBuffer,TimeBuffer)
 }

@@ -95,7 +95,7 @@ namespace basecross {
 		map<int, shared_ptr<Port>>Map_Ports;
 
 		////ステージ番号
-		int m_StageNum = 1;	
+		int m_StageNum = 2;	
 
 		//構築と破棄
 		GameStageBase() :Stage(){}

@@ -7,24 +7,30 @@
 #include "Project.h"
 #include "InkDrawComponentTest.h"
 namespace basecross{
-	IMPLEMENT_DX11_VERTEX_SHADER(InkVertexShader, App::GetApp()->GetShadersPath() + L"InkVertexShader.cso")
-	IMPLEMENT_DX11_PIXEL_SHADER(InkPixelShader, App::GetApp()->GetShadersPath() + L"InkPixelShader.cso")
-	IMPLEMENT_DX11_PIXEL_SHADER(PNTPixelShader, App::GetApp()->GetShadersPath() + L"PSPNTInkDraw.cso")
+	IMPLEMENT_DX11_VERTEX_SHADER(InkDropVertexShader, App::GetApp()->GetShadersPath() + L"InkVertexShader.cso")
+	IMPLEMENT_DX11_PIXEL_SHADER(InkDropPixelShader, App::GetApp()->GetShadersPath() + L"InkPixelShader.cso")
+	IMPLEMENT_DX11_PIXEL_SHADER(PNTInkPixelShader, App::GetApp()->GetShadersPath() + L"PSPNTInkDraw.cso")
+	IMPLEMENT_DX11_VERTEX_SHADER(PNTInkVertexShader, App::GetApp()->GetShadersPath() + L"VSPNTInkDraw.cso")
 	IMPLEMENT_DX11_CONSTANT_BUFFER(CBBrushData);
 	IMPLEMENT_DX11_CONSTANT_BUFFER(CBTimeBuffer);
 
-	InkDrawComponentTest::InkDrawComponentTest(const shared_ptr<GameObject>& ptr, UINT sizeX, UINT sizeY) :PNTStaticDraw(ptr), m_TimeBuffer{} {
+	InkDrawComponentTest::InkDrawComponentTest(const shared_ptr<GameObject>& ptr, UINT sizeX, UINT sizeY, const wstring& tex) :PNTStaticDraw(ptr), m_TimeBuffer{} {
 		m_View = {};
 		m_View.Width = sizeX;
 		m_View.Height = sizeY;
 		m_View.MinDepth = 0.0f;
 		m_View.MaxDepth = 1.0f;
 
-		CreateTexture(sizeX, sizeY);
+		if (tex != L"") {
+			CreateTexture(tex);
+		}
+		else {
+			CreateTexture(sizeX, sizeY);
+		}
 	}
 	InkDrawComponentTest::~InkDrawComponentTest(){}
 
-	void InkDrawComponentTest::CreateTexture(UINT sizeX, UINT sizeY) {
+	void InkDrawComponentTest::CreateTexture2D(UINT sizeX, UINT sizeY) {
 		D3D11_TEXTURE2D_DESC desc = {};
 		desc.Width = sizeX;
 		desc.Height = sizeY;
@@ -40,19 +46,62 @@ namespace basecross{
 			D3D11_BIND_SHADER_RESOURCE;
 
 		auto device = App::GetApp()->GetDeviceResources()->GetD3DDevice();
-		auto deviceContext = App::GetApp()->GetDeviceResources()->GetD3DDeviceContext();
 		auto result = device->CreateTexture2D(&desc, nullptr, m_Texture.GetAddressOf());
 		assert(SUCCEEDED(result));
-		result = device->CreateRenderTargetView(m_Texture.Get(), nullptr, m_RenderTargetView.GetAddressOf());
+	}
+	void InkDrawComponentTest::CreateTexture2D(D3D11_TEXTURE2D_DESC desc) {
+		// RTVとして使う + Shaderから読む
+		desc.BindFlags =
+			D3D11_BIND_RENDER_TARGET |
+			D3D11_BIND_SHADER_RESOURCE;
+
+		auto device = App::GetApp()->GetDeviceResources()->GetD3DDevice();
+		auto result = device->CreateTexture2D(&desc, nullptr, m_Texture.GetAddressOf());
+		assert(SUCCEEDED(result));
+	}
+	void InkDrawComponentTest::CreateResource() {
+		if (!m_Texture) return;
+
+		auto device = App::GetApp()->GetDeviceResources()->GetD3DDevice();
+		auto result = device->CreateRenderTargetView(m_Texture.Get(), nullptr, m_RenderTargetView.GetAddressOf());
 		assert(SUCCEEDED(result));
 		result = device->CreateShaderResourceView(m_Texture.Get(), nullptr, m_ShaderResourceView.GetAddressOf());
 		assert(SUCCEEDED(result));
 
-		float clearColor[4] = { 0,0,0,0 };
-
-		deviceContext->ClearRenderTargetView(m_RenderTargetView.Get(), clearColor);
 	}
 
+	void InkDrawComponentTest::CreateTexture(UINT sizeX, UINT sizeY) {
+		CreateTexture2D(sizeX, sizeY);
+		CreateResource();
+
+		auto device = App::GetApp()->GetDeviceResources()->GetD3DDevice();
+		auto deviceContext = App::GetApp()->GetDeviceResources()->GetD3DDeviceContext();
+
+		float clearColor[4] = { 0,0,0,0 };
+		deviceContext->ClearRenderTargetView(m_RenderTargetView.Get(), clearColor);
+	}
+	void InkDrawComponentTest::CreateTexture(const wstring& tex) {
+		auto textureResource = App::GetApp()->GetResource<TextureResource>(tex);
+		auto textureSRV = textureResource->GetShaderResourceView();
+		ID3D11Resource* gpuResource = nullptr;
+		ID3D11Texture2D* texture = nullptr;
+		textureSRV->GetResource(&gpuResource);
+		gpuResource->QueryInterface(__uuidof(ID3D11Texture2D), (void**)&texture);
+		if (!texture) return;
+
+		D3D11_TEXTURE2D_DESC desc;
+		texture->GetDesc(&desc);
+		m_View.Height = desc.Height;
+		m_View.Width = desc.Width;
+
+		CreateTexture2D(desc);
+
+		auto deviceContext = App::GetApp()->GetDeviceResources()->GetD3DDeviceContext();
+
+		deviceContext->CopyResource(m_Texture.Get(), texture);
+
+		CreateResource();
+	}
 	void InkDrawComponentTest::AddDrawPoint(const Vec2& points, bool eraser) {
 		if (eraser) {
 			m_DrawPoints.push_back(Vec4(points.x, points.y, 1.0f, 0.0f));
@@ -102,11 +151,11 @@ namespace basecross{
 		//各オブジェクト共通処理
 		//シェーダの設定
 		//頂点シェーダ
-		pD3D11DeviceContext->VSSetShader(InkVertexShader::GetPtr()->GetShader(), nullptr, 0);
+		pD3D11DeviceContext->VSSetShader(InkDropVertexShader::GetPtr()->GetShader(), nullptr, 0);
 		//インプットレイアウトの設定
-		pD3D11DeviceContext->IASetInputLayout(InkVertexShader::GetPtr()->GetInputLayout());
+		pD3D11DeviceContext->IASetInputLayout(InkDropVertexShader::GetPtr()->GetInputLayout());
 		//ピクセルシェーダ
-		pD3D11DeviceContext->PSSetShader(InkPixelShader::GetPtr()->GetShader(), nullptr, 0);
+		pD3D11DeviceContext->PSSetShader(InkDropPixelShader::GetPtr()->GetShader(), nullptr, 0);
 		//個別処理
 		for (int i = 0; i < m_DrawPoints.size(); i++) {
 			m_Brush.m_Centers[i] = m_DrawPoints[i];
@@ -173,10 +222,10 @@ namespace basecross{
 		auto PtrMeshResource = GetMeshResource();
 		if (PtrMeshResource) {
 			if (GetOwnShadowActive()) {
-				DrawStatic<VSPNTStatic>(PtrMeshResource->GetMashData());
+				DrawStatic<PNTInkVertexShader>(PtrMeshResource->GetMashData());
 			}
 			else {
-				DrawStatic<VSPNTStatic>(PtrMeshResource->GetMashData());
+				DrawStatic<PNTInkVertexShader>(PtrMeshResource->GetMashData());
 			}
 		}
 	}
