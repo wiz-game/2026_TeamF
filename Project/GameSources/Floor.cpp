@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "Project.h"
 #include "InkDrawComponentTest.h"
+#include "InkDrawComp.h"
 namespace basecross
 {
 	Floor::Floor
@@ -33,14 +34,22 @@ namespace basecross
 		}
 
 		//Drawコンポーネント
+<<<<<<< Updated upstream
 		//m_draw = AddComponent<PNTStaticDraw>();
 		m_draw = AddComponent<InkDrawComponentTest>(512,512,L"InkTest");
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
 		m_draw->SetTextureResource(L"Floor");
 		//m_draw->SetOwnShadowActive(true);
+=======
+		m_draw = AddComponent<InkDrawComp>(/*512,512*/);
+		m_draw->SetMeshResource(L"DEFAULT_CUBE");
+		m_draw->SetTextureResource(L"Floor");
+>>>>>>> Stashed changes
 
-		auto shadowMap = AddComponent<Shadowmap>();
-		shadowMap->SetMeshResource(L"DEFAULT_CUBE");
+		//m_draw->SetOwnShadowActive(true);
+
+		//auto shadowMap = AddComponent<Shadowmap>();
+		//shadowMap->SetMeshResource(L"DEFAULT_CUBE");
 
 		//Transformコンポーネント
 		m_trans = GetComponent<Transform>();

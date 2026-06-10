@@ -41,7 +41,7 @@ namespace basecross
 		{
 		}
 
-		virtual ~InkGauge()
+		~InkGauge()
 		{
 		}
 

@@ -33,7 +33,7 @@ namespace basecross
 		//ターゲットの移動用コンポーネント取得
 		auto targetTrans = target->GetComponent<Transform>();
 		Vec3 targetPos = targetTrans->GetPosition();
-		Vec3 at = targetPos + Vec3(0.0f, -70.0f, 20.0f);
+		Vec3 at = targetPos + Vec3(0.0f, 1.0f, 0.0f);
 		SetAt(at);
 
 		//コントローラー取得
@@ -58,15 +58,15 @@ namespace basecross
 			m_angleY -= XMConvertToRadians(60.0f) * 1 * delta;
 		}
 
-		//float length = stickR.length();
-		//if (length != 0)
-		//{
-		//	m_angleY -= XMConvertToRadians(60.0f) * pad.fThumbRX * delta;
-		//}
-		//else
-		//{
-		//	m_angleY -= XMConvertToRadians(60.0f) * pad.fThumbRX * delta;
-		//}
+		float length = stickL.length();
+		if (length != 0)
+		{
+			m_angleY -= XMConvertToRadians(60.0f) * pad.fThumbLX * delta;
+		}
+		else
+		{
+			m_angleY -= XMConvertToRadians(60.0f) * pad.fThumbRX * delta;
+		}
 		eye = targetPos + Vec3(cosf(m_angleY) * 5.0f, m_eyePos[1], sinf(m_angleY) * 5.0f);
 		SetEye(eye);
 
