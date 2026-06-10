@@ -44,14 +44,19 @@ namespace basecross{
 	// �ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾌ擾ｿｽ�ｽ�ｽ�ｽﾝ抵ｿｽ
 	void Player::OnCreate()
 	{
+		auto& app = App::GetApp();
+		auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+		app->RegisterTexture(L"Player", path + L"Metal.png"); // 画像ファイルを読み込んでアセットとして登録する
+
 		GetStage()->SetSharedGameObject(L"Player", GetThis<Player>());
-		// �ｽg�ｽ�ｽ�ｽ�ｽ�ｽX�ｽt�ｽH�ｽ[�ｽ�ｽ�ｽR�ｽ�ｽ�ｽ|�ｽ[�ｽl�ｽ�ｽ�ｽg�ｽ�ｽ�ｽ謫ｾ�ｽ�ｽ�ｽﾄゑｿｽ�ｽ�ｽ
+		// トランスフォームコンポーネント
 		m_transform = GetComponent<Transform>();
 
 		m_transform->SetPosition(m_pos);
-		// �ｽh�ｽ�ｽ�ｽ[�ｽR�ｽ�ｽ�ｽ|�ｽ[�ｽl�ｽ�ｽ�ｽg�ｽ�ｽﾇ会ｿｽ
+		// 球体描画
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
+		m_draw->SetTextureResource(L"Player");
 		m_draw->SetOwnShadowActive(true);
 
 		auto shadowMap = AddComponent<Shadowmap>();
@@ -179,6 +184,7 @@ namespace basecross{
 			m_forward.z = sinf(forwardAngle);
 
 			m_velocity += m_forward * delta;
+
 			//cc->SetLinearVelocity(m_moveSpeed * m_velocity * m_moveDir);
 			if (!m_MoveSound) {
 				m_MoveSound = SoundManager::Get().PlayLoopSE(L"PLAYER_MOVE", 0.5f);
@@ -201,7 +207,16 @@ namespace basecross{
 		if (m_velocity.x <= m_maxSpeed || m_velocity.z <= m_maxSpeed)
 			m_velocity *= m_accel;
 
-		
+		//転がす処理
+		if (m_isGround)
+		{
+			m_rotAngle.x += m_velocity.x * m_moveSpeed * 0.10f;
+			m_rotAngle.y = 0;
+			m_rotAngle.z += m_velocity.z * m_moveSpeed * 0.10f;
+			//m_transform->SetRotation(m_rotAngle);
+			
+		}
+
 		m_pos.x += m_moveSpeed * m_velocity.x * delta;
 		m_pos.z += m_moveSpeed * m_velocity.z * delta;
 		if (!m_isGround)
