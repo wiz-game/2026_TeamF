@@ -1,15 +1,15 @@
-
 //--------------------------------------------------------------------------------------
-// File: VSInkDraw.hlsl
+// File: VSInkDrawShadow.hlsl
 //
 //--------------------------------------------------------------------------------------
 
 #include "../../Libs/BaseLib/DxShaders/INCStructs.hlsli"
 #include "../../Libs/BaseLib/DxShaders/INCParameters.hlsli"
 
-PSPNTInput main(VSPNTInput input)
+
+PSPNTInputShadow main(VSPNTInput input)
 {
-    PSPNTInput result;
+    PSPNTInputShadow result;
 	//頂点の位置を変換
     float4 pos = float4(input.position.xyz, 1.0f);
 	//ワールド変換
@@ -28,5 +28,21 @@ PSPNTInput main(VSPNTInput input)
     result.specular = Specular * dot(result.norm, H);
 	//テクスチャUV
     result.tex = input.tex;
+	//影のための変数
+    float4 LightModelPos = float4(input.position.xyz, 1.0f);
+	//ワールド変換
+    LightModelPos = mul(LightModelPos, World);
+	
+    float4 LightSpacePos = mul(LightModelPos, LightView);
+    LightSpacePos = mul(LightSpacePos, LightProjection);
+    result.lightSpacePos = LightSpacePos;
+
+	// Light ray
+    result.lightRay = LightPos.xyz - LightModelPos.xyz;
+	//View
+    result.lightView = EyePos.xyz - LightModelPos.xyz;
+
     return result;
 }
+
+

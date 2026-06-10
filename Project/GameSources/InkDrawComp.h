@@ -10,6 +10,10 @@ namespace basecross
 
 	class InkDrawComp : public PNTStaticDraw 
 	{
+		ComPtr<ID3D11Texture2D> m_texture;//インクのテクスチャ
+		ComPtr<ID3D11ShaderResourceView> m_textureSRV;//インクのシェーダーリソースビュー
+		ComPtr<ID3D11RenderTargetView> m_textureRTV;//インクのレンダーターゲットビュー
+		D3D11_VIEWPORT m_viewport;//インク描画用のビューポート
 	public:
 		InkDrawComp(const shared_ptr<GameObject>& owner) : 
 			PNTStaticDraw(owner) 
@@ -19,6 +23,8 @@ namespace basecross
 		virtual void OnDraw() override;
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
+		void CreateTexture(UINT width, UINT height);
+		void InkDraw();
 
 		template<typename T_VShader, typename T_PShader>
 		void DrawStatic(const MeshPrimData& data) {
@@ -92,7 +98,7 @@ namespace basecross
 			if (shTex) {
 				auto inkResource = App::GetApp()->GetResource<TextureResource>(L"InkTest");
 				pD3D11DeviceContext->PSSetShaderResources(0, 1, shTex->GetShaderResourceView().GetAddressOf());
-				pD3D11DeviceContext->PSSetShaderResources(1, 1, inkResource->GetShaderResourceView().GetAddressOf());
+				pD3D11DeviceContext->PSSetShaderResources(2, 1, inkResource->GetShaderResourceView().GetAddressOf());
 
 				//サンプラーを設定
 				RenderState->SetSamplerState(pD3D11DeviceContext, GetSamplerState(), 0);
@@ -137,6 +143,7 @@ namespace basecross
 	DECLARE_DX11_PIXEL_SHADER(InkDrawPixelSheder)
 	DECLARE_DX11_VERTEX_SHADER(InkDrawVertexSheder, VertexPositionNormalTexture)
 	DECLARE_DX11_CONSTANT_BUFFER(CBInk, InkDrawComp)
-
+	DECLARE_DX11_PIXEL_SHADER(InkDrawShadowPixelSheder)
+	DECLARE_DX11_VERTEX_SHADER(InkDrawShadowVertexSheder, VertexPositionNormalTexture)
 
 }

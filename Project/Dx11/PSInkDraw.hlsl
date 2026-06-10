@@ -7,7 +7,7 @@
 #include "../../Libs/BaseLib/DxShaders/INCParameters.hlsli"
 
 Texture2D g_texture : register(t0);
-Texture2D g_texture2 : register(t1);
+Texture2D g_texture2 : register(t2);
 SamplerState g_sampler : register(s0);
 cbuffer VectorBuffer : register(b1)
 {
