@@ -94,12 +94,18 @@ namespace basecross {
 
 		map<int, shared_ptr<Port>>Map_Ports;
 
-		////ステージ番号
-		int m_StageNum = 2;	
+		//ステージ番号
+		int m_StageNum = 1;	
+
+		//BGMの音量
+		float m_BGMVolume = 0.5f;
+
+		//BGMのポインタ
+		shared_ptr<SoundItem> m_BGM;
 
 		//構築と破棄
 		GameStageBase() :Stage(){}
-		virtual ~GameStageBase() {}		
+		virtual ~GameStageBase();
 		void CreateViewLight();
 		void OnCreate();
 		void SetStageNum(int num);

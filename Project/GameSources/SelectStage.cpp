@@ -14,6 +14,11 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	SelectStage::SelectStage():Stage(),m_SelectIndex(0),m_MaxSelectIndex(1){}
 
+	SelectStage::~SelectStage()
+	{
+		SoundManager::Get().StopBGM();
+	}
+
 	//ビューとライトの作成
 	void SelectStage::CreateViewLight() {
 		// カメラの設定
@@ -43,6 +48,9 @@ namespace basecross {
 			m_MaxSelectIndex = GameProgressManager::Get().GetStageSize();
 			m_SelectingSprite = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-25.0f, 50.0f, 0.0f), Vec2(50, 100), 2);
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
+
+			//BGM再生
+			SoundManager::Get().PlayBGM(L"TITLE_BGM", m_BGMVolume);
 		}
 		catch (...) {
 			throw;

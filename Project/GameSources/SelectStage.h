@@ -18,12 +18,16 @@ namespace basecross {
 
 		//テスト用
 		shared_ptr<NumberSprite> m_SelectingSprite;
+
+		//BGMの音量
+		float m_BGMVolume = 0.5f;
+
 		void CreateViewLight(); //ビューの作成
 		void RegisterResources();
 	public:
 		//構築と破棄
 		SelectStage();
-		virtual ~SelectStage() {}
+		virtual ~SelectStage();
 		
 		virtual void OnCreate()override; //初期化
 		virtual void OnUpdate()override; //更新

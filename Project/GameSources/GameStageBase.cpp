@@ -9,7 +9,6 @@
 #include "GameStageBase.h"
 
 namespace basecross {
-
 	//ビューとライトの作成
 	void GameStageBase::CreateViewLight() {
 		// カメラの設定
@@ -36,8 +35,22 @@ namespace basecross {
 		App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
 	}
 
+	GameStageBase::~GameStageBase()
+	{
+		SoundManager::Get().StopBGM();
+	}
+
 	void GameStageBase::OnCreate()
 	{
+
+		AddGameObject<EffectManager>();
+
+		wstring mediaPath = App::GetApp()->GetDataDirWString();
+		EffectManager::g_Instance->RegisterResource(L"ELECTRIC", mediaPath + L"Effects/Electric1.efk");
+
+		//BGM再生
+		SoundManager::Get().PlayBGM(L"GAMESTAGE_BGM", m_BGMVolume);
+
 		CreateViewLight();
 		StageDateRoad(m_StageNum);
 	}
@@ -273,7 +286,6 @@ namespace basecross {
 
 	void GameStageBase::AddGoalObj(STRUCT_ElectricObjBaseParams params)
 	{
-		if (!Map_Ports[params.PortID])return;
 		AddGameObject<Goal>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID]);
 	}
 
