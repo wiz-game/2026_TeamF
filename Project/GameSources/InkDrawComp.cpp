@@ -5,7 +5,10 @@ namespace basecross
 {
 	void InkDrawComp::OnCreate()
 	{
+		AddPoint(Vec3(0.5,0.5,0));
+
 		App::GetApp()->RegisterTexture(L"InkTest", App::GetApp()->GetDataDirWString() + L"Texture/Test/InkCollisionTest3.png");
+
 	}
 
 	void InkDrawComp::OnUpdate()
@@ -68,8 +71,6 @@ namespace basecross
 		device->CreateRenderTargetView(m_texture.Get(), nullptr, m_textureRTV.GetAddressOf());//レンダーターゲットビューの作成
 
 		 D3D11_VIEWPORT viewport{};
-		 viewport.TopLeftX = 0;
-		 viewport.TopLeftY = 0;
 		 viewport.Width = static_cast<FLOAT>(width);
 		 viewport.Height = static_cast<FLOAT>(height);
 		 viewport.MinDepth = 0.0f;//表示するｚ軸の最小の幅
@@ -81,17 +82,85 @@ namespace basecross
 
 		 float clearColor[4] = { 0,0,0,0 };//クリアカラーの設定
 		 devContext->ClearRenderTargetView(m_textureRTV.Get(), clearColor);//全ピクセルの初期化
+		 m_brush.textrueWidth = width;
+		 m_brush.textrueHeight = height;
 	}
 
 	void InkDrawComp::InkDraw()
 	{
+		auto meshResource = App::GetApp()->GetResource<MeshResource>(L"DEFAULT_PT_SQUARE_2");
+		MeshPrimData data = meshResource->GetMashData();
+		auto Dev = App::GetApp()->GetDeviceResources();
+		auto pD3D11DeviceContext = Dev->GetD3DDeviceContext();
+		auto RenderState = Dev->GetRenderState();
+		//NULLのシェーダリソースの準備
+		ID3D11ShaderResourceView* pNull[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT] = { nullptr };
+		//サンプラーの準備
+		ID3D11SamplerState* pNullSR[D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT] = { nullptr };
+		//各オブジェクト共通処理
+		//シェーダの設定
+		//頂点シェーダ
+		pD3D11DeviceContext->VSSetShader(InkDropVertexSheder::GetPtr()->GetShader(), nullptr, 0);
+		//インプットレイアウトの設定
+		pD3D11DeviceContext->IASetInputLayout(InkDropVertexSheder::GetPtr()->GetInputLayout());
+		//ピクセルシェーダ
+		pD3D11DeviceContext->PSSetShader(InkDropPixelSheder::GetPtr()->GetShader(), nullptr, 0);
+
+		//インク用コンスタントバッファ
+		pD3D11DeviceContext->UpdateSubresource(CBBrush::GetPtr()->GetBuffer(), 0, nullptr, &m_brush, 0, 0);
+		ID3D11Buffer* InkResourceBuffer = CBBrush::GetPtr()->GetBuffer();
+		pD3D11DeviceContext->PSSetConstantBuffers(0, 1, &InkResourceBuffer);
+
+		//ストライドとオフセット
+		UINT stride = data.m_NumStride;
+		UINT offset = 0;
+		//描画方法のセット
+		pD3D11DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		//頂点バッファのセット
+		pD3D11DeviceContext->IASetVertexBuffers(0, 1, data.m_VertexBuffer.GetAddressOf(), &stride, &offset);
+		//インデックスバッファのセット
+		pD3D11DeviceContext->IASetIndexBuffer(data.m_IndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+		//各レンダリングステートの設定
+		//ブレンドステート
+		RenderState->SetBlendState(pD3D11DeviceContext, GetBlendState());
+		//デプスステンシルステート
+		RenderState->SetDepthStencilState(pD3D11DeviceContext, GetDepthStencilState());
+		//シェーダーリソースもクリア
+		pD3D11DeviceContext->PSSetShaderResources(0, D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, pNull);
+		//サンプラーを設定
+		RenderState->SetSamplerState(pD3D11DeviceContext, GetSamplerState(), 0);
+		//ラスタライザステート（表描画）
+		pD3D11DeviceContext->RSSetState(RenderState->GetCullBack());
+		//描画
+		pD3D11DeviceContext->DrawIndexed(data.m_NumIndicis, 0, 0);
+		ClearPoint();
 
 	}
+
+	void InkDrawComp::AddPoint(const Vec3& point)
+	{
+		if (m_brush.count > 4)
+		{
+			return;
+		}
+		
+		m_brush.centerPositions[m_brush.count] = Vec4(point);
+		m_brush.count += 1;
+	}
+
+	void InkDrawComp::ClearPoint()
+	{
+		m_brush.count = 0;
+	}
+
 
 	IMPLEMENT_DX11_PIXEL_SHADER(InkDrawPixelSheder, App::GetApp()->GetShadersPath() + L"PSInkDraw.cso")
 	IMPLEMENT_DX11_VERTEX_SHADER(InkDrawVertexSheder, App::GetApp()->GetShadersPath() + L"VSInkDraw.cso")
 	IMPLEMENT_DX11_CONSTANT_BUFFER(CBInk)
 	IMPLEMENT_DX11_PIXEL_SHADER(InkDrawShadowPixelSheder, App::GetApp()->GetShadersPath() + L"PSInkDrawShadow.cso")
 	IMPLEMENT_DX11_VERTEX_SHADER(InkDrawShadowVertexSheder, App::GetApp()->GetShadersPath() + L"VSInkDrawShadow.cso")
+	IMPLEMENT_DX11_PIXEL_SHADER(InkDropPixelSheder, App::GetApp()->GetShadersPath() + L"PSInkDrop.cso")
+	IMPLEMENT_DX11_VERTEX_SHADER(InkDropVertexSheder, App::GetApp()->GetShadersPath() + L"VSInkDrop.cso")
+	IMPLEMENT_DX11_CONSTANT_BUFFER(CBBrush)
 
 }

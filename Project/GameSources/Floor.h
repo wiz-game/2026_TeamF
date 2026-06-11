@@ -6,6 +6,7 @@
 #pragma once
 #include "stdafx.h"
 #include "PNTDXModelDraw.h"
+#include "InkDrawComp.h"
 
 
 namespace basecross
@@ -24,7 +25,7 @@ namespace basecross
 
 		virtual ~Floor(){}
 
-		std::shared_ptr<PNTStaticDraw> m_draw;
+		std::shared_ptr<InkDrawComp> m_draw;
 		std::shared_ptr<Transform> m_trans;
 
 		Vec3 m_pos;

@@ -8,12 +8,24 @@ namespace basecross
 		Vec4 Up;
 	};
 
+	struct cbBrush
+	{
+		Vec4 centerPositions[4];
+		float brushSize = 0;
+		int count = 0;
+		float textrueWidth = 0;
+		float textrueHeight = 0;
+	};
+
 	class InkDrawComp : public PNTStaticDraw 
 	{
 		ComPtr<ID3D11Texture2D> m_texture;//インクのテクスチャ
 		ComPtr<ID3D11ShaderResourceView> m_textureSRV;//インクのシェーダーリソースビュー
 		ComPtr<ID3D11RenderTargetView> m_textureRTV;//インクのレンダーターゲットビュー
 		D3D11_VIEWPORT m_viewport;//インク描画用のビューポート
+
+		cbBrush m_brush;
+
 	public:
 		InkDrawComp(const shared_ptr<GameObject>& owner) : 
 			PNTStaticDraw(owner) 
@@ -25,6 +37,13 @@ namespace basecross
 		virtual void OnUpdate() override;
 		void CreateTexture(UINT width, UINT height);
 		void InkDraw();
+		void AddPoint(const Vec3& point);
+		void ClearPoint();
+		void SetBrushSize(float size)
+		{
+			m_brush.brushSize = size;
+		}
+
 
 		template<typename T_VShader, typename T_PShader>
 		void DrawStatic(const MeshPrimData& data) {
@@ -96,9 +115,8 @@ namespace basecross
 			RenderState->SetDepthStencilState(pD3D11DeviceContext, GetDepthStencilState());
 			//テクスチャとサンプラー
 			if (shTex) {
-				auto inkResource = App::GetApp()->GetResource<TextureResource>(L"InkTest");
 				pD3D11DeviceContext->PSSetShaderResources(0, 1, shTex->GetShaderResourceView().GetAddressOf());
-				pD3D11DeviceContext->PSSetShaderResources(2, 1, inkResource->GetShaderResourceView().GetAddressOf());
+				pD3D11DeviceContext->PSSetShaderResources(2, 1, m_textureSRV.GetAddressOf());
 
 				//サンプラーを設定
 				RenderState->SetSamplerState(pD3D11DeviceContext, GetSamplerState(), 0);
@@ -145,5 +163,8 @@ namespace basecross
 	DECLARE_DX11_CONSTANT_BUFFER(CBInk, InkDrawComp)
 	DECLARE_DX11_PIXEL_SHADER(InkDrawShadowPixelSheder)
 	DECLARE_DX11_VERTEX_SHADER(InkDrawShadowVertexSheder, VertexPositionNormalTexture)
+	DECLARE_DX11_PIXEL_SHADER(InkDropPixelSheder)
+	DECLARE_DX11_VERTEX_SHADER(InkDropVertexSheder, VertexPositionTexture)
+	DECLARE_DX11_CONSTANT_BUFFER(CBBrush, cbBrush)
 
 }
