@@ -46,6 +46,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltRigidBody.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MainCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Json.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PauseMenu.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Port.h" />
@@ -61,6 +62,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyCube.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SpriteGeneric.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Texture2DrawComp.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextureCollision.h" />
@@ -70,6 +72,26 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)UpperDrawComp.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\common\shapes.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\advancing_front.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\cdt.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\sweep.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\sweep_context.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)BaseEnemy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyorTex.cpp" />
@@ -106,6 +128,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MainCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Json.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PauseMenu.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Port.cpp" />
@@ -119,6 +142,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyCube.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SpriteGeneric.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StageObjBase.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Texture2DrawComp.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextureCollision.cpp" />
@@ -187,6 +211,11 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)VSPNTInkDraw.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
   </ItemGroup>
 </Project>

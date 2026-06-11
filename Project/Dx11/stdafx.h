@@ -65,7 +65,7 @@
 #include <stdexcept>
 #include <type_traits>
 #include <typeindex>
-
+#include <array>
 using namespace std;
 
 #include <d3d11_2.h>

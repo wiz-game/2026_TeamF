@@ -10,8 +10,17 @@
 #include "ProjectShader.h"
 #include "InkDrawComponentTest.h"
 #include "Port.h"
+#include <opencv2/opencv.hpp>
+#include <poly2tri/poly2tri.h>
+
 namespace basecross{
 
+	class DebugLog {
+		static string m_SaveFilename;
+	public:
+		static void Save();
+		static vector<CONTROLER_STATE> Load(const string& filename);
+	};
 	struct CoordContext {
 		UINT m_SizeX = 0;
 		UINT m_SizeY = 0;
@@ -29,12 +38,13 @@ namespace basecross{
 
 		CoordContext m_TextureContext;
 		vector<int> m_Labels;
-		vector<vector<int>> m_Contours;
 		vector<int> m_ElectricContourIndices;
 
 		//m_ContourTriangles[] : —ÖŠs
 		//m_ContourTriangles[][] : —ÖŠs‚ÉŠÜ‚Ü‚ê‚éƒ|ƒŠƒSƒ“
 		vector<vector<TRIANGLE>> m_ContourTriangles;
+		vector<vector<cv::Point>> m_CvContours;
+		vector<cv::Vec4i> m_ContourHierarchy;
 
 		shared_ptr<DX11ComputeShader> m_MaskShader;
 		shared_ptr<DX11ComputeShader> m_UnionFind1Shader;
@@ -47,11 +57,7 @@ namespace basecross{
 		void GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc);
 		void CreateAlphaMask();
 		void CreateTextureMesh(vector<int>& cells,vector<int>& groupIDs, CoordContext& context);
-		void IndexToCoord(int index, int width, int& x, int& y);
-		void CoordToIndex(int& index, int x, int y, int width);
-
-		void GetContour(vector<int>& cells,int& groupID, vector<int>& out);
-		vector<Vec3> CalcContourWorldPosition(const vector<int>& contour);
+		vector<TRIANGLE> CalcContourWorldTriangle(const vector<p2t::Triangle*>& contour);
 
 		void DrawLine(Vec3 position, Vec3 dir,float length);
 	public:
@@ -68,26 +74,11 @@ namespace basecross{
 		size_t GetContourCount()const { return m_ContourTriangles.size(); }
 		vector<TRIANGLE> GetTriangles(int index) { return m_ContourTriangles[index]; }
 		void DrawContour(int index);
+
+		void ClearElectricIndex();
 		void AddElectricIndex(int index);
 		bool IsElectrified(int index);
 	};
-
-	class DouglasPeucker {
-		vector<int> m_Points;
-		vector<Vec2> m_Positions;
-		inline float CalcDistance(Vec2& start, Vec2& end, Vec2& point);
-	public:
-		void Initialize(const vector<int>& points, const CoordContext& context);
-		void Calc(int start,int end, float epsilon, vector<int>& output);
-	};
-
-	class EarClipping {
-		static bool IsAngleThen180(const Vec3& point, const Vec3& a, const Vec3& b);
-		static bool IsContainInTriangle(const Vec3& a, const Vec3& b, const Vec3& c, const Vec3& point);
-	public:
-		static vector<TRIANGLE> Calc(const vector<Vec3>& points);
-	};
-
 
 	class TextureMeshManager : public SingletonBase<TextureMeshManager> {
 		friend class SingletonBase<TextureMeshManager>;
@@ -120,6 +111,7 @@ namespace basecross{
 
 		void AddTextureCollision(const shared_ptr<TextureCollision>& collision) {
 			m_TextureCollisions.push_back(collision);
+			TextureMeshManager::Get().AddReload(collision);
 		}
 		void AddPowerSupply(const shared_ptr<PowerSupply>& supply) {
 			m_PowerSupplies.push_back(supply);

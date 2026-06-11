@@ -19,8 +19,8 @@ namespace basecross {
 	void ProtoStage::CreateViewLight() {
 		// カメラの設定
 		auto camera = ObjectFactory::Create<MainCamera>();
-		camera->SetEye(Vec3(0.0f, 8.0f, -8.0f));
-		camera->SetAt(Vec3(0.0f, 0.0f, 0.0f));
+		camera->SetEye(Vec3(0.0f, 90.0f, 1.0f));
+		camera->SetAt(Vec3(0.0f, 10.0f, 0.0f));
 
 		// ビューにカメラを設定
 		auto view = CreateView<SingleView>();
@@ -59,6 +59,9 @@ namespace basecross {
 			//UI作成
 			auto gaugeBack = AddGameObject<GaugeBack>();
 			auto gauge = AddGameObject<InkGauge>();
+
+			//ポーズメニュー作成
+			m_pauseMenu = ObjectFactory::Create<PauseMenu>(GetThis<Stage>());
 
 			//プロトタイプ用地面作成
 			JPH::StaticCompoundShapeSettings compoundSettings;
@@ -210,7 +213,19 @@ namespace basecross {
 	{
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
+		auto device = App::GetApp()->GetInputDevice();
+		auto& pad = device.GetControlerVec()[0];
 		GameController::Update();
+
+		if (pad.wPressedButtons & XINPUT_GAMEPAD_START)
+		{
+			Pause(!m_isPause);
+		}
+
+		if (IsPause())
+		{
+			m_pauseMenu->OnUpdate();
+		}
 	}
 
 	void ProtoStage::OnUpdate2()
@@ -220,6 +235,23 @@ namespace basecross {
 
 	void ProtoStage::OnDraw()
 	{
+		if (IsPause())
+		{
+			m_pauseMenu->OnDraw();
+		}
+	}
+
+	void ProtoStage::Pause(bool isPause)
+	{
+		m_isPause = isPause;
+
+		auto objs = GetGameObjectVec();
+		auto view = GetView();
+		auto camera = view->GetTargetCamera();
+		for (auto& obj : objs)
+		{
+			obj->SetUpdateActive(!m_isPause);
+		}
 		//EffectManager::g_Instance->OnDraw();
 	}
 }
