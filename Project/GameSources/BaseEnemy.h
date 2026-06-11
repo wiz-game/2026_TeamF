@@ -47,7 +47,7 @@ namespace basecross {
 		float m_srachRange; // 探索範囲
 		float m_diatance;
 		float m_groundY = 0.0f;
-		float m_heightOffset = 0.0f;
+		float m_heightOffset = 0.5f;
 		float m_rayLength = 5.0f;
 
 		int m_groundCount = 0;

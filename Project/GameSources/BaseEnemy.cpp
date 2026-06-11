@@ -154,20 +154,16 @@ namespace basecross {
 				Vec3 floorPos = floorTr->GetPosition();
 				Vec3 floorScale = floorTr->GetScale();
 
-				float topY = floorPos.y + floorScale.y * 1.5f;
-				// ✅ 自分より下にある床だけ対象
-				if (topY <= pos.y)
-				{
-					float diff = pos.y - topY;
+				float topY = floorPos.y + floorScale.y * 0.5f;
+				
+				float diff = pos.y - topY;
 
-					// ✅ 距離制限（Rayの長さ）
-					if (diff < 5.0f)
+				if (diff >= -0.5f && diff < 5.0f)
+				{
+					if (topY > nearestY)
 					{
-						if (topY > nearestY)
-						{
-							nearestY = topY;
-							found = true;
-						}
+						nearestY = topY;
+						found = true;
 					}
 				}
 			}
