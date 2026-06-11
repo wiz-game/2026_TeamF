@@ -42,10 +42,10 @@ namespace basecross
 
 		//選択中のボタンに出るカーソル
 		auto Cursor = ObjectFactory::Create<SpriteGeneric>(GetStage());
-		Cursor->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
+		Cursor->SetSize(350.0f, 100.0f, Vec2(0.5f, 0.5f));
 		Cursor->SetPos(m_menuPosList[m_selectIndex]);
 		Cursor->SetTexture(L"Cursor");
-		Cursor->SetColor(Col4(1, 1, 1, 1));
+		Cursor->SetColor(Col4(0, 0, 0, 1));
 		m_menuLabel.push_back(Cursor);
 		m_menuCursor = Cursor;
 
