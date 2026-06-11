@@ -21,6 +21,17 @@ namespace basecross {
 	void ErEnemy::OnUpdate()
 	{
 		BaseEnemy::OnUpdate();
+
+		switch (m_state)
+		{
+		case State::Erase:
+			UpdateInkErase();
+			break;
+
+		case State::Patrol:
+			UpdatePatrol();
+			break;
+		}
 	}
 
 	void ErEnemy::UpdateInkErase()
@@ -67,8 +78,10 @@ namespace basecross {
 
 		if (distance < 1.0f)
 		{
+			OutputDebugStringA("Hit Ink\n");
 			targetInk->DestroyAllInk();
 			targetInk->DestroyGameObject();
+
 			return;
 		}
 
@@ -80,7 +93,13 @@ namespace basecross {
 		float delta = App::GetApp()->GetElapsedTime();
 		pos += toTarget * m_moveSpeed * delta;
 
+		if (m_isGround)
+		{
+			pos.y = m_groundY + m_heightOffset;
+		}
+
 		m_transform->SetPosition(pos);
+
 	}
 
 
@@ -111,12 +130,12 @@ namespace basecross {
 
 		float distance = toTarget.length();
 
-		// ✅ 到達判定は広めに
+		// 到達判定は広めに
 		if (distance < 0.5f)
 		{
 			float randX, randZ;
 
-			// ✅ 近すぎるターゲットを防ぐ
+			// 近すぎるターゲットを防ぐ
 			do {
 				randX = ((float)rand() / RAND_MAX - 0.5f) * 2.0f * m_range;
 				randZ = ((float)rand() / RAND_MAX - 0.5f) * 2.0f * m_range;
@@ -129,10 +148,10 @@ namespace basecross {
 
 			} while ((m_targetPos - pos).length() < 1.0f);
 
-			return; // ✅ このフレームでは動かない
+			return; // このフレームでは動かない
 		}
 
-		// ✅ 正規化は安全チェック付き
+		// 正規化は安全チェック付き
 		if (distance > 0.001f) {
 			toTarget.normalize();
 		}
