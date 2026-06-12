@@ -14,37 +14,34 @@
 #include <poly2tri/poly2tri.h>
 
 namespace basecross{
-
-	class DebugLog {
-		static string m_SaveFilename;
-	public:
-		static void Save();
-		static vector<CONTROLER_STATE> Load(const string& filename);
-	};
 	struct CoordContext {
 		UINT m_SizeX = 0;
 		UINT m_SizeY = 0;
 	};
-	class TextureCollision : public Component {
-		struct IndexInfo {
-			int index;
-			int label;
-		};
-		struct GroupInfo {
-			int id;
-			int startIndex;
-			int count;
-		};
+	struct Contour {
+		AABB m_Aabb;
+		vector<TRIANGLE> m_Triangles;
 
+		Contour(const vector<TRIANGLE>& triangles) : m_Triangles(triangles), m_Aabb{ Vec3(numeric_limits<float>::max()),Vec3(numeric_limits<float>::lowest()) } {}
+		void CalcAABB();
+	};
+
+	struct TextureSnapShot {
+		vector<int> m_Data;
+		CoordContext m_Context;
+		vector<vector<cv::Point>> m_CvContours;
+	};
+	class TextureCollision : public Component {
 		CoordContext m_TextureContext;
 		vector<int> m_Labels;
 		vector<int> m_ElectricContourIndices;
 
-		//m_ContourTriangles[] : 輪郭
-		//m_ContourTriangles[][] : 輪郭に含まれるポリゴン
-		vector<vector<TRIANGLE>> m_ContourTriangles;
+		float m_EffectSpawnTimer;
+		float m_EffectSpawnInterval;
+		vector<int> m_ElectricEffectHandles;
+
+		vector<Contour> m_Contour;
 		vector<vector<cv::Point>> m_CvContours;
-		vector<cv::Vec4i> m_ContourHierarchy;
 
 		shared_ptr<DX11ComputeShader> m_MaskShader;
 		shared_ptr<DX11ComputeShader> m_UnionFind1Shader;
@@ -54,9 +51,12 @@ namespace basecross{
 		shared_ptr<BufferContext> m_ConvertFlagBuffer;
 		TextureSizeConstantData m_CB;
 
+		TextureSnapShot m_SnapShot;
+		bool m_HasSnapShot;
+		bool m_IsThreadProccess;
+
 		void GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc);
-		void CreateAlphaMask();
-		void CreateTextureMesh(vector<int>& cells,vector<int>& groupIDs, CoordContext& context);
+		void CreateTextureMesh(vector<int>& cells, CoordContext& context);
 		vector<TRIANGLE> CalcContourWorldTriangle(const vector<p2t::Triangle*>& contour);
 
 		void DrawLine(Vec3 position, Vec3 dir,float length);
@@ -66,29 +66,64 @@ namespace basecross{
 		virtual void OnUpdate()override;
 		virtual void OnDraw()override;
 
-		void CreateMeshCollision();
-
 		void ProcessGPU();
 		void ProcessCPU();
 
-		size_t GetContourCount()const { return m_ContourTriangles.size(); }
-		vector<TRIANGLE> GetTriangles(int index) { return m_ContourTriangles[index]; }
+		void CreateContourTriangles(vector<TRIANGLE>& triangles, const vector<cv::Point>& contours, const vector<cv::Vec4i>& hierarchy, vector<vector<p2t::Point*>>& polyline, const int& index);
+		size_t GetContourCount()const { return m_Contour.size(); }
+		const vector<TRIANGLE>& GetTriangles(int index)const { return m_Contour[index].m_Triangles; }
+		const AABB& GetContourAABB(int index)const { return m_Contour[index].m_Aabb; }
 		void DrawContour(int index);
 
 		void ClearElectricIndex();
-		void AddElectricIndex(int index);
+		void SetElectricfield(int index);
 		bool IsElectrified(int index);
+
+		void CreateMeshInThread(TextureSnapShot snapShot,vector<Contour>& result);
+		void StartBuildThread();
+		void FinishedThread(const vector<Contour>& result);
+		void SnapShot();
+		TextureSnapShot GetSnapShot() { m_HasSnapShot = false; return m_SnapShot; }
+		bool IsThreadProccess()const { return m_IsThreadProccess; }
 	};
+
+
+	//スレッドプール(後で別ファイルに移行)
+	class ThreadPool : public SingletonBase<ThreadPool>{
+		friend class SingletonBase<ThreadPool>;
+
+		vector<thread> m_Workers;
+		queue<function<void()>> m_Tasks;
+
+		mutex m_Mutex;
+		condition_variable m_Condition;
+
+		bool m_ThreadStop;
+	public:
+
+		void Initialize(size_t numThreads);
+		void Destory();
+		void Execute(function<void()> task);
+
+	};
+
 
 	class TextureMeshManager : public SingletonBase<TextureMeshManager> {
 		friend class SingletonBase<TextureMeshManager>;
 		vector<shared_ptr<TextureCollision>> m_ReloadMeshCollisions;
 	public:
 		void AddReload(const shared_ptr<TextureCollision>& meshCollision) {
+			meshCollision->SnapShot();
 			m_ReloadMeshCollisions.push_back(meshCollision);
 		}
 
 		void Reload();
+	};
+
+
+	struct ConnectContext {
+		TextureCollision* m_Owner;
+		UINT m_ContourID;
 	};
 
 	class InkConnectChecker : public SingletonBase<InkConnectChecker> {
@@ -102,7 +137,7 @@ namespace basecross{
 		vector<weak_ptr<TextureCollision>> m_TextureCollisions;
 
 		bool IsConnectedSupplyToInk(const OBB& supplyOBB, const AABB& supplyAABB, const vector<TRIANGLE>& triangles);
-		bool IsConnectedInkToInk(const vector<TRIANGLE>& triangles, const shared_ptr<TextureCollision>& fromCollision);
+		bool IsConnectedInkToInk(const vector<TRIANGLE>& triangles, const AABB& inkAABB);
 		bool IsConnectedInkToPort(const OBB& portOBB, const AABB& portAABB, const vector<TRIANGLE>& triangles);
 	public:
 

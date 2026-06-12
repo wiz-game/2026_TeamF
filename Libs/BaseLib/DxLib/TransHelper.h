@@ -1527,6 +1527,14 @@ namespace basecross{
 			Ret.normalize();
 			return Ret;
 		}
+		bsm::Vec3 GetCenter()const {
+			bsm::Vec3 center;
+			center.x = (m_A.x + m_B.x + m_C.x) / 3.0f;
+			center.y = (m_A.y + m_B.y + m_C.y) / 3.0f;
+			center.z = (m_A.z + m_B.z + m_C.z) / 3.0f;
+
+			return center;
+		}
 		PLANE GetPLANE() const {
 			//3“_‚ğg‚Á‚Ä–Ê‚ğì¬
 			PLANE ret(m_A, m_B, m_C);
@@ -1605,6 +1613,19 @@ namespace basecross{
 				}
 			}
 			return ret;
+		}
+
+		bsm::Vec3& operator[](size_t index) {
+			switch (index) {
+			case 0:
+				return m_A;
+			case 1:
+				return m_B;
+			case 2:
+				return m_C;
+			default:
+				throw std::out_of_range("Triangle index out of range");
+			}
 		}
 
 	};

@@ -972,7 +972,7 @@ namespace basecross{
 		/// <returns>“ü—Í‚Ì—L–³</returns>
 		bool PressAccept(const wstring& group,WORD& data) {
 			auto& inputState = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-			auto keyborad = App::GetApp()->GetInputDevice().GetKeyState();
+			auto& keyborad = App::GetApp()->GetInputDevice().GetKeyState();
 			if (FindGroup(m_KeyboradInputDates, group)) {
 				for (auto& inputData : m_KeyboradAcceptButtons[group]) {
 					if (keyborad.m_bPressedKeyTbl[inputData]) {

@@ -34,7 +34,7 @@ namespace basecross
 
 		//Drawコンポーネント
 		//m_draw = AddComponent<PNTStaticDraw>();
-		m_draw = AddComponent<InkDrawComponentTest>(512,512,L"InkTest");
+		m_draw = AddComponent<InkDrawComponentTest>((int)(64.0f * m_scale.x), (int)(64.0f * m_scale.z));
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
 		m_draw->SetTextureResource(L"Floor");
 		//m_draw->SetOwnShadowActive(true);

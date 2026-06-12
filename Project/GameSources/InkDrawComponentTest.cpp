@@ -48,6 +48,9 @@ namespace basecross{
 		auto device = App::GetApp()->GetDeviceResources()->GetD3DDevice();
 		auto result = device->CreateTexture2D(&desc, nullptr, m_Texture.GetAddressOf());
 		assert(SUCCEEDED(result));
+
+		m_Brush.m_TextureSizeX = sizeX;
+		m_Brush.m_TextureSizeY = sizeY;
 	}
 	void InkDrawComponentTest::CreateTexture2D(D3D11_TEXTURE2D_DESC desc) {
 		// RTV‚Æ‚µ‚ÄŽg‚¤ + Shader‚©‚ç“Ç‚Þ

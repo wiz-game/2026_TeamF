@@ -7,11 +7,13 @@
 #include "stdafx.h"
 
 namespace basecross{
+
 	struct BrushData {
 		Vec4 m_Centers[4];
 		float m_Size;
+		float m_TextureSizeX;
+		float m_TextureSizeY;
 		int m_CenterCount;
-		float padding[2];
 	};
 	struct TimeBuffer {
 		float m_Time = 0.0f;
@@ -48,7 +50,7 @@ namespace basecross{
 
 		void AddDrawPoint(const Vec2& points,bool eraser = false);
 		void SetBrushSize(float size) {
-			m_Brush.m_Size = size;
+			m_Brush.m_Size = 64.0f * size;
 		}
 		ComPtr<ID3D11ShaderResourceView> GetInkShaderResourceView()const {
 			return m_ShaderResourceView;
