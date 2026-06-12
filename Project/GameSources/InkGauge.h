@@ -35,7 +35,7 @@ namespace basecross
 			m_gaugeInk(0.0f),
 			m_ink(0.0f),
 			m_width(0.0f),
-			m_height(30.0f),
+			m_height(40.0f),
 			m_unitWidth(0.0f),
 			m_offsetPos(Vec2(-550.0f,325.0f))
 		{
@@ -77,7 +77,7 @@ namespace basecross
 			m_currentInk(10.0f),
 			m_maxInk(0.0f),
 			m_width(0.0f),
-			m_height(30.0f),
+			m_height(40.0f),
 			m_offsetPos(Vec2(-550.0f, 325.0f))
 		{
 		}

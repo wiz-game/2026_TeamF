@@ -213,7 +213,7 @@ namespace basecross{
 			m_rotAngle.x += m_velocity.x * m_moveSpeed * 0.10f;
 			m_rotAngle.y = 0;
 			m_rotAngle.z += m_velocity.z * m_moveSpeed * 0.10f;
-			//m_transform->SetRotation(m_rotAngle);
+			m_transform->SetRotation(m_rotAngle);
 			
 		}
 

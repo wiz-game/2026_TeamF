@@ -10,8 +10,9 @@ namespace basecross
 		auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
 		app->RegisterTexture(L"Pause", path + L"Pause.png"); // 画像ファイルを読み込んでアセットとして登録する
 		app->RegisterTexture(L"Cursor", path + L"SelectCursor.png"); // 画像ファイルを読み込んでアセットとして登録する
-		app->RegisterTexture(L"ToTitle", path + L"PB_ToTitle.png"); // 画像ファイルを読み込んでアセットとして登録する
 		app->RegisterTexture(L"Cancel", path + L"PB_Cancel.png"); // 画像ファイルを読み込んでアセットとして登録する
+		app->RegisterTexture(L"Restart", path + L"PB_Restart.png"); // 画像ファイルを読み込んでアセットとして登録する
+		app->RegisterTexture(L"ToTitle", path + L"PB_ToTitle.png"); // 画像ファイルを読み込んでアセットとして登録する
 
 		auto sWidth = app->GetGameWidth() * 2;
 		auto sHeight = app->GetGameHeight() * 2;
@@ -61,7 +62,7 @@ namespace basecross
 		auto retryButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
 		retryButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
 		retryButton->SetPos(Vec2(0.0f, 0.0f));
-		retryButton->SetTexture(L"Cancel");
+		retryButton->SetTexture(L"Restart");
 		retryButton->SetColor(Col4(1, 1, 1, 1));
 		m_menuButton.push_back(retryButton);
 
