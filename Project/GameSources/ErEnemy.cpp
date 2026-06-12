@@ -41,6 +41,7 @@ namespace basecross {
 		std::vector<std::shared_ptr<GameObject>> inkObjs;
 		stage->GetUsedTagObjectVec(L"InkCloud", inkObjs);
 
+
 		Vec3 pos = m_transform->GetPosition();
 
 		if (inkObjs.empty())
@@ -49,23 +50,28 @@ namespace basecross {
 			return;
 		}
 
-		float minDist = FLT_MAX;
 		std::shared_ptr<InkCloud> targetInk = nullptr;
 
-		for (auto& obj : inkObjs)
+		if (!m_targetInk)
 		{
-			auto ink = std::dynamic_pointer_cast<InkCloud>(obj);
-			if (!ink) continue;
+			float minDist = FLT_MAX;
 
-			Vec3 inkPos = ink->GetComponent<Transform>()->GetPosition();
-
-			float diff = (inkPos - pos).length();
-
-			if (diff < minDist)
+			for (auto& obj : inkObjs)
 			{
-				minDist = diff;
-				targetInk = ink;
+				auto ink = std::dynamic_pointer_cast<InkCloud>(obj);
+				if (!ink) continue;
+
+				Vec3 inkPos = ink->GetComponent<Transform>()->GetPosition();
+
+				float diff = (inkPos - pos).length();
+
+				if (diff < minDist)
+				{
+					minDist = diff;
+					targetInk = ink;
+				}
 			}
+
 		}
 
 		if (!targetInk)return;
@@ -78,10 +84,10 @@ namespace basecross {
 
 		if (distance < 1.0f)
 		{
-			OutputDebugStringA("Hit Ink\n");
 			targetInk->DestroyAllInk();
 			targetInk->DestroyGameObject();
 
+			m_targetInk.reset();
 			return;
 		}
 
@@ -96,6 +102,12 @@ namespace basecross {
 		if (m_isGround)
 		{
 			pos.y = m_groundY + m_heightOffset;
+		}
+
+		if (!m_targetInk || !m_targetInk->GetAlphaActive())
+		{
+			m_targetInk.reset();
+			return;
 		}
 
 		m_transform->SetPosition(pos);
