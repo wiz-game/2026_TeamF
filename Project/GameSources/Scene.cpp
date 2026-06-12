@@ -55,10 +55,10 @@ namespace basecross{
 	void Scene::OnUpdate() {
 		SceneBase::OnUpdate();
 		GameController::Update();
+		TextureMeshManager::Get().Reload();
 	}
 	void Scene::OnDraw() {
 		SceneBase::OnDraw();
-		TextureMeshManager::Get().Reload();
 	}
 	Scene::~Scene() {
 		JoltManager::StaticTerminate();

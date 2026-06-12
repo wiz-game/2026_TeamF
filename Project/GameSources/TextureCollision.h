@@ -29,8 +29,11 @@ namespace basecross{
 	struct TextureSnapShot {
 		vector<int> m_Data;
 		CoordContext m_Context;
+		Vec3 m_Position;
+		Vec3 m_Scale;
 		vector<vector<cv::Point>> m_CvContours;
 	};
+
 	class TextureCollision : public Component {
 		CoordContext m_TextureContext;
 		vector<int> m_Labels;
@@ -51,13 +54,8 @@ namespace basecross{
 		shared_ptr<BufferContext> m_ConvertFlagBuffer;
 		TextureSizeConstantData m_CB;
 
-		TextureSnapShot m_SnapShot;
-		bool m_HasSnapShot;
-		bool m_IsThreadProccess;
-
 		void GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc);
-		void CreateTextureMesh(vector<int>& cells, CoordContext& context);
-		vector<TRIANGLE> CalcContourWorldTriangle(const vector<p2t::Triangle*>& contour);
+		vector<TRIANGLE> CalcContourWorldTriangle(const vector<p2t::Triangle*>& contour, const TextureSnapShot& snapShot);
 
 		void DrawLine(Vec3 position, Vec3 dir,float length);
 	public:
@@ -69,7 +67,6 @@ namespace basecross{
 		void ProcessGPU();
 		void ProcessCPU();
 
-		void CreateContourTriangles(vector<TRIANGLE>& triangles, const vector<cv::Point>& contours, const vector<cv::Vec4i>& hierarchy, vector<vector<p2t::Point*>>& polyline, const int& index);
 		size_t GetContourCount()const { return m_Contour.size(); }
 		const vector<TRIANGLE>& GetTriangles(int index)const { return m_Contour[index].m_Triangles; }
 		const AABB& GetContourAABB(int index)const { return m_Contour[index].m_Aabb; }
@@ -79,12 +76,13 @@ namespace basecross{
 		void SetElectricfield(int index);
 		bool IsElectrified(int index);
 
-		void CreateMeshInThread(TextureSnapShot snapShot,vector<Contour>& result);
-		void StartBuildThread();
-		void FinishedThread(const vector<Contour>& result);
-		void SnapShot();
-		TextureSnapShot GetSnapShot() { m_HasSnapShot = false; return m_SnapShot; }
-		bool IsThreadProccess()const { return m_IsThreadProccess; }
+		void CreateMeshInThread(const TextureSnapShot& snapShot,vector<Contour>& result);
+		TextureSnapShot SnapShot();
+		void ApplyThreadResult(vector<Contour>& result) {
+			m_Contour = result;
+			m_ElectricContourIndices.resize(m_Contour.size(), 0);
+
+		}
 	};
 
 
@@ -107,16 +105,24 @@ namespace basecross{
 
 	};
 
-
+	struct MeshResult {
+		TextureCollision* m_Ptr;
+		vector<Contour> m_Result;
+	};
 	class TextureMeshManager : public SingletonBase<TextureMeshManager> {
 		friend class SingletonBase<TextureMeshManager>;
 		vector<shared_ptr<TextureCollision>> m_ReloadMeshCollisions;
-	public:
-		void AddReload(const shared_ptr<TextureCollision>& meshCollision) {
-			meshCollision->SnapShot();
-			m_ReloadMeshCollisions.push_back(meshCollision);
-		}
 
+		unordered_map<TextureCollision*, TextureSnapShot> m_Pending;
+		unordered_map<TextureCollision*, TextureSnapShot> m_Proccess;
+		queue<MeshResult> m_ResultQueue;
+		atomic_int m_ProccessCount;
+
+		mutex m_Mutex;
+
+		void DecreeseProccessCount();
+	public:
+		void AddReload(const shared_ptr<TextureCollision>& meshCollision);
 		void Reload();
 	};
 
