@@ -60,13 +60,7 @@ float4 main(PSInput input) : SV_TARGET
             float3 color = float3(0.0f, 0.0f, 0.0f);
             float alpha = 1.0f;
             
-            float fadeStart = brushSize * 0.8f;
-            float fadeEnd = brushSize;
-
-            float fade = 1.0 - smoothstep(fadeStart, fadeEnd, dist);
-            alpha *= fade;
-            
-            return float4(color, fade);
+            return float4(color, alpha);
         }
     }
        

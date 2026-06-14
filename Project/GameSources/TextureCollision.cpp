@@ -401,19 +401,19 @@ namespace basecross {
 			m_Workers.emplace_back([this](){
 					while (true){
 						function<void()> task;
+						{
+							unique_lock lock(m_Mutex);
 
-						unique_lock lock(m_Mutex);
-
-						m_Condition.wait(lock, [this](){
+							m_Condition.wait(lock, [this]() {
 								return m_ThreadStop || !m_Tasks.empty();
-							});
+								});
 
-						if (m_ThreadStop && m_Tasks.empty())
-							return;
+							if (m_ThreadStop && m_Tasks.empty())
+								return;
 
-						task = move(m_Tasks.front());
-						m_Tasks.pop();
-
+							task = move(m_Tasks.front());
+							m_Tasks.pop();
+						}
 						task();
 					}
 				});
@@ -473,7 +473,6 @@ namespace basecross {
 			proccess.first->ProcessGPU();
 
 			ThreadPool::Get().Execute([&, proccess]() {
-				std::this_thread::sleep_for(std::chrono::seconds(3));
 				MeshResult result;
 				result.m_Ptr = proccess.first;
 				proccess.first->CreateMeshInThread(proccess.second, result.m_Result);
