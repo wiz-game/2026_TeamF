@@ -34,6 +34,7 @@ class MoveFloor;
 		Vec3 m_pos;
 		Vec3 m_forward;
 		Vec3 m_velocity;
+		Vec3 m_rotAngle = Vec3(0);
 
 		float m_ink;
 		float m_inkMax;

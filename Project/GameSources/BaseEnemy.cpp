@@ -61,57 +61,31 @@ namespace basecross {
 
 	void BaseEnemy::UpdatePatrol()
 	{
-		auto delta = App::GetApp()->GetElapsedTime();
-		Vec3 pos = m_transform->GetPosition();
 
-		if (m_isGround)
-		{
-			pos.y = m_groundY + m_heightOffset;
-		}
-
-		Vec3 toTarget = m_targetPos - pos;
-		toTarget.y = 0.0f;
-
-		float distance = toTarget.length();
-
-		// ✅ 到達判定は広めに
-		if (distance < 0.5f)
-		{
-			float randX, randZ;
-
-			// ✅ 近すぎるターゲットを防ぐ
-			do {
-				randX = ((float)rand() / RAND_MAX - 0.5f) * 2.0f * m_range;
-				randZ = ((float)rand() / RAND_MAX - 0.5f) * 2.0f * m_range;
-
-				m_targetPos = Vec3(
-					m_origin.x + randX,
-					m_origin.y,
-					m_origin.z + randZ
-				);
-
-			} while ((m_targetPos - pos).length() < 1.0f);
-
-			return; // ✅ このフレームでは動かない
-		}
-
-		// ✅ 正規化は安全チェック付き
-		if (distance > 0.001f) {
-			toTarget.normalize();
-		}
-
-		pos += toTarget * m_moveSpeed * delta;
-
-		if (m_isGround)
-		{
-			pos.y = m_groundY + m_heightOffset;
-		}
-
-		m_transform->SetPosition(pos);
 	}
 
 	void BaseEnemy::UpdateChase()
 	{
+		auto delta = App::GetApp()->GetElapsedTime();
+		auto stage = GetStage();
+
+		std::vector<std::shared_ptr<GameObject>> playerObj;
+		stage->GetUsedTagObjectVec(L"player", playerObj);
+
+		if (playerObj.empty()) return;
+
+		Vec3 playerPos = playerObj[0]->GetComponent<Transform>()->GetPosition();
+		Vec3 myPos = m_transform->GetPosition();
+
+		Vec3 toPlayer = playerPos - myPos;
+
+		if (toPlayer.length() < 0.001) return;
+
+		toPlayer.normalize();
+
+		Vec3 moveLeg = toPlayer * m_moveSpeed * delta;
+
+		m_transform->SetPosition(myPos + moveLeg);
 	}
 
 	void BaseEnemy::UpdateInkDrow(){}
@@ -180,20 +154,16 @@ namespace basecross {
 				Vec3 floorPos = floorTr->GetPosition();
 				Vec3 floorScale = floorTr->GetScale();
 
-				float topY = floorPos.y + floorScale.y * 1.5f;
-				// ✅ 自分より下にある床だけ対象
-				if (topY <= pos.y)
-				{
-					float diff = pos.y - topY;
+				float topY = floorPos.y + floorScale.y * 0.5f;
+				
+				float diff = pos.y - topY;
 
-					// ✅ 距離制限（Rayの長さ）
-					if (diff < 5.0f)
+				if (diff >= -0.5f && diff < 5.0f)
+				{
+					if (topY > nearestY)
 					{
-						if (topY > nearestY)
-						{
-							nearestY = topY;
-							found = true;
-						}
+						nearestY = topY;
+						found = true;
 					}
 				}
 			}
