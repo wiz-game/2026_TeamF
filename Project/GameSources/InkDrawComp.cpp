@@ -19,6 +19,7 @@ namespace basecross
 		auto size = m_defaultSize * 0.5f;
 		AddPointFromWorldPos(pTrans->GetWorldPosition());
 		SetBrushSize(size);
+
 	}
 
 	void InkDrawComp::InkDrawStart()
@@ -195,7 +196,7 @@ namespace basecross
 			if (GameController::IsPressed_ButtonDown())
 			{
 				AddPoint(Vec3(uvX, uvY, 0.0f));
-
+				m_player->DecreaseInk();
 			}
 		}
 	}

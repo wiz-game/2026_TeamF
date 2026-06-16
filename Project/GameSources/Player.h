@@ -62,6 +62,7 @@ class MoveFloor;
 
 		void OnCreate();
 		void OnUpdate();
+		void OnUpdate2();
 		void OnDestroy();
 
 		void OnMove();
@@ -82,6 +83,8 @@ class MoveFloor;
 		{
 			return m_inkMax;
 		}
+
+		void DecreaseInk();
 
 		void OnCollisionEnter(std::shared_ptr<GameObject>& obj);
 		void OnCollisionExcute(std::shared_ptr<GameObject>& obj);
