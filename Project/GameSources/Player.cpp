@@ -44,15 +44,19 @@ namespace basecross{
 	// �ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾌ擾ｿｽ�ｽ�ｽ�ｽﾝ抵ｿｽ
 	void Player::OnCreate()
 	{
+		auto& app = App::GetApp();
+		auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+		app->RegisterTexture(L"Player", path + L"Metal.png"); // 画像ファイルを読み込んでアセットとして登録する
+
 		GetStage()->SetSharedGameObject(L"Player", GetThis<Player>());
-		// �ｽg�ｽ�ｽ�ｽ�ｽ�ｽX�ｽt�ｽH�ｽ[�ｽ�ｽ�ｽR�ｽ�ｽ�ｽ|�ｽ[�ｽl�ｽ�ｽ�ｽg�ｽ�ｽ�ｽ謫ｾ�ｽ�ｽ�ｽﾄゑｿｽ�ｽ�ｽ
+		// トランスフォームコンポーネント
 		m_transform = GetComponent<Transform>();
 
 		m_transform->SetPosition(m_pos);
-		// �ｽh�ｽ�ｽ�ｽ[�ｽR�ｽ�ｽ�ｽ|�ｽ[�ｽl�ｽ�ｽ�ｽg�ｽ�ｽﾇ会ｿｽ
+		// 球体描画
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
-		m_draw->SetTextureResource(L"PLAYER");
+		m_draw->SetTextureResource(L"Player");
 		m_draw->SetOwnShadowActive(true);
 
 		auto shadowMap = AddComponent<Shadowmap>();
@@ -104,7 +108,7 @@ namespace basecross{
 		//m_transform->SetQuaternion(rotY);
 
 		OnMove();
-		DropInk();
+		//DropInk();
 		OnDied();
 
 		if (m_pos.y <= -10.0f)
@@ -128,6 +132,22 @@ namespace basecross{
 			+ L"\n"
 			+ L"FPS : " + std::to_wstring(fps));
 	}
+
+	void Player::OnUpdate2()
+	{
+		m_isDraw = false;
+	}
+
+	void Player::DecreaseInk()
+	{
+		if (m_isDraw) return;
+
+		auto delta = App::GetApp()->GetElapsedTime();
+		m_ink -= m_inkDecrease * delta;
+		m_isDraw = true;
+	}
+
+
 	void Player::OnDestroy() {
 		if (m_MoveSound) {
 			SoundManager::Get().StopLoopSE(m_MoveSound);
@@ -143,11 +163,8 @@ namespace basecross{
 		auto device = App::GetApp()->GetInputDevice();
 		auto& pad = device.GetControlerVec()[0];
 		Vec3 stickL(pad.fThumbLX, 0.0f, pad.fThumbLY);
-
 		auto key = device.GetKeyState();
-
-		//ElapsedTime�ｽ謫ｾ
-		auto delta = app->GetElapsedTime();
+		auto delta = app->GetElapsedTime();	//ElapsedTime
 
 		m_pos = m_transform->GetPosition();
 
@@ -186,6 +203,7 @@ namespace basecross{
 			m_forward.z = sinf(forwardAngle);
 
 			m_velocity += m_forward * delta;
+
 			//cc->SetLinearVelocity(m_moveSpeed * m_velocity * m_moveDir);
 			if (!m_MoveSound) {
 				m_MoveSound = SoundManager::Get().PlayLoopSE(L"PLAYER_MOVE", 0.5f);
@@ -208,7 +226,16 @@ namespace basecross{
 		if (m_velocity.x <= m_maxSpeed || m_velocity.z <= m_maxSpeed)
 			m_velocity *= m_accel;
 
-		
+		//転がす処理
+		if (m_isGround)
+		{
+			m_rotAngle.x += m_velocity.x * m_moveSpeed * 0.10f;
+			m_rotAngle.y = 0;
+			m_rotAngle.z += m_velocity.z * m_moveSpeed * 0.10f;
+			//m_transform->SetRotation(m_rotAngle);
+			
+		}
+
 		m_pos.x += m_moveSpeed * m_velocity.x * delta;
 		m_pos.z += m_moveSpeed * m_velocity.z * delta;
 		if (!m_isGround)
@@ -270,16 +297,16 @@ namespace basecross{
 
 	void Player::OnDied()
 	{
-		auto& app = App::GetApp();
-		std::wstringstream wss(L"");
+		//auto& app = App::GetApp();
+		//std::wstringstream wss(L"");
 
-		wss << m_ink;
+		//wss << m_ink;
 
-		if (m_ink <= 0)
-		{
-			wss << L"\n" << L"Died!!\n";
-		}
-		app->GetScene<Scene>()->SetDebugString(wss.str());
+		//if (m_ink <= 0)
+		//{
+		//	wss << L"\n" << L"Died!!\n";
+		//}
+		//app->GetScene<Scene>()->SetDebugString(wss.str());
 	}
 
 	//移動量を取得する関数

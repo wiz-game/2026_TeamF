@@ -53,6 +53,6 @@ namespace basecross
 	}
 
 	IMPLEMENT_DX11_PIXEL_SHADER(UpperPixelSheder, App::GetApp()->GetShadersPath() + L"PSUpper.cso")
-		IMPLEMENT_DX11_PIXEL_SHADER(UpperShadowPixelSheder, App::GetApp()->GetShadersPath() + L"PSUpperShadow.cso")
+	IMPLEMENT_DX11_PIXEL_SHADER(UpperShadowPixelSheder, App::GetApp()->GetShadersPath() + L"PSUpperShadow.cso")
 
 }

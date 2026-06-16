@@ -1,40 +1,62 @@
-/*!
-@file Texture2DrawComp.h
-@brief テクスチャを二枚貼る
-*/
-
 #pragma once
 #include "stdafx.h"
-#include "InkDrawComp.h"
 
-namespace basecross
+namespace basecross 
 {
-	//struct A {
-	//	Vec3 k;
-	//	int padding;
-	//};
-	enum class BlendMode {
-		Y_Up,	//０：Y軸向き判定
-		Z_Axis,	//１：ｚ軸向き判定
-	};
-	class Texture2DrawComp : public InkDrawComp
+	struct inkDrawCB
 	{
+		Vec4 Up;
+	};
 
-		shared_ptr<TextureResource> m_texture;
-		BlendMode m_blendMode = BlendMode::Y_Up;
+	struct cbBrush
+	{
+		Vec4 centerPositions[4];
+		float brushSize = 0;
+		int count = 0;
+		float textrueWidth = 0;
+		float textrueHeight = 0;
+	};
+
+	class Player;
+	class InkDrawComp : public PNTStaticDraw 
+	{
+		ComPtr<ID3D11Texture2D> m_texture;//インクのテクスチャ
+		ComPtr<ID3D11ShaderResourceView> m_textureSRV;//インクのシェーダーリソースビュー
+		ComPtr<ID3D11RenderTargetView> m_textureRTV;//インクのレンダーターゲットビュー
+		D3D11_VIEWPORT m_viewport;//インク描画用のビューポート
+
+		cbBrush m_brush;
+		std::shared_ptr<Player> m_player;
+
+
+		float m_defaultSize;
 
 	public:
-		Texture2DrawComp(const shared_ptr<GameObject>& draw) :
-			InkDrawComp(draw)
+		InkDrawComp(const shared_ptr<GameObject>& owner) : 
+			PNTStaticDraw(owner) ,
+			m_defaultSize(64)
 		{
 		}
-
-		//モード変更の関数
-		void SetBlendMode(BlendMode mode) { m_blendMode = mode; }
+		virtual ~InkDrawComp() = default;
 		virtual void OnDraw() override;
-		void SetTexture2(const wstring& TextureKey)
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+		void CreateTexture(float scaleX, float scaleZ);
+		void InkDraw();
+		void AddPoint(const Vec3& point);
+		void ClearPoint();
+		void SetBrushSize(float size)
 		{
-			m_texture = App::GetApp()->GetResource<TextureResource>(TextureKey);
+			m_brush.brushSize = size;
+		}
+
+		void InkDrawStart();
+
+		void AddPointFromWorldPos(const Vec3& playerWorldPos);
+
+		ComPtr<ID3D11ShaderResourceView> GetSRV()
+		{
+			return m_textureSRV;
 		}
 
 		template<typename T_VShader, typename T_PShader>
@@ -58,6 +80,14 @@ namespace basecross
 			SimpleConstants SmCb;
 			//コンスタントバッファの作成
 			SetConstants(SmCb, data);
+			
+			//インク用コンスタントバッファ
+			inkDrawCB InkCb;
+			InkCb.Up = Vec4(0, 1, 0, 0); // 上方向ベクトルの初期化
+			pD3D11DeviceContext->UpdateSubresource(CBInk::GetPtr()->GetBuffer(), 0, nullptr, &InkCb, 0, 0);
+			ID3D11Buffer* InkResourceBuffer = CBInk::GetPtr()->GetBuffer();
+			pD3D11DeviceContext->PSSetConstantBuffers(1, 1, &InkResourceBuffer);
+
 			//テクスチャ
 			auto shTex = GetTextureResource();
 			if (shTex) {
@@ -74,23 +104,11 @@ namespace basecross
 					SmCb.ActiveFlg.x = 0;
 				}
 			}
-
-
-			SmCb.ActiveFlg.y = static_cast<float>(m_blendMode);
-
 			//コンスタントバッファの更新
 			pD3D11DeviceContext->UpdateSubresource(CBSimple::GetPtr()->GetBuffer(), 0, nullptr, &SmCb, 0, 0);
 			//コンスタントバッファの設定
 			ID3D11Buffer* pConstantBuffer = CBSimple::GetPtr()->GetBuffer();
 			ID3D11Buffer* pNullConstantBuffer = nullptr;
-
-			//インク用コンスタントバッファ
-			inkDrawCB InkCb;
-			InkCb.Up = Vec4(0, 1, 0, 0); // 上方向ベクトルの初期化
-			pD3D11DeviceContext->UpdateSubresource(CBInk::GetPtr()->GetBuffer(), 0, nullptr, &InkCb, 0, 0);
-			ID3D11Buffer* InkResourceBuffer = CBInk::GetPtr()->GetBuffer();
-			pD3D11DeviceContext->PSSetConstantBuffers(1, 1, &InkResourceBuffer);
-
 			//頂点シェーダに渡す
 			pD3D11DeviceContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
 			//ピクセルシェーダに渡す
@@ -109,13 +127,10 @@ namespace basecross
 			RenderState->SetBlendState(pD3D11DeviceContext, GetBlendState());
 			//デプスステンシルステート
 			RenderState->SetDepthStencilState(pD3D11DeviceContext, GetDepthStencilState());
-
-			auto srv = GetSRV();
 			//テクスチャとサンプラー
 			if (shTex) {
 				pD3D11DeviceContext->PSSetShaderResources(0, 1, shTex->GetShaderResourceView().GetAddressOf());
-				pD3D11DeviceContext->PSSetShaderResources(2, 1, m_texture->GetShaderResourceView().GetAddressOf());
-				pD3D11DeviceContext->PSSetShaderResources(3, 1, srv.GetAddressOf());
+				pD3D11DeviceContext->PSSetShaderResources(2, 1, m_textureSRV.GetAddressOf());
 
 				//サンプラーを設定
 				RenderState->SetSamplerState(pD3D11DeviceContext, GetSamplerState(), 0);
@@ -157,8 +172,13 @@ namespace basecross
 
 	};
 
-	DECLARE_DX11_PIXEL_SHADER(Texture2PixelSheder)
-	DECLARE_DX11_PIXEL_SHADER(Texture2ShadewPixelSheder)
+	DECLARE_DX11_PIXEL_SHADER(InkDrawPixelSheder)
+	DECLARE_DX11_VERTEX_SHADER(InkDrawVertexSheder, VertexPositionNormalTexture)
+	DECLARE_DX11_CONSTANT_BUFFER(CBInk, inkDrawCB)
+	DECLARE_DX11_PIXEL_SHADER(InkDrawShadowPixelSheder)
+	DECLARE_DX11_VERTEX_SHADER(InkDrawShadowVertexSheder, VertexPositionNormalTexture)
+	DECLARE_DX11_PIXEL_SHADER(InkDropPixelSheder)
+	DECLARE_DX11_VERTEX_SHADER(InkDropVertexSheder, VertexPositionTexture)
+	DECLARE_DX11_CONSTANT_BUFFER(CBBrush, cbBrush)
 
 }
-#pragma once

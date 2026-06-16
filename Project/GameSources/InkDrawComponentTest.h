@@ -165,9 +165,9 @@ namespace basecross{
 		}
 	};
 
-	DECLARE_DX11_PIXEL_SHADER(InkDropPixelShader)
+	DECLARE_DX11_PIXEL_SHADER(InkDropPixelShaderTest)
 	DECLARE_DX11_PIXEL_SHADER(PNTInkPixelShader)
-	DECLARE_DX11_VERTEX_SHADER(InkDropVertexShader,VertexPositionTexture)
+	DECLARE_DX11_VERTEX_SHADER(InkDropVertexShaderTest,VertexPositionTexture)
 	DECLARE_DX11_VERTEX_SHADER(PNTInkVertexShader,VertexPositionNormalTexture)
 	DECLARE_DX11_CONSTANT_BUFFER(CBBrushData, BrushData)
 	DECLARE_DX11_CONSTANT_BUFFER(CBTimeBuffer,TimeBuffer)

@@ -34,6 +34,7 @@ class MoveFloor;
 		Vec3 m_pos;
 		Vec3 m_forward;
 		Vec3 m_velocity;
+		Vec3 m_rotAngle = Vec3(0);
 
 		float m_ink;
 		float m_inkMax;
@@ -61,6 +62,7 @@ class MoveFloor;
 
 		void OnCreate();
 		void OnUpdate();
+		void OnUpdate2();
 		void OnDestroy();
 
 		void OnMove();
@@ -81,6 +83,8 @@ class MoveFloor;
 		{
 			return m_inkMax;
 		}
+
+		void DecreaseInk();
 
 		void OnCollisionEnter(std::shared_ptr<GameObject>& obj);
 		void OnCollisionExcute(std::shared_ptr<GameObject>& obj);

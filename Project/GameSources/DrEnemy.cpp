@@ -16,7 +16,7 @@ namespace basecross {
     void DrEnemy::OnCreate()
     {
         BaseEnemy::OnCreate();
-        BaseEnemy::m_transform->SetPosition(0, 1, 0);
+        BaseEnemy::m_transform->SetPosition(0, 0, 0);
         m_origin = m_transform->GetPosition();
         BaseEnemy::m_draw->SetDiffuse(Col4(0.0f, 1.0f, 0.0f, 1.0f));
 
@@ -151,6 +151,57 @@ namespace basecross {
                 m_state = State::Patrol;
             }
         }
+    }
+
+    void DrEnemy::UpdatePatrol()
+    {
+        auto delta = App::GetApp()->GetElapsedTime();
+        Vec3 pos = m_transform->GetPosition();
+
+        if (m_isGround)
+        {
+            pos.y = m_groundY + m_heightOffset;
+        }
+
+        Vec3 toTarget = m_targetPos - pos;
+        toTarget.y = 0.0f;
+
+        float distance = toTarget.length();
+
+        // ✅ 到達判定は広めに
+        if (distance < 0.5f)
+        {
+            float randX, randZ;
+
+            // ✅ 近すぎるターゲットを防ぐ
+            do {
+                randX = ((float)rand() / RAND_MAX - 0.5f) * 2.0f * m_range;
+                randZ = ((float)rand() / RAND_MAX - 0.5f) * 2.0f * m_range;
+
+                m_targetPos = Vec3(
+                    m_origin.x + randX,
+                    m_origin.y,
+                    m_origin.z + randZ
+                );
+
+            } while ((m_targetPos - pos).length() < 1.0f);
+
+            return; // ✅ このフレームでは動かない
+        }
+
+        // ✅ 正規化は安全チェック付き
+        if (distance > 0.001f) {
+            toTarget.normalize();
+        }
+
+        pos += toTarget * m_moveSpeed * delta;
+
+        if (m_isGround)
+        {
+            pos.y = m_groundY + m_heightOffset;
+        }
+
+        m_transform->SetPosition(pos);
     }
 }
 //end basecross

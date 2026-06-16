@@ -30,7 +30,7 @@ namespace basecross {
 
 	protected :
 		virtual void UpdateInkDrow() override; // インクの移動描画
-
+		virtual void UpdatePatrol() override; // 徘徊
 	private :
 		void SetUpBetWnnePoints();
 		bool m_toB = true;
