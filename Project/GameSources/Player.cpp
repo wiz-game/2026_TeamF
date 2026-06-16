@@ -129,6 +129,22 @@ namespace basecross{
 		//	+ L"\n"
 		//	+ L" m_FloorDecision : " + (m_floorDecision ? L"Valid" : L"null"));
 	}
+
+	void Player::OnUpdate2()
+	{
+		m_isDraw = false;
+	}
+
+	void Player::DecreaseInk()
+	{
+		if (m_isDraw) return;
+
+		auto delta = App::GetApp()->GetElapsedTime();
+		m_ink -= m_inkDecrease * delta;
+		m_isDraw = true;
+	}
+
+
 	void Player::OnDestroy() {
 		if (m_MoveSound) {
 			SoundManager::Get().StopLoopSE(m_MoveSound);
