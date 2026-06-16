@@ -12,6 +12,8 @@ namespace basecross
 		app->RegisterTexture(L"Cursor", path + L"SelectCursor.png"); // 画像ファイルを読み込んでアセットとして登録する
 		app->RegisterTexture(L"Cancel", path + L"PB_Cancel.png"); // 画像ファイルを読み込んでアセットとして登録する
 		app->RegisterTexture(L"Restart", path + L"PB_Restart.png"); // 画像ファイルを読み込んでアセットとして登録する
+		app->RegisterTexture(L"Option", path + L"PB_Option.png"); // 画像ファイルを読み込んでアセットとして登録する
+		app->RegisterTexture(L"ToStageSelect", path + L"PB_ToStageSelect.png"); // 画像ファイルを読み込んでアセットとして登録する
 		app->RegisterTexture(L"ToTitle", path + L"PB_ToTitle.png"); // 画像ファイルを読み込んでアセットとして登録する
 
 		auto sWidth = app->GetGameWidth() * 2;
@@ -43,7 +45,7 @@ namespace basecross
 
 		//選択中のボタンに出るカーソル
 		auto Cursor = ObjectFactory::Create<SpriteGeneric>(GetStage());
-		Cursor->SetSize(350.0f, 100.0f, Vec2(0.5f, 0.5f));
+		Cursor->SetSize(250.0f, 100.0f, Vec2(0.5f, 0.5f));
 		Cursor->SetPos(m_menuPosList[m_selectIndex]);
 		Cursor->SetTexture(L"Cursor");
 		Cursor->SetColor(Col4(0, 0, 0, 1));
@@ -66,21 +68,21 @@ namespace basecross
 		retryButton->SetColor(Col4(1, 1, 1, 1));
 		m_menuButton.push_back(retryButton);
 
-		//ステージセレクトに戻るボタン
-		auto toStageSelectButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
-		toStageSelectButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
-		toStageSelectButton->SetPos(Vec2(0.0f, -75.0f));
-		toStageSelectButton->SetTexture(L"Cancel");
-		toStageSelectButton->SetColor(Col4(1, 1, 1, 1));
-		m_menuButton.push_back(toStageSelectButton);
-
 		//設定ボタン
 		auto optionButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
 		optionButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
-		optionButton->SetPos(Vec2(0.0f, -150.0f));
-		optionButton->SetTexture(L"Cancel");
+		optionButton->SetPos(Vec2(0.0f, -75.0f));
+		optionButton->SetTexture(L"Option");
 		optionButton->SetColor(Col4(1, 1, 1, 1));
 		m_menuButton.push_back(optionButton);
+
+		//ステージセレクトに戻るボタン
+		auto toStageSelectButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
+		toStageSelectButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
+		toStageSelectButton->SetPos(Vec2(0.0f, -150.0f));
+		toStageSelectButton->SetTexture(L"ToStageSelect");
+		toStageSelectButton->SetColor(Col4(1, 1, 1, 1));
+		m_menuButton.push_back(toStageSelectButton);
 
 		//タイトルボタン
 		auto titleButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
@@ -164,7 +166,7 @@ namespace basecross
 				break;
 			case 2:
 				//リトライ
-				PostEvent(0.1f, GetThis<PauseMenu>(), scene, L"ToProtoStage");
+				PostEvent(0.50f, GetThis<PauseMenu>(), scene, L"ToProtoStage");
 				break;
 			case 3:
 				//設定
