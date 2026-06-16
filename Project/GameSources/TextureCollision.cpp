@@ -7,45 +7,25 @@
 #include "Project.h"
 #include <filesystem>
 namespace basecross {
-	string DebugLog::m_SaveFilename = "";
-	void DebugLog::Save() {
-		if (m_SaveFilename.empty()) {
-			auto now = chrono::system_clock::now();
-			time_t t = chrono::system_clock::to_time_t(now);
 
-			tm localTime = {};
-			localtime_s(&localTime, &t);
+	void Contour::CalcAABB() {
+		for (auto& triangle : m_Triangles) {
+			for (int i = 0; i < 3; i++) {
+				m_Aabb.m_Min.x = min(m_Aabb.m_Min.x, triangle[i].x);
+				m_Aabb.m_Min.y = min(m_Aabb.m_Min.y, triangle[i].y);
+				m_Aabb.m_Min.z = min(m_Aabb.m_Min.z, triangle[i].z);
 
-			stringstream ss;
-
-			ss << put_time(&localTime,"%Y_%m_%d_%H_%M_%S");
-
-			m_SaveFilename = "Log_" + ss.str() + ".txt";
-		}
-
-		ofstream ofs(m_SaveFilename, ios::binary | ios::app);
-
-		auto device = App::GetApp()->GetInputDevice();
-		auto pad = device.GetControlerVec()[0];
-		if (ofs) {
-			ofs.write(reinterpret_cast<const char*>(&pad), sizeof(pad));
+				m_Aabb.m_Max.x = max(m_Aabb.m_Max.x, triangle[i].x);
+				m_Aabb.m_Max.y = max(m_Aabb.m_Max.y, triangle[i].y);
+				m_Aabb.m_Max.z = max(m_Aabb.m_Max.z, triangle[i].z);
+			}
+			
 		}
 	}
-	vector<CONTROLER_STATE> DebugLog::Load(const string& filename) {
-		ifstream ifs(filename, ios::binary);
-		if (!ifs) return {};
-
-		vector<CONTROLER_STATE> states;
-		CONTROLER_STATE state;
-		while (ifs.read(reinterpret_cast<char*>(&state), sizeof(state))) {
-			states.push_back(state);
-		}
-
-		return states;
-	}
-
-
-	TextureCollision::TextureCollision(const shared_ptr<GameObject>& ptr) : Component(ptr) {}
+	TextureCollision::TextureCollision(const shared_ptr<GameObject>& ptr) : 
+		Component(ptr),m_EffectSpawnInterval(0.1f),m_EffectSpawnTimer(0.0f),
+		m_CB{}
+	{}
 
 	void TextureCollision::OnCreate() {
 		ID3D11Texture2D* texResource = nullptr;
@@ -62,7 +42,7 @@ namespace basecross {
 		m_CB.width = m_TextureContext.m_SizeX;
 		m_CB.height = m_TextureContext.m_SizeY;
 
-		m_Labels.resize(textureFullSize);
+		m_Labels.resize(textureFullSize,-1);
 
 		m_LabelBuffer = make_shared<BufferContext>(sizeof(int), textureFullSize);
 		if(!m_LabelBuffer->CreateUAV()) {
@@ -119,17 +99,29 @@ namespace basecross {
 		InkConnectChecker::Get().AddTextureCollision(GetThis<TextureCollision>());
 	}
 	void TextureCollision::OnUpdate() {
-
+		m_EffectSpawnTimer += App::GetApp()->GetElapsedTime();
+		if (m_EffectSpawnTimer < m_EffectSpawnInterval) return;
+		m_EffectSpawnTimer = 0;
+		const int spawnEffectCount = 5;
+		for (int i = 0; i < m_ElectricContourIndices.size(); i++) {
+			if (m_ElectricContourIndices[i] == 0)continue;
+			int handle = -1;
+			for (int j = 0; j < spawnEffectCount; j++) {
+				int spwanTriangle = rand() % m_Contour[i].m_Triangles.size();
+				Vec3 position = m_Contour[i].m_Triangles[spwanTriangle].GetCenter();
+				EffectManager::g_Instance->PlayEffect(handle, L"ELECTRIC", position, 0);
+			}
+		}
 	}
 	void TextureCollision::OnDraw() {
 		for (int i = 0; i < m_ElectricContourIndices.size(); i++) {
 			if (m_ElectricContourIndices[i] != 0) {
-				DrawContour(i);
+				//DrawContour(i);
 			}
 		}
 	}
 	void TextureCollision::DrawContour(int index) {
-		for (auto& triangle : m_ContourTriangles[index]) {
+		for (auto& triangle : m_Contour[index].m_Triangles) {
 			Vec3 dir = triangle.m_B - triangle.m_A;
 			float length = dir.length();
 			DrawLine(triangle.m_A, dir.normalize(), length);
@@ -148,7 +140,7 @@ namespace basecross {
 			index = 0;
 		}
 	}
-	void TextureCollision::AddElectricIndex(int index) {
+	void TextureCollision::SetElectricfield(int index) {
 		if (m_ElectricContourIndices.size() <= index) return;
 		m_ElectricContourIndices[index] = 1;
 	}
@@ -169,85 +161,60 @@ namespace basecross {
 		(*texture)->GetDesc(desc);
 	}
 
-	void TextureCollision::CreateAlphaMask() {
-		m_MaskShader->Execute();
-	}
 	void TextureCollision::ProcessCPU() {
-		auto start = std::chrono::steady_clock::now();
-		int labelSize = (int)m_Labels.size();
-
-		vector<char> checkList(labelSize, 0);
-		vector<int> groupId;
-		groupId.reserve(20);
-		for (int i = 0; i < labelSize; i++) {
-			int& label = m_Labels[i];
-			if (label != -1 && checkList[label] != 1) {
-				groupId.push_back(i);
-				checkList[label] = 1;
-			}
-		}
 		//メッシュ作成
-		CreateTextureMesh(m_Labels, groupId, m_TextureContext);
+		//CreateTextureMesh(m_Labels, m_TextureContext);
 	}
 	void TextureCollision::ProcessGPU() {
 		//カラーマスク抽出
 		m_MaskShader->Execute();
-
-		m_UnionFind1Shader->Execute();
-		swap(m_LabelBuffer, m_LabelOutputBuffer);
-
-		const int maxLoop = 32;
-		for (int i = 0; i < maxLoop; i++) {
-			m_UnionFind2Shader->SetSRV(0, m_LabelBuffer->m_SRV.Get());
-			m_UnionFind2Shader->SetUAV(0, m_LabelOutputBuffer->m_UAV.Get());
-			m_UnionFind2Shader->Execute();
-			swap(m_LabelBuffer, m_LabelOutputBuffer);
-		}
 		m_LabelBuffer->ReadBuffer(m_Labels.data());
 	}
-	void TextureCollision::CreateMeshCollision() {
-		ProcessGPU();
-		ProcessCPU();
-	}
 
-	void TextureCollision::CreateTextureMesh(vector<int>& cells, vector<int>& groupIDs, CoordContext& context) {
-		auto start = std::chrono::steady_clock::now();
 
-		vector<Vec2> findIndices = {
-			{ 0,-1},{  1,-1},{ 1,0},{ 1, 1},
-			{ 0, 1},{ -1, 1},{-1,0},{-1,-1},
-		};
-		cv::Mat mask(context.m_SizeY, context.m_SizeX, CV_8UC1);
-		for (int i = 0; i < cells.size(); i++) {
-			int x = i % context.m_SizeX;
-			int y = i / context.m_SizeX;
-			mask.at<uchar>(y, x) =
-				cells[i] != -1 ? 255 : 0;
+	void TextureCollision::CreateMeshInThread(const TextureSnapShot& snapShot, vector<Contour>& result) {
+		cv::Mat mask(snapShot.m_Context.m_SizeY, snapShot.m_Context.m_SizeX, CV_8UC1);
+		for (UINT y = 0; y < snapShot.m_Context.m_SizeY; y++) {
+			uchar* row = mask.ptr<uchar>(y);
+
+			UINT offset = y * snapShot.m_Context.m_SizeX;
+			for (UINT x = 0; x < snapShot.m_Context.m_SizeX; x++) {
+				row[x] = snapShot.m_Data[offset + x] != -1 ? 255 : 0;
+			}
 		}
 
 		vector<vector<cv::Point>> contours;
-		cv::findContours(mask, contours, m_ContourHierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
+		vector<cv::Vec4i> contourHierarchy;
+		cv::findContours(mask, contours, contourHierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
+
 		m_CvContours.clear();
 		m_CvContours.resize(contours.size());
-		for (int i = 0; i < contours.size();i++) {
-			double epsilon = 1.0f;//cv::arcLength(contours[i], true) * 0.005f;
+		for (int i = 0; i < contours.size(); i++) {
+			double epsilon = 1.0f;
 			cv::approxPolyDP(contours[i], m_CvContours[i], epsilon, true);
 		}
 
-		m_ContourTriangles.clear();
-		m_ContourTriangles.reserve(m_CvContours.size());
+		size_t contourSize = m_CvContours.size();
+		result.clear();
+
 		using p2tStorage = vector<unique_ptr<p2t::Point>>;
 		using p2tPolyline = vector<p2t::Point*>;
 		vector<p2tStorage> storages;
-		storages.resize(m_CvContours.size());
 		vector<p2tPolyline> polylines;
-		polylines.resize(m_CvContours.size());
-		for (int i = 0; i < m_CvContours.size(); i++) {
-			double area = cv::contourArea(m_CvContours[i], true);
-			bool isHole = m_ContourHierarchy[i][3] != -1;
 
-			if ( (area < 0 && !isHole ) || (area > 0 && isHole)) {
-				std::reverse(m_CvContours[i].begin(),m_CvContours[i].end());
+		storages.resize(contourSize);
+		polylines.resize(contourSize);
+		result.reserve(contourSize);
+
+		int contourCount = 0;
+		for (size_t i = 0, size = m_CvContours.size(); i < size; i++) {
+			double area = cv::contourArea(m_CvContours[i], true);
+			bool isHole = contourHierarchy[i][3] != -1;
+			if (!isHole) {
+				contourCount++;
+			}
+			if ((area < 0 && !isHole) || (area > 0 && isHole)) {
+				std::reverse(m_CvContours[i].begin(), m_CvContours[i].end());
 			}
 			for (auto& point : m_CvContours[i]) {
 				if (!storages[i].empty()) {
@@ -256,62 +223,54 @@ namespace basecross {
 						continue;
 					}
 				}
-				
+
 				storages[i].push_back(make_unique<p2t::Point>((double)point.x, (double)point.y));
 				polylines[i].push_back(storages[i].back().get());
-			}	
+			}
 		}
-		for (int i = 0; i < m_CvContours.size(); i++) {
-			if (m_ContourHierarchy[i][3] == -1) {
+
+		for (size_t i = 0, size = m_CvContours.size(); i < size; i++) {
+			if (contourHierarchy[i][3] == -1) {
 				if (polylines[i].size() < 3) continue;
 
 				p2t::CDT cdt(polylines[i]);
 
-				int hole = m_ContourHierarchy[i][2];
+				int hole = contourHierarchy[i][2];
 				while (hole != -1) {
 					const double MIN_HOLE_AREA = 10.0;
-					if (polylines[hole].size() >= 3 && abs(cv::contourArea(m_CvContours[hole])) >= MIN_HOLE_AREA){
+					if (polylines[hole].size() >= 3 && abs(cv::contourArea(m_CvContours[hole])) >= MIN_HOLE_AREA) {
 						cdt.AddHole(polylines[hole]);
 					}
-					hole = m_ContourHierarchy[hole][0];
+					hole = contourHierarchy[hole][0];
 				}
-				try {
-					cdt.Triangulate();
-				}
-				catch (const std::exception& e) {
-					ofstream ofs("TriangleErrorLog.txt");
-					ofs << e.what() << endl;
-					for (auto* p : polylines[i])
-					{
-						ofs << p->x << ", " << p->y << endl;
-					}
-					hole = m_ContourHierarchy[i][2];
-					while (hole != -1) {
-						if (polylines[hole].size() >= 3) {
-							ofs << "内円" << endl;
-							for (auto* p : polylines[hole])
-							{
-								ofs << p->x << ", " << p->y << endl;
-							}
-						}
-						hole = m_ContourHierarchy[hole][0];
-					}
-					throw;
-				}
+				
+				cdt.Triangulate();
 				auto triangles = cdt.GetTriangles();
-				m_ContourTriangles.push_back(CalcContourWorldTriangle(triangles));
+
+				Contour data = Contour(CalcContourWorldTriangle(triangles,snapShot));
+				data.CalcAABB();
+				result.push_back(data);
 			}
 		}
-		m_ElectricContourIndices.resize(m_ContourTriangles.size(), 0);
 	}
 
-	vector<TRIANGLE> TextureCollision::CalcContourWorldTriangle(const vector<p2t::Triangle*>& triangles) {
+	TextureSnapShot TextureCollision::SnapShot() {
+		TextureSnapShot snapShot;
+		snapShot.m_Context = m_TextureContext;
+		snapShot.m_Data = m_Labels;
+		auto transform = GetGameObject()->GetComponent<Transform>();
+		snapShot.m_Position = transform->GetPosition();
+		snapShot.m_Scale = transform->GetScale();
+		return snapShot;
+	}
+	vector<TRIANGLE> TextureCollision::CalcContourWorldTriangle(const vector<p2t::Triangle*>& triangles, const TextureSnapShot& snapShot) {
 		vector<TRIANGLE> worldPositions;
 		worldPositions.reserve(triangles.size());
 
-		auto transform = GetGameObject()->GetComponent<Transform>();
-		Vec3 position = transform->GetPosition();
-		Vec3 scale = transform->GetScale();
+		auto& scale = snapShot.m_Scale;
+		auto& position = snapShot.m_Position;
+		auto& labels = snapShot.m_Data;
+		auto& context = snapShot.m_Context;
 
 		auto GetPosition = [&](int x, int y) {
 			if (y < 0) {
@@ -320,17 +279,17 @@ namespace basecross {
 			if (x < 0) {
 				x = 0;
 			}
-			float px = (float)x / m_TextureContext.m_SizeX;
-			float py = (float)y / m_TextureContext.m_SizeY;
+			float px = (float)x / (float)context.m_SizeX;
+			float py = (float)y / (float)context.m_SizeY;
 			Vec3 vertexPosition = Vec3((px - 0.5f) * scale.x, scale.y * 0.5f, -(py - 0.5f) * scale.z);
 
-			int vertexId = y * m_TextureContext.m_SizeX + x;
+			int vertexId = y * (int)context.m_SizeX + x;
 
-			if (x >= m_TextureContext.m_SizeX - 1 || m_Labels[vertexId + 1] == -1) {
-				vertexPosition.x += scale.x / m_TextureContext.m_SizeX;
+			if (x >= (int)context.m_SizeX - 1 || labels[vertexId + 1] == -1) {
+				vertexPosition.x += scale.x / (float)context.m_SizeX;
 			}
-			if (y >= m_TextureContext.m_SizeY - 1 || m_Labels[vertexId + m_TextureContext.m_SizeX] == -1) {
-				vertexPosition.z -= scale.z / m_TextureContext.m_SizeY;
+			if (y >= (int)context.m_SizeY - 1 || labels[vertexId + context.m_SizeX] == -1) {
+				vertexPosition.z -= scale.z / (float)context.m_SizeY;
 			}
 
 			Vec3 worldPosition = vertexPosition + position;
@@ -338,15 +297,15 @@ namespace basecross {
 			};
 
 		for (auto* triangle : triangles) {
-			
+
 			auto p1 = triangle->GetPoint(0);
 			auto p2 = triangle->GetPoint(1);
 			auto p3 = triangle->GetPoint(2);
 
 			worldPositions.push_back({
-				GetPosition(p1->x,p1->y),
-				GetPosition(p2->x,p2->y),
-				GetPosition(p3->x,p3->y),
+				GetPosition((int)p1->x,(int)p1->y),
+				GetPosition((int)p2->x,(int)p2->y),
+				GetPosition((int)p3->x,(int)p3->y),
 				Mat4x4() });
 		}
 		return worldPositions;
@@ -434,21 +393,96 @@ namespace basecross {
 		//後始末
 		Dev->InitializeStates();
 	}
+
+	void ThreadPool::Initialize(size_t numThread) {
+		m_ThreadStop = false;
+		for (size_t i = 0; i < numThread; i++)
+		{
+			m_Workers.emplace_back([this](){
+					while (true){
+						function<void()> task;
+						{
+							unique_lock lock(m_Mutex);
+
+							m_Condition.wait(lock, [this]() {
+								return m_ThreadStop || !m_Tasks.empty();
+								});
+
+							if (m_ThreadStop && m_Tasks.empty())
+								return;
+
+							task = move(m_Tasks.front());
+							m_Tasks.pop();
+						}
+						task();
+					}
+				});
+		}
+	}
+	void ThreadPool::Destory() {
+		std::lock_guard lock(m_Mutex);
+		m_ThreadStop = true;
+
+		m_Condition.notify_all();
+
+		for (auto& worker : m_Workers){
+			if (worker.joinable())
+				worker.join();
+		}
+	}
+
+	
+	void ThreadPool::Execute(function<void()> task) {
+		lock_guard lock(m_Mutex);
+		m_Tasks.push(task);
+		
+		m_Condition.notify_one();
+	}
+
+	void TextureMeshManager::DecreeseProccessCount() {
+		if (m_ProccessCount <= 0) return;
+		m_ProccessCount--;
+		if (m_ProccessCount == 0) {
+			while (!m_ResultQueue.empty()) {
+				MeshResult result;
+				{
+					lock_guard lock(m_Mutex);
+					result = m_ResultQueue.front();
+					m_ResultQueue.pop();
+				}
+
+				result.m_Ptr->ApplyThreadResult(result.m_Result);
+			}
+			InkConnectChecker::Get().CheckConnect();
+		}
+	}
+
+	void TextureMeshManager::AddReload(const shared_ptr<TextureCollision>& meshCollision) {
+		m_Pending[meshCollision.get()] = meshCollision->SnapShot();
+	}
+
 	void TextureMeshManager::Reload() {
-		vector<thread> threads;
+		if (m_ProccessCount > 0) return;
 
-		for (auto& meshCollision : m_ReloadMeshCollisions) {
-			meshCollision->ProcessGPU();
-			thread t([meshCollision]() { meshCollision->ProcessCPU(); });
-			threads.push_back(move(t));
+		m_Proccess = m_Pending;
+		m_Pending.clear();
+
+		m_ProccessCount = m_Proccess.size();
+
+		for (auto& proccess : m_Proccess) {
+			proccess.first->ProcessGPU();
+
+			ThreadPool::Get().Execute([&, proccess]() {
+				MeshResult result;
+				result.m_Ptr = proccess.first;
+				proccess.first->CreateMeshInThread(proccess.second, result.m_Result);
+				{
+					lock_guard lock(m_Mutex);
+					m_ResultQueue.push(result);
+				}
+				DecreeseProccessCount();
+				});
 		}
-
-		for (auto& t : threads) {
-			t.join();
-		}
-		m_ReloadMeshCollisions.clear();
-
-		InkConnectChecker::Get().CheckConnect();
 	}
 
 	bool InkConnectChecker::IsConnectedSupplyToInk(const OBB& supplyOBB, const AABB& supplyAABB, const vector<TRIANGLE>& triangles) {
@@ -459,7 +493,7 @@ namespace basecross {
 		}
 		return false;
 	}
-	bool InkConnectChecker::IsConnectedInkToInk(const vector<TRIANGLE>& triangles,const shared_ptr<TextureCollision>& fromCollision) {
+	bool InkConnectChecker::IsConnectedInkToInk(const vector<TRIANGLE>& triangles,const AABB& inkAABB) {
 		for (auto& weakCollision : m_TextureCollisions) {
 			auto collision = weakCollision.lock();
 			if (!collision) continue;
@@ -467,7 +501,10 @@ namespace basecross {
 			size_t contourCount = collision->GetContourCount();
 			for (int i = 0; i < contourCount; i++) {
 				if (collision->IsElectrified(i)) continue;
-				auto otherTriangles = collision->GetTriangles(i);
+				const auto& otherInkAABB = collision->GetContourAABB(i);
+				if (!HitTest::AABB_AABB(inkAABB, otherInkAABB)) continue;
+
+				const auto& otherTriangles = collision->GetTriangles(i);
 				bool isConnected = false;
 
 				for (auto& triangle : triangles) {
@@ -480,9 +517,8 @@ namespace basecross {
 					if (isConnected) break;
 				}
 				if (isConnected) {
-					collision->AddElectricIndex(i);
-					IsConnectedInkToInk(otherTriangles, collision);
-					//return true;
+					collision->SetElectricfield(i);
+					IsConnectedInkToInk(otherTriangles, otherInkAABB);
 				}
 				
 			}
@@ -493,11 +529,10 @@ namespace basecross {
 			auto portCollision = port->GetComponent<CollisionObb>();
 			auto portAABB = portCollision->GetWrappedAABB();
 			auto portOBB = portCollision->GetObb();
+
+			if (!HitTest::AABB_AABB(inkAABB, portAABB)) continue;
 			if (IsConnectedInkToPort(portOBB, portAABB, triangles)) {
 				port->GetComponent<PNTStaticDraw>()->SetDiffuse(Col4(1, 0, 1, 1));
-			}
-			else {
-				//port->GetComponent<PNTStaticDraw>()->SetDiffuse(Col4(1, 0, 0, 1));
 			}
 		}
 		return false;
@@ -524,7 +559,6 @@ namespace basecross {
 
 			collision->ClearElectricIndex();
 		}
-
 		vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> result;
 		for (auto& weakSupply : m_PowerSupplies) {
 			auto supply = weakSupply.lock();
@@ -539,12 +573,15 @@ namespace basecross {
 
 				size_t contourCount = collision->GetContourCount();
 				for (int i = 0; i < contourCount; i++) {
-					auto triangles = collision->GetTriangles(i);
+					const auto& inkAABB = collision->GetContourAABB(i);
+					if (!HitTest::AABB_AABB(supplyAABB, inkAABB)) continue;
+
+					const auto& triangles = collision->GetTriangles(i);
 					bool isConnectedSupply = IsConnectedSupplyToInk(supplyOBB, supplyAABB, triangles);
 					
 					if (isConnectedSupply) {
-						collision->AddElectricIndex(i);
-						IsConnectedInkToInk(triangles, collision);
+						collision->SetElectricfield(i);
+						IsConnectedInkToInk(triangles, inkAABB);
 					}
 				}
 			}
