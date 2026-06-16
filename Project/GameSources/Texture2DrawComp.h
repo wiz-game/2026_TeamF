@@ -5,6 +5,7 @@
 
 #pragma once
 #include "stdafx.h"
+#include "InkDrawComp.h"
 
 namespace basecross
 {
@@ -16,7 +17,7 @@ namespace basecross
 		Y_Up,	//０：Y軸向き判定
 		Z_Axis,	//１：ｚ軸向き判定
 	};
-	class Texture2DrawComp : public PNTStaticDraw
+	class Texture2DrawComp : public InkDrawComp
 	{
 
 		shared_ptr<TextureResource> m_texture;
@@ -24,7 +25,7 @@ namespace basecross
 
 	public:
 		Texture2DrawComp(const shared_ptr<GameObject>& draw) :
-			PNTStaticDraw(draw)
+			InkDrawComp(draw)
 		{
 		}
 
@@ -82,6 +83,14 @@ namespace basecross
 			//コンスタントバッファの設定
 			ID3D11Buffer* pConstantBuffer = CBSimple::GetPtr()->GetBuffer();
 			ID3D11Buffer* pNullConstantBuffer = nullptr;
+
+			//インク用コンスタントバッファ
+			inkDrawCB InkCb;
+			InkCb.Up = Vec4(0, 1, 0, 0); // 上方向ベクトルの初期化
+			pD3D11DeviceContext->UpdateSubresource(CBInk::GetPtr()->GetBuffer(), 0, nullptr, &InkCb, 0, 0);
+			ID3D11Buffer* InkResourceBuffer = CBInk::GetPtr()->GetBuffer();
+			pD3D11DeviceContext->PSSetConstantBuffers(1, 1, &InkResourceBuffer);
+
 			//頂点シェーダに渡す
 			pD3D11DeviceContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
 			//ピクセルシェーダに渡す
@@ -101,10 +110,12 @@ namespace basecross
 			//デプスステンシルステート
 			RenderState->SetDepthStencilState(pD3D11DeviceContext, GetDepthStencilState());
 
+			auto srv = GetSRV();
 			//テクスチャとサンプラー
 			if (shTex) {
 				pD3D11DeviceContext->PSSetShaderResources(0, 1, shTex->GetShaderResourceView().GetAddressOf());
 				pD3D11DeviceContext->PSSetShaderResources(2, 1, m_texture->GetShaderResourceView().GetAddressOf());
+				pD3D11DeviceContext->PSSetShaderResources(3, 1, srv.GetAddressOf());
 
 				//サンプラーを設定
 				RenderState->SetSamplerState(pD3D11DeviceContext, GetSamplerState(), 0);

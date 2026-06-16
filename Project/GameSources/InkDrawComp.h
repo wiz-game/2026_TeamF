@@ -17,6 +17,7 @@ namespace basecross
 		float textrueHeight = 0;
 	};
 
+	class Player;
 	class InkDrawComp : public PNTStaticDraw 
 	{
 		ComPtr<ID3D11Texture2D> m_texture;//インクのテクスチャ
@@ -25,17 +26,22 @@ namespace basecross
 		D3D11_VIEWPORT m_viewport;//インク描画用のビューポート
 
 		cbBrush m_brush;
+		std::shared_ptr<Player> m_player;
+
+
+		float m_defaultSize;
 
 	public:
 		InkDrawComp(const shared_ptr<GameObject>& owner) : 
-			PNTStaticDraw(owner) 
+			PNTStaticDraw(owner) ,
+			m_defaultSize(64)
 		{
 		}
 		virtual ~InkDrawComp() = default;
 		virtual void OnDraw() override;
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
-		void CreateTexture(UINT width, UINT height);
+		void CreateTexture(float scaleX, float scaleZ);
 		void InkDraw();
 		void AddPoint(const Vec3& point);
 		void ClearPoint();
@@ -44,6 +50,14 @@ namespace basecross
 			m_brush.brushSize = size;
 		}
 
+		void InkDrawStart();
+
+		void AddPointFromWorldPos(const Vec3& playerWorldPos);
+
+		ComPtr<ID3D11ShaderResourceView> GetSRV()
+		{
+			return m_textureSRV;
+		}
 
 		template<typename T_VShader, typename T_PShader>
 		void DrawStatic(const MeshPrimData& data) {
@@ -160,7 +174,7 @@ namespace basecross
 
 	DECLARE_DX11_PIXEL_SHADER(InkDrawPixelSheder)
 	DECLARE_DX11_VERTEX_SHADER(InkDrawVertexSheder, VertexPositionNormalTexture)
-	DECLARE_DX11_CONSTANT_BUFFER(CBInk, InkDrawComp)
+	DECLARE_DX11_CONSTANT_BUFFER(CBInk, inkDrawCB)
 	DECLARE_DX11_PIXEL_SHADER(InkDrawShadowPixelSheder)
 	DECLARE_DX11_VERTEX_SHADER(InkDrawShadowVertexSheder, VertexPositionNormalTexture)
 	DECLARE_DX11_PIXEL_SHADER(InkDropPixelSheder)

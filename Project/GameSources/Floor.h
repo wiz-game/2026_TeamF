@@ -7,6 +7,7 @@
 #include "stdafx.h"
 #include "PNTDXModelDraw.h"
 #include "InkDrawComp.h"
+#include "Player.h"
 
 
 namespace basecross
@@ -27,7 +28,6 @@ namespace basecross
 
 		std::shared_ptr<InkDrawComp> m_draw;
 		std::shared_ptr<Transform> m_trans;
-
 		Vec3 m_pos;
 		Vec3 m_scale;
 

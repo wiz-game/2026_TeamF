@@ -8,17 +8,35 @@
 
 Texture2D g_texture : register(t0);
 Texture2D g_texture2 : register(t2);
+Texture2D g_texture3 : register(t3);
 SamplerState g_sampler : register(s0);
 
-//cbuffer VectorBuffer : register(b0)
-//{
-//    float3 up;
-//    float3 front;
-//    float3 right;
-//}
+cbuffer VectorBuffer : register(b1)
+{
+    float3 up;
+}
+
+float4 GetInkColor(PSPNTInput input)
+{
+    float4 color = g_texture3.Sample(g_sampler, input.tex);
+    if (color.a > 0)
+    {
+        //上方向のみ
+        if (dot(input.norm, up) > 0.99f)
+        {
+            //インクの色をそのまま返す
+            return color;
+        }
+    }
+    
+    //条件に合わない場合は透明な色を返す
+    return float4(0, 0, 0, 0);
+}
+
 
 float4 main(PSPNTInput input) : SV_TARGET
 {
+    float4 color;
 	//法線ライティング
     float3 lightdir = normalize(LightDir.xyz);
     float3 N1 = normalize(input.norm);
@@ -44,7 +62,7 @@ float4 main(PSPNTInput input) : SV_TARGET
         else
         {
             // Y軸上向きを向いているか判定
-            if (dot(N1, float3(0, 1, 0)) > 0.99f)
+            if (dot(N1, up) > 0.99f)
             {
                 isFirstTexture = true;
             }
@@ -54,11 +72,19 @@ float4 main(PSPNTInput input) : SV_TARGET
     //まとめてテクスチャをサンプリング
     if(isFirstTexture)
     {
-        Light = g_texture.Sample(g_sampler, input.tex) * Light;
+        color = g_texture.Sample(g_sampler, input.tex) * Light;
     }
     else
     {
-        Light = g_texture2.Sample(g_sampler, input.tex) * Light;
+        color = g_texture2.Sample(g_sampler, input.tex) * Light;
     }
-    return Light;
+    
+    float4 inkColor = GetInkColor(input);
+    //インクの色が透明でない場合は、インクの色を乗算して反映させる
+    if (inkColor.a != 0)
+    {
+        color = inkColor * Light;
+    }
+
+    return color;
 }

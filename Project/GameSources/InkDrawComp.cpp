@@ -1,21 +1,27 @@
 #include "stdafx.h"
 #include "InkDrawComp.h"
+#include "game_controller.h"
+#include "Player.h"
 
 namespace basecross
 {
 	void InkDrawComp::OnCreate()
 	{
-		AddPoint(Vec3(0.5,0.5,0));
-
 		App::GetApp()->RegisterTexture(L"InkTest", App::GetApp()->GetDataDirWString() + L"Texture/Test/InkCollisionTest3.png");
+		m_player = GetStage()->GetSharedGameObject<Player>(L"Player");
 
 	}
 
 	void InkDrawComp::OnUpdate()
 	{
+		if (!m_player) return;
+		auto pTrans = m_player->GetComponent<Transform>();
+		auto size = m_defaultSize * 0.5f;
+		AddPointFromWorldPos(pTrans->GetWorldPosition());
+		SetBrushSize(size);
 	}
 
-	void InkDrawComp::OnDraw()
+	void InkDrawComp::InkDrawStart()
 	{
 		auto dev = App::GetApp()->GetDeviceResources();
 		auto devContext = dev->GetD3DDeviceContext();//描画するためのデバイスコンテキストの取得
@@ -25,7 +31,11 @@ namespace basecross
 		InkDraw();//インクの描画
 		dev->StartDefaultDraw();//描画前の準備
 
+	}
 
+	void InkDrawComp::OnDraw()
+	{
+		InkDrawStart();
 
 		if (GetGameObject()->GetAlphaActive()) {
 			if (!(GetBlendState() == BlendState::AlphaBlend || GetBlendState() == BlendState::Additive)) {
@@ -49,8 +59,11 @@ namespace basecross
 
 	}
 
-	void InkDrawComp::CreateTexture(UINT width, UINT height)
+	void InkDrawComp::CreateTexture(float scaleX, float scaleZ)
 	{
+		UINT width = (UINT)m_defaultSize * scaleX;
+		UINT height = (UINT)m_defaultSize * scaleZ;
+
 		D3D11_TEXTURE2D_DESC desc{};
 		desc.Width = width;
 		desc.Height = height;
@@ -88,6 +101,7 @@ namespace basecross
 
 	void InkDrawComp::InkDraw()
 	{
+		if (m_brush.count <= 0) return;
 		auto meshResource = App::GetApp()->GetResource<MeshResource>(L"DEFAULT_PT_SQUARE_2");
 		MeshPrimData data = meshResource->GetMashData();
 		auto Dev = App::GetApp()->GetDeviceResources();
@@ -144,13 +158,46 @@ namespace basecross
 			return;
 		}
 		
-		m_brush.centerPositions[m_brush.count] = Vec4(point);
+		m_brush.centerPositions[m_brush.count] = Vec4(point.x,point.y,0,0);
 		m_brush.count += 1;
 	}
 
 	void InkDrawComp::ClearPoint()
 	{
 		m_brush.count = 0;
+	}
+
+	void InkDrawComp::AddPointFromWorldPos(const Vec3& playerWorldPos)
+	{
+		//自分自身のトランスフォームを取得
+		auto trans = GetGameObject()->GetComponent<Transform>();
+		if (!trans) return;
+
+		//自分自身の位置とスケールを習得
+		Vec3 myPos = trans->GetPosition();
+		Vec3 myScale = trans->GetScale();
+
+		//オブジェクトの中心から距離を計算
+		float relativeX = playerWorldPos.x - myPos.x;
+		float relativeZ = playerWorldPos.z - myPos.z;
+
+		//cubeメッシュのサイズを考慮して一律の範囲に収める
+		float localX = relativeX / myScale.x;
+		float localZ = relativeZ / myScale.z;
+
+		//テクスチャの座標（0.0～1.0）に変換
+		float uvX = localX + 0.5f;
+		float uvY = 1.0f - (localZ + 0.5f);//上下を反転させる
+
+		//プレイヤーが自分の上に乗っている場合のみインクを塗る
+		if (uvX >= 0.0f && uvX <= 1.0f && uvY >= 0.0f && uvY <= 1.0f)
+		{
+			if (GameController::IsPressed_ButtonDown())
+			{
+				AddPoint(Vec3(uvX, uvY, 0.0f));
+
+			}
+		}
 	}
 
 

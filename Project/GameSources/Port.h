@@ -30,12 +30,15 @@ namespace basecross {
 
 		void OnCreate() override; // 初期設定用の関数(UnityのStartメソッドに相当)
 		void OnUpdate() override; // 毎フレーム実行される関数(UnityのUpdateメソッドに相当)
-		void OnCollisionEnter(std::shared_ptr<GameObject>& obj)override;
-		void OnCollisionExit(std::shared_ptr<GameObject>& obj)override;	//インクとの当たり判定
 
 		bool GetConnect() const
 		{
 			return isConnect;
+		}
+
+		void SetConnect(bool connect)
+		{
+			isConnect = connect;
 		}
 
 		void SetisPower(bool power)

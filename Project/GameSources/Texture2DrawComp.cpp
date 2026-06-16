@@ -9,6 +9,8 @@ namespace basecross
 {
 	void Texture2DrawComp::OnDraw()
 	{
+		InkDrawStart();
+
 		if (GetGameObject()->GetAlphaActive()) {
 			if (!(GetBlendState() == BlendState::AlphaBlend || GetBlendState() == BlendState::Additive)) {
 				SetBlendState(BlendState::AlphaBlend);

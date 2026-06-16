@@ -18,8 +18,8 @@ float4 main(VS_Output input) : SV_TARGET
     float3 center = brushCenters[0].xyz;
     float2 diff = input.uv - center.xy;
     //テクスチャのピクセル数に合わせる
-    //diff.x *= textrueWidth;
-    //diff.y *= textrueHeiht;
+    diff.x *= textrueWidth;
+    diff.y *= textrueHeiht;
     float dist = length(diff);
     
     if(dist < brushSize)
