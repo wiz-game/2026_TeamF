@@ -108,7 +108,7 @@ namespace basecross{
 		//m_transform->SetQuaternion(rotY);
 
 		OnMove();
-		DropInk();
+		//DropInk();
 		OnDied();
 
 		if (m_pos.y <= -10.0f)

@@ -7,8 +7,8 @@
 #include "Project.h"
 #include "InkDrawComponentTest.h"
 namespace basecross{
-	IMPLEMENT_DX11_VERTEX_SHADER(InkDropVertexShader, App::GetApp()->GetShadersPath() + L"InkVertexShader.cso")
-	IMPLEMENT_DX11_PIXEL_SHADER(InkDropPixelShader, App::GetApp()->GetShadersPath() + L"InkPixelShader.cso")
+	IMPLEMENT_DX11_VERTEX_SHADER(InkDropVertexShaderTest, App::GetApp()->GetShadersPath() + L"InkVertexShader.cso")
+	IMPLEMENT_DX11_PIXEL_SHADER(InkDropPixelShaderTest, App::GetApp()->GetShadersPath() + L"InkPixelShader.cso")
 	IMPLEMENT_DX11_PIXEL_SHADER(PNTInkPixelShader, App::GetApp()->GetShadersPath() + L"PSPNTInkDraw.cso")
 	IMPLEMENT_DX11_VERTEX_SHADER(PNTInkVertexShader, App::GetApp()->GetShadersPath() + L"VSPNTInkDraw.cso")
 	IMPLEMENT_DX11_CONSTANT_BUFFER(CBBrushData);
@@ -151,11 +151,11 @@ namespace basecross{
 		//各オブジェクト共通処理
 		//シェーダの設定
 		//頂点シェーダ
-		pD3D11DeviceContext->VSSetShader(InkDropVertexShader::GetPtr()->GetShader(), nullptr, 0);
+		pD3D11DeviceContext->VSSetShader(InkDropVertexShaderTest::GetPtr()->GetShader(), nullptr, 0);
 		//インプットレイアウトの設定
-		pD3D11DeviceContext->IASetInputLayout(InkDropVertexShader::GetPtr()->GetInputLayout());
+		pD3D11DeviceContext->IASetInputLayout(InkDropVertexShaderTest::GetPtr()->GetInputLayout());
 		//ピクセルシェーダ
-		pD3D11DeviceContext->PSSetShader(InkDropPixelShader::GetPtr()->GetShader(), nullptr, 0);
+		pD3D11DeviceContext->PSSetShader(InkDropPixelShaderTest::GetPtr()->GetShader(), nullptr, 0);
 		//個別処理
 		for (int i = 0; i < m_DrawPoints.size(); i++) {
 			m_Brush.m_Centers[i] = m_DrawPoints[i];
