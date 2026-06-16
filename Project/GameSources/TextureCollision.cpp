@@ -102,7 +102,7 @@ namespace basecross {
 		m_EffectSpawnTimer += App::GetApp()->GetElapsedTime();
 		if (m_EffectSpawnTimer < m_EffectSpawnInterval) return;
 		m_EffectSpawnTimer = 0;
-		const int spawnEffectCount = 3;
+		const int spawnEffectCount = 5;
 		for (int i = 0; i < m_ElectricContourIndices.size(); i++) {
 			if (m_ElectricContourIndices[i] == 0)continue;
 			int handle = -1;
@@ -435,7 +435,7 @@ namespace basecross {
 	void ThreadPool::Execute(function<void()> task) {
 		lock_guard lock(m_Mutex);
 		m_Tasks.push(task);
-
+		
 		m_Condition.notify_one();
 	}
 
@@ -519,7 +519,6 @@ namespace basecross {
 				if (isConnected) {
 					collision->SetElectricfield(i);
 					IsConnectedInkToInk(otherTriangles, otherInkAABB);
-					//return true;
 				}
 				
 			}
@@ -534,9 +533,6 @@ namespace basecross {
 			if (!HitTest::AABB_AABB(inkAABB, portAABB)) continue;
 			if (IsConnectedInkToPort(portOBB, portAABB, triangles)) {
 				port->GetComponent<PNTStaticDraw>()->SetDiffuse(Col4(1, 0, 1, 1));
-			}
-			else {
-				//port->GetComponent<PNTStaticDraw>()->SetDiffuse(Col4(1, 0, 0, 1));
 			}
 		}
 		return false;
