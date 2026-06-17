@@ -3,168 +3,183 @@
 @brief インク消去機体
 */
 
+
 #include "stdafx.h"
 #include "Project.h"
 
 namespace basecross {
 
-	//初期化
-	void ErEnemy::OnCreate()
-	{
-		BaseEnemy::OnCreate();
-		BaseEnemy::m_transform->SetPosition(0, 0, 0);
-		BaseEnemy::m_draw->SetDiffuse(Col4(0.0f, 0.0f, 1.0f, 1.0f));
+    void ErEnemy::OnCreate()
+    {
+        BaseEnemy::OnCreate();
 
-		m_state = State::Erase;
-	}
+        m_transform->SetPosition(0, 0, 0);
+        m_draw->SetDiffuse(Col4(0, 0, 1, 1));
 
-	void ErEnemy::OnUpdate()
-	{
-		BaseEnemy::OnUpdate();
+        m_origin = m_transform->GetPosition();
+        m_targetPos = m_origin;
+    }
 
-		switch (m_state)
-		{
-		case State::Erase:
-			UpdateInkErase();
-			break;
+    // ============================================================
+    // メイン制御（超シンプル）
+    // ============================================================
+    void ErEnemy::OnUpdate()
+    {
+        UpdateGroundRay();
 
-		case State::Patrol:
-			UpdatePatrol();
-			break;
-		}
-	}
+        auto stage = GetStage();
 
-	void ErEnemy::UpdateInkErase()
-	{
-		auto stage = GetStage();
+        std::vector<std::shared_ptr<GameObject>> inkObjs;
+        stage->GetUsedTagObjectVec(L"InkCloud", inkObjs);
 
-		std::vector<std::shared_ptr<GameObject>> inkObjs;
-		stage->GetUsedTagObjectVec(L"InkCloud", inkObjs);
-
-		Vec3 pos = m_transform->GetPosition();
-
-		if (inkObjs.empty())
-		{
-			m_state = State::Patrol;
-			return;
-		}
-
-		float minDist = FLT_MAX;
-		std::shared_ptr<InkCloud> targetInk = nullptr;
-
-		for (auto& obj : inkObjs)
-		{
-			auto ink = std::dynamic_pointer_cast<InkCloud>(obj);
-			if (!ink) continue;
-
-			Vec3 inkPos = ink->GetComponent<Transform>()->GetPosition();
-
-			float diff = (inkPos - pos).length();
-
-			if (diff < minDist)
-			{
-				minDist = diff;
-				targetInk = ink;
-			}
-		}
-
-		if (!targetInk)return;
-
-		Vec3 inkPos = targetInk->GetComponent<Transform>()->GetPosition();
-		Vec3 toTarget = inkPos - pos;
-		toTarget.y = 0.0f;
-
-		float distance = toTarget.length();
-
-		if (distance < 1.0f)
-		{
-			OutputDebugStringA("Hit Ink\n");
-			targetInk->DestroyAllInk();
-			targetInk->DestroyGameObject();
-
-			return;
-		}
-
-		if (distance > 0.001f)
-		{
-			toTarget.normalize();
-		}
-
-		float delta = App::GetApp()->GetElapsedTime();
-		pos += toTarget * m_moveSpeed * delta;
-
-		if (m_isGround)
-		{
-			pos.y = m_groundY + m_heightOffset;
-		}
-
-		m_transform->SetPosition(pos);
-
-	}
+        auto target = FindNearestInk(inkObjs);
 
 
+        if (!m_targetInk)
+        {
+            m_targetInk = FindNearestInk(inkObjs);
+        }
 
-	void ErEnemy::UpdatePatrol()
-	{
-		auto stage = GetStage();
 
-		std::vector<std::shared_ptr<GameObject>> inkObjs;
-		stage->GetUsedTagObjectVec(L"InkCloud", inkObjs);
+        if (m_targetInk)
+        {
+            UpdateErase(m_targetInk);
+        }
+        else
+        {
+            UpdatePatrol();
+        }
 
-		if (!inkObjs.empty())
-		{
-			m_state = State::Erase;
-			return;
-		}
+        wchar_t buf[256];
+        swprintf(buf, 256, L"target:(%.2f, %.2f, %.2f)\n",
+            m_targetPos.x, m_targetPos.y, m_targetPos.z);
+        OutputDebugStringW(buf);
 
-		auto delta = App::GetApp()->GetElapsedTime();
-		Vec3 pos = m_transform->GetPosition();
+    }
 
-		if (m_isGround)
-		{
-			pos.y = m_groundY + m_heightOffset;
-		}
 
-		Vec3 toTarget = m_targetPos - pos;
-		toTarget.y = 0.0f;
+    // ============================================================
+    // ターゲット取得
+    // ============================================================
+    std::shared_ptr<InkCloud> ErEnemy::FindNearestInk(
+        const std::vector<std::shared_ptr<GameObject>>& objs)
+    {
+        Vec3 pos = m_transform->GetPosition();
 
-		float distance = toTarget.length();
+        float minDist = FLT_MAX;
+        std::shared_ptr<InkCloud> result = nullptr;
 
-		// 到達判定は広めに
-		if (distance < 0.5f)
-		{
-			float randX, randZ;
+        for (auto& obj : objs)
+        {
+            auto ink = std::dynamic_pointer_cast<InkCloud>(obj);
+            if (!ink) continue;
 
-			// 近すぎるターゲットを防ぐ
-			do {
-				randX = ((float)rand() / RAND_MAX - 0.5f) * 2.0f * m_range;
-				randZ = ((float)rand() / RAND_MAX - 0.5f) * 2.0f * m_range;
+            auto trans = ink->GetComponent<Transform>();
+            if (!trans) continue;
 
-				m_targetPos = Vec3(
-					m_origin.x + randX,
-					m_origin.y,
-					m_origin.z + randZ
-				);
+            float dist = (trans->GetPosition() - pos).length();
 
-			} while ((m_targetPos - pos).length() < 1.0f);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                result = ink;
+            }
+        }
 
-			return; // このフレームでは動かない
-		}
+        return result;
+    }
 
-		// 正規化は安全チェック付き
-		if (distance > 0.001f) {
-			toTarget.normalize();
-		}
 
-		pos += toTarget * m_moveSpeed * delta;
+    // ============================================================
+    // インク消去
+    // ============================================================
+    void ErEnemy::UpdateErase(std::shared_ptr<InkCloud> target)
+    {
+        Vec3 pos = m_transform->GetPosition();
 
-		if (m_isGround)
-		{
-			pos.y = m_groundY + m_heightOffset;
-		}
+        auto trans = target->GetComponent<Transform>();
+        if (!trans) return;
 
-		m_transform->SetPosition(pos);
+        Vec3 targetPos = trans->GetPosition();
 
-	}
+        Vec3 toTarget = targetPos - pos;
+        toTarget.y = 0.0f;
+
+        float distance = toTarget.length();
+
+        // 到達
+
+        if (distance < 0.5f)
+        {
+            target->DestroyAllInk();
+            target->DestroyGameObject();
+
+            m_targetInk = nullptr; // ← 超重要
+
+            return;
+        }
+
+
+        if (distance > 0.001f)
+            toTarget.normalize();
+
+        float delta = App::GetApp()->GetElapsedTime();
+        pos += toTarget * m_moveSpeed * delta;
+
+        if (m_isGround)
+        {
+            pos.y = m_groundY + m_heightOffset;
+        }
+
+        m_transform->SetPosition(pos);
+    }
+
+
+    // ============================================================
+    // 徘徊
+    // ============================================================
+    void ErEnemy::UpdatePatrol()
+    {
+        auto delta = App::GetApp()->GetElapsedTime();
+        Vec3 pos = m_transform->GetPosition();
+
+        Vec3 toTarget = m_targetPos - pos;
+        toTarget.y = 0.0f;
+
+        float distance = toTarget.length();
+
+        if (distance < 0.5f)
+        {
+            float randX, randZ;
+
+            do {
+                randX = ((float)rand() / RAND_MAX - 0.5f) * 2.0f * m_range;
+                randZ = ((float)rand() / RAND_MAX - 0.5f) * 2.0f * m_range;
+
+                m_targetPos = Vec3(
+                    m_origin.x + randX,
+                    m_origin.y,
+                    m_origin.z + randZ
+                );
+
+            } while ((m_targetPos - pos).length() < 1.0f);
+
+            return;
+        }
+
+        if (distance > 0.001f)
+            toTarget.normalize();
+
+        pos += toTarget * m_moveSpeed * delta;
+
+        if (m_isGround)
+        {
+            pos.y = m_groundY + m_heightOffset;
+        }
+
+        m_transform->SetPosition(pos);
+    }
+
 }
+
 //end basecross
