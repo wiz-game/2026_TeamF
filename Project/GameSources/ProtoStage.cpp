@@ -48,6 +48,7 @@ namespace basecross {
 
 			wstring texPath = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
 			app->RegisterTexture(L"BUTTON_AB", texPath + L"Button_AB.png");
+			app->RegisterTexture(L"INK_MOZI", texPath + L"Ink_mozi.png");
 
 
 			//プレイヤー作成
@@ -205,6 +206,7 @@ namespace basecross {
 			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0), Vec3(-3.0f, -0.5f, 12.5f), moveFloorX_4);
 
 			auto UISprite = AddGameObject<Sprite>(L"BUTTON_AB", Vec3(630,-380,0), Vec2(250,200), Anchor::BottomRight);
+			auto inkprite = AddGameObject<Sprite>(L"INK_MOZI", Vec3(-550, 380, 0), Vec2(100, 30), Anchor::Center);
 
 			//スカイボックス
 			AddGameObject<SkyCube>(L"SKYBOX");
