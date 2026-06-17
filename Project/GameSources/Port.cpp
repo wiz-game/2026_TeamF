@@ -29,6 +29,7 @@ namespace basecross {
 		m_transform->SetRotation(m_rot);
 
 		m_staticDraw = AddComponent<Texture2DrawComp>();
+		m_staticDraw->CreateTexture(m_scale.x, m_scale.z);
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
 		m_staticDraw->SetDiffuse(Col4(0, 0, 0, 1));
 		m_staticDraw->SetTextureResource(L"Port");
@@ -39,6 +40,8 @@ namespace basecross {
 		coll->SetAfterCollision(AfterCollision::None);
 
 		InkConnectChecker::Get().AddPort(GetThis<Port>());
+
+		AddComponent<TextureCollision>();
 	}
 
 	// 更新処理

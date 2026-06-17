@@ -79,9 +79,9 @@ namespace basecross {
 		m_UnionFind2Shader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
 
 		auto object = GetGameObject();
-		auto draw = object->GetComponent<InkDrawComponentTest>();
+		auto draw = object->GetComponent<InkDrawComp>();
 		//srv‚©‚çî•ñ‚ðŽæ“¾
-		auto srv = draw->GetInkShaderResourceView();
+		auto srv = draw->GetSRV();
 
 		//SRV,UAV‚ÌêŠ‚ð‰¼‚ÅŽæ‚Á‚Ä‚¨‚­
 		m_MaskShader->AddSRV(srv.Get());
@@ -115,9 +115,7 @@ namespace basecross {
 	}
 	void TextureCollision::OnDraw() {
 		for (int i = 0; i < m_ElectricContourIndices.size(); i++) {
-			if (m_ElectricContourIndices[i] != 0) {
-				//DrawContour(i);
-			}
+			DrawContour(i);
 		}
 	}
 	void TextureCollision::DrawContour(int index) {
@@ -150,10 +148,10 @@ namespace basecross {
 	}
 	void TextureCollision::GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc) {
 		auto object = GetGameObject();
-		auto draw = object->GetComponent<InkDrawComponentTest>(false);
+		auto draw = object->GetComponent<InkDrawComp>(false);
 		if (!draw) return;
 		//srv‚©‚çî•ñ‚ðŽæ“¾
-		auto srv = draw->GetInkShaderResourceView().Get();
+		auto srv = draw->GetSRV().Get();
 		ID3D11Resource* gpuResource = nullptr;
 		srv->GetResource(&gpuResource);
 
@@ -532,7 +530,8 @@ namespace basecross {
 
 			if (!HitTest::AABB_AABB(inkAABB, portAABB)) continue;
 			if (IsConnectedInkToPort(portOBB, portAABB, triangles)) {
-				port->GetComponent<PNTStaticDraw>()->SetDiffuse(Col4(1, 0, 1, 1));
+				port->SetConnect(true);
+				//port->GetComponent<PNTStaticDraw>()->SetDiffuse(Col4(1, 0, 1, 1));
 			}
 		}
 		return false;
@@ -558,6 +557,12 @@ namespace basecross {
 			if (!collision) continue;
 
 			collision->ClearElectricIndex();
+		}
+		for (auto& weakPort : m_Ports) {
+			auto port = weakPort.lock();
+			if (!port) continue;
+
+			port->SetConnect(false);
 		}
 		vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> result;
 		for (auto& weakSupply : m_PowerSupplies) {

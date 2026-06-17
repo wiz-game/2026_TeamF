@@ -23,7 +23,15 @@ namespace basecross{
 		app->RegisterTexture(L"SKYBOX", mediaPath + L"Texture/SkyBox/SkyBox.png");
 		app->RegisterTexture(L"PLAYER", mediaPath + L"Texture/Player.png");
 
+		vector<VertexPositionColor> vertices = {
+			{{0.0f,0.0f,0.0f},{1,1,1}},
+			{{0.0f,0.0f,1.0f},{1,1,1}}
+		};
+		vector<uint16_t> indices{
+			0,1
+		};
 
+		App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
 	}
 
 	void Scene::OnCreate(){

@@ -8,7 +8,6 @@
 #include "Singleton.h"
 #include "ComputeShader.h"
 #include "ProjectShader.h"
-#include "InkDrawComponentTest.h"
 #include "Port.h"
 #include <opencv2/opencv.hpp>
 #include <poly2tri/poly2tri.h>
@@ -126,12 +125,7 @@ namespace basecross{
 		void Reload();
 	};
 
-
-	struct ConnectContext {
-		TextureCollision* m_Owner;
-		UINT m_ContourID;
-	};
-
+	class PowerSupply;
 	class InkConnectChecker : public SingletonBase<InkConnectChecker> {
 		friend class SingletonBase<InkConnectChecker>;
 

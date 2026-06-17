@@ -2,6 +2,7 @@
 #include "InkDrawComp.h"
 #include "game_controller.h"
 #include "Player.h"
+#include "TextureCollision.h"
 
 namespace basecross
 {
@@ -9,7 +10,7 @@ namespace basecross
 	{
 		App::GetApp()->RegisterTexture(L"InkTest", App::GetApp()->GetDataDirWString() + L"Texture/Test/InkCollisionTest3.png");
 		m_player = GetStage()->GetSharedGameObject<Player>(L"Player");
-
+		
 	}
 
 	void InkDrawComp::OnUpdate()
@@ -148,6 +149,8 @@ namespace basecross
 		pD3D11DeviceContext->RSSetState(RenderState->GetCullBack());
 		//描画
 		pD3D11DeviceContext->DrawIndexed(data.m_NumIndicis, 0, 0);
+
+		TextureMeshManager::Get().AddReload(GetGameObject()->GetComponent<TextureCollision>());
 		ClearPoint();
 
 	}
