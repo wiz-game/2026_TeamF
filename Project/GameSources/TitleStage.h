@@ -17,6 +17,7 @@ namespace basecross {
 		shared_ptr<Sprite> m_Title;
 		void CreateViewLight(); //ƒrƒ…[‚Ìì¬
 		void RegisterResources();
+		std::shared_ptr<SoundItem> m_titleBGM;	//BGM
 	public:
 		//\’z‚Æ”jŠü
 		TitleStage() :Stage(){}

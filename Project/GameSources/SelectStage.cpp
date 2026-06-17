@@ -43,6 +43,10 @@ namespace basecross {
 			m_MaxSelectIndex = GameProgressManager::Get().GetStageSize();
 			m_SelectingSprite = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-25.0f, 50.0f, 0.0f), Vec2(50, 100), 2);
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
+
+			//BGM再生
+			if (!m_sSelectBGM)
+				m_sSelectBGM = SoundManager::Get().PlayBGM(L"STAGESELECT", 0.60f);
 		}
 		catch (...) {
 			throw;
@@ -66,6 +70,10 @@ namespace basecross {
 		}
 		//選択決定(A)
 		if (GameController::IsTrigger_ButtonDown()) {
+			//BGMを止める
+			SoundManager::Get().StopBGM();
+			m_sSelectBGM = nullptr;
+
 			PostEvent(0.2f, GetThis<SelectStage>(), app->GetScene<Scene>(), L"ToGameStage" + to_wstring(m_SelectIndex));
 		}
 	}

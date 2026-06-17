@@ -55,7 +55,7 @@ namespace basecross
 		//続ける(continue)ボタン
 		auto continueButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
 		continueButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
-		continueButton->SetPos(Vec2(0.0f, 75.0f));
+		continueButton->SetPos(m_menuPosList[0]);
 		continueButton->SetTexture(L"Cancel");
 		continueButton->SetColor(Col4(1, 1, 1, 1));
 		m_menuButton.push_back(continueButton);
@@ -63,7 +63,7 @@ namespace basecross
 		//リトライボタン
 		auto retryButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
 		retryButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
-		retryButton->SetPos(Vec2(0.0f, 0.0f));
+		retryButton->SetPos(m_menuPosList[1]);
 		retryButton->SetTexture(L"Restart");
 		retryButton->SetColor(Col4(1, 1, 1, 1));
 		m_menuButton.push_back(retryButton);
@@ -71,7 +71,7 @@ namespace basecross
 		//設定ボタン
 		auto optionButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
 		optionButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
-		optionButton->SetPos(Vec2(0.0f, -75.0f));
+		optionButton->SetPos(m_menuPosList[2]);
 		optionButton->SetTexture(L"Option");
 		optionButton->SetColor(Col4(1, 1, 1, 1));
 		m_menuButton.push_back(optionButton);
@@ -79,7 +79,7 @@ namespace basecross
 		//ステージセレクトに戻るボタン
 		auto toStageSelectButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
 		toStageSelectButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
-		toStageSelectButton->SetPos(Vec2(0.0f, -150.0f));
+		toStageSelectButton->SetPos(m_menuPosList[3]);
 		toStageSelectButton->SetTexture(L"ToStageSelect");
 		toStageSelectButton->SetColor(Col4(1, 1, 1, 1));
 		m_menuButton.push_back(toStageSelectButton);
@@ -87,7 +87,7 @@ namespace basecross
 		//タイトルボタン
 		auto titleButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
 		titleButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
-		titleButton->SetPos(Vec2(0.0f, -225.0f));
+		titleButton->SetPos(m_menuPosList[4]);
 		titleButton->SetTexture(L"ToTitle");
 		titleButton->SetColor(Col4(1, 1, 1, 1));
 		m_menuButton.push_back(titleButton);
@@ -163,6 +163,7 @@ namespace basecross
 			{
 			case 1:
 				//コンティニュー
+
 				break;
 			case 2:
 				//リトライ
@@ -170,6 +171,7 @@ namespace basecross
 				break;
 			case 3:
 				//設定
+
 				break;
 			case 4:
 				//ステージセレクトヘ

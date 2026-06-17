@@ -39,6 +39,10 @@ namespace basecross {
 
 			m_Title = AddGameObject<Sprite>(L"TITLE", Vec3(), Vec2(600, 200), Anchor::Center);
 			m_Title->MatchToScreenSize();
+
+			//BGM再生
+			if (!m_titleBGM)
+				m_titleBGM = SoundManager::Get().PlayBGM(L"TITLEBGM", 0.60f);
 		}
 		catch (...) {
 			throw;
@@ -54,6 +58,11 @@ namespace basecross {
 		//Aボタン
 		if (GameController::IsTrigger_ButtonDown()) {
 			auto& scene = app->GetScene<Scene>();
+
+			//BGMを止める
+			SoundManager::Get().StopBGM();
+			m_titleBGM = nullptr;
+
 			PostEvent(0.0f, GetThis<TitleStage>(), scene, L"ToSelectStage");
 		}
 	}

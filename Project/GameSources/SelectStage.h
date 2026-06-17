@@ -18,6 +18,7 @@ namespace basecross {
 
 		//テスト用
 		shared_ptr<NumberSprite> m_SelectingSprite;
+		std::shared_ptr<SoundItem> m_sSelectBGM;	//BGM
 		void CreateViewLight(); //ビューの作成
 		void RegisterResources();
 	public:
