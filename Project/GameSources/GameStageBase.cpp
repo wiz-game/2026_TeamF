@@ -35,6 +35,14 @@ namespace basecross {
 		App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
 	}
 
+	GameStageBase::GameStageBase
+	(
+		const int& stageNum
+	):
+		m_StageNum(stageNum)
+	{
+	}
+
 	GameStageBase::~GameStageBase()
 	{
 		SoundManager::Get().StopBGM();
@@ -242,15 +250,6 @@ namespace basecross {
 
 		return params;
 	}
-	
-	//GameStageBase::SUTRUCT_BoxParams GameStageBase::BoxParams(JsonObject& json, STRUCT_BaseParams params)
-	//{
-	//	SUTRUCT_BoxParams boxParams;
-	//	BaseParams(json, params);
-	//	boxParams.HP = json.At<JsonNumber>(L"hp")->GetIntValue();
-	//	boxParams.MaxHP = json.At<JsonNumber>(L"max_hp")->GetIntValue();
-	//	return boxParams;
-	//}
 
 	void GameStageBase::AddStaticObj(STRUCT_BaseParams params)
 	{
