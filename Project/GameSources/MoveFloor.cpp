@@ -34,7 +34,7 @@ namespace basecross {
 		m_staticDraw->SetDiffuse(Col4(1, 1, 1, 1));
 		m_staticDraw->SetTextureResource(L"MoveFloor");
 		m_staticDraw->SetTexture2(L"Black");
-		//m_staticDraw->SetOwnShadowActive(true);
+		m_staticDraw->SetOwnShadowActive(true);
 
 		auto shadowMap = AddComponent<Shadowmap>();
 		shadowMap->SetMeshResource(L"DEFAULT_CUBE");

@@ -159,7 +159,7 @@ namespace basecross
 			return;
 		}
 		
-		m_brush.centerPositions[m_brush.count] = Vec4(point.x,point.y,0,0);
+		m_brush.centerPositions[m_brush.count] = Vec4(point.x,point.y,point.z,0);
 		m_brush.count += 1;
 	}
 
@@ -190,14 +190,20 @@ namespace basecross
 		float uvX = localX + 0.5f;
 		float uvY = 1.0f - (localZ + 0.5f);//上下を反転させる
 
-		//プレイヤーが自分の上に乗っている場合のみインクを塗る
-		if (uvX >= 0.0f && uvX <= 1.0f && uvY >= 0.0f && uvY <= 1.0f)
+		//プレイヤーが自分の上に乗っているかつ、
+		// Playerと接触している場合のみインクを塗る
+		if (uvX >= 0.0f && uvX <= 1.0f && uvY >= 0.0f && uvY <= 1.0f && playerWorldPos.y < 0.5f)
 		{
 			if (GameController::IsPressed_ButtonDown())
 			{
 				AddPoint(Vec3(uvX, uvY, 0.0f));
 				m_player->DecreaseInk();
 			}
+			if (GameController::IsPressed_ButtonRight())
+			{
+				AddPoint(Vec3(uvX, uvY, 1.0f));
+			}
+
 		}
 	}
 

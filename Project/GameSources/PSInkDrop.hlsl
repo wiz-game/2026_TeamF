@@ -21,10 +21,18 @@ float4 main(VS_Output input) : SV_TARGET
     diff.x *= textrueWidth;
     diff.y *= textrueHeiht;
     float dist = length(diff);
-    
+        
     if(dist < brushSize)
     {
-        return float4(0, 0, 0, 1); //ブラシの内側は黒で描画
+        //center.z = 0 なら「塗る」、１なら「消す」
+        if(center.z == 0.0f)
+        {
+            return float4(0, 0, 0, 1); //ブラシの内側は黒で描画
+        }
+        else if(center.z == 1.0f)
+        {
+            return float4(0, 0, 0, 0);
+        }
     }
     discard; //ブラシの外側は描画しない
     return float4(0, 0, 0, 0);
