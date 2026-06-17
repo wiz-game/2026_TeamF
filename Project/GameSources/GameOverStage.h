@@ -20,7 +20,7 @@ namespace basecross {
 
 		InputHandler<GameOverStage> m_InputHandler; // 入力ハンドラー
 		shared_ptr<Sprite> m_sprite;
-
+		shared_ptr<Sprite> m_sprite_Button;
 
 	public:
 		//構築と破棄
@@ -33,7 +33,7 @@ namespace basecross {
 		virtual void OnDraw()override; //描画
 		void OnPushA(); // Aボタンが押されたときの処理
 		void RegisterResources();
-
+		void ButtonMove();
 	};
 }
 //end basecross

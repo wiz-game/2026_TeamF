@@ -30,6 +30,8 @@ namespace basecross {
 		auto& app = App::GetApp();
 		wstring mediaPath = App::GetApp()->GetDataDirWString();
 		app->RegisterTexture(L"GameOver", mediaPath + L"Texture/GameOverStage.png");
+		app->RegisterTexture(L"BUTTON_A", mediaPath + L"Texture/Button_A.png");
+
 	}
 
 	void GameOverStage::OnCreate() {
@@ -44,14 +46,12 @@ namespace basecross {
 			CreateViewLight();
 
 			m_sprite = AddGameObject<Sprite>(L"GameOver", Vec3(), Vec2(1280, 840), Anchor::Center);
-
+			m_sprite_Button = AddGameObject<Sprite>(L"BUTTON_A", Vec3(0,-250,0), Vec2(610, 200), Anchor::Center);
 		}
 		catch (...) {
 			throw;
 		}
 	}
-
-
 
 	void GameOverStage::OnUpdate()
 	{
@@ -69,6 +69,10 @@ namespace basecross {
 		{
 			PostEvent(0.3f, GetThis<GameOverStage>(), scene, L"ToTitleStage");
 		}
+	}
+
+	void GameOverStage::ButtonMove()
+	{
 	}
 
 	void GameOverStage::OnUpdate2()

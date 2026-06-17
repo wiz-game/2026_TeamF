@@ -30,6 +30,7 @@ namespace basecross {
 		auto& app = App::GetApp();
 		wstring mediaPath = App::GetApp()->GetDataDirWString();
 		app->RegisterTexture(L"GoalStage", mediaPath + L"Texture/GoalStage.png");
+		app->RegisterTexture(L"BUTTON_A", mediaPath + L"Texture/Button_A.png");
 	}
 
 	void GoalStage::OnCreate() {
@@ -40,7 +41,8 @@ namespace basecross {
 			RegisterResources();
 
 			m_sprite = AddGameObject<Sprite>(L"GoalStage", Vec3(), Vec2(1280, 840), Anchor::Center);
-			
+			m_sprite_Button = AddGameObject<Sprite>(L"BUTTON_A", Vec3(0, -250, 0), Vec2(610, 200), Anchor::Center);
+
 			float ink = scene->GetResultInk();
 			float maxInk = scene->GetMaxInk();
 
