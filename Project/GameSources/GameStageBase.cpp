@@ -9,7 +9,6 @@
 #include "GameStageBase.h"
 
 namespace basecross {
-
 	//ビューとライトの作成
 	void GameStageBase::CreateViewLight() {
 		// カメラの設定
@@ -36,8 +35,30 @@ namespace basecross {
 		App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
 	}
 
+	GameStageBase::GameStageBase
+	(
+		const int& stageNum
+	):
+		m_StageNum(stageNum)
+	{
+	}
+
+	GameStageBase::~GameStageBase()
+	{
+		SoundManager::Get().StopBGM();
+	}
+
 	void GameStageBase::OnCreate()
 	{
+
+		AddGameObject<EffectManager>();
+
+		wstring mediaPath = App::GetApp()->GetDataDirWString();
+		EffectManager::g_Instance->RegisterResource(L"ELECTRIC", mediaPath + L"Effects/Electric1.efk");
+
+		//BGM再生
+		SoundManager::Get().PlayBGM(L"GAMESTAGE_BGM", m_BGMVolume);
+
 		CreateViewLight();
 		StageDateRoad(m_StageNum);
 	}
@@ -229,15 +250,6 @@ namespace basecross {
 
 		return params;
 	}
-	
-	//GameStageBase::SUTRUCT_BoxParams GameStageBase::BoxParams(JsonObject& json, STRUCT_BaseParams params)
-	//{
-	//	SUTRUCT_BoxParams boxParams;
-	//	BaseParams(json, params);
-	//	boxParams.HP = json.At<JsonNumber>(L"hp")->GetIntValue();
-	//	boxParams.MaxHP = json.At<JsonNumber>(L"max_hp")->GetIntValue();
-	//	return boxParams;
-	//}
 
 	void GameStageBase::AddStaticObj(STRUCT_BaseParams params)
 	{
@@ -273,7 +285,6 @@ namespace basecross {
 
 	void GameStageBase::AddGoalObj(STRUCT_ElectricObjBaseParams params)
 	{
-		if (!Map_Ports[params.PortID])return;
 		AddGameObject<Goal>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID]);
 	}
 

@@ -31,11 +31,20 @@ namespace basecross {
 		wstring mediaPath = App::GetApp()->GetDataDirWString();
 		app->RegisterTexture(L"TITLE", mediaPath + L"Texture/Title1.png");
 	}
+
+	TitleStage::~TitleStage()
+	{
+		SoundManager::Get().StopBGM();
+	}
+
 	void TitleStage::OnCreate() {
 		try {
 			auto& app = App::GetApp();
 			CreateViewLight();
 			RegisterResources();
+
+			//BGM再生
+			SoundManager::Get().PlayBGM(L"TITLE_BGM", m_BGMVolume);
 
 			m_Title = AddGameObject<Sprite>(L"TITLE", Vec3(), Vec2(600, 200), Anchor::Center);
 			m_Title->MatchToScreenSize();

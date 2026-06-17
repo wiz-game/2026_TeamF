@@ -82,20 +82,20 @@ namespace basecross{
 			ResetActiveStage<GameOverStage>();
 		}
 
-		//仮で設定。後々やり方変える
-		/*if (event->m_MsgStr == L"ToGameStage0") {
+		if (event->m_MsgStr == L"ToGameStage-1") {
 			ResetActiveStage<ProtoStage>();
-		}*/
+		}
 		if (event->m_MsgStr == L"ToGameStage1") {
-			ResetActiveStage<GameStage>();
+			ResetActiveStage<GameStageBase>(1);
 		}
 		//if (event->m_MsgStr == L"ToGameStage2") {
-		//	ResetActiveStage<GoalStage>();
+		//	ResetActiveStage<GameStageBase>(2);
 		//}
 		if (event->m_MsgStr == L"ToGameStage0") {
 			ResetActiveStage<ProtoStage>();
 			//ResetActiveStage<GameStageBase>();
 		}
+
 
 
 		if (event->m_MsgStr == L"ToTitleStage") {
