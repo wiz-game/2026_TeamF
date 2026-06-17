@@ -87,18 +87,14 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyCube.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameOverStage.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)PauseMenu.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)SpriteGeneric.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Texture2DrawComp.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UpperDrawComp.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PauseMenu.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SpriteGeneric.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h" />
@@ -151,13 +147,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h">
       <Filter>Stage</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h">
-      <Filter>Stage</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameProgressManager.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h">
-      <Filter>Sprite</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
@@ -169,9 +159,6 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStageBase.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Box.h">
       <Filter>Object</Filter>
     </ClInclude>
@@ -187,12 +174,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyCube.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameOverStage.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)PauseMenu.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)SpriteGeneric.h">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h" />
@@ -202,5 +183,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoorAxis.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)UpperDrawComp.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PauseMenu.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SpriteGeneric.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h" />
   </ItemGroup>
 </Project>

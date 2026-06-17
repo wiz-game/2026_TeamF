@@ -159,7 +159,7 @@ namespace basecross
 			return;
 		}
 		
-		m_brush.centerPositions[m_brush.count] = Vec4(point.x,point.y,0,0);
+		m_brush.centerPositions[m_brush.count] = Vec4(point.x,point.y,point.z,0);
 		m_brush.count += 1;
 	}
 
@@ -199,6 +199,11 @@ namespace basecross
 				AddPoint(Vec3(uvX, uvY, 0.0f));
 				m_player->DecreaseInk();
 			}
+			if (GameController::IsPressed_ButtonRight())
+			{
+				AddPoint(Vec3(uvX, uvY, 1.0f));
+			}
+
 		}
 	}
 
