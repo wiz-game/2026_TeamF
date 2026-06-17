@@ -17,6 +17,8 @@ namespace basecross {
 		void RegisterResources();
 
 		shared_ptr<Sprite> m_sprite;
+		shared_ptr<Sprite> m_sprite_Button;
+
 		InputHandler<GoalStage> m_InputHandler; // 入力ハンドラー
 
 	public:

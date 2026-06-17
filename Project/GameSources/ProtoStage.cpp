@@ -46,6 +46,10 @@ namespace basecross {
 			wstring mediaPath = App::GetApp()->GetDataDirWString();
 			EffectManager::g_Instance->RegisterResource(L"ELECTRIC", mediaPath + L"Effects/Electric1.efk");
 
+			wstring texPath = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+			app->RegisterTexture(L"BUTTON_AB", texPath + L"Button_AB.png");
+
+
 			//プレイヤー作成
 			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3(),float(20.0f));
 			SetSharedGameObject(L"player", m_Player);
@@ -200,6 +204,7 @@ namespace basecross {
 
 			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0), Vec3(-3.0f, -0.5f, 12.5f), moveFloorX_4);
 
+			auto UISprite = AddGameObject<Sprite>(L"BUTTON_AB", Vec3(630,-380,0), Vec2(250,200), Anchor::BottomRight);
 
 			//スカイボックス
 			AddGameObject<SkyCube>(L"SKYBOX");
