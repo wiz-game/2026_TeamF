@@ -26,22 +26,32 @@ namespace basecross {
 		auto light = CreateLight<MultiLight>();
 		light->SetDefaultLighting(); //デフォルトのライティングを指定
 	}
+	void GameOverStage::RegisterResources() {
+		auto& app = App::GetApp();
+		wstring mediaPath = App::GetApp()->GetDataDirWString();
+		app->RegisterTexture(L"GameOver", mediaPath + L"Texture/GameOverStage.png");
+	}
 
 	void GameOverStage::OnCreate() {
 		try {
 			auto& app = App::GetApp();
 
+			RegisterResources();
 			// JoltPhysicsを初期化する
 			//m_jphManger.Initialize();
 
 			//ビューとライトの作成
 			CreateViewLight();
 
+			m_sprite = AddGameObject<Sprite>(L"GameOver", Vec3(), Vec2(1280, 840), Anchor::Center);
+
 		}
 		catch (...) {
 			throw;
 		}
 	}
+
+
 
 	void GameOverStage::OnUpdate()
 	{
@@ -54,7 +64,6 @@ namespace basecross {
 
 		auto CntlVec = app->GetInputDevice().GetControlerVec();
 
-		scene->SetDebugString(L"GameOverStage		Player is Ink == 0 !!! \n Abutton -> TitleStage");
 
 		if (CntlVec[0].wPressedButtons && XINPUT_GAMEPAD_A)
 		{
