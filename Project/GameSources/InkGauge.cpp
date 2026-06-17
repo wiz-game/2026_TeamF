@@ -16,7 +16,7 @@ namespace basecross
 		if (m_player) m_maxInk = m_player->GetMaxInk();
 
 		float ink = m_currentInk / m_maxInk;
-		m_width = m_maxInk * 10 * ink;
+		m_width = m_maxInk * 20 * ink;
 		m_vertices =
 		{
 			{Vec3(m_offsetPos.x, m_offsetPos.y, 0), m_color,Vec2(0, 0)},
@@ -82,7 +82,7 @@ namespace basecross
 
 		float ink = m_currentInk / m_maxInk;
 
-		m_width = m_maxInk * 10 * 2 * ink;
+		m_width = m_maxInk * 20 * 2 * ink;
 		m_vertices =
 		{
 			{Vec3(m_offsetPos.x, m_offsetPos.y, 0), m_color,Vec2(0, 0)},
