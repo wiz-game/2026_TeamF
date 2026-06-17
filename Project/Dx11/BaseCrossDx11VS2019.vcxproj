@@ -100,7 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>JPH_PROFILE_ENABLED;JPH_DEBUG_RENDERER;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED;JPH_DISABLE_CUSTOM_ALLOCATOR;JPH_OBJECT_STREAM;_HAS_STD_BYTE=0;NDEBUG;_WINDOWS;P2T_STATIC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)External\SDL3\include;$(SolutionDir)External\poly2tri;$(SolutionDir)External\openCV;$(SolutionDir)External\Jolt\include\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)External\poly2tri;$(SolutionDir)External\openCV;$(SolutionDir)External\SDL3\include;$(SolutionDir)External\Jolt\include\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
