@@ -18,7 +18,6 @@ namespace basecross {
 
 	SelectStage::~SelectStage()
 	{
-		SoundManager::Get().StopBGM();
 	}
 
 	//ビューとライトの作成
@@ -60,7 +59,7 @@ namespace basecross {
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
 
 			//BGM再生
-			SoundManager::Get().PlayBGM(L"TITLE_BGM", m_BGMVolume);
+			SoundManager::Get().PlayBGM(L"STAGESELECT_BGM", m_BGMVolume);
 
 
 

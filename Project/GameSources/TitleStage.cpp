@@ -34,7 +34,6 @@ namespace basecross {
 
 	TitleStage::~TitleStage()
 	{
-		SoundManager::Get().StopBGM();
 	}
 
 	void TitleStage::OnCreate() {

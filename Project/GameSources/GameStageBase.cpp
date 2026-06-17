@@ -45,7 +45,6 @@ namespace basecross {
 
 	GameStageBase::~GameStageBase()
 	{
-		SoundManager::Get().StopBGM();
 	}
 
 	void GameStageBase::OnCreate()
