@@ -3,91 +3,73 @@
 @brief インク消去機体
 */
 
+
 #include "stdafx.h"
 #include "Project.h"
 
 namespace basecross {
 
-	//初期化
-	void ErEnemy::OnCreate()
-	{
-		BaseEnemy::OnCreate();
-		BaseEnemy::m_transform->SetPosition(0, 0, 0);
-		BaseEnemy::m_draw->SetDiffuse(Col4(0.0f, 0.0f, 1.0f, 1.0f));
-
-		m_state = State::Patrol;
-	}
-
-	void ErEnemy::OnUpdate()
-	{
-
-		UpdateGroundRay();
-
-		auto stage = GetStage();
-
-		std::vector<std::shared_ptr<GameObject>> inkObjs;
-		stage->GetUsedTagObjectVec(L"InkCloud", inkObjs);
-
-		std::shared_ptr<InkCloud> target = FindNearestInk(inkObjs);
-
-		if (target)
-		{
-			UpdateErase(target);
-		}
-		else
-		{
-			UpdatePatrol();
-		}
-
-	}
-
-    void ErEnemy::UpdateInkErase(std::shared_ptr<InkCloud> target)
+    void ErEnemy::OnCreate()
     {
-		Vec3 pos = m_transform->GetPosition();
-		Vec3 targetPos = target->GetComponent<Transform>()->GetPosition();
+        BaseEnemy::OnCreate();
 
-		Vec3 toTarget = targetPos - pos;
-		toTarget.y = 0.0f;
+        m_transform->SetPosition(0, 0, 0);
+        m_draw->SetDiffuse(Col4(0, 0, 1, 1));
 
-		float distance = toTarget.length();
+        m_origin = m_transform->GetPosition();
+        m_targetPos = m_origin;
+    }
 
-		if (distance < 0.5f)
-		{
-			target->DestroyAllInk();
-			target->DestroyGameObject();
-			return;
-		}
+    // ============================================================
+    // メイン制御（超シンプル）
+    // ============================================================
+    void ErEnemy::OnUpdate()
+    {
+        UpdateGroundRay();
 
-		if (distance > 0.001f)
-			toTarget.normalize();
+        auto stage = GetStage();
 
-		float delta = App::GetApp()->GetElapsedTime();
-		pos += toTarget * m_moveSpeed * delta;
+        std::vector<std::shared_ptr<GameObject>> inkObjs;
+        stage->GetUsedTagObjectVec(L"InkCloud", inkObjs);
 
-		m_transform->SetPosition(pos);
+        auto target = FindNearestInk(inkObjs);
+
+
+        if (!m_targetInk)
+        {
+            m_targetInk = FindNearestInk(inkObjs);
+        }
+
+
+        if (m_targetInk)
+        {
+            UpdateErase(m_targetInk);
+        }
+        else
+        {
+            UpdatePatrol();
+        }
+
+        wchar_t buf[256];
+        swprintf(buf, 256, L"target:(%.2f, %.2f, %.2f)\n",
+            m_targetPos.x, m_targetPos.y, m_targetPos.z);
+        OutputDebugStringW(buf);
 
     }
 
-	void ErEnemy::UpdatePatrol()
-	{
 
-		if (m_justErased)
-		{
-			m_justErased = false;
-			return;
-		}
-
-		auto stage = GetStage();
-
-		std::vector<std::shared_ptr<GameObject>> inkObjs;
-		stage->GetUsedTagObjectVec(L"InkCloud", inkObjs);
-
+    // ============================================================
+    // ターゲット取得
+    // ============================================================
+    std::shared_ptr<InkCloud> ErEnemy::FindNearestInk(
+        const std::vector<std::shared_ptr<GameObject>>& objs)
+    {
         Vec3 pos = m_transform->GetPosition();
 
-        std::shared_ptr<InkCloud> candidate = nullptr;
         float minDist = FLT_MAX;
+        std::shared_ptr<InkCloud> result = nullptr;
 
-        for (auto& obj : inkObjs)
+        for (auto& obj : objs)
         {
             auto ink = std::dynamic_pointer_cast<InkCloud>(obj);
             if (!ink) continue;
@@ -96,64 +78,108 @@ namespace basecross {
             if (!trans) continue;
 
             float dist = (trans->GetPosition() - pos).length();
+
             if (dist < minDist)
             {
                 minDist = dist;
-                candidate = ink;
+                result = ink;
             }
         }
 
-        // ★ここが核心
-        if (candidate)
+        return result;
+    }
+
+
+    // ============================================================
+    // インク消去
+    // ============================================================
+    void ErEnemy::UpdateErase(std::shared_ptr<InkCloud> target)
+    {
+        Vec3 pos = m_transform->GetPosition();
+
+        auto trans = target->GetComponent<Transform>();
+        if (!trans) return;
+
+        Vec3 targetPos = trans->GetPosition();
+
+        Vec3 toTarget = targetPos - pos;
+        toTarget.y = 0.0f;
+
+        float distance = toTarget.length();
+
+        // 到達
+
+        if (distance < 0.5f)
         {
-            m_targetInk = candidate;     // 先にターゲット確保
-            m_state = State::Erase;      // その後遷移
+            target->DestroyAllInk();
+            target->DestroyGameObject();
+
+            m_targetInk = nullptr; // ← 超重要
+
             return;
         }
 
 
-		auto delta = App::GetApp()->GetElapsedTime();
+        if (distance > 0.001f)
+            toTarget.normalize();
 
-		Vec3 toTarget = m_targetPos - pos;
-		toTarget.y = 0.0f;
+        float delta = App::GetApp()->GetElapsedTime();
+        pos += toTarget * m_moveSpeed * delta;
 
-		float distance = toTarget.length();
+        if (m_isGround)
+        {
+            pos.y = m_groundY + m_heightOffset;
+        }
 
-		// 到達判定は広めに
-		if (distance < 0.5f)
-		{
-			float randX, randZ;
+        m_transform->SetPosition(pos);
+    }
 
-			// 近すぎるターゲットを防ぐ
-			do {
-				randX = ((float)rand() / RAND_MAX - 0.5f) * 2.0f * m_range;
-				randZ = ((float)rand() / RAND_MAX - 0.5f) * 2.0f * m_range;
 
-				m_targetPos = Vec3(
-					m_origin.x + randX,
-					m_origin.y,
-					m_origin.z + randZ
-				);
+    // ============================================================
+    // 徘徊
+    // ============================================================
+    void ErEnemy::UpdatePatrol()
+    {
+        auto delta = App::GetApp()->GetElapsedTime();
+        Vec3 pos = m_transform->GetPosition();
 
-			} while ((m_targetPos - pos).length() < 1.0f);
+        Vec3 toTarget = m_targetPos - pos;
+        toTarget.y = 0.0f;
 
-			return; // このフレームでは動かない
-		}
+        float distance = toTarget.length();
 
-		// 正規化は安全チェック付き
-		if (distance > 0.001f) {
-			toTarget.normalize();
-		}
+        if (distance < 0.5f)
+        {
+            float randX, randZ;
 
-		pos += toTarget * m_moveSpeed * delta;
+            do {
+                randX = ((float)rand() / RAND_MAX - 0.5f) * 2.0f * m_range;
+                randZ = ((float)rand() / RAND_MAX - 0.5f) * 2.0f * m_range;
 
-		if (m_isGround)
-		{
-			pos.y = m_groundY + m_heightOffset;
-		}
+                m_targetPos = Vec3(
+                    m_origin.x + randX,
+                    m_origin.y,
+                    m_origin.z + randZ
+                );
 
-		m_transform->SetPosition(pos);
+            } while ((m_targetPos - pos).length() < 1.0f);
 
-	}
+            return;
+        }
+
+        if (distance > 0.001f)
+            toTarget.normalize();
+
+        pos += toTarget * m_moveSpeed * delta;
+
+        if (m_isGround)
+        {
+            pos.y = m_groundY + m_heightOffset;
+        }
+
+        m_transform->SetPosition(pos);
+    }
+
 }
+
 //end basecross
