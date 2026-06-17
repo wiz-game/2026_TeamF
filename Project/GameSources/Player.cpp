@@ -64,7 +64,7 @@ namespace basecross{
 
 		SetAlphaActive(true);
 		//m_draw->SetDiffuse(Col4(0, 0, 0, 1.0f));
-		m_draw->SetEmissive(Col4(0, 0, 0, 1.0f));
+		m_draw->SetEmissive(Col4(0.80f, 0.80f, 0.80f, 1.0f));
 
 		auto cc = AddComponent<CharacterController>();
 		//CharacterController::Settings settings;
@@ -206,7 +206,7 @@ namespace basecross{
 
 			//cc->SetLinearVelocity(m_moveSpeed * m_velocity * m_moveDir);
 			if (!m_MoveSound) {
-				m_MoveSound = SoundManager::Get().PlayLoopSE(L"PLAYER_MOVE", 0.5f);
+				m_MoveSound = SoundManager::Get().PlayLoopSE(L"PLAYER_MOVE", 0.75f);
 			}
 		}
 		else {
@@ -227,14 +227,10 @@ namespace basecross{
 			m_velocity *= m_accel;
 
 		//転がす処理
-		if (m_isGround)
-		{
-			m_rotAngle.x += m_velocity.x * m_moveSpeed * 0.10f;
-			m_rotAngle.y = 0;
-			m_rotAngle.z += m_velocity.z * m_moveSpeed * 0.10f;
-			//m_transform->SetRotation(m_rotAngle);
-			
-		}
+		m_rotAngle.x += m_velocity.z * m_moveSpeed * 0.10f;
+		m_rotAngle.y = 0;
+		m_rotAngle.z += m_velocity.x * m_moveSpeed * 0.10f;
+		m_transform->SetRotation(m_rotAngle);
 
 		m_pos.x += m_moveSpeed * m_velocity.x * delta;
 		m_pos.z += m_moveSpeed * m_velocity.z * delta;

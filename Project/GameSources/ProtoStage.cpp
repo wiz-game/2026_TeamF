@@ -60,6 +60,10 @@ namespace basecross {
 			auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
 			mainCamera->SetTarget(m_Player);
 
+			//BGM再生
+			if(!m_stageBGM)
+				m_stageBGM = SoundManager::Get().PlayBGM(L"STAGE", 0.55f);
+
 			//UI作成
 			auto gaugeBack = AddGameObject<GaugeBack>();
 			auto gauge = AddGameObject<InkGauge>();
@@ -219,9 +223,15 @@ namespace basecross {
 		auto& pad = device.GetControlerVec()[0];
 		GameController::Update();
 
+		bool pause = m_pauseMenu->GetPause();
+		//m_isPause = pause;
+
 		if (pad.wPressedButtons & XINPUT_GAMEPAD_START)
 		{
-			Pause(!m_isPause);
+			m_pauseMenu->SetPause(!pause);
+			Pause(!pause);
+			//BGMを中断
+			SoundManager::Get().PauseBGM(!pause);
 		}
 
 		if (IsPause())
@@ -243,8 +253,14 @@ namespace basecross {
 		}
 	}
 
+	bool ProtoStage::IsPause() const
+	{
+		return m_pauseMenu->GetPause() && m_pauseMenu;
+	}
+
 	void ProtoStage::Pause(bool isPause)
 	{
+		bool pause = m_pauseMenu->GetPause();
 		m_isPause = isPause;
 
 		auto objs = GetGameObjectVec();

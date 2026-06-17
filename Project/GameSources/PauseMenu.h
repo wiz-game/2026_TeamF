@@ -11,6 +11,7 @@ namespace basecross
 		std::vector<Vec2> m_menuPosList;
 		std::shared_ptr<SpriteGeneric> m_menuCursor;
 
+		bool m_isPause = false;
 		int m_selectMenu;	//選択中のメニュー
 		int m_menuNum;		//メニュー数
 		bool m_lock;
@@ -37,5 +38,15 @@ namespace basecross
 		void OnDraw()override;
 
 		void SelectMenu();
+
+		void SetPause(bool isPause)
+		{
+			m_isPause = isPause;
+		}
+
+		bool GetPause()
+		{
+			return m_isPause;
+		}
 	};
 }

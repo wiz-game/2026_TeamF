@@ -1,6 +1,6 @@
 ///*!
 //@file GameStage.h
-//@brief ƒQ[ƒ€ƒXƒe[ƒW
+//@brief ï¿½Qï¿½[ï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½W
 //*/
 //
 #pragma once
@@ -9,7 +9,7 @@
 namespace basecross {
 	class NumberSprite;
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒX
+	//	ï¿½Qï¿½[ï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½Wï¿½Nï¿½ï¿½ï¿½X
 	//--------------------------------------------------------------------------------------
 	class SelectStage : public Stage
 	{
@@ -18,30 +18,31 @@ namespace basecross {
 
 		shared_ptr<Sprite> m_Title;
 
-		//ƒeƒXƒg—p
+		//ï¿½eï¿½Xï¿½gï¿½p
 		shared_ptr<NumberSprite> m_SelectingSprite;
+		std::shared_ptr<SoundItem> m_sSelectBGM;	//BGM
 
-		// ŠeƒXƒe[ƒW‚Ì‰æ‘œƒXƒvƒ‰ƒCƒg
+		// ï¿½eï¿½Xï¿½eï¿½[ï¿½Wï¿½Ì‰æ‘œï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½g
 		std::vector<std::shared_ptr<Sprite>> m_StageSprites; 
 
 
-		//BGM‚Ì‰¹—Ê
+		//BGMï¿½Ì‰ï¿½ï¿½ï¿½
 		float m_BGMVolume = 0.5f;
 
-		void CreateViewLight(); //ƒrƒ…[‚Ìì¬
+		void CreateViewLight(); //ï¿½rï¿½ï¿½ï¿½[ï¿½Ìì¬
 		void RegisterResources();
 	public:
-		//\’z‚Æ”jŠü
+		//ï¿½\ï¿½zï¿½Æ”jï¿½ï¿½
 		SelectStage();
 		virtual ~SelectStage();
 		
-		virtual void OnCreate()override; //‰Šú‰»
-		virtual void OnUpdate()override; //XV
+		virtual void OnCreate()override; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		virtual void OnUpdate()override; //ï¿½Xï¿½V
 
-		//ƒXƒe[ƒW‘I‘ğƒXƒvƒ‰ƒCƒg‚Ìì¬
+		//ï¿½Xï¿½eï¿½[ï¿½Wï¿½Iï¿½ï¿½ï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½gï¿½Ìì¬
 		void SpriteCreation();
 
-		//ƒ^ƒCƒgƒ‹ƒRƒ“ƒgƒ[ƒ‹
+		//ï¿½^ï¿½Cï¿½gï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½
 		void TitleControl();
 
 	};
