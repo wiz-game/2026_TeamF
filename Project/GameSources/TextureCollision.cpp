@@ -178,6 +178,9 @@ namespace basecross {
 			UINT offset = y * snapShot.m_Context.m_SizeX;
 			for (UINT x = 0; x < snapShot.m_Context.m_SizeX; x++) {
 				row[x] = snapShot.m_Data[offset + x] != -1 ? 255 : 0;
+				if (row[x] == 255) {
+					int checker = 0;
+				}
 			}
 		}
 
