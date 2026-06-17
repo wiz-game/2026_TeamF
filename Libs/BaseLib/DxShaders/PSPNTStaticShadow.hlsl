@@ -53,7 +53,7 @@ float4 main(PSPNTInputShadow input) : SV_TARGET
 		float margin = acos(saturate(NdotL));
 		float epsilon = 0.0001 / margin;
 
-        epsilon = 0.005f; //clamp(epsilon, 0, 0.1);
+        epsilon = clamp(epsilon, 0, 0.0001);
 
 		lighting = float(g_DepthMap.SampleCmpLevelZero(
 			g_SamplerDepthMap,
