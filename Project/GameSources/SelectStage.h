@@ -16,14 +16,8 @@ namespace basecross {
 		int m_SelectIndex;
 		int m_MaxSelectIndex;
 
-		shared_ptr<Sprite> m_Title;
-
 		//テスト用
 		shared_ptr<NumberSprite> m_SelectingSprite;
-
-		// 各ステージの画像スプライト
-		std::vector<std::shared_ptr<Sprite>> m_StageSprites; 
-
 
 		//BGMの音量
 		float m_BGMVolume = 0.5f;
@@ -37,13 +31,6 @@ namespace basecross {
 		
 		virtual void OnCreate()override; //初期化
 		virtual void OnUpdate()override; //更新
-
-		//ステージ選択スプライトの作成
-		void SpriteCreation();
-
-		//タイトルコントロール
-		void TitleControl();
-
 	};
 }
 //end basecross
