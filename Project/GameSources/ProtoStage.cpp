@@ -171,9 +171,6 @@ namespace basecross {
 			moveFloorZ.port = moveFloor_port;
 			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(7.0f, 2.5f,5.5f),  moveFloorZ);
 
-			//AddGameObject<DrEnemy>();
-			//AddGameObject<ErEnemy>();
-
 			//									Scale			Rotation		Position			portの指定
 			AddGameObject<BeltConveyor>(Vec3(2.0f, 0.1f, 5.0f), Vec3(0,0,0), Vec3(0.0f, -0.7f, 16.0f), nullptr);
 			AddGameObject<BeltConveyor>(Vec3(2.0f, 0.1f, 8.0f), Vec3(0, -XM_PIDIV2, 0), Vec3(0.0f, -0.7f, 22.0f), nullptr);

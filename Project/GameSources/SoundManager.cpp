@@ -12,6 +12,9 @@ namespace basecross {
 		RegisterSound(L"PLAYER_MOVE", L"PlayerMove.wav");
 		RegisterSound(L"ELECTRIC", L"Electric.wav");
 		RegisterSound(L"ELEVATER_MOVE", L"ElevatorMove.wav");
+		RegisterSound(L"TITLE_BGM", L"TitleBGM.wav");
+		RegisterSound(L"STAGESELECT_BGM", L"StageSelectBGM.wav");
+		RegisterSound(L"GAMESTAGE_BGM", L"GameStageBGM.wav");
 	}
 	void SoundManager::RegisterSound(const wstring& key, const wstring& fileName) {
 		wstring path = App::GetApp()->GetDataDirWString() + L"Sounds/";
