@@ -121,13 +121,16 @@ namespace basecross{
 			PostEvent(0.0f, GetThis<Player>(), scene, L"ToGameOverStage");
 		}
 
-		//scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
-		//	+ L"\n"
-		//	+ L"ink残量 : " + std::to_wstring(m_ink)
-		//	+ L"\n"
-		//	+ L"isGround : " + (m_isGround ? L"true" : L"false")
-		//	+ L"\n"
-		//	+ L" m_FloorDecision : " + (m_floorDecision ? L"Valid" : L"null"));
+		float fps = 1.0f / App::GetApp()->GetElapsedTime();
+		scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
+			+ L"\n"
+			+ L"ink残量 : " + std::to_wstring(m_ink)
+			+ L"\n"
+			+ L"isGround : " + (m_isGround ? L"true" : L"false")
+			+ L"\n"
+			+ L" m_FloorDecision : " + (m_floorDecision ? L"Valid" : L"null")
+			+ L"\n"
+			+ L"FPS : " + std::to_wstring(fps));
 	}
 
 	void Player::OnUpdate2()

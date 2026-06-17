@@ -8,6 +8,8 @@ cbuffer Brush : register(b0)
 {
     float4 brushCenters[4];
     float brushSize;
+    float textureWidth;
+    float textureHeight;
     int count;
 }
 cbuffer TimeBuffer : register(b1)
@@ -43,7 +45,11 @@ float4 main(PSInput input) : SV_TARGET
     float4 color = float4(0.0f, 0.0f, 0.0f, 0.0f);
     for (int i = 0; i < count; i++)
     {
-        float dist = distance(input.uv, brushCenters[i].xy);
+        float2 diff = input.uv - brushCenters[i].xy;
+        diff.x *= textureWidth;
+        diff.y *= textureHeight;
+        float dist = length(diff);
+
         if (dist <= brushSize)
         {
             if (brushCenters[0].z > 0.0f)
@@ -54,13 +60,7 @@ float4 main(PSInput input) : SV_TARGET
             float3 color = float3(0.0f, 0.0f, 0.0f);
             float alpha = 1.0f;
             
-            float fadeStart = brushSize * 0.8f;
-            float fadeEnd = brushSize;
-
-            float fade = 1.0 - smoothstep(fadeStart, fadeEnd, dist);
-            alpha *= fade;
-            
-            return float4(color, fade);
+            return float4(color, alpha);
         }
     }
        
