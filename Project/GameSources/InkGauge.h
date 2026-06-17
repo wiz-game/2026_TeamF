@@ -37,7 +37,7 @@ namespace basecross
 			m_width(0.0f),
 			m_height(40.0f),
 			m_unitWidth(0.0f),
-			m_offsetPos(Vec2(-550.0f,325.0f))
+			m_offsetPos(Vec2(-600.0f,325.0f))
 		{
 		}
 
@@ -78,7 +78,7 @@ namespace basecross
 			m_maxInk(0.0f),
 			m_width(0.0f),
 			m_height(40.0f),
-			m_offsetPos(Vec2(-550.0f, 325.0f))
+			m_offsetPos(Vec2(-600.0f, 325.0f))
 		{
 		}
 
