@@ -22,14 +22,14 @@ namespace basecross{
 		vector<TRIANGLE> m_Triangles;
 
 		Contour(const vector<TRIANGLE>& triangles) : m_Triangles(triangles), m_Aabb{ Vec3(numeric_limits<float>::max()),Vec3(numeric_limits<float>::lowest()) } {}
-		void CalcAABB();
+		void CalcAABB(const shared_ptr<Transform>& transform);
+		vector<TRIANGLE> GetWorldTriangles(const shared_ptr<Transform>& transform)const;
 	};
 
 	struct TextureSnapShot {
 		vector<int> m_Data;
 		CoordContext m_Context;
-		Vec3 m_Position;
-		Vec3 m_Scale;
+		shared_ptr<Transform> m_Transform;
 		vector<vector<cv::Point>> m_CvContours;
 	};
 
@@ -46,11 +46,7 @@ namespace basecross{
 		vector<vector<cv::Point>> m_CvContours;
 
 		shared_ptr<DX11ComputeShader> m_MaskShader;
-		shared_ptr<DX11ComputeShader> m_UnionFind1Shader;
-		shared_ptr<DX11ComputeShader> m_UnionFind2Shader;
 		shared_ptr<BufferContext> m_LabelBuffer;
-		shared_ptr<BufferContext> m_LabelOutputBuffer;
-		shared_ptr<BufferContext> m_ConvertFlagBuffer;
 		TextureSizeConstantData m_CB;
 
 		void GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc);
@@ -67,7 +63,7 @@ namespace basecross{
 		void ProcessCPU();
 
 		size_t GetContourCount()const { return m_Contour.size(); }
-		const vector<TRIANGLE>& GetTriangles(int index)const { return m_Contour[index].m_Triangles; }
+		vector<TRIANGLE> GetWorldTriangles(int index)const;
 		const AABB& GetContourAABB(int index)const { return m_Contour[index].m_Aabb; }
 		void DrawContour(int index);
 

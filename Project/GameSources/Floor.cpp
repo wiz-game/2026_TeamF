@@ -5,7 +5,6 @@
 
 #include "stdafx.h"
 #include "Project.h"
-#include "InkDrawComponentTest.h"
 #include "InkDrawComp.h"
 namespace basecross
 {

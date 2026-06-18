@@ -15,7 +15,7 @@ namespace basecross
 
 	void InkDrawComp::OnUpdate()
 	{
-		if (!m_player) return;
+		if (!m_player && !isInkDrow) return;
 		auto pTrans = m_player->GetComponent<Transform>();
 		auto size = m_defaultSize * 0.5f;
 		AddPointFromWorldPos(pTrans->GetWorldPosition());
@@ -25,6 +25,7 @@ namespace basecross
 
 	void InkDrawComp::InkDrawStart()
 	{
+		if (!isInkDrow) return;
 		auto dev = App::GetApp()->GetDeviceResources();
 		auto devContext = dev->GetD3DDeviceContext();//描画するためのデバイスコンテキストの取得
 
