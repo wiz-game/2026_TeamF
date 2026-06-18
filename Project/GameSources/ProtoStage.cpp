@@ -46,6 +46,11 @@ namespace basecross {
 			wstring mediaPath = App::GetApp()->GetDataDirWString();
 			EffectManager::g_Instance->RegisterResource(L"ELECTRIC", mediaPath + L"Effects/Electric1.efk");
 
+			wstring texPath = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+			app->RegisterTexture(L"BUTTON_AB", texPath + L"Button_AB.png");
+			app->RegisterTexture(L"INK_MOZI", texPath + L"Ink_mozi.png");
+
+
 			//プレイヤー作成
 			m_Player = AddGameObject<Player>(Vec3(0,1,0),Vec3(), Vec3(),float(20.0f));
 			SetSharedGameObject(L"player", m_Player);
@@ -55,6 +60,10 @@ namespace basecross {
 			auto camera = view->GetTargetCamera();
 			auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
 			mainCamera->SetTarget(m_Player);
+
+			//BGM再生
+			if(!m_stageBGM)
+				m_stageBGM = SoundManager::Get().PlayBGM(L"STAGE", 0.55f);
 
 			//UI作成
 			auto gaugeBack = AddGameObject<GaugeBack>();
@@ -108,67 +117,64 @@ namespace basecross {
 			AddGameObject<Floor>(Vec3(8, 1, 8), Vec3(0), Vec3(0.0f, -1.0f, 3.5f) );
 			AddGameObject<Floor>(Vec3(8, 1, 8), Vec3(0), Vec3(0.0f, -1.0f, -4.5f));
 
-			AddGameObject<Floor>( Vec3(8.0f, 0.5f, 10.0f), Vec3(0),Vec3(10.0f, 2.0f, 15.0f));
-			AddGameObject<Floor>( Vec3(8.0f, 0.5f, 10.0f), Vec3(0), Vec3(10.0f, 2.0f, 29.0f));
+			//AddGameObject<Floor>( Vec3(8.0f, 0.5f, 10.0f), Vec3(0),Vec3(10.0f, 2.0f, 15.0f));
+			//AddGameObject<Floor>( Vec3(8.0f, 0.5f, 10.0f), Vec3(0), Vec3(10.0f, 2.0f, 29.0f));
 			AddGameObject<Floor>(Vec3(8.0f, 0.5f, 15.0f), Vec3(0), Vec3(0.0f, -1.0f, 26.0f));
 
 
 			AddGameObject<PowerSupply>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(0.0f, -0.3f, -4.0f));
-			AddGameObject<PowerSupply>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 11.0f));
+			//AddGameObject<PowerSupply>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 11.0f));
 
 			//port										scale				rotation		position
 			auto moveFloor_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(0.0f, -0.3f, 3.0f));
-			auto trapDoor_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 15.0f));
-			auto goal_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 25.0f));
+			//auto trapDoor_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 15.0f));
+			//auto goal_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 25.0f));
 
 			//Goal					scale			rotation		position			portの指定(nullptrの場合最初から表示)
-			AddGameObject<Goal>(Vec3(3.0f,3.0f,0.5f), Vec3(0), Vec3(10.0f, 4.0f, 33.0f), goal_port);
+			AddGameObject<Goal>(Vec3(3.0f,3.0f,0.5f), Vec3(0), Vec3(0.0f, 1.0f, 33.0f), nullptr);
 
 			
 			//左に開く扉
-			auto leftDoor = AddGameObject<GoalDoor>(
-				Vec3(4.0f, 5.0f, 1.0f), Vec3(0), Vec3(8.0f, 4.0f, 30.0f), //Scale, Rotation, Position
-				goal_port, 
-				Vec3(-1, 0, 0));//移動する方向を指定。
-			//右に開く扉
-			auto rightDoor = AddGameObject<GoalDoor>(
-				Vec3(4.0f, 5.0f, 1.0f), Vec3(0), Vec3(12.0f, 4.0f, 30.0f), 
-				goal_port,
-				Vec3(1, 0, 0));
+			//auto leftDoor = AddGameObject<GoalDoor>(
+			//	Vec3(4.0f, 5.0f, 1.0f), Vec3(0), Vec3(8.0f, 4.0f, 30.0f), //Scale, Rotation, Position
+			//	goal_port, 
+			//	Vec3(-1, 0, 0));//移動する方向を指定。
+			////右に開く扉
+			//auto rightDoor = AddGameObject<GoalDoor>(
+			//	Vec3(4.0f, 5.0f, 1.0f), Vec3(0), Vec3(12.0f, 4.0f, 30.0f), 
+			//	goal_port,
+			//	Vec3(1, 0, 0));
 
 			//トラップドアの初期設定
-			TrapDoorAxisDesc moveDoorX;
-			moveDoorX.axis = MoveAxis::X;
-			moveDoorX.speed = -0.01f;
-			moveDoorX.port = trapDoor_port;
-			//moveDoorX.bReverseConnect = false;
-			AddGameObject<TrapDoorAxis>(Vec3(2.0f, 0.1f, 4.0f), Vec3(XM_PIDIV2, 0.0f, 0.0f), Vec3(10.0f, 2.2f, 20.1f), moveDoorX);
+			//TrapDoorAxisDesc moveDoorX;
+			//moveDoorX.axis = MoveAxis::X;
+			//moveDoorX.speed = -0.01f;
+			//moveDoorX.port = trapDoor_port;
+			////moveDoorX.bReverseConnect = false;
+			//AddGameObject<TrapDoorAxis>(Vec3(2.0f, 0.1f, 4.0f), Vec3(XM_PIDIV2, 0.0f, 0.0f), Vec3(10.0f, 2.2f, 20.1f), moveDoorX);
 
 
 			//動く床の初期設定
-			MoveFloorDesc moveFloorY;
-			moveFloorY.axis = MoveAxis::Y;		//移動する軸の指定
-			moveFloorY.speed = 1.0f;			//移動速度
-			moveFloorY.limitDist = 3.0f;		//移動上限
-			moveFloorY.port = moveFloor_port;	//portの指定
-			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(0.0f, -0.5f, 5.6f),  moveFloorY);
+			//MoveFloorDesc moveFloorY;
+			//moveFloorY.axis = MoveAxis::Y;		//移動する軸の指定
+			//moveFloorY.speed = 1.0f;			//移動速度
+			//moveFloorY.limitDist = 3.0f;		//移動上限
+			//moveFloorY.port = moveFloor_port;	//portの指定
+			//AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(0.0f, -0.5f, 5.6f),  moveFloorY);
 
-			MoveFloorDesc moveFloorX;
-			moveFloorX.axis = MoveAxis::X;
-			moveFloorX.speed = 1.0f;
-			moveFloorX.limitDist = -3.0f;
-			moveFloorX.port = moveFloor_port;
-			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(5.0f, 2.5f, 5.5f), moveFloorX);
+			//MoveFloorDesc moveFloorX;
+			//moveFloorX.axis = MoveAxis::X;
+			//moveFloorX.speed = 1.0f;
+			//moveFloorX.limitDist = -3.0f;
+			//moveFloorX.port = moveFloor_port;
+			//AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(5.0f, 2.5f, 5.5f), moveFloorX);
 
-			MoveFloorDesc moveFloorZ;
-			moveFloorZ.axis = MoveAxis::Z;
-			moveFloorZ.speed = -1.0f;
-			moveFloorZ.limitDist = 3.0f;
-			moveFloorZ.port = moveFloor_port;
-			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(7.0f, 2.5f,5.5f),  moveFloorZ);
-
-			//AddGameObject<DrEnemy>();
-			//AddGameObject<ErEnemy>();
+			//MoveFloorDesc moveFloorZ;
+			//moveFloorZ.axis = MoveAxis::Z;
+			//moveFloorZ.speed = -1.0f;
+			//moveFloorZ.limitDist = 3.0f;
+			//moveFloorZ.port = moveFloor_port;
+			//AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0),Vec3(7.0f, 2.5f,5.5f),  moveFloorZ);
 
 			//									Scale			Rotation		Position			portの指定
 			AddGameObject<BeltConveyor>(Vec3(2.0f, 0.1f, 5.0f), Vec3(0,0,0), Vec3(0.0f, -0.7f, 16.0f), nullptr);
@@ -199,6 +205,8 @@ namespace basecross {
 
 			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0), Vec3(-3.0f, -0.5f, 12.5f), moveFloorX_4);
 
+			auto UISprite = AddGameObject<Sprite>(L"BUTTON_AB", Vec3(630,-380,0), Vec2(250,200), Anchor::BottomRight);
+			auto inkprite = AddGameObject<Sprite>(L"INK_MOZI", Vec3(-550, 380, 0), Vec2(100, 30), Anchor::Center);
 
 			//スカイボックス
 			AddGameObject<SkyCube>(L"SKYBOX");
@@ -217,9 +225,15 @@ namespace basecross {
 		auto& pad = device.GetControlerVec()[0];
 		GameController::Update();
 
+		bool pause = m_pauseMenu->GetPause();
+		//m_isPause = pause;
+
 		if (pad.wPressedButtons & XINPUT_GAMEPAD_START)
 		{
-			Pause(!m_isPause);
+			m_pauseMenu->SetPause(!pause);
+			Pause(!pause);
+			//BGMを中断
+			SoundManager::Get().PauseBGM(!pause);
 		}
 
 		if (IsPause())
@@ -241,8 +255,14 @@ namespace basecross {
 		}
 	}
 
+	bool ProtoStage::IsPause() const
+	{
+		return m_pauseMenu->GetPause() && m_pauseMenu;
+	}
+
 	void ProtoStage::Pause(bool isPause)
 	{
+		bool pause = m_pauseMenu->GetPause();
 		m_isPause = isPause;
 
 		auto objs = GetGameObjectVec();

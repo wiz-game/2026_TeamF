@@ -17,7 +17,10 @@ namespace basecross {
 	{
 		JoltManager m_jphManger; // Jolt Physics マネージャー
 		shared_ptr<Player> m_Player;	//プレイヤー
-		std::shared_ptr<PauseMenu> m_pauseMenu;
+		std::shared_ptr<PauseMenu> m_pauseMenu;	//ポーズメニュー
+
+		std::shared_ptr<SoundItem> m_stageBGM;	//BGM
+
 		void CreateViewLight(); //ビューの作成
 
 		bool m_isPause = false;
@@ -33,10 +36,7 @@ namespace basecross {
 		virtual void OnDraw()override; //描画
 
 		void Pause(bool isPause);
-		bool IsPause()const
-		{
-			return m_isPause && m_pauseMenu;
-		}
+		bool IsPause()const;
 	};
 }
 //end basecross
