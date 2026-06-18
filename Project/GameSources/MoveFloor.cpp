@@ -73,7 +73,7 @@ namespace basecross {
 		if (isConnect)
 		{
 			if (!m_MoveSound) {
-				m_MoveSound = SoundManager::Get().PlayLoopSE(L"ELEVATER_MOVE",0.1f);
+				m_MoveSound = SoundManager::Get().PlayLoopSE(L"ELEVATER_MOVE",0.07f);
 			}
 			m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
 			m_staticDraw->SetEmissive(Col4(1, 1, 0, 1));

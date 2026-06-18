@@ -19,8 +19,9 @@ public:
 	JPH_OVERRIDE_NEW_DELETE
 
 	/// Constructor
-									ComputeShaderDX12(ComPtr<ID3D12RootSignature> inRootSignature, ComPtr<ID3D12PipelineState> inPipelineState, Array<String> &&inBindingNames, UnorderedMap<string_view, uint> &&inNameToIndex, uint32 inGroupSizeX, uint32 inGroupSizeY, uint32 inGroupSizeZ) :
+									ComputeShaderDX12(ComPtr<ID3DBlob> inShader, ComPtr<ID3D12RootSignature> inRootSignature, ComPtr<ID3D12PipelineState> inPipelineState, Array<String> &&inBindingNames, UnorderedMap<string_view, uint> &&inNameToIndex, uint32 inGroupSizeX, uint32 inGroupSizeY, uint32 inGroupSizeZ) :
 		ComputeShader(inGroupSizeX, inGroupSizeY, inGroupSizeZ),
+		mShader(inShader),
 		mRootSignature(inRootSignature),
 		mPipelineState(inPipelineState),
 		mBindingNames(std::move(inBindingNames)),
@@ -41,6 +42,7 @@ public:
 	ID3D12RootSignature *			GetRootSignature() const				{ return mRootSignature.Get(); }
 
 private:
+	ComPtr<ID3DBlob>				mShader;								///< The compiled shader
 	ComPtr<ID3D12RootSignature>		mRootSignature;							///< The root signature for this shader
 	ComPtr<ID3D12PipelineState>		mPipelineState;							///< The pipeline state object for this shader
 	Array<String>					mBindingNames;							///< A list of binding names, mNameToIndex points to these strings

@@ -7,25 +7,22 @@
 #ifdef JPH_USE_VK
 
 #include <Jolt/Compute/VK/ComputeShaderVK.h>
-#include <Jolt/Compute/VK/ComputeSystemVK.h>
 
 JPH_NAMESPACE_BEGIN
 
 ComputeShaderVK::~ComputeShaderVK()
 {
-	VkDevice device = mComputeSystem->GetDevice();
-
 	if (mShaderModule != VK_NULL_HANDLE)
-		mComputeSystem->mVkDestroyShaderModule(device, mShaderModule, nullptr);
+		vkDestroyShaderModule(mDevice, mShaderModule, nullptr);
 
 	if (mDescriptorSetLayout != VK_NULL_HANDLE)
-		mComputeSystem->mVkDestroyDescriptorSetLayout(device, mDescriptorSetLayout, nullptr);
+		vkDestroyDescriptorSetLayout(mDevice, mDescriptorSetLayout, nullptr);
 
 	if (mPipelineLayout != VK_NULL_HANDLE)
-		mComputeSystem->mVkDestroyPipelineLayout(device, mPipelineLayout, nullptr);
+		vkDestroyPipelineLayout(mDevice, mPipelineLayout, nullptr);
 
 	if (mPipeline != VK_NULL_HANDLE)
-		mComputeSystem->mVkDestroyPipeline(device, mPipeline, nullptr);
+		vkDestroyPipeline(mDevice, mPipeline, nullptr);
 }
 
 bool ComputeShaderVK::Initialize(const Array<uint8> &inSPVCode, VkBuffer inDummyBuffer, ComputeShaderResult &outResult)
@@ -154,8 +151,6 @@ bool ComputeShaderVK::Initialize(const Array<uint8> &inSPVCode, VkBuffer inDummy
 		}
 	}
 
-	VkDevice device = mComputeSystem->GetDevice();
-
 	// Create layout bindings and buffer infos
 	if (!name_to_binding.empty())
 	{
@@ -191,7 +186,7 @@ bool ComputeShaderVK::Initialize(const Array<uint8> &inSPVCode, VkBuffer inDummy
 		layout_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
 		layout_info.bindingCount = (uint32)mLayoutBindings.size();
 		layout_info.pBindings = mLayoutBindings.data();
-		if (VKFailed(mComputeSystem->mVkCreateDescriptorSetLayout(device, &layout_info, nullptr, &mDescriptorSetLayout), outResult))
+		if (VKFailed(vkCreateDescriptorSetLayout(mDevice, &layout_info, nullptr, &mDescriptorSetLayout), outResult))
 			return false;
 	}
 
@@ -200,7 +195,7 @@ bool ComputeShaderVK::Initialize(const Array<uint8> &inSPVCode, VkBuffer inDummy
 	pl_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
 	pl_info.setLayoutCount = mDescriptorSetLayout != VK_NULL_HANDLE ? 1 : 0;
 	pl_info.pSetLayouts = mDescriptorSetLayout != VK_NULL_HANDLE ? &mDescriptorSetLayout : nullptr;
-	if (VKFailed(mComputeSystem->mVkCreatePipelineLayout(device, &pl_info, nullptr, &mPipelineLayout), outResult))
+	if (VKFailed(vkCreatePipelineLayout(mDevice, &pl_info, nullptr, &mPipelineLayout), outResult))
 		return false;
 
 	// Create shader module
@@ -208,7 +203,7 @@ bool ComputeShaderVK::Initialize(const Array<uint8> &inSPVCode, VkBuffer inDummy
 	create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
 	create_info.codeSize = inSPVCode.size();
 	create_info.pCode = spv_words;
-	if (VKFailed(mComputeSystem->mVkCreateShaderModule(device, &create_info, nullptr, &mShaderModule), outResult))
+	if (VKFailed(vkCreateShaderModule(mDevice, &create_info, nullptr, &mShaderModule), outResult))
 		return false;
 
 	// Create compute pipeline
@@ -219,7 +214,7 @@ bool ComputeShaderVK::Initialize(const Array<uint8> &inSPVCode, VkBuffer inDummy
 	pipe_info.stage.module = mShaderModule;
 	pipe_info.stage.pName = "main";
 	pipe_info.layout = mPipelineLayout;
-	if (VKFailed(mComputeSystem->mVkCreateComputePipelines(device, VK_NULL_HANDLE, 1, &pipe_info, nullptr, &mPipeline), outResult))
+	if (VKFailed(vkCreateComputePipelines(mDevice, VK_NULL_HANDLE, 1, &pipe_info, nullptr, &mPipeline), outResult))
 		return false;
 
 	return true;
