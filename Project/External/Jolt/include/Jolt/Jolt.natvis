@@ -82,7 +82,7 @@
 			<Item Name="[size]" ExcludeView="simple">mSize</Item>
 			<ArrayItems>
 				<Size>mSize</Size>
-				<ValuePointer>mElements</ValuePointer>
+				<ValuePointer>(value_type *)mElements</ValuePointer>
 			</ArrayItems>
 		</Expand>
 	</Type>
