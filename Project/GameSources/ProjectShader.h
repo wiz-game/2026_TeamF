@@ -15,8 +15,6 @@ namespace basecross{
 
 
 	DECLARE_DX11_COMPUTE_SHADER(GenerateMaskShader)
-	DECLARE_DX11_COMPUTE_SHADER(UnionFindFirst)
-	DECLARE_DX11_COMPUTE_SHADER(UnionFindSecond)
 	DECLARE_DX11_CONSTANT_BUFFER(TextureSizeConstantBuffer, TextureSizeConstantData)
 }
 //end basecross

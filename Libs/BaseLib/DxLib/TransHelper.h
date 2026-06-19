@@ -1628,6 +1628,19 @@ namespace basecross{
 			}
 		}
 
+		const bsm::Vec3& operator[](size_t index)const {
+			switch (index) {
+			case 0:
+				return m_A;
+			case 1:
+				return m_B;
+			case 2:
+				return m_C;
+			default:
+				throw std::out_of_range("Triangle index out of range");
+			}
+		}
+
 	};
 
 

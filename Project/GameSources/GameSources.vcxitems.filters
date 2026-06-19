@@ -1,22 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="$(MSBuildThisFileDirectory)InkFresnelPixelShader.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)InkPixelShader.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)InkVertexShader.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)PSInkDrawShadow.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)PSInkDrop.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)PSPNTInkDraw.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)PSTexture2.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)PSTexture2Shadow.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)PSUpper.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)PSUpperShadow.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindFirst.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindSecond.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)VSInkDrawShadow.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)VSInkDrop.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)VSPNTInkDraw.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\common\shapes.cc" />
@@ -50,7 +43,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InkDrawComp.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InkGauge.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MainCamera.cpp" />
@@ -124,7 +116,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)InkDraw.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)InkDrawComp.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)InkGauge.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltLayers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)JoltRigidBody.h" />
