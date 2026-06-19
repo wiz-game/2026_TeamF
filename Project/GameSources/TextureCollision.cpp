@@ -74,7 +74,6 @@ namespace basecross {
 		m_MaskShader = make_shared<DX11ComputeShader>();
 		m_MaskShader->Initialize({ 8,8,1,m_TextureContext.m_SizeX,m_TextureContext.m_SizeY,1 });
 
-		m_MaskShader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
 		auto object = GetGameObject();
 		auto draw = object->GetComponent<InkDrawComp>();
 		//srvから情報を取得
@@ -152,6 +151,7 @@ namespace basecross {
 	}
 	void TextureCollision::ProcessGPU() {
 		//カラーマスク抽出
+		m_MaskShader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
 		m_MaskShader->Execute();
 		m_LabelBuffer->ReadBuffer(m_Labels.data());
 	}

@@ -122,7 +122,7 @@ namespace basecross {
 			AddGameObject<Floor>(Vec3(8.0f, 0.5f, 15.0f), Vec3(0), Vec3(0.0f, -1.0f, 26.0f));
 
 
-			AddGameObject<PowerSupply>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(0.0f, -0.3f, -4.0f));
+			AddGameObject<PowerSupply>(Vec3(1.0f, 0.5f, 1.0f), Vec3(0), Vec3(0.0f, -0.3f, -4.0f));
 			//AddGameObject<PowerSupply>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 11.0f));
 
 			//port										scale				rotation		position
