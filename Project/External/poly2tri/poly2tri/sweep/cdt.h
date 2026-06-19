@@ -83,7 +83,7 @@ public:
   /**
    * Get CDT triangles
    */
-  std::vector<Triangle*> GetTriangles();
+  std::vector<Triangle*> GetWorldTriangles();
 
   /**
    * Get triangle map

@@ -27,15 +27,7 @@ namespace basecross {
 		auto light = CreateLight<MultiLight>();
 		light->SetDefaultLighting(); //デフォルトのライティングを指定
 
-		vector<VertexPositionColor> vertices = {
-			{{0.0f,0.0f,0.0f},{1,1,1}},
-			{{0.0f,0.0f,1.0f},{1,1,1}}
-		};
-		vector<uint16_t> indices{
-			0,1
-		};
-
-		App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
+		
 	}
 
 	void GameStage::OnCreate() {
@@ -66,9 +58,9 @@ namespace basecross {
 			mainCamera->SetTarget(m_Player);
 
 			auto floor = AddGameObject<Floor>(Vec3(10,1.0f,10.0f), Vec3(0), Vec3(0, -1.0f, 0));
-			auto draw = floor->GetComponent<InkDrawComponentTest>();
+			//auto draw = floor->GetComponent<InkDrawComponentTest>();
 			//draw->SetNormalMap(App::GetApp()->GetDataDirWString() + L"Texture/Test/InkNormalMap.dds");
-			draw->SetBrushSize(0.5f);
+			//draw->SetBrushSize(0.5f);
 			//draw->SetTextureResource(L"SKYBOX");
 			floor->AddComponent<TextureCollision>();
 			m_TestFloors.push_back(floor);
@@ -101,47 +93,6 @@ namespace basecross {
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
 		GameController::Update();
-
-		bool isXButton = GameController::IsPressed_ButtonLeft(), isYButton = GameController::IsPressed_ButtonUp();
-		if (isXButton || isYButton) {
-			Vec3 playerPosition = m_Player->GetComponent<Transform>()->GetPosition();
-			for (auto& floor : m_TestFloors) {
-				auto draw = floor->GetComponent<InkDrawComponentTest>();
-				Vec3 hitPos;
-				TRIANGLE tempTri;
-				size_t temp;
-				if (draw->HitTestStaticMeshSphereTriangles(
-					SPHERE(playerPosition,1.0f), 
-					SPHERE(playerPosition + Vec3(0.0f,1.0f,0.0f),1.0f),
-					hitPos, tempTri, temp)) {
-
-					auto floorPosition = floor->GetComponent<Transform>()->GetPosition();
-					auto floorScale = floor->GetComponent<Transform>()->GetScale();
-
-					Vec2 floorPoint = Vec2(floorPosition.x - floorScale.x * 0.5f, floorPosition.z - floorScale.z * 0.5f);
-					Vec2 playerPoint = Vec2(playerPosition.x, playerPosition.z);
-					Vec2 dist = playerPoint - floorPoint;
-
-					Vec2 point = Vec2(dist.x / (floorScale.x), dist.y / (floorScale.z));
-					point.y = 1.0f - point.y;
-					if (isXButton) {
-						draw->AddDrawPoint(point);
-					}
-					if (isYButton) {
-						draw->AddDrawPoint(point, true);
-					}
-				}
-			}
-			int floorID = rand() % m_TestFloors.size();
-			float posX = Util::RandZeroToOne();
-			float posY = Util::RandZeroToOne();
-
-			
-		}
-
-		for (auto& floor : m_TestFloors) {
-			//TextureMeshManager::Get().AddReload(floor->GetComponent<TextureCollision>());
-		}
 	}
 
 	void GameStage::OnUpdate2()

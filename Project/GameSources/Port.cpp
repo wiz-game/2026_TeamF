@@ -29,6 +29,7 @@ namespace basecross {
 		m_transform->SetRotation(m_rot);
 
 		m_staticDraw = AddComponent<Texture2DrawComp>();
+		m_staticDraw->isInkDrow = false;
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
 		m_staticDraw->SetDiffuse(Col4(0, 0, 0, 1));
 		m_staticDraw->SetTextureResource(L"Port");

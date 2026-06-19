@@ -45,6 +45,8 @@ namespace basecross
 
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetFixed(true);
+
+		AddComponent<TextureCollision>();
 	}
 
 	void TrapDoor::OnUpdate()

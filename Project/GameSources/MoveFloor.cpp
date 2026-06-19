@@ -49,6 +49,8 @@ namespace basecross {
 		}
 		catch (...) {
 		}
+
+		AddComponent<TextureCollision>();
 	}
 
 	void MoveFloor::OnUpdate()
