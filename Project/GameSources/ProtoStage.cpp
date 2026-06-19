@@ -146,13 +146,12 @@ namespace basecross {
 			//	Vec3(1, 0, 0));
 
 			//トラップドアの初期設定
-			//TrapDoorAxisDesc moveDoorX;
-			//moveDoorX.axis = MoveAxis::X;
-			//moveDoorX.speed = -0.01f;
-			//moveDoorX.port = trapDoor_port;
-			////moveDoorX.bReverseConnect = false;
-			//AddGameObject<TrapDoorAxis>(Vec3(2.0f, 0.1f, 4.0f), Vec3(XM_PIDIV2, 0.0f, 0.0f), Vec3(10.0f, 2.2f, 20.1f), moveDoorX);
-
+			TrapDoorAxisDesc moveDoorX;
+			moveDoorX.axis = MoveAxis::X;
+			moveDoorX.speed = -0.01f;
+			moveDoorX.port = nullptr;
+			//moveDoorX.bReverseConnect = false;
+			AddGameObject<TrapDoorAxis>(Vec3(2.0f, 0.1f, 4.0f), Vec3(XM_PIDIV2, 0.0f, 0.0f), Vec3(5.0f, -0.5f, 0.0f), moveDoorX);
 
 			//動く床の初期設定
 			//MoveFloorDesc moveFloorY;

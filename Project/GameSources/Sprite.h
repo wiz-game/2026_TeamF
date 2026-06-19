@@ -1368,5 +1368,46 @@ namespace basecross{
 		}
 		
 	};
+
+	namespace SpriteMoveUtil {
+		/// <summary>
+		/// ボタン押下時のパンチスケール（小さくなって戻る）の倍率を計算する
+		/// </summary>
+		/// <param name="timer">現在のアニメーション経過時間（秒）</param>
+		/// <param name="ratio">サイズ</param>
+		/// <param name="maxShrink">最大でどれだけ小さくするか（0.1f = 10%）</param>
+		/// <returns>現在のスケール倍率（1.0f が等倍）</returns>		
+		inline void CalculatePunchScale(float& timer, float& ratio, float maxShirink = 0.1f)
+		{
+			//アニメーションしていない（-1）なら何もしない
+			if (timer < 0.0f)
+			{
+				//等倍を維持
+				ratio = 1.0f;
+				return;
+			}
+
+			float elapsed = App::GetApp()->GetElapsedTime();
+			timer += elapsed;
+
+			//アニメーションの総合時間
+			const float AnimationDuration = 0.2f;
+
+			if (timer >= AnimationDuration)
+			{
+				//アニメーション終了、元の大きさに戻る
+				timer = -1.0f;
+				ratio = 1.0f;
+			}
+			else
+			{
+				float progress = timer / AnimationDuration;
+				float sinValue = sin(progress * XM_PI);
+
+				//最大で２０％小さくする
+				ratio = 1.0f - maxShirink * sinValue;
+			}
+		}
+	}
 }
 //end basecross
