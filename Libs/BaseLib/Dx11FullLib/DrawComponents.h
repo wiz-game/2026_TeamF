@@ -532,7 +532,7 @@ namespace basecross {
 		@param[in]	AddType	加算処理するかどうか
 		*/
 		//--------------------------------------------------------------------------------------
-		explicit PCTParticleDraw(const shared_ptr<GameObject>& GameObjectPtr, size_t MaxInstance,bool AddType = false);
+		explicit PCTParticleDraw(const shared_ptr<GameObject>& GameObjectPtr, size_t MaxInstance, bool AddType = false);
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	デストラクタ
@@ -551,8 +551,8 @@ namespace basecross {
 		@return	なし
 		*/
 		//--------------------------------------------------------------------------------------
-		void AddParticle(float ToCaneraLength, const bsm::Mat4x4& WorldMatrix, 
-			const shared_ptr<TextureResource>& TextureRes,const bsm::Col4& Diffuse = bsm::Col4(1,1,1,1));
+		void AddParticle(float ToCaneraLength, const bsm::Mat4x4& WorldMatrix,
+			const shared_ptr<TextureResource>& TextureRes, const bsm::Col4& Diffuse = bsm::Col4(1, 1, 1, 1));
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	OnCreate処理
@@ -1059,7 +1059,7 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		void DrawWireFrame(const shared_ptr<GameObject>& GameObj,
-			const shared_ptr<MeshResource>& Mesh,const bsm::Mat4x4& MeshToTransformMatrix = bsm::Mat4x4());
+			const shared_ptr<MeshResource>& Mesh, const bsm::Mat4x4& MeshToTransformMatrix = bsm::Mat4x4());
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	ワイアフレーム描画処理

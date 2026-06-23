@@ -1,6 +1,6 @@
-/*!
+ï»¿/*!
 @file DeviceResources.cpp
-@brief ƒeƒNƒXƒ`ƒƒAƒƒbƒVƒ…ADx11ƒfƒoƒCƒXƒŠƒ\[ƒXÀ‘Ì
+@brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€ãƒ¡ãƒƒã‚·ãƒ¥ã€Dx11ãƒ‡ãƒã‚¤ã‚¹ãƒªã‚½ãƒ¼ã‚¹å®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
@@ -9,15 +9,15 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct TextureResource::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct TextureResource::Impl {
-		ComPtr<ID3D11ShaderResourceView> m_ShaderResView;	//ƒŠƒ\[ƒXƒrƒ…[
-		wstring m_FileName;		//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹‚Ö‚ÌƒpƒX
+		ComPtr<ID3D11ShaderResourceView> m_ShaderResView;	//ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼
+		wstring m_FileName;		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®ãƒ‘ã‚¹
 
 		Impl(const wstring& FileName, const wstring& TexType = L"WIC");
 		~Impl() {}
-		//ƒ~ƒ…[ƒeƒbƒNƒX
+		//ãƒŸãƒ¥ãƒ¼ãƒ†ãƒƒã‚¯ã‚¹
 		std::mutex Mutex;
 
 	};
@@ -27,7 +27,7 @@ namespace basecross {
 		try {
 			if (FileName == L"") {
 				throw BaseException(
-					L"ƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ",
+					L"ãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“",
 					L"if(FileName == L\"\")",
 					L"Texture::Impl::Impl()"
 				);
@@ -37,18 +37,18 @@ namespace basecross {
 			if (RetCode == -1) {
 				wstring patherr = m_FileName;
 				throw BaseException(
-					L"ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚Ü‚¹‚ñ",
+					L"ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã›ã‚“",
 					patherr.c_str(),
 					L"Texture::Impl::Impl()"
 				);
 			}
 			HRESULT hr;
-			//ƒeƒNƒXƒ`ƒƒì¬
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£ä½œæˆ
 			DirectX::TexMetadata metadata;
 			DirectX::ScratchImage image;
 
 			if (TexType == L"WIC") {
-				//ƒtƒ@ƒCƒ‹Šg’£q‚Ì’²¸
+				//ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ã®èª¿æŸ»
 				wchar_t Drivebuff[_MAX_DRIVE];
 				wchar_t Dirbuff[_MAX_DIR];
 				wchar_t FileNamebuff[_MAX_FNAME];
@@ -70,7 +70,7 @@ namespace basecross {
 				if (ExtStr == L".dds" || ExtStr == L".DDS") {
 					ThrowIfFailed(
 						DirectX::LoadFromDDSFile(m_FileName.c_str(), 0, &metadata, image),
-						L"ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½",
+						L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ",
 						m_FileName,
 						L"Texture::Impl::Impl()"
 					);
@@ -78,7 +78,7 @@ namespace basecross {
 				else if (ExtStr == L".tga" || ExtStr == L".TGA") {
 					ThrowIfFailed(
 						DirectX::LoadFromTGAFile(m_FileName.c_str(), &metadata, image),
-						L"ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½",
+						L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ",
 						m_FileName,
 						L"Texture::Impl::Impl()"
 					);
@@ -86,7 +86,7 @@ namespace basecross {
 				else {
 					ThrowIfFailed(
 						DirectX::LoadFromWICFile(m_FileName.c_str(), 0, &metadata, image),
-						L"ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½",
+						L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ",
 						m_FileName,
 						L"Texture::Impl::Impl()"
 					);
@@ -95,7 +95,7 @@ namespace basecross {
 			else if (TexType == L"DDS") {
 				ThrowIfFailed(
 					DirectX::LoadFromDDSFile(m_FileName.c_str(), 0, &metadata, image),
-					L"ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½",
+					L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ",
 					m_FileName,
 					L"Texture::Impl::Impl()"
 				);
@@ -103,30 +103,30 @@ namespace basecross {
 			else if (TexType == L"TGA") {
 				ThrowIfFailed(
 					DirectX::LoadFromTGAFile(m_FileName.c_str(), &metadata, image),
-					L"ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½",
+					L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ",
 					m_FileName,
 					L"Texture::Impl::Impl()"
 				);
 			}
 			else {
 				throw BaseException(
-					L"‚»‚Ìƒ^ƒCƒv‚Í‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ",
+					L"ãã®ã‚¿ã‚¤ãƒ—ã¯å¯¾å¿œã—ã¦ã„ã¾ã›ã‚“",
 					TexType.c_str(),
 					L"Texture::Impl::Impl()"
 				);
 			}
 
-			//ƒfƒoƒCƒX‚ÆƒRƒ“ƒeƒLƒXƒgƒCƒ“ƒ^[ƒtƒFƒCƒX‚Ìæ“¾
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã¨ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã®å–å¾—
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ID3D11Device* pDx11Device = Dev->GetD3DDevice();
 			ID3D11DeviceContext* pID3D11DeviceContex = Dev->GetD3DDeviceContext();
 
 			Util::DemandCreate(m_ShaderResView, Mutex, [&](ID3D11ShaderResourceView** pResult) -> HRESULT
 			{
-				// ‰æ‘œ‚©‚çƒVƒF[ƒ_ƒŠƒ\[ƒXView‚Ìì¬
+				// ç”»åƒã‹ã‚‰ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹Viewã®ä½œæˆ
 				hr = ThrowIfFailed(CreateShaderResourceView(pDx11Device, image.GetImages(), image.GetImageCount(), metadata, pResult),
-					L"ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ğì¬‚Å‚«‚Ü‚¹‚ñ",
+					L"ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã§ãã¾ã›ã‚“",
 					L"if( FAILED( CreateShaderResourceView() ) )",
 					L"Texture::Impl::Impl()"
 				);
@@ -144,7 +144,7 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class TextureResource : public BaseResource;
-	//	—p“r: ƒeƒNƒXƒ`ƒƒ‚Ìƒ‰ƒbƒsƒ“ƒOƒNƒ‰ƒX
+	//	ç”¨é€”: ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ©ãƒƒãƒ”ãƒ³ã‚°ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 
 	shared_ptr<TextureResource> TextureResource::CreateTextureResource(const wstring& FileName, const wstring& TexType) {
@@ -164,7 +164,7 @@ namespace basecross {
 	TextureResource::~TextureResource() {
 	}
 
-	//ƒAƒNƒZƒbƒT
+	//ã‚¢ã‚¯ã‚»ãƒƒã‚µ
 	ComPtr<ID3D11ShaderResourceView>& TextureResource::GetShaderResourceView() const {
 		return pImpl->m_ShaderResView;
 	}
@@ -175,24 +175,24 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	ƒƒbƒVƒ…ƒŠƒ\[ƒX
+	///	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
 	//--------------------------------------------------------------------------------------
-	//\’z
+	//æ§‹ç¯‰
 	MeshResource::MeshResource() :
 		BaseResource()
 	{}
-	//”jŠü
+	//ç ´æ£„
 	MeshResource::~MeshResource() {}
 
-	//ƒŠƒ\[ƒX\’z
+	//ãƒªã‚½ãƒ¼ã‚¹æ§‹ç¯‰
 
 	shared_ptr<MeshResource> MeshResource::CreateSquare(float Size, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Square‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Squareã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateSquare(Size, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
@@ -202,11 +202,11 @@ namespace basecross {
 	}
 	shared_ptr<MeshResource> MeshResource::CreateCube(float Size, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Cube‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Cubeã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateCube(Size, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
@@ -216,11 +216,11 @@ namespace basecross {
 	}
 	shared_ptr<MeshResource> MeshResource::CreateSphere(float Diameter, size_t Tessellation, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Sphere‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Sphereã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateSphere(Diameter, Tessellation, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
@@ -231,13 +231,13 @@ namespace basecross {
 
 	shared_ptr<MeshResource> MeshResource::CreateCapsule(float Diameter, float Height, size_t Tessellation, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
 			bsm::Vec3 PointA(0, -Height / 2.0f, 0);
 			bsm::Vec3 PointB(0, Height / 2.0f, 0);
-			//Capsule‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Capsuleã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateCapsule(Diameter, PointA, PointB, Tessellation, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
@@ -252,11 +252,11 @@ namespace basecross {
 
 	shared_ptr<MeshResource> MeshResource::CreateCylinder(float Height, float Diameter, size_t Tessellation, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Cylinder‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Cylinderã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateCylinder(Height, Diameter, Tessellation, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
@@ -267,11 +267,11 @@ namespace basecross {
 
 	shared_ptr<MeshResource> MeshResource::CreateCone(float Diameter, float Height, size_t Tessellation, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Cone‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Coneã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateCone(Diameter, Height, Tessellation, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
@@ -282,11 +282,11 @@ namespace basecross {
 
 	shared_ptr<MeshResource> MeshResource::CreateTorus(float Diameter, float Thickness, size_t Tessellation, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Torus‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Torusã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateTorus(Diameter, Thickness, Tessellation, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
@@ -298,11 +298,11 @@ namespace basecross {
 
 	shared_ptr<MeshResource> MeshResource::CreateTetrahedron(float Size, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Tetrahedron‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Tetrahedronã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateTetrahedron(Size, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
@@ -311,14 +311,14 @@ namespace basecross {
 		}
 	}
 
-	//³8–Ê‘Ì
+	//æ­£8é¢ä½“
 	shared_ptr<MeshResource> MeshResource::CreateOctahedron(float Size, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Octahedron‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Octahedronã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateOctahedron(Size, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
@@ -329,11 +329,11 @@ namespace basecross {
 
 	shared_ptr<MeshResource> MeshResource::CreateDodecahedron(float Size, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Dodecahedron‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Dodecahedronã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateDodecahedron(Size, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
@@ -344,11 +344,11 @@ namespace basecross {
 
 	shared_ptr<MeshResource> MeshResource::CreateIcosahedron(float Size, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Icosahedron‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Icosahedronã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateIcosahedron(Size, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
@@ -364,11 +364,11 @@ namespace basecross {
 		vertices_withtan.clear();
 		indices.clear();
 		materials.clear();
-		//’¸“_‚Ì“Ç‚İ‚İ
+		//é ‚ç‚¹ã®èª­ã¿è¾¼ã¿
 		auto blockHeader = Reader.Read<BlockHeader>();
 		if (!(blockHeader.m_Type == BlockType::Vertex || blockHeader.m_Type == BlockType::VertexWithTangent)) {
 			throw BaseException(
-				L"’¸“_‚Ìƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+				L"é ‚ç‚¹ã®ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 				BinDataFile,
 				L"MeshResource::ReadBaseData()"
 			);
@@ -411,17 +411,17 @@ namespace basecross {
 		}
 		else {
 			throw BaseException(
-				L"’¸“_‚ÌŒ^‚ªˆá‚¢‚Ü‚·",
+				L"é ‚ç‚¹ã®å‹ãŒé•ã„ã¾ã™",
 				BinDataFile,
 				L"MeshResource::ReadBaseData()"
 			);
 		}
 
-		//ƒCƒ“ƒfƒbƒNƒX‚Ì“Ç‚İ‚İ
+		//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®èª­ã¿è¾¼ã¿
 		blockHeader = Reader.Read<BlockHeader>();
 		if (blockHeader.m_Type != BlockType::Index) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚Ìƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 				BinDataFile,
 				L"MeshResource::ReadBaseData()"
 			);
@@ -433,23 +433,23 @@ namespace basecross {
 			indices.push_back(pIndex[i]);
 		}
 
-		//ƒ}ƒeƒŠƒAƒ‹‚Ì“Ç‚İ‚İ
-		//ƒ}ƒeƒŠƒAƒ‹”‚Ì“Ç‚İ‚İ
+		//ãƒãƒ†ãƒªã‚¢ãƒ«ã®èª­ã¿è¾¼ã¿
+		//ãƒãƒ†ãƒªã‚¢ãƒ«æ•°ã®èª­ã¿è¾¼ã¿
 		blockHeader = Reader.Read<BlockHeader>();
 		if (blockHeader.m_Type != BlockType::MaterialCount) {
 			throw BaseException(
-				L"ƒ}ƒeƒŠƒAƒ‹”‚Ìƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+				L"ãƒãƒ†ãƒªã‚¢ãƒ«æ•°ã®ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 				BinDataFile,
 				L"MeshResource::ReadBaseData()"
 			);
 		}
 		UINT MaterialCount = blockHeader.m_Size;
 		for (UINT i = 0; i < MaterialCount; i++) {
-			//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼‚ª‰Â•Ï’·‚È‚Ì‚Å’ˆÓB
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«åãŒå¯å¤‰é•·ãªã®ã§æ³¨æ„ã€‚
 			blockHeader = Reader.Read<BlockHeader>();
 			if (blockHeader.m_Type != BlockType::Material) {
 				throw BaseException(
-					L"ƒ}ƒeƒŠƒAƒ‹‚Ìƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+					L"ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 					BinDataFile,
 					L"MeshResource::ReadBaseData()"
 				);
@@ -457,26 +457,26 @@ namespace basecross {
 			UINT TextureFileNameSize = blockHeader.m_Size - sizeof(MaterialExPOD);
 			auto rMaterial = Reader.Read<MaterialExPOD>();
 			MaterialEx ToM;
-			//!ŠJnƒCƒ“ƒfƒbƒNƒX
+			//!é–‹å§‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 			ToM.m_StartIndex = rMaterial.m_StartIndex;
-			//!•`‰æƒCƒ“ƒfƒbƒNƒXƒJƒEƒ“ƒg
+			//!æç”»ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚«ã‚¦ãƒ³ãƒˆ
 			ToM.m_IndexCount = rMaterial.m_IndexCount;
-			//! ƒfƒtƒB[ƒYi•¨‘Ì‚ÌFj
+			//! ãƒ‡ãƒ•ã‚£ãƒ¼ã‚ºï¼ˆç‰©ä½“ã®è‰²ï¼‰
 			ToM.m_Diffuse.x = rMaterial.m_Diffuse[0];
 			ToM.m_Diffuse.y = rMaterial.m_Diffuse[1];
 			ToM.m_Diffuse.z = rMaterial.m_Diffuse[2];
 			ToM.m_Diffuse.w = rMaterial.m_Diffuse[3];
-			//! ƒXƒyƒLƒ…ƒ‰[i”½ËŒõj
+			//! ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ï¼ˆåå°„å…‰ï¼‰
 			ToM.m_Specular.x = rMaterial.m_Specular[0];
 			ToM.m_Specular.y = rMaterial.m_Specular[1];
 			ToM.m_Specular.z = rMaterial.m_Specular[2];
 			ToM.m_Specular.w = rMaterial.m_Specular[3];
-			//! ƒAƒ“ƒrƒGƒ“ƒgiŠÂ‹«Fj
+			//! ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆï¼ˆç’°å¢ƒè‰²ï¼‰
 			ToM.m_Ambient.x = rMaterial.m_Ambient[0];
 			ToM.m_Ambient.y = rMaterial.m_Ambient[1];
 			ToM.m_Ambient.z = rMaterial.m_Ambient[2];
 			ToM.m_Ambient.w = rMaterial.m_Ambient[3];
-			//! ƒGƒ~ƒbƒVƒui•úËŒõj
+			//! ã‚¨ãƒŸãƒƒã‚·ãƒ–ï¼ˆæ”¾å°„å…‰ï¼‰
 			ToM.m_Emissive.x = rMaterial.m_Emissive[0];
 			ToM.m_Emissive.y = rMaterial.m_Emissive[1];
 			ToM.m_Emissive.z = rMaterial.m_Emissive[2];
@@ -494,11 +494,11 @@ namespace basecross {
 			materials.push_back(ToM);
 		}
 
-		//End‚Ì“Ç‚İ‚İ
+		//Endã®èª­ã¿è¾¼ã¿
 		blockHeader = Reader.Read<BlockHeader>();
 		if (blockHeader.m_Type != BlockType::End) {
 			throw BaseException(
-				L"Endƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+				L"Endãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 				BinDataFile,
 				L"MeshResource::ReadBaseData()"
 			);
@@ -516,11 +516,11 @@ namespace basecross {
 		materials.clear();
 		bonematrix.clear();
 
-		//’¸“_‚Ì“Ç‚İ‚İ
+		//é ‚ç‚¹ã®èª­ã¿è¾¼ã¿
 		auto blockHeader = Reader.Read<BlockHeader>();
 		if (!(blockHeader.m_Type == BlockType::SkinedVertex || blockHeader.m_Type == BlockType::SkinedVertexWithTangent)) {
 			throw BaseException(
-				L"’¸“_(ƒXƒLƒ“ˆ—)‚Ìƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+				L"é ‚ç‚¹(ã‚¹ã‚­ãƒ³å‡¦ç†)ã®ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 				BinDataFile,
 				L"MeshResource::ReadBaseBoneData()"
 			);
@@ -571,11 +571,11 @@ namespace basecross {
 
 		}
 
-		//ƒCƒ“ƒfƒbƒNƒX‚Ì“Ç‚İ‚İ
+		//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®èª­ã¿è¾¼ã¿
 		blockHeader = Reader.Read<BlockHeader>();
 		if (blockHeader.m_Type != BlockType::Index) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚Ìƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 				BinDataFile,
 				L"MeshResource::ReadBaseBoneData()"
 			);
@@ -587,23 +587,23 @@ namespace basecross {
 			indices.push_back(pIndex[i]);
 		}
 
-		//ƒ}ƒeƒŠƒAƒ‹‚Ì“Ç‚İ‚İ
-		//ƒ}ƒeƒŠƒAƒ‹”‚Ì“Ç‚İ‚İ
+		//ãƒãƒ†ãƒªã‚¢ãƒ«ã®èª­ã¿è¾¼ã¿
+		//ãƒãƒ†ãƒªã‚¢ãƒ«æ•°ã®èª­ã¿è¾¼ã¿
 		blockHeader = Reader.Read<BlockHeader>();
 		if (blockHeader.m_Type != BlockType::MaterialCount) {
 			throw BaseException(
-				L"ƒ}ƒeƒŠƒAƒ‹”‚Ìƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+				L"ãƒãƒ†ãƒªã‚¢ãƒ«æ•°ã®ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 				BinDataFile,
 				L"MeshResource::ReadBaseData()"
 			);
 		}
 		UINT MaterialCount = blockHeader.m_Size;
 		for (UINT i = 0; i < MaterialCount; i++) {
-			//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼‚ª‰Â•Ï’·‚È‚Ì‚Å’ˆÓB
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«åãŒå¯å¤‰é•·ãªã®ã§æ³¨æ„ã€‚
 			blockHeader = Reader.Read<BlockHeader>();
 			if (blockHeader.m_Type != BlockType::Material) {
 				throw BaseException(
-					L"ƒ}ƒeƒŠƒAƒ‹‚Ìƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+					L"ãƒãƒ†ãƒªã‚¢ãƒ«ã®ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 					BinDataFile,
 					L"MeshResource::ReadBaseBoneData()"
 				);
@@ -611,26 +611,26 @@ namespace basecross {
 			UINT TextureFileNameSize = blockHeader.m_Size - sizeof(MaterialExPOD);
 			auto rMaterial = Reader.Read<MaterialExPOD>();
 			MaterialEx ToM;
-			//!ŠJnƒCƒ“ƒfƒbƒNƒX
+			//!é–‹å§‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 			ToM.m_StartIndex = rMaterial.m_StartIndex;
-			//!•`‰æƒCƒ“ƒfƒbƒNƒXƒJƒEƒ“ƒg
+			//!æç”»ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚«ã‚¦ãƒ³ãƒˆ
 			ToM.m_IndexCount = rMaterial.m_IndexCount;
-			//! ƒfƒtƒB[ƒYi•¨‘Ì‚ÌFj
+			//! ãƒ‡ãƒ•ã‚£ãƒ¼ã‚ºï¼ˆç‰©ä½“ã®è‰²ï¼‰
 			ToM.m_Diffuse.x = rMaterial.m_Diffuse[0];
 			ToM.m_Diffuse.y = rMaterial.m_Diffuse[1];
 			ToM.m_Diffuse.z = rMaterial.m_Diffuse[2];
 			ToM.m_Diffuse.w = rMaterial.m_Diffuse[3];
-			//! ƒXƒyƒLƒ…ƒ‰[i”½ËŒõj
+			//! ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ï¼ˆåå°„å…‰ï¼‰
 			ToM.m_Specular.x = rMaterial.m_Specular[0];
 			ToM.m_Specular.y = rMaterial.m_Specular[1];
 			ToM.m_Specular.z = rMaterial.m_Specular[2];
 			ToM.m_Specular.w = rMaterial.m_Specular[3];
-			//! ƒAƒ“ƒrƒGƒ“ƒgiŠÂ‹«Fj
+			//! ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆï¼ˆç’°å¢ƒè‰²ï¼‰
 			ToM.m_Ambient.x = rMaterial.m_Ambient[0];
 			ToM.m_Ambient.y = rMaterial.m_Ambient[1];
 			ToM.m_Ambient.z = rMaterial.m_Ambient[2];
 			ToM.m_Ambient.w = rMaterial.m_Ambient[3];
-			//! ƒGƒ~ƒbƒVƒui•úËŒõj
+			//! ã‚¨ãƒŸãƒƒã‚·ãƒ–ï¼ˆæ”¾å°„å…‰ï¼‰
 			ToM.m_Emissive.x = rMaterial.m_Emissive[0];
 			ToM.m_Emissive.y = rMaterial.m_Emissive[1];
 			ToM.m_Emissive.z = rMaterial.m_Emissive[2];
@@ -647,21 +647,21 @@ namespace basecross {
 			materials.push_back(ToM);
 		}
 
-		//ƒ{[ƒ“”
+		//ãƒœãƒ¼ãƒ³æ•°
 		blockHeader = Reader.Read<BlockHeader>();
 		if (blockHeader.m_Type != BlockType::BoneCount) {
 			throw BaseException(
-				L"ƒ{[ƒ“”‚Ìƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+				L"ãƒœãƒ¼ãƒ³æ•°ã®ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 				BinDataFile,
 				L"MeshResource::ReadBaseBoneData()"
 			);
 		}
 		BoneCount = blockHeader.m_Size;
-		//ƒ{[ƒ“ƒAƒjƒ[ƒVƒ‡ƒ“s—ñ
+		//ãƒœãƒ¼ãƒ³ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è¡Œåˆ—
 		blockHeader = Reader.Read<BlockHeader>();
 		if (blockHeader.m_Type != BlockType::AnimeMatrix) {
 			throw BaseException(
-				L"ƒAƒjƒ[ƒVƒ‡ƒ“s—ñ‚Ìƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+				L"ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è¡Œåˆ—ã®ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 				BinDataFile,
 				L"MeshResource::ReadBaseBoneData()"
 			);
@@ -669,7 +669,7 @@ namespace basecross {
 		auto MatrixSize = blockHeader.m_Size / sizeof(MatrixPOD);
 		auto pAnimeMatrix = Reader.ReadArray<MatrixPOD>((size_t)MatrixSize);
 		for (UINT i = 0; i < MatrixSize; i++) {
-			//ƒ{[ƒ“’PˆÊ‚Å‚Í‚È‚­s—ñ’PˆÊ‚Å“Ç‚İ‚Ş
+			//ãƒœãƒ¼ãƒ³å˜ä½ã§ã¯ãªãè¡Œåˆ—å˜ä½ã§èª­ã¿è¾¼ã‚€
 			bsm::Mat4x4 mat;
 			for (int u = 0; u < 4; u++) {
 				for (int v = 0; v < 4; v++) {
@@ -685,7 +685,7 @@ namespace basecross {
 		blockHeader = Reader.Read<BlockHeader>();
 		if (blockHeader.m_Type != BlockType::End) {
 			throw BaseException(
-				L"I—¹ƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+				L"çµ‚äº†ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 				BinDataFile,
 				L"MeshResource::ReadBaseBoneData()"
 			);
@@ -695,13 +695,13 @@ namespace basecross {
 	shared_ptr<MeshResource> MeshResource::CreateStaticModelMeshBase(BinaryReader& Reader, const wstring& BinDataDir,
 		const wstring& BinDataFile, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒ^ƒ“ƒWƒFƒ“ƒg•t‚«‚ÉƒRƒ“ƒo[ƒg‚·‚é”z—ñ(ƒ_ƒ~[)
+			//ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆä»˜ãã«ã‚³ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹é…åˆ—(ãƒ€ãƒŸãƒ¼)
 			vector<VertexPositionNormalTangentTexture> new_pntnt_vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//ƒ}ƒeƒŠƒAƒ‹‚ğİ’è‚·‚é”z—ñ
+			//ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è¨­å®šã™ã‚‹é…åˆ—
 			vector<MaterialEx> Materials;
 			ReadBaseData(Reader, BinDataDir, BinDataFile, vertices, new_pntnt_vertices, indices, Materials);
 			auto Ptr = MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
@@ -719,17 +719,17 @@ namespace basecross {
 	shared_ptr<MeshResource> MeshResource::CreateStaticModelMeshWithTangentBase(BinaryReader& Reader, const wstring& BinDataDir,
 		const wstring& BinDataFile, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒ^ƒ“ƒWƒFƒ“ƒg•t‚«‚ÉƒRƒ“ƒo[ƒg‚·‚é”z—ñ
+			//ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆä»˜ãã«ã‚³ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹é…åˆ—
 			vector<VertexPositionNormalTangentTexture> new_pntnt_vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//ƒ}ƒeƒŠƒAƒ‹‚ğİ’è‚·‚é”z—ñ
+			//ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è¨­å®šã™ã‚‹é…åˆ—
 			vector<MaterialEx> Materials;
 			ReadBaseData(Reader, BinDataDir, BinDataFile, vertices, new_pntnt_vertices, indices, Materials);
 			if (vertices.size() > 0) {
-				//binƒf[ƒ^‚É‚Íƒ^ƒ“ƒWƒFƒ“ƒg‚Í“ü‚Á‚Ä‚È‚©‚Á‚½
+				//binãƒ‡ãƒ¼ã‚¿ã«ã¯ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆã¯å…¥ã£ã¦ãªã‹ã£ãŸ
 				new_pntnt_vertices.clear();
 				for (size_t i = 0; i < vertices.size(); i++) {
 					VertexPositionNormalTangentTexture new_pntnt_v;
@@ -760,19 +760,19 @@ namespace basecross {
 	shared_ptr<MeshResource> MeshResource::CreateBoneModelMeshBase(BinaryReader& Reader, const wstring& BinDataDir,
 		const wstring& BinDataFile, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTextureSkinning> vertices;
-			//ƒ^ƒ“ƒWƒFƒ“ƒg•t‚«‚ÉƒRƒ“ƒo[ƒg‚·‚é”z—ñ(ƒ_ƒ~[)
+			//ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆä»˜ãã«ã‚³ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹é…åˆ—(ãƒ€ãƒŸãƒ¼)
 			vector<VertexPositionNormalTangentTextureSkinning> new_pntnt_vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//ƒ}ƒeƒŠƒAƒ‹‚ğİ’è‚·‚é”z—ñ
+			//ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è¨­å®šã™ã‚‹é…åˆ—
 			vector<MaterialEx> Materials;
-			//ƒTƒ“ƒvƒŠƒ“ƒOs—ñ
+			//ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°è¡Œåˆ—
 			vector<bsm::Mat4x4> SampleMatrices;
-			//ƒ{[ƒ“”
+			//ãƒœãƒ¼ãƒ³æ•°
 			UINT BoneCount;
-			//ƒTƒ“ƒvƒ‹”
+			//ã‚µãƒ³ãƒ—ãƒ«æ•°
 			UINT SampleCount;
 			ReadBaseBoneData(Reader, BinDataDir, BinDataFile, vertices, new_pntnt_vertices,
 				indices, Materials,
@@ -799,25 +799,25 @@ namespace basecross {
 	shared_ptr<MeshResource> MeshResource::CreateBoneModelMeshWithTangentBase(BinaryReader& Reader, const wstring& BinDataDir,
 		const wstring& BinDataFile, bool AccessWrite) {
 		try {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTextureSkinning> vertices;
-			//ƒ^ƒ“ƒWƒFƒ“ƒg•t‚«‚ÉƒRƒ“ƒo[ƒg‚·‚é”z—ñ
+			//ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆä»˜ãã«ã‚³ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹é…åˆ—
 			vector<VertexPositionNormalTangentTextureSkinning> new_pntnt_vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//ƒ}ƒeƒŠƒAƒ‹‚ğİ’è‚·‚é”z—ñ
+			//ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’è¨­å®šã™ã‚‹é…åˆ—
 			vector<MaterialEx> Materials;
-			//ƒTƒ“ƒvƒŠƒ“ƒOs—ñ
+			//ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°è¡Œåˆ—
 			vector<bsm::Mat4x4> SampleMatrices;
-			//ƒ{[ƒ“”
+			//ãƒœãƒ¼ãƒ³æ•°
 			UINT BoneCount;
-			//ƒTƒ“ƒvƒ‹”
+			//ã‚µãƒ³ãƒ—ãƒ«æ•°
 			UINT SampleCount;
 			ReadBaseBoneData(Reader, BinDataDir, BinDataFile, vertices, new_pntnt_vertices,
 				indices, Materials,
 				SampleMatrices, BoneCount, SampleCount);
 			if (vertices.size() > 0) {
-				//ŒvZ‚Å–@ü‚ğ“ü‚ê‚é
+				//è¨ˆç®—ã§æ³•ç·šã‚’å…¥ã‚Œã‚‹
 				new_pntnt_vertices.clear();
 				for (size_t i = 0; i < vertices.size(); i++) {
 					VertexPositionNormalTangentTextureSkinning new_pntnt_v;
@@ -859,12 +859,12 @@ namespace basecross {
 		try {
 			wstring DataFile = BinDataDir + BinDataFile;
 			BinaryReader Reader(DataFile);
-			//ƒwƒbƒ_‚Ì“Ç‚İ‚İ
+			//ãƒ˜ãƒƒãƒ€ã®èª­ã¿è¾¼ã¿
 			auto pHeader = Reader.ReadArray<char>(16);
 			string str = pHeader;
 			if (str != "BDV1.0") {
 				throw BaseException(
-					L"ƒf[ƒ^Œ`®‚ªˆá‚¢‚Ü‚·",
+					L"ãƒ‡ãƒ¼ã‚¿å½¢å¼ãŒé•ã„ã¾ã™",
 					DataFile,
 					L"MeshResource::CreateStaticModelMesh()"
 				);
@@ -880,12 +880,12 @@ namespace basecross {
 		try {
 			wstring DataFile = BinDataDir + BinDataFile;
 			BinaryReader Reader(DataFile);
-			//ƒwƒbƒ_‚Ì“Ç‚İ‚İ
+			//ãƒ˜ãƒƒãƒ€ã®èª­ã¿è¾¼ã¿
 			auto pHeader = Reader.ReadArray<char>(16);
 			string str = pHeader;
 			if (str != "BDV1.0") {
 				throw BaseException(
-					L"ƒf[ƒ^Œ`®‚ªˆá‚¢‚Ü‚·",
+					L"ãƒ‡ãƒ¼ã‚¿å½¢å¼ãŒé•ã„ã¾ã™",
 					DataFile,
 					L"MeshResource::CreateStaticModelMeshWithTangent()"
 				);
@@ -903,12 +903,12 @@ namespace basecross {
 		try {
 			wstring DataFile = BinDataDir + BinDataFile;
 			BinaryReader Reader(DataFile);
-			//ƒwƒbƒ_‚Ì“Ç‚İ‚İ
+			//ãƒ˜ãƒƒãƒ€ã®èª­ã¿è¾¼ã¿
 			auto pHeader = Reader.ReadArray<char>(16);
 			string str = pHeader;
 			if (str != "BDV1.0") {
 				throw BaseException(
-					L"ƒf[ƒ^Œ`®‚ªˆá‚¢‚Ü‚·",
+					L"ãƒ‡ãƒ¼ã‚¿å½¢å¼ãŒé•ã„ã¾ã™",
 					DataFile,
 					L"MeshResource::CreateBoneModelMesh()"
 				);
@@ -926,12 +926,12 @@ namespace basecross {
 		try {
 			wstring DataFile = BinDataDir + BinDataFile;
 			BinaryReader Reader(DataFile);
-			//ƒwƒbƒ_‚Ì“Ç‚İ‚İ
+			//ãƒ˜ãƒƒãƒ€ã®èª­ã¿è¾¼ã¿
 			auto pHeader = Reader.ReadArray<char>(16);
 			string str = pHeader;
 			if (str != "BDV1.0") {
 				throw BaseException(
-					L"ƒf[ƒ^Œ`®‚ªˆá‚¢‚Ü‚·",
+					L"ãƒ‡ãƒ¼ã‚¿å½¢å¼ãŒé•ã„ã¾ã™",
 					DataFile,
 					L"MeshResource::CreateBoneModelMeshWithTangent()"
 				);
@@ -944,12 +944,12 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX
+	///	ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
 	//--------------------------------------------------------------------------------------
 	MultiMeshResource::MultiMeshResource() :
 		BaseResource()
 	{}
-	//”jŠü
+	//ç ´æ£„
 	MultiMeshResource::~MultiMeshResource() {}
 
 
@@ -958,21 +958,21 @@ namespace basecross {
 		try {
 			wstring DataFile = BinDataDir + BinDataFile;
 			BinaryReader Reader(DataFile);
-			//ƒwƒbƒ_‚Ì“Ç‚İ‚İ
+			//ãƒ˜ãƒƒãƒ€ã®èª­ã¿è¾¼ã¿
 			auto pHeader = Reader.ReadArray<char>(16);
 			string str = pHeader;
 			if (str != "BDV1.1") {
 				throw BaseException(
-					L"ƒf[ƒ^Œ`®‚ªˆá‚¢‚Ü‚·",
+					L"ãƒ‡ãƒ¼ã‚¿å½¢å¼ãŒé•ã„ã¾ã™",
 					DataFile,
 					L"MultiMeshResource::CreateStaticModelMultiMesh()"
 				);
 			}
-			//ƒƒbƒVƒ…”‚Ì“Ç‚İ‚İ
+			//ãƒ¡ãƒƒã‚·ãƒ¥æ•°ã®èª­ã¿è¾¼ã¿
 			auto blockHeader = Reader.Read<BlockHeader>();
 			if (!(blockHeader.m_Type == BlockType::MashCount)) {
 				throw BaseException(
-					L"ƒƒbƒVƒ…y”‚Ìƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+					L"ãƒ¡ãƒƒã‚·ãƒ¥yæ•°ã®ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 					BinDataFile,
 					L"MultiMeshResource::CreateStaticModelMultiMesh()"
 				);
@@ -996,21 +996,21 @@ namespace basecross {
 		try {
 			wstring DataFile = BinDataDir + BinDataFile;
 			BinaryReader Reader(DataFile);
-			//ƒwƒbƒ_‚Ì“Ç‚İ‚İ
+			//ãƒ˜ãƒƒãƒ€ã®èª­ã¿è¾¼ã¿
 			auto pHeader = Reader.ReadArray<char>(16);
 			string str = pHeader;
 			if (str != "BDV1.1") {
 				throw BaseException(
-					L"ƒf[ƒ^Œ`®‚ªˆá‚¢‚Ü‚·",
+					L"ãƒ‡ãƒ¼ã‚¿å½¢å¼ãŒé•ã„ã¾ã™",
 					DataFile,
 					L"MultiMeshResource::CreateStaticModelMultiMeshWithTangent()"
 				);
 			}
-			//ƒƒbƒVƒ…”‚Ì“Ç‚İ‚İ
+			//ãƒ¡ãƒƒã‚·ãƒ¥æ•°ã®èª­ã¿è¾¼ã¿
 			auto blockHeader = Reader.Read<BlockHeader>();
 			if (!(blockHeader.m_Type == BlockType::MashCount)) {
 				throw BaseException(
-					L"ƒƒbƒVƒ…y”‚Ìƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+					L"ãƒ¡ãƒƒã‚·ãƒ¥yæ•°ã®ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 					BinDataFile,
 					L"MultiMeshResource::CreateStaticModelMultiMeshWithTangent()"
 				);
@@ -1033,21 +1033,21 @@ namespace basecross {
 		try {
 			wstring DataFile = BinDataDir + BinDataFile;
 			BinaryReader Reader(DataFile);
-			//ƒwƒbƒ_‚Ì“Ç‚İ‚İ
+			//ãƒ˜ãƒƒãƒ€ã®èª­ã¿è¾¼ã¿
 			auto pHeader = Reader.ReadArray<char>(16);
 			string str = pHeader;
 			if (str != "BDV1.1") {
 				throw BaseException(
-					L"ƒf[ƒ^Œ`®‚ªˆá‚¢‚Ü‚·",
+					L"ãƒ‡ãƒ¼ã‚¿å½¢å¼ãŒé•ã„ã¾ã™",
 					DataFile,
 					L"MultiMeshResource::CreateBoneModelMultiMesh()"
 				);
 			}
-			//ƒƒbƒVƒ…”‚Ì“Ç‚İ‚İ
+			//ãƒ¡ãƒƒã‚·ãƒ¥æ•°ã®èª­ã¿è¾¼ã¿
 			auto blockHeader = Reader.Read<BlockHeader>();
 			if (!(blockHeader.m_Type == BlockType::MashCount)) {
 				throw BaseException(
-					L"ƒƒbƒVƒ…y”‚Ìƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+					L"ãƒ¡ãƒƒã‚·ãƒ¥yæ•°ã®ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 					BinDataFile,
 					L"MultiMeshResource::CreateBoneModelMultiMesh()"
 				);
@@ -1069,21 +1069,21 @@ namespace basecross {
 		try {
 			wstring DataFile = BinDataDir + BinDataFile;
 			BinaryReader Reader(DataFile);
-			//ƒwƒbƒ_‚Ì“Ç‚İ‚İ
+			//ãƒ˜ãƒƒãƒ€ã®èª­ã¿è¾¼ã¿
 			auto pHeader = Reader.ReadArray<char>(16);
 			string str = pHeader;
 			if (str != "BDV1.1") {
 				throw BaseException(
-					L"ƒf[ƒ^Œ`®‚ªˆá‚¢‚Ü‚·",
+					L"ãƒ‡ãƒ¼ã‚¿å½¢å¼ãŒé•ã„ã¾ã™",
 					DataFile,
 					L"MultiMeshResource::CreateBoneModelMultiMeshWithTangent()"
 				);
 			}
-			//ƒƒbƒVƒ…”‚Ì“Ç‚İ‚İ
+			//ãƒ¡ãƒƒã‚·ãƒ¥æ•°ã®èª­ã¿è¾¼ã¿
 			auto blockHeader = Reader.Read<BlockHeader>();
 			if (!(blockHeader.m_Type == BlockType::MashCount)) {
 				throw BaseException(
-					L"ƒƒbƒVƒ…y”‚Ìƒwƒbƒ_‚ªˆá‚¢‚Ü‚·",
+					L"ãƒ¡ãƒƒã‚·ãƒ¥yæ•°ã®ãƒ˜ãƒƒãƒ€ãŒé•ã„ã¾ã™",
 					BinDataFile,
 					L"MultiMeshResource::CreateBoneModelMultiMeshWithTangent()"
 				);
@@ -1104,31 +1104,31 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct DeviceResources::Impl;
-	//	—p“r: Direct11ƒfƒoƒCƒXƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Direct11ãƒ‡ãƒã‚¤ã‚¹ã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct DeviceResources::Impl {
-		D3D_DRIVER_TYPE	m_D3DDriverType;			//ƒhƒ‰ƒCƒo‚Ìƒ^ƒCƒv
+		D3D_DRIVER_TYPE	m_D3DDriverType;			//ãƒ‰ãƒ©ã‚¤ãƒã®ã‚¿ã‚¤ãƒ—
 		D3D_FEATURE_LEVEL m_D3DFeatureLevel;
-		// Direct3D ƒIƒuƒWƒFƒNƒgB
-		ComPtr<ID3D11Device2> m_D3D11Device;		//ƒfƒoƒCƒX
-		ComPtr<ID3D11DeviceContext2> m_D3D11Context;		//ƒRƒ“ƒeƒLƒXƒg
-		ComPtr<IDXGISwapChain1> m_D3D11SwapChain;	//ƒXƒƒbƒvƒ`ƒF[ƒ“
+		// Direct3D ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚
+		ComPtr<ID3D11Device2> m_D3D11Device;		//ãƒ‡ãƒã‚¤ã‚¹
+		ComPtr<ID3D11DeviceContext2> m_D3D11Context;		//ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
+		ComPtr<IDXGISwapChain1> m_D3D11SwapChain;	//ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³
 
 
-													// Direct2D •`‰æƒRƒ“ƒ|[ƒlƒ“ƒgB
+													// Direct2D æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
 		ComPtr<ID2D1Factory2>		m_d2dFactory;
 		ComPtr<ID2D1Device1>		m_d2dDevice;
 		ComPtr<ID2D1DeviceContext1>	m_d2dContext;
 
-		// DirectWrite •`‰æƒRƒ“ƒ|[ƒlƒ“ƒgB
+		// DirectWrite æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
 		ComPtr<IDWriteFactory2>		m_dwriteFactory;
 		ComPtr<IWICImagingFactory2>	m_wicFactory;
 
 		float m_dpi;
 
-		shared_ptr<DefaultRenderTarget> m_DefaultRenderTarget;	///<ƒfƒtƒHƒ‹ƒg‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
-		shared_ptr<ShadowMapRenderTarget> m_ShadowMapRenderTarget;	///<ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
-		shared_ptr<RenderState> m_RenderState;					///<ƒŒƒ“ƒ_ƒŠƒ“ƒOƒXƒe[ƒg
+		shared_ptr<DefaultRenderTarget> m_DefaultRenderTarget;	///<ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
+		shared_ptr<ShadowMapRenderTarget> m_ShadowMapRenderTarget;	///<ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
+		shared_ptr<RenderState> m_RenderState;					///<ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¹ãƒ†ãƒ¼ãƒˆ
 
 
 
@@ -1157,9 +1157,9 @@ namespace basecross {
 				HRESULT hr = pDx11Device->CreateSamplerState(&desc, pResult);
 
 				if (FAILED(hr)) {
-					// ‰Šú‰»¸”s
+					// åˆæœŸåŒ–å¤±æ•—
 					throw BaseException(
-						L"ƒTƒ“ƒvƒ‰[ƒXƒe[ƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+						L"ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 						L"if(FAILED(pDx11Device->CreateSamplerState()))",
 						L"DeviceResources::Impl::CreateSamplerState()"
 					);
@@ -1189,9 +1189,9 @@ namespace basecross {
 
 				HRESULT hr = pDx11Device->CreateBlendState(&desc, pResult);
 				if (FAILED(hr)) {
-					// ‰Šú‰»¸”s
+					// åˆæœŸåŒ–å¤±æ•—
 					throw BaseException(
-						L"ƒuƒŒƒ“ƒhƒXƒe[ƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+						L"ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 						L"if(FAILED(pDx11Device->CreateBlendState()))",
 						L"DeviceResources::Impl::CreateBlendState()"
 					);
@@ -1227,9 +1227,9 @@ namespace basecross {
 
 				HRESULT hr = pDx11Device->CreateDepthStencilState(&desc, pResult);
 				if (FAILED(hr)) {
-					// ‰Šú‰»¸”s
+					// åˆæœŸåŒ–å¤±æ•—
 					throw BaseException(
-						L"ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+						L"ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 						L"if(FAILED(pDx11Device->CreateDepthStencilState()))",
 						L"DeviceResources::Impl::CreateDepthStencilState()"
 					);
@@ -1256,9 +1256,9 @@ namespace basecross {
 
 				HRESULT hr = pDx11Device->CreateRasterizerState(&desc, pResult);
 				if (FAILED(hr)) {
-					// ‰Šú‰»¸”s
+					// åˆæœŸåŒ–å¤±æ•—
 					throw BaseException(
-						L"ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+						L"ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 						L"if(FAILED(pDx11Device->CreateRasterizerState()))",
 						L"DeviceResources::Impl::CreateRasterizerState()"
 					);
@@ -1273,13 +1273,13 @@ namespace basecross {
 		ComPtr<ID3D11SamplerState> m_LinearClampPtr;
 		ComPtr<ID3D11DepthStencilState> m_DepthDefaultPtr;
 		ComPtr<ID3D11RasterizerState> m_CullBackPtr;
-		//ƒ~ƒ…[ƒeƒbƒNƒX
+		//ãƒŸãƒ¥ãƒ¼ãƒ†ãƒƒã‚¯ã‚¹
 		std::mutex Mutex;
 
-		//\’z‚Æ”jŠü
+		//æ§‹ç¯‰ã¨ç ´æ£„
 		Impl(HWND hWnd, bool isFullScreen, UINT Width, UINT Height);
 		~Impl() {}
-		//ƒŠƒ\[ƒX‚Ì\’z
+		//ãƒªã‚½ãƒ¼ã‚¹ã®æ§‹ç¯‰
 		void CreateDeviceResources(HWND hWnd, bool isFullScreen, UINT Width, UINT Height);
 
 		ID3D11SamplerState* GetLinearClampSampler() {
@@ -1313,30 +1313,30 @@ namespace basecross {
 
 
 	};
-	//\’z
+	//æ§‹ç¯‰
 	DeviceResources::Impl::Impl(HWND hWnd, bool isFullScreen, UINT Width, UINT Height) :
 		m_dpi(96.0f)
 	{
 		try {
-			//ƒŠƒ\[ƒX‚Ì\’z
+			//ãƒªã‚½ãƒ¼ã‚¹ã®æ§‹ç¯‰
 			CreateDeviceResources(hWnd, isFullScreen, Width, Height);
 		}
 		catch (...) {
 			throw;
 		}
 	}
-	//ƒŠƒ\[ƒX‚Ì\’z
+	//ãƒªã‚½ãƒ¼ã‚¹ã®æ§‹ç¯‰
 	void DeviceResources::Impl::CreateDeviceResources(HWND hWnd, bool isFullScreen, UINT Width, UINT Height) {
 
-		// Direct2D ƒŠƒ\[ƒX‚ğ‰Šú‰»‚µ‚Ü‚·B
+		// Direct2D ãƒªã‚½ãƒ¼ã‚¹ã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
 		D2D1_FACTORY_OPTIONS options;
 		ZeroMemory(&options, sizeof(D2D1_FACTORY_OPTIONS));
 
 #if defined(_DEBUG)
-		// ƒvƒƒWƒFƒNƒg‚ªƒfƒoƒbƒO ƒrƒ‹ƒh‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚éê‡‚ÍADirect2D ƒfƒoƒbƒO‚ğ SDK ƒŒƒCƒ„[‚ğ‰î‚µ‚Ä—LŒø‚É‚µ‚Ü‚·B
+		// ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆãŒãƒ‡ãƒãƒƒã‚° ãƒ“ãƒ«ãƒ‰ã«å«ã¾ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€Direct2D ãƒ‡ãƒãƒƒã‚°ã‚’ SDK ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ä»‹ã—ã¦æœ‰åŠ¹ã«ã—ã¾ã™ã€‚
 		options.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
 #endif
-		// Direct2D ƒtƒ@ƒNƒgƒŠ‚ğ‰Šú‰»‚µ‚Ü‚·B
+		// Direct2D ãƒ•ã‚¡ã‚¯ãƒˆãƒªã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
 		ThrowIfFailed(
 			D2D1CreateFactory(
 				D2D1_FACTORY_TYPE_SINGLE_THREADED,
@@ -1344,20 +1344,20 @@ namespace basecross {
 				&options,
 				&m_d2dFactory
 			),
-			L"Factoryì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"Factoryä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"D2D1CreateFactory()",
 			L"DeviceResources::Impl::CreateDeviceResources()"
 		);
 
 
-		// DirectWrite ƒtƒ@ƒNƒgƒŠ‚ğ‰Šú‰»‚µ‚Ü‚·B
+		// DirectWrite ãƒ•ã‚¡ã‚¯ãƒˆãƒªã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
 		ThrowIfFailed(
 			DWriteCreateFactory(
 				DWRITE_FACTORY_TYPE_SHARED,
 				__uuidof(IDWriteFactory2),
 				&m_dwriteFactory
 			),
-			L"DirectWrite ƒtƒ@ƒNƒgƒŠì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"DirectWrite ãƒ•ã‚¡ã‚¯ãƒˆãƒªä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"DWriteCreateFactory()",
 			L"DeviceResources::Impl::CreateDeviceResources()"
 		);
@@ -1369,64 +1369,64 @@ namespace basecross {
 				CLSCTX_INPROC_SERVER,
 				IID_PPV_ARGS(&m_wicFactory)
 			),
-			L"(WIC) ƒtƒ@ƒNƒgƒŠì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"(WIC) ãƒ•ã‚¡ã‚¯ãƒˆãƒªä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"CoCreateInstance()",
 			L"DeviceResources::Impl::CreateDeviceResources()"
 		);
 
 
-		HRESULT hr;	//API‚Ì–ß‚è’l—p
-					//ƒfƒoƒCƒXì¬—pƒtƒ‰ƒO
+		HRESULT hr;	//APIã®æˆ»ã‚Šå€¤ç”¨
+					//ãƒ‡ãƒã‚¤ã‚¹ä½œæˆç”¨ãƒ•ãƒ©ã‚°
 		UINT createDeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
-		//ƒfƒoƒbƒO
+		//ãƒ‡ãƒãƒƒã‚°æ™‚
 #ifdef _DEBUG
 		//		createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
-		//ƒhƒ‰ƒCƒo‚Ìƒ^ƒCƒv‚ğ”z—ñ‰»
+		//ãƒ‰ãƒ©ã‚¤ãƒã®ã‚¿ã‚¤ãƒ—ã‚’é…åˆ—åŒ–
 		D3D_DRIVER_TYPE driverTypes[] = {
 			D3D_DRIVER_TYPE_HARDWARE,
 			D3D_DRIVER_TYPE_WARP,
 			D3D_DRIVER_TYPE_REFERENCE,
 		};
-		//‘I‘ğ‚Å‚«‚éƒhƒ‰ƒCƒo[‚Ì”
+		//é¸æŠã§ãã‚‹ãƒ‰ãƒ©ã‚¤ãƒãƒ¼ã®æ•°
 		UINT numDriverTypes = ARRAYSIZE(driverTypes);
 
-		//‹@”\ƒZƒbƒg‚Ì”z—ñ‰»
+		//æ©Ÿèƒ½ã‚»ãƒƒãƒˆã®é…åˆ—åŒ–
 		D3D_FEATURE_LEVEL featureLevels[] =
 		{
 			D3D_FEATURE_LEVEL_11_1,
-			D3D_FEATURE_LEVEL_11_0,	//Dx11‹@”\ƒIƒ“ƒŠ[
+			D3D_FEATURE_LEVEL_11_0,	//Dx11æ©Ÿèƒ½ã‚ªãƒ³ãƒªãƒ¼
 		};
-		//‘I‘ğ‚Å‚«‚é‹@”\‚Ì”
+		//é¸æŠã§ãã‚‹æ©Ÿèƒ½ã®æ•°
 		UINT numFeatureLevels = ARRAYSIZE(featureLevels);
 
-		//ƒXƒƒbƒvƒ`ƒF[ƒ“‚ÌƒfƒXƒNƒvƒŠƒ^‚Ìİ’è
+		//ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ã®è¨­å®š
 		DXGI_SWAP_CHAIN_DESC sd;
 		ZeroMemory(&sd, sizeof(sd));
-		sd.BufferCount = 2;					//ƒoƒbƒtƒ@”(2ƒ_ƒuƒ‹ƒoƒbƒtƒ@)
-		sd.BufferDesc.Width = Width;		//ƒoƒbƒtƒ@‚Ì•
-		sd.BufferDesc.Height = Height;	//ƒoƒbƒtƒ@‚Ì‚‚³
+		sd.BufferCount = 2;					//ãƒãƒƒãƒ•ã‚¡æ•°(2ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡)
+		sd.BufferDesc.Width = Width;		//ãƒãƒƒãƒ•ã‚¡ã®å¹…
+		sd.BufferDesc.Height = Height;	//ãƒãƒƒãƒ•ã‚¡ã®é«˜ã•
 		sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-		//8 ƒrƒbƒg ƒAƒ‹ƒtƒ@‚ğƒTƒ|[ƒg‚·‚é 4 ¬•ªA16 ƒrƒbƒg•„†‚È‚µ³‹K‰»®”ƒtƒH[ƒ}ƒbƒg
-		sd.BufferDesc.RefreshRate.Numerator = 60;	//ƒŠƒtƒŒƒbƒVƒ…ƒŒ[ƒgÅ‘å’l
-		sd.BufferDesc.RefreshRate.Denominator = 1;	//ƒŠƒtƒŒƒbƒVƒ…ƒŒ[ƒgÅ¬’l
-		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;	//o—Í—p‚Æ‚µ‚Ä’è‹`
-		sd.OutputWindow = hWnd;		//ƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹
-		sd.SampleDesc.Count = 1;		//ƒ}ƒ‹ƒ`ƒTƒ“ƒvƒŠƒ“ƒO ”‚Í1
-		sd.SampleDesc.Quality = 0;		//ƒ}ƒ‹ƒ`ƒTƒ“ƒvƒŠƒ“ƒOƒNƒIƒŠƒeƒB‚Í0iÅ‘åj
+		//8 ãƒ“ãƒƒãƒˆ ã‚¢ãƒ«ãƒ•ã‚¡ã‚’ã‚µãƒãƒ¼ãƒˆã™ã‚‹ 4 æˆåˆ†ã€16 ãƒ“ãƒƒãƒˆç¬¦å·ãªã—æ­£è¦åŒ–æ•´æ•°ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
+		sd.BufferDesc.RefreshRate.Numerator = 60;	//ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ãƒ¬ãƒ¼ãƒˆæœ€å¤§å€¤
+		sd.BufferDesc.RefreshRate.Denominator = 1;	//ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ãƒ¬ãƒ¼ãƒˆæœ€å°å€¤
+		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;	//å‡ºåŠ›ç”¨ã¨ã—ã¦å®šç¾©
+		sd.OutputWindow = hWnd;		//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«
+		sd.SampleDesc.Count = 1;		//ãƒãƒ«ãƒã‚µãƒ³ãƒ—ãƒªãƒ³ã‚° æ•°ã¯1
+		sd.SampleDesc.Quality = 0;		//ãƒãƒ«ãƒã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã‚¯ã‚ªãƒªãƒ†ã‚£ã¯0ï¼ˆæœ€å¤§ï¼‰
 
-		sd.Windowed = TRUE;			//ƒEƒCƒ“ƒhƒEƒ‚[ƒh‚Åì¬‚µ‚Ä‚ ‚Æ‚©‚çƒtƒ‹sƒNƒŠ[ƒ“‚É‚·‚é
+		sd.Windowed = TRUE;			//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰ã§ä½œæˆã—ã¦ã‚ã¨ã‹ã‚‰ãƒ•ãƒ«sã‚¯ãƒªãƒ¼ãƒ³ã«ã™ã‚‹
 
 		ComPtr<ID3D11Device> temp_device;
 		ComPtr<ID3D11DeviceContext>	temp_context;
 		ComPtr<IDXGISwapChain>	temp_swapChain;
 
 
-		//ƒfƒoƒCƒX‚ÆƒXƒƒbƒvƒ`ƒF[ƒ“‚Ìì¬
+		//ãƒ‡ãƒã‚¤ã‚¹ã¨ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®ä½œæˆ
 		for (UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++) {
-			//ƒhƒ‰ƒCƒoƒ^ƒCƒv‚ğ”z—ñ‚©‚çæ“¾
+			//ãƒ‰ãƒ©ã‚¤ãƒã‚¿ã‚¤ãƒ—ã‚’é…åˆ—ã‹ã‚‰å–å¾—
 			m_D3DDriverType = driverTypes[driverTypeIndex];
-			//ƒfƒoƒCƒX‚ÆƒXƒƒbƒvƒ`ƒF[ƒ“‚Ìì¬
+			//ãƒ‡ãƒã‚¤ã‚¹ã¨ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®ä½œæˆ
 			hr = D3D11CreateDeviceAndSwapChain(
 				nullptr,
 				m_D3DDriverType,
@@ -1441,34 +1441,34 @@ namespace basecross {
 				&m_D3DFeatureLevel,
 				&temp_context
 			);
-			//¬Œ÷‚µ‚½‚ç‚»‚Ìƒhƒ‰ƒCƒo‚ğg‚¤
+			//æˆåŠŸã—ãŸã‚‰ãã®ãƒ‰ãƒ©ã‚¤ãƒã‚’ä½¿ã†
 			if (SUCCEEDED(hr))
 				break;
 		}
 		ThrowIfFailed(
 			hr,
-			L"DX11ƒfƒoƒCƒX‚ÆƒXƒƒbƒvƒ`ƒF[ƒ“‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"DX11ãƒ‡ãƒã‚¤ã‚¹ã¨ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"D3D11CreateDeviceAndSwapChain()",
 			L"DeviceResources::Impl::CreateDeviceResources()"
 		);
 
 
-		//ƒŠƒ\[ƒX‚ğƒo[ƒWƒ‡ƒ“ƒAƒbƒv‚·‚é
+		//ãƒªã‚½ãƒ¼ã‚¹ã‚’ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚¢ãƒƒãƒ—ã™ã‚‹
 		ThrowIfFailed(
 			temp_device.As(&m_D3D11Device),
-			L"DX11ƒfƒoƒCƒX‚Ìƒo[ƒWƒ‡ƒ“ƒAƒbƒv‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"DX11ãƒ‡ãƒã‚¤ã‚¹ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚¢ãƒƒãƒ—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"temp_device.As(&m_D3D11Device)",
 			L"DeviceResources::Impl::CreateDeviceResources()"
 		);
 		ThrowIfFailed(
 			temp_context.As(&m_D3D11Context),
-			L"DX11ƒRƒ“ƒeƒNƒXƒg‚Ìƒo[ƒWƒ‡ƒ“ƒAƒbƒv‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"DX11ã‚³ãƒ³ãƒ†ã‚¯ã‚¹ãƒˆã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚¢ãƒƒãƒ—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"temp_context.As(&m_D3D11Context)",
 			L"DeviceResources::Impl::CreateDeviceResources()"
 		);
 		ThrowIfFailed(
 			temp_swapChain.As(&m_D3D11SwapChain),
-			L"DX11ƒXƒƒbƒvƒ`ƒF[ƒ“‚Ìƒo[ƒWƒ‡ƒ“ƒAƒbƒv‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"DX11ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚¢ãƒƒãƒ—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"temp_swapChain.As(&m_D3D11SwapChain)",
 			L"DeviceResources::Impl::CreateDeviceResources()"
 		);
@@ -1476,36 +1476,36 @@ namespace basecross {
 		IDXGIFactory* pfac = nullptr;
 		ThrowIfFailed(
 			m_D3D11SwapChain->GetParent(__uuidof(IDXGIFactory), (void**)&pfac),
-			L"Alt+Enter‹@”\‚Ìíœƒtƒ@ƒNƒgƒŠì¬‚É¸”s‚µ‚Ü‚µ‚½",
+			L"Alt+Enteræ©Ÿèƒ½ã®å‰Šé™¤ãƒ•ã‚¡ã‚¯ãƒˆãƒªä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 			L"m_D3D11SwapChain->GetParent(__uuidof(IDXGIFactory), (void**)&pfac)",
 			L"DeviceResources::Impl::CreateDeviceResources()"
 		);
 		if (!pfac) {
 			throw BaseException(
-				L"Alt+Enter‹@”\‚Ìíœƒtƒ@ƒNƒgƒŠ‚ª‚ ‚è‚Ü‚¹‚ñ",
+				L"Alt+Enteræ©Ÿèƒ½ã®å‰Šé™¤ãƒ•ã‚¡ã‚¯ãƒˆãƒªãŒã‚ã‚Šã¾ã›ã‚“",
 				L"if (!pfac)",
 				L"DeviceResources::Impl::CreateDeviceResources()"
 			);
 		}
-		//Alt+Enter‹@”\‚Ì–³Œø‰»
+		//Alt+Enteræ©Ÿèƒ½ã®ç„¡åŠ¹åŒ–
 		pfac->MakeWindowAssociation(hWnd, DXGI_MWA_NO_WINDOW_CHANGES
 			| DXGI_MWA_NO_ALT_ENTER);
 
 
-		// Direct2D ƒfƒoƒCƒX ƒIƒuƒWƒFƒNƒg‚ÆA‘Î‰‚·‚éƒRƒ“ƒeƒLƒXƒg‚ğì¬‚µ‚Ü‚·B
+		// Direct2D ãƒ‡ãƒã‚¤ã‚¹ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã€å¯¾å¿œã™ã‚‹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
 
 		ComPtr<IDXGIDevice3> dxgiDevice;
 
 		ThrowIfFailed(
 			m_D3D11Device.As(&dxgiDevice),
-			L"dxgiDevice‚Ìƒo[ƒWƒ‡ƒ“ƒAƒbƒv‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"dxgiDeviceã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚¢ãƒƒãƒ—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"m_d3dDevice.As(&dxgiDevice)",
 			L"DeviceResources::Impl::CreateDeviceResources()"
 		);
 
 		ThrowIfFailed(
 			m_d2dFactory->CreateDevice(dxgiDevice.Get(), &m_d2dDevice),
-			L"dxgiDevice‚Ìƒo[ƒWƒ‡ƒ“ƒAƒbƒv‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"dxgiDeviceã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚¢ãƒƒãƒ—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"m_d2dFactory->CreateDevice()",
 			L"DeviceResources::Impl::CreateDeviceResources()"
 		);
@@ -1515,7 +1515,7 @@ namespace basecross {
 				D2D1_DEVICE_CONTEXT_OPTIONS_NONE,
 				&m_d2dContext
 			),
-			L"2dƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"2dãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"m_d2dDevice->CreateDeviceContext()",
 			L"DeviceResources::Impl::CreateDeviceResources()"
 		);
@@ -1523,7 +1523,7 @@ namespace basecross {
 		if (isFullScreen) {
 			ThrowIfFailed(
 				m_D3D11SwapChain->SetFullscreenState(true, NULL),
-				L"ƒtƒ‹ƒXƒNƒŠ[ƒ“ˆÚs‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ç§»è¡Œã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"m_D3D11SwapChain->SetFullscreenState(true, NULL)",
 				L"DeviceResources::Impl::CreateDeviceResources()"
 			);
@@ -1535,23 +1535,23 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class DeviceResources;
-	//	—p“r: Direct11ƒfƒoƒCƒX‚È‚ÇƒNƒ‰ƒX
+	//	ç”¨é€”: Direct11ãƒ‡ãƒã‚¤ã‚¹ãªã©ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	DeviceResources::DeviceResources(HWND hWnd, bool isFullScreen, UINT Width, UINT Height) :
 		pImpl(new Impl(hWnd, isFullScreen, Width, Height))
 	{
-		//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒXƒe[ƒg‚Ìì¬
+		//ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¹ãƒ†ãƒ¼ãƒˆã®ä½œæˆ
 		pImpl->m_RenderState = make_shared<RenderState>();
 	}
 	DeviceResources::~DeviceResources() {}
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	ID3D11Device2*	DeviceResources::GetD3DDevice() const { return pImpl->m_D3D11Device.Get(); }
 	ID3D11DeviceContext2* DeviceResources::GetD3DDeviceContext() const { return pImpl->m_D3D11Context.Get(); }
 	IDXGISwapChain1* DeviceResources::GetSwapChain() const { return pImpl->m_D3D11SwapChain.Get(); }
 	D3D_FEATURE_LEVEL DeviceResources::GetFeatureLevel() const { return pImpl->m_D3DFeatureLevel; }
 
-	// D2D ƒAƒNƒZƒT[B
+	// D2D ã‚¢ã‚¯ã‚»ã‚µãƒ¼ã€‚
 	ID2D1Factory2*			DeviceResources::GetD2DFactory() const { return pImpl->m_d2dFactory.Get(); }
 	ID2D1Device1*			DeviceResources::GetD2DDevice() const { return pImpl->m_d2dDevice.Get(); }
 	ID2D1DeviceContext1*	DeviceResources::GetD2DDeviceContext() const { return pImpl->m_d2dContext.Get(); }
@@ -1564,46 +1564,46 @@ namespace basecross {
 		ID3D11Buffer* pNullConstantBuffer[D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT] = { nullptr };
 
 		auto pID3D11DeviceContext = GetD3DDeviceContext();
-		//Œãn––
-		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@ƒNƒŠƒA
+		//å¾Œå§‹æœ«
+		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 		pID3D11DeviceContext->VSSetConstantBuffers(0, D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT, pNullConstantBuffer);
 		pID3D11DeviceContext->PSSetConstantBuffers(0, D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT, pNullConstantBuffer);
 		pID3D11DeviceContext->GSSetConstantBuffers(0, D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT, pNullConstantBuffer);
 		pID3D11DeviceContext->CSSetConstantBuffers(0, D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT, pNullConstantBuffer);
-		//ƒVƒF[ƒ_[ƒŠƒ\[ƒX‚àƒNƒŠƒA
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ã‚‚ã‚¯ãƒªã‚¢
 		pID3D11DeviceContext->PSSetShaderResources(0, D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, pNull);
-		//ƒTƒ“ƒvƒ‰[‚àƒNƒŠƒA
+		//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚‚ã‚¯ãƒªã‚¢
 		pID3D11DeviceContext->PSSetSamplers(0, D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT, pNullSR);
-		//ƒVƒF[ƒ_‚ÌƒNƒŠƒA
+		//ã‚·ã‚§ãƒ¼ãƒ€ã®ã‚¯ãƒªã‚¢
 		pID3D11DeviceContext->VSSetShader(nullptr, nullptr, 0);
 		pID3D11DeviceContext->PSSetShader(nullptr, nullptr, 0);
 		pID3D11DeviceContext->GSSetShader(nullptr, nullptr, 0);
 		pID3D11DeviceContext->CSSetShader(nullptr, nullptr, 0);
-		//ƒCƒ“ƒvƒbƒgƒŒƒCƒAƒEƒg‚ÌƒNƒŠƒA
+		//ã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®ã‚¯ãƒªã‚¢
 		pID3D11DeviceContext->IASetInputLayout(nullptr);
-		//ƒfƒtƒHƒ‹ƒg‚Ìİ’è
-		//ƒŠƒjƒAƒTƒ“ƒvƒ‰[‚ğİ’è‚µ‚Ä‚¨‚­
+		//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®è¨­å®š
+		//ãƒªãƒ‹ã‚¢ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚’è¨­å®šã—ã¦ãŠã
 		ID3D11SamplerState* samplerState = pImpl->GetLinearClampSampler();
 		pID3D11DeviceContext->PSSetSamplers(0, 1, &samplerState);
-		//ƒuƒŒƒ“ƒh“h‚è‚Â‚Ô‚µ
+		//ãƒ–ãƒ¬ãƒ³ãƒ‰å¡—ã‚Šã¤ã¶ã—
 		pID3D11DeviceContext->OMSetBlendState(pImpl->GetOpaqueBlend(), nullptr, 0xffffffff);
-		//ƒŒƒ“ƒ_[ƒXƒe[ƒg‘O–Ê‚Ì‚İ•`‰æ
+		//ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆå‰é¢ã®ã¿æç”»
 		pID3D11DeviceContext->RSSetState(pImpl->GetCullBackRasterizer());
-		//ƒfƒvƒXƒXƒeƒ“ƒVƒ‹g—p
+		//ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ä½¿ç”¨
 		pID3D11DeviceContext->OMSetDepthStencilState(pImpl->GetDefaultDepthStencil(), 0);
 
 	}
 
 	shared_ptr<DefaultRenderTarget> DeviceResources::GetDefaultRenderTarget() {
 		if (!pImpl->m_DefaultRenderTarget) {
-			//ƒfƒtƒHƒ‹ƒg‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğì¬
+			//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ä½œæˆ
 			pImpl->m_DefaultRenderTarget = make_shared<DefaultRenderTarget>();
 		}
 		return pImpl->m_DefaultRenderTarget;
 	}
 	shared_ptr<ShadowMapRenderTarget> DeviceResources::GetShadowMapRenderTarget(float ShadowMapDimension ) {
 		if (!pImpl->m_ShadowMapRenderTarget) {
-			//ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğì¬
+			//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ä½œæˆ
 			pImpl->m_ShadowMapRenderTarget = make_shared<ShadowMapRenderTarget>(ShadowMapDimension);
 		}
 		return pImpl->m_ShadowMapRenderTarget;
@@ -1640,17 +1640,17 @@ namespace basecross {
 	}
 
 	void DeviceResources::Present(unsigned int SyncInterval, unsigned int  Flags) {
-		// ƒoƒbƒNƒoƒbƒtƒ@‚©‚çƒtƒƒ“ƒgƒoƒbƒtƒ@‚É“]‘—
+		// ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã‹ã‚‰ãƒ•ãƒ­ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã«è»¢é€
 		GetSwapChain()->Present(SyncInterval, Flags);
 	}
 
 
 	//--------------------------------------------------------------------------------------
 	//	struct RenderState;
-	//	—p“r: ƒŒƒ“ƒ_ƒŠƒ“ƒOƒXƒe[ƒgƒNƒ‰ƒX
+	//	ç”¨é€”: ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¹ãƒ†ãƒ¼ãƒˆã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct RenderState::Impl {
-		//ƒuƒŒƒ“ƒhƒXƒe[ƒg
+		//ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆ
 		ComPtr<ID3D11BlendState> m_OpaquePtr;
 		ComPtr<ID3D11BlendState> m_AlphaBlendPtr;
 		ComPtr<ID3D11BlendState> m_AlphaBlendExPtr;
@@ -1659,11 +1659,11 @@ namespace basecross {
 		ComPtr<ID3D11BlendState> m_NonPremultipliedPtr;
 		ComPtr<ID3D11BlendState> m_AlphaToCoveragePtr;
 
-		//ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg
+		//ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆ
 		ComPtr<ID3D11DepthStencilState> m_DepthNonePtr;
 		ComPtr<ID3D11DepthStencilState> m_DepthDefaultPtr;
 		ComPtr<ID3D11DepthStencilState> m_DepthReadPtr;
-		//ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg
+		//ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆ
 		ComPtr<ID3D11RasterizerState> m_CullNonePtr;
 		ComPtr<ID3D11RasterizerState> m_CullNoneScissorPtr;
 		ComPtr<ID3D11RasterizerState> m_CullFrontPtr;
@@ -1672,7 +1672,7 @@ namespace basecross {
 		ComPtr<ID3D11RasterizerState> m_CullBackScissorPtr;
 		ComPtr<ID3D11RasterizerState> m_WireframePtr;
 		ComPtr<ID3D11RasterizerState> m_WireframeScissorPtr;
-		//ƒTƒ“ƒvƒ‰[ƒXƒe[ƒg
+		//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆ
 		ComPtr<ID3D11SamplerState> m_PointWrapPtr;
 		ComPtr<ID3D11SamplerState> m_PointClampPtr;
 		ComPtr<ID3D11SamplerState> m_LinearWrapPtr;
@@ -1680,24 +1680,24 @@ namespace basecross {
 		ComPtr<ID3D11SamplerState> m_AnisotropicWrapPtr;
 		ComPtr<ID3D11SamplerState> m_AnisotropicClampPtr;
 		ComPtr<ID3D11SamplerState> m_ComparisonLinearPtr;
-		//ƒ~ƒ…[ƒeƒbƒNƒX
+		//ãƒŸãƒ¥ãƒ¼ãƒ†ãƒƒã‚¯ã‚¹
 		std::mutex Mutex;
 
 		//--------------------------------------------------------------------------------------
 		//	Impl(};
-		//	—p“r: ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		//	–ß‚è’l: ‚È‚µ
+		//	ç”¨é€”: ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		//	æˆ»ã‚Šå€¤: ãªã—
 		//--------------------------------------------------------------------------------------
 		Impl() {}
 		~Impl() {}
 		//--------------------------------------------------------------------------------------
 		//	void CreateBlendState(
-		//	D3D11_BLEND srcBlend,		//ƒ\[ƒXƒuƒŒƒ“ƒh
-		//	D3D11_BLEND destBlend,		//ƒfƒXƒgƒuƒŒƒ“ƒh
-		//	ID3D11BlendState** pResult	//ó‚¯æ‚éƒCƒ“ƒ^[ƒtƒFƒCƒX
+		//	D3D11_BLEND srcBlend,		//ã‚½ãƒ¼ã‚¹ãƒ–ãƒ¬ãƒ³ãƒ‰
+		//	D3D11_BLEND destBlend,		//ãƒ‡ã‚¹ãƒˆãƒ–ãƒ¬ãƒ³ãƒ‰
+		//	ID3D11BlendState** pResult	//å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 		//	);
-		//	—p“r: ƒuƒŒƒ“ƒhƒXƒe[ƒg‚ğì¬‚·‚éƒwƒ‹ƒp[ŠÖ”
-		//	–ß‚è’l: ‚È‚µ
+		//	ç”¨é€”: ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ä½œæˆã™ã‚‹ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°
+		//	æˆ»ã‚Šå€¤: ãªã—
 		//--------------------------------------------------------------------------------------
 		void CreateBlendState(D3D11_BLEND srcBlend, D3D11_BLEND destBlend,
 			ID3D11BlendState** pResult);
@@ -1707,31 +1707,31 @@ namespace basecross {
 		//	bool writeEnable,
 		//	ID3D11DepthStencilState** pResult
 		//	);
-		//	—p“r: ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg‚ğì¬‚·‚éƒwƒ‹ƒp[ŠÖ”
-		//	–ß‚è’l: ‚È‚µ
+		//	ç”¨é€”: ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ä½œæˆã™ã‚‹ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°
+		//	æˆ»ã‚Šå€¤: ãªã—
 		//--------------------------------------------------------------------------------------
 		void CreateDepthStencilState(bool enable, bool writeEnable,
 			ID3D11DepthStencilState** pResult);
 		//--------------------------------------------------------------------------------------
 		//	void CreateRasterizerState(
-		//	D3D11_CULL_MODE cullMode,			//ƒJƒŠƒ“ƒO
-		//	D3D11_FILL_MODE fillMode,			//“h‚è
-		//	ID3D11RasterizerState** pResult,		//ó‚¯æ‚éƒCƒ“ƒ^[ƒtƒFƒCƒX
-		//	bool Scissor = false				//‰æ–Ê•ªŠ„‚·‚é‚©‚Ç‚¤‚©
+		//	D3D11_CULL_MODE cullMode,			//ã‚«ãƒªãƒ³ã‚°
+		//	D3D11_FILL_MODE fillMode,			//å¡—ã‚Š
+		//	ID3D11RasterizerState** pResult,		//å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
+		//	bool Scissor = false				//ç”»é¢åˆ†å‰²ã™ã‚‹ã‹ã©ã†ã‹
 		//	);
-		//	—p“r: ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg‚ğì¬‚·‚éƒwƒ‹ƒp[ŠÖ”
-		//	–ß‚è’l: ‚È‚µ
+		//	ç”¨é€”: ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ä½œæˆã™ã‚‹ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°
+		//	æˆ»ã‚Šå€¤: ãªã—
 		//--------------------------------------------------------------------------------------
 		void CreateRasterizerState(D3D11_CULL_MODE cullMode, D3D11_FILL_MODE fillMode,
 			ID3D11RasterizerState** pResult, bool Scissor = false);
 		//--------------------------------------------------------------------------------------
 		//	void CreateSamplerState(
-		//	D3D11_FILTER filter,					//ƒtƒBƒ‹ƒ^[
-		//	D3D11_TEXTURE_ADDRESS_MODE addressMode	//ƒAƒhƒŒƒXƒ‚[ƒh
-		//	ID3D11SamplerState** pResult			//ó‚¯æ‚éƒCƒ“ƒ^[ƒtƒFƒCƒX
+		//	D3D11_FILTER filter,					//ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼
+		//	D3D11_TEXTURE_ADDRESS_MODE addressMode	//ã‚¢ãƒ‰ãƒ¬ã‚¹ãƒ¢ãƒ¼ãƒ‰
+		//	ID3D11SamplerState** pResult			//å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 		//	);
-		//	—p“r: ƒTƒ“ƒvƒ‰[ƒXƒe[ƒg‚ğì¬‚·‚éƒwƒ‹ƒp[ŠÖ”
-		//	–ß‚è’l: ‚È‚µ
+		//	ç”¨é€”: ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ä½œæˆã™ã‚‹ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°
+		//	æˆ»ã‚Šå€¤: ãªã—
 		//--------------------------------------------------------------------------------------
 		void CreateSamplerState(D3D11_FILTER filter,
 			D3D11_TEXTURE_ADDRESS_MODE addressMode,
@@ -1742,12 +1742,12 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	void RenderState::Impl::CreateBlendState(
-	//	D3D11_BLEND srcBlend,		//ƒ\[ƒXƒuƒŒƒ“ƒh
-	//	D3D11_BLEND destBlend,		//ƒfƒXƒgƒuƒŒƒ“ƒh
-	//	ID3D11BlendState** pResult	//ó‚¯æ‚éƒCƒ“ƒ^[ƒtƒFƒCƒX
+	//	D3D11_BLEND srcBlend,		//ã‚½ãƒ¼ã‚¹ãƒ–ãƒ¬ãƒ³ãƒ‰
+	//	D3D11_BLEND destBlend,		//ãƒ‡ã‚¹ãƒˆãƒ–ãƒ¬ãƒ³ãƒ‰
+	//	ID3D11BlendState** pResult	//å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 	//	);
-	//	—p“r: ƒuƒŒƒ“ƒhƒXƒe[ƒg‚ğì¬‚·‚éƒwƒ‹ƒp[ŠÖ”
-	//	–ß‚è’l: ‚È‚µ
+	//	ç”¨é€”: ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ä½œæˆã™ã‚‹ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°
+	//	æˆ»ã‚Šå€¤: ãªã—
 	//--------------------------------------------------------------------------------------
 	void RenderState::Impl::CreateBlendState(D3D11_BLEND srcBlend, D3D11_BLEND destBlend,
 		ID3D11BlendState** pResult) {
@@ -1769,9 +1769,9 @@ namespace basecross {
 
 			HRESULT hr = pDx11Device->CreateBlendState(&desc, pResult);
 			if (FAILED(hr)) {
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				throw BaseException(
-					L"ƒuƒŒƒ“ƒhƒXƒe[ƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if(FAILED(pDx11Device->CreateBlendState()))",
 					L"RenderState::Impl::CreateBlendState()"
 				);
@@ -1788,8 +1788,8 @@ namespace basecross {
 	//	bool writeEnable,
 	//	ID3D11DepthStencilState** pResult
 	//	);
-	//	—p“r: ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg‚ğì¬‚·‚éƒwƒ‹ƒp[ŠÖ”
-	//	–ß‚è’l: ‚È‚µ
+	//	ç”¨é€”: ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ä½œæˆã™ã‚‹ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°
+	//	æˆ»ã‚Šå€¤: ãªã—
 	//--------------------------------------------------------------------------------------
 	void RenderState::Impl::CreateDepthStencilState(bool enable, bool writeEnable,
 		ID3D11DepthStencilState** pResult) {
@@ -1817,9 +1817,9 @@ namespace basecross {
 
 			HRESULT hr = pDx11Device->CreateDepthStencilState(&desc, pResult);
 			if (FAILED(hr)) {
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				throw BaseException(
-					L"ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if(FAILED(pDx11Device->CreateDepthStencilState()))",
 					L"RenderState::Impl::CreateDepthStencilState()"
 				);
@@ -1832,13 +1832,13 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	void RenderState::Impl::CreateRasterizerState(
-	//	D3D11_CULL_MODE cullMode,			//ƒJƒŠƒ“ƒO
-	//	D3D11_FILL_MODE fillMode,			//“h‚è
-	//	ID3D11RasterizerState** pResult,		//ó‚¯æ‚éƒCƒ“ƒ^[ƒtƒFƒCƒX
-	//	bool Scissor = false				//‰æ–Ê•ªŠ„‚·‚é‚©‚Ç‚¤‚©
+	//	D3D11_CULL_MODE cullMode,			//ã‚«ãƒªãƒ³ã‚°
+	//	D3D11_FILL_MODE fillMode,			//å¡—ã‚Š
+	//	ID3D11RasterizerState** pResult,		//å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
+	//	bool Scissor = false				//ç”»é¢åˆ†å‰²ã™ã‚‹ã‹ã©ã†ã‹
 	//	);
-	//	—p“r: ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg‚ğì¬‚·‚éƒwƒ‹ƒp[ŠÖ”
-	//	–ß‚è’l: ‚È‚µ
+	//	ç”¨é€”: ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ä½œæˆã™ã‚‹ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°
+	//	æˆ»ã‚Šå€¤: ãªã—
 	//--------------------------------------------------------------------------------------
 	void RenderState::Impl::CreateRasterizerState(D3D11_CULL_MODE cullMode, D3D11_FILL_MODE fillMode,
 		ID3D11RasterizerState** pResult, bool Scissor) {
@@ -1857,9 +1857,9 @@ namespace basecross {
 
 			HRESULT hr = pDx11Device->CreateRasterizerState(&desc, pResult);
 			if (FAILED(hr)) {
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				throw BaseException(
-					L"ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if(FAILED(pDx11Device->CreateRasterizerState()))",
 					L"RenderState::Impl::CreateRasterizerState()"
 				);
@@ -1872,12 +1872,12 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	void RenderState::Impl::CreateSamplerState(
-	//	D3D11_FILTER filter,					//ƒtƒBƒ‹ƒ^[
-	//	D3D11_TEXTURE_ADDRESS_MODE addressMode	//ƒAƒhƒŒƒXƒ‚[ƒh
-	//	ID3D11SamplerState** pResult			//ó‚¯æ‚éƒCƒ“ƒ^[ƒtƒFƒCƒX
+	//	D3D11_FILTER filter,					//ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼
+	//	D3D11_TEXTURE_ADDRESS_MODE addressMode	//ã‚¢ãƒ‰ãƒ¬ã‚¹ãƒ¢ãƒ¼ãƒ‰
+	//	ID3D11SamplerState** pResult			//å—ã‘å–ã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 	//	);
-	//	—p“r: ƒTƒ“ƒvƒ‰[ƒXƒe[ƒg‚ğì¬‚·‚éƒwƒ‹ƒp[ŠÖ”
-	//	–ß‚è’l: ‚È‚µ
+	//	ç”¨é€”: ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ä½œæˆã™ã‚‹ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°
+	//	æˆ»ã‚Šå€¤: ãªã—
 	//--------------------------------------------------------------------------------------
 	void RenderState::Impl::CreateSamplerState(D3D11_FILTER filter,
 		D3D11_TEXTURE_ADDRESS_MODE addressMode,
@@ -1904,9 +1904,9 @@ namespace basecross {
 			HRESULT hr = pDx11Device->CreateSamplerState(&desc, pResult);
 
 			if (FAILED(hr)) {
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				throw BaseException(
-					L"ƒTƒ“ƒvƒ‰[ƒXƒe[ƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if(FAILED(pDx11Device->CreateSamplerState()))",
 					L"RenderState::Impl::CreateSamplerState()"
 				);
@@ -1919,13 +1919,13 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class RenderState;
-	//	—p“r: ƒŒƒ“ƒ_ƒŠƒ“ƒOƒXƒe[ƒgƒNƒ‰ƒX
+	//	ç”¨é€”: ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¹ãƒ†ãƒ¼ãƒˆã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 
 	//--------------------------------------------------------------------------------------
 	//	RenderState::RenderState();
-	//	—p“r: ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	//	–ß‚è’l: ‚È‚µ
+	//	ç”¨é€”: ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	//	æˆ»ã‚Šå€¤: ãªã—
 	//--------------------------------------------------------------------------------------
 	RenderState::RenderState() :
 		pImpl(new Impl())
@@ -1936,8 +1936,8 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	//	—p“r: ƒuƒŒƒ“ƒhƒXƒe[ƒgƒAƒNƒZƒbƒT
-	//	–ß‚è’l: ƒuƒŒƒ“ƒhƒXƒe[ƒg‚Ìƒ|ƒCƒ“ƒ^
+	//	ç”¨é€”: ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã‚¢ã‚¯ã‚»ãƒƒã‚µ
+	//	æˆ»ã‚Šå€¤: ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã®ãƒã‚¤ãƒ³ã‚¿
 	//--------------------------------------------------------------------------------------
 	ID3D11BlendState* RenderState::GetOpaque()const {
 		return Util::DemandCreate(pImpl->m_OpaquePtr, pImpl->Mutex, [&](ID3D11BlendState** pResult)
@@ -1972,9 +1972,9 @@ namespace basecross {
 
 			HRESULT hr = pDx11Device->CreateBlendState(&desc, &pImpl->m_AlphaBlendExPtr);
 			if (FAILED(hr)) {
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				throw BaseException(
-					L"ƒuƒŒƒ“ƒhƒXƒe[ƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if(FAILED(pDx11Device->CreateBlendState()))",
 					L"BasicState::GetAlphaBlendEx()"
 				);
@@ -2024,9 +2024,9 @@ namespace basecross {
 
 			HRESULT hr = pDx11Device->CreateBlendState(pdesc, &pImpl->m_AlphaToCoveragePtr);
 			if (FAILED(hr)) {
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				throw BaseException(
-					L"ƒuƒŒƒ“ƒhƒXƒe[ƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if(FAILED(pDx11Device->CreateBlendState()))",
 					L"BasicState::GetAlphaToCoverage()"
 				);
@@ -2037,8 +2037,8 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	—p“r: ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒgƒAƒNƒZƒbƒT
-	//	–ß‚è’l: ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg‚Ìƒ|ƒCƒ“ƒ^
+	//	ç”¨é€”: ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆã‚¢ã‚¯ã‚»ãƒƒã‚µ
+	//	æˆ»ã‚Šå€¤: ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆã®ãƒã‚¤ãƒ³ã‚¿
 	//--------------------------------------------------------------------------------------
 	ID3D11DepthStencilState* RenderState::GetDepthNone()const {
 		return Util::DemandCreate(pImpl->m_DepthNonePtr, pImpl->Mutex, [&](ID3D11DepthStencilState** pResult)
@@ -2062,8 +2062,8 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	//	—p“r: ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒgƒAƒNƒZƒbƒT
-	//	–ß‚è’l: ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg‚Ìƒ|ƒCƒ“ƒ^
+	//	ç”¨é€”: ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆã‚¢ã‚¯ã‚»ãƒƒã‚µ
+	//	æˆ»ã‚Šå€¤: ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆã®ãƒã‚¤ãƒ³ã‚¿
 	//--------------------------------------------------------------------------------------
 	ID3D11RasterizerState* RenderState::GetCullNone()const {
 		return Util::DemandCreate(pImpl->m_CullNonePtr, pImpl->Mutex, [&](ID3D11RasterizerState** pResult)
@@ -2122,8 +2122,8 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	//	—p“r: ƒTƒ“ƒvƒ‰[ƒXƒe[ƒgƒAƒNƒZƒbƒT
-	//	–ß‚è’l: ƒTƒ“ƒvƒ‰[ƒXƒe[ƒg‚Ìƒ|ƒCƒ“ƒ^
+	//	ç”¨é€”: ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã‚¢ã‚¯ã‚»ãƒƒã‚µ
+	//	æˆ»ã‚Šå€¤: ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã®ãƒã‚¤ãƒ³ã‚¿
 	//--------------------------------------------------------------------------------------
 	ID3D11SamplerState* RenderState::GetPointWrap()const {
 		return Util::DemandCreate(pImpl->m_PointWrapPtr, pImpl->Mutex, [&](ID3D11SamplerState** pResult)
@@ -2188,7 +2188,7 @@ namespace basecross {
 			comparisonSamplerDesc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
 			ThrowIfFailed(
 				pDx11Device->CreateSamplerState(&comparisonSamplerDesc, &pImpl->m_ComparisonLinearPtr),
-				L"”äŠr—pƒTƒ“ƒvƒ‰[‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"æ¯”è¼ƒç”¨ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"pDx11Device->CreateSamplerState(&comparisonSamplerDesc, &pImpl->m_ComparisonSampler_linear)",
 				L"RenderState::GetComparisonLinear()"
 			);
@@ -2198,10 +2198,10 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct RenderTarget::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct RenderTarget::Impl {
-		D3D11_VIEWPORT m_ViewPort;	//ƒrƒ…[ƒ|[ƒg
+		D3D11_VIEWPORT m_ViewPort;	//ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆ
 		Impl() {
 			ZeroMemory(&m_ViewPort, sizeof(D3D11_VIEWPORT));
 		}
@@ -2209,9 +2209,9 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class RenderTarget;
-	//	—p“r: ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
+	//	ç”¨é€”: ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	RenderTarget::RenderTarget() :
 		pImpl(new Impl())
 	{}
@@ -2229,14 +2229,14 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct ShadowMapRenderTarget::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct ShadowMapRenderTarget::Impl {
-		const float m_ShadowMapDimension;	//ƒVƒƒƒhƒEƒ}ƒbƒv‚Ì‘å‚«‚³
-		ComPtr<ID3D11ShaderResourceView>	m_ShaderResourceView;	//ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[
-		ComPtr<ID3D11RasterizerState> m_ShadowRenderState;	//ƒVƒƒƒhƒEƒ}ƒbƒv‚Ìƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg
-		ComPtr<ID3D11Texture2D>		m_DepthStencil;		//[“xƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@
-		ComPtr<ID3D11DepthStencilView>	m_DepthStencilView;	//[“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[
+		const float m_ShadowMapDimension;	//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®å¤§ãã•
+		ComPtr<ID3D11ShaderResourceView>	m_ShaderResourceView;	//ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼
+		ComPtr<ID3D11RasterizerState> m_ShadowRenderState;	//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆ
+		ComPtr<ID3D11Texture2D>		m_DepthStencil;		//æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡
+		ComPtr<ID3D11DepthStencilView>	m_DepthStencilView;	//æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼
 		Impl(float ShadowMapDimension) :
 			m_ShadowMapDimension(ShadowMapDimension)
 		{}
@@ -2247,20 +2247,20 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class ShadowMapRenderTarget: public RenderTarget;
-	//	—p“r: ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
+	//	ç”¨é€”: ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	ShadowMapRenderTarget::ShadowMapRenderTarget(float ShadowMapDimension) :
 		pImpl(new Impl(ShadowMapDimension))
 	{
 		try {
-			//ƒfƒoƒCƒX‚ÆƒRƒ“ƒeƒLƒXƒgƒCƒ“ƒ^[ƒtƒFƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã¨ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			auto pD3D11Device = Dev->GetD3DDevice();
 			auto pSwapChain = Dev->GetSwapChain();
 			auto pD3D11DeviceContext = Dev->GetD3DDeviceContext();
 
-			//ƒVƒƒƒhƒEƒ}ƒbƒvƒeƒNƒXƒ`ƒƒ‚Ìì¬
+			//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ä½œæˆ
 			D3D11_TEXTURE2D_DESC shadowMapDesc;
 			ZeroMemory(&shadowMapDesc, sizeof(D3D11_TEXTURE2D_DESC));
 			shadowMapDesc.Width = static_cast<UINT>(pImpl->m_ShadowMapDimension);
@@ -2274,12 +2274,12 @@ namespace basecross {
 
 			ThrowIfFailed(
 				pD3D11Device->CreateTexture2D(&shadowMapDesc, nullptr, &pImpl->m_DepthStencil),
-				L"ƒVƒƒƒhƒEƒ}ƒbƒvƒeƒNƒXƒ`ƒƒ‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"pD3D11Device->CreateTexture2D(&shadowMapDesc, nullptr, &m_DepthStencil)",
 				L"ShadowMapRenderTarget::ShadowMapRenderTarget()"
 			);
 
-			//[“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[ì¬
+			//æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ä½œæˆ
 			D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 			ZeroMemory(&depthStencilViewDesc, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
 			depthStencilViewDesc.Format = DXGI_FORMAT_D32_FLOAT;
@@ -2288,12 +2288,12 @@ namespace basecross {
 
 			ThrowIfFailed(
 				pD3D11Device->CreateDepthStencilView(pImpl->m_DepthStencil.Get(), &depthStencilViewDesc, &pImpl->m_DepthStencilView),
-				L"[“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"pD3D11Device->CreateDepthStencilView(&m_DepthStencil, &depthStencilViewDesc, &m_DepthStencilView)",
 				L"ShadowMapRenderTarget::ShadowMapRenderTarget()"
 			);
 
-			//ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[ì¬
+			//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ä½œæˆ
 			D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
 			ZeroMemory(&shaderResourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
 			shaderResourceViewDesc.Format = DXGI_FORMAT_R32_FLOAT;
@@ -2302,7 +2302,7 @@ namespace basecross {
 
 			ThrowIfFailed(
 				pD3D11Device->CreateShaderResourceView(pImpl->m_DepthStencil.Get(), &shaderResourceViewDesc, &pImpl->m_ShaderResourceView),
-				L"ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"pD3D11Device->CreateShaderResourceView(m_DepthStencil.Get(), &shaderResourceViewDesc, &m_ShaderResourceView)",
 				L"ShadowMapRenderTarget::ShadowMapRenderTarget()"
 			);
@@ -2315,14 +2315,14 @@ namespace basecross {
 			shadowRenderStateDesc.DepthClipEnable = true;
 
 			ThrowIfFailed(pD3D11Device->CreateRasterizerState(&shadowRenderStateDesc, &pImpl->m_ShadowRenderState),
-				L"ƒVƒƒƒhƒEƒ}ƒbƒv‚Ìƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"pD3D11Device->CreateRasterizerState(&shadowRenderStateDesc,&pImpl->m_ShadowRenderState)",
 				L"ShadowMapRenderTarget::ShadowMapRenderTarget()"
 			);
 
 
-			//ƒrƒ…[ƒ|[ƒg‚Ìì¬
-			//ƒVƒƒƒhƒEƒŒƒ“ƒ_ƒŠƒ“ƒOƒrƒ…[ƒ|[ƒg
+			//ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã®ä½œæˆ
+			//ã‚·ãƒ£ãƒ‰ã‚¦ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆ
 			D3D11_VIEWPORT ViewPort;
 			ZeroMemory(&ViewPort, sizeof(D3D11_VIEWPORT));
 			ViewPort.Height = pImpl->m_ShadowMapDimension;
@@ -2338,77 +2338,77 @@ namespace basecross {
 
 	ShadowMapRenderTarget::~ShadowMapRenderTarget() {}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	float ShadowMapRenderTarget::GetShadowMapDimension() const { return pImpl->m_ShadowMapDimension; }
 	ID3D11ShaderResourceView* ShadowMapRenderTarget::GetShaderResourceView() const { return pImpl->m_ShaderResourceView.Get(); }
 	ID3D11Texture2D* ShadowMapRenderTarget::GetDepthStencil() const { return pImpl->m_DepthStencil.Get(); }
 	ID3D11DepthStencilView*	ShadowMapRenderTarget::GetDepthStencilView() const { return pImpl->m_DepthStencilView.Get(); }
 
 
-	//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğƒNƒŠƒA‚·‚é
+	//ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
 	void ShadowMapRenderTarget::ClearViews(const bsm::Col4& col) {
-		//ƒVƒƒƒhƒEƒ}ƒbƒv‚Ícol‚Í–¢g—p
+		//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã¯colã¯æœªä½¿ç”¨
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto pD3D11Device = Dev->GetD3DDevice();
 		auto pD3D11DeviceContext = Dev->GetD3DDeviceContext();
-		//ƒVƒƒƒhƒEƒ}ƒbƒvƒNƒŠƒA
+		//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚¯ãƒªã‚¢
 		pD3D11DeviceContext->ClearDepthStencilView(pImpl->m_DepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0, 0);
 	}
-	//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğŠJn‚·‚é
+	//ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’é–‹å§‹ã™ã‚‹
 	void ShadowMapRenderTarget::StartRenderTarget() {
-		//ƒfƒoƒCƒX‚ÆƒRƒ“ƒeƒLƒXƒgƒCƒ“ƒ^[ƒtƒFƒCƒX‚Ìæ“¾
+		//ãƒ‡ãƒã‚¤ã‚¹ã¨ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã®å–å¾—
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto pD3D11Device = Dev->GetD3DDevice();
 		auto pD3D11DeviceContext = Dev->GetD3DDeviceContext();
-		//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Í[“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚Ì‚İw’è
+		//ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¯æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ã¿æŒ‡å®š
 		ID3D11RenderTargetView* pnullView = nullptr;
 
 		pD3D11DeviceContext->OMSetRenderTargets(1, &pnullView, pImpl->m_DepthStencilView.Get());
-		//ƒrƒ…[ƒ|[ƒg‚Ìİ’è
+		//ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã®è¨­å®š
 		pD3D11DeviceContext->RSSetViewports(1, &GetViewport());
-		//ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg‚Ìİ’è(İ’è‰ğœ)
+		//ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆã®è¨­å®š(è¨­å®šè§£é™¤)
 		pD3D11DeviceContext->RSSetState(nullptr);
-		//ƒVƒF[ƒ_[‚Íw’è‚µ‚È‚¢
-		//’¸“_ƒVƒF[ƒ_‚Ìİ’è(‚±‚±‚Å‚Íw’è‚µ‚È‚¢)
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¯æŒ‡å®šã—ãªã„
+		//é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š(ã“ã“ã§ã¯æŒ‡å®šã—ãªã„)
 		pD3D11DeviceContext->VSSetShader(nullptr, nullptr, 0);
-		//ƒsƒNƒZƒ‹ƒVƒF[ƒ_‚Ìİ’èig—p‚µ‚È‚¢j
+		//ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®šï¼ˆä½¿ç”¨ã—ãªã„ï¼‰
 		pD3D11DeviceContext->PSSetShader(nullptr, nullptr, 0);
-		//ƒWƒIƒƒgƒŠƒVƒF[ƒ_‚Ìİ’èig—p‚µ‚È‚¢j
+		//ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®šï¼ˆä½¿ç”¨ã—ãªã„ï¼‰
 		pD3D11DeviceContext->GSSetShader(nullptr, nullptr, 0);
 
 
 	}
-	//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğI—¹‚·‚é
+	//ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’çµ‚äº†ã™ã‚‹
 	void ShadowMapRenderTarget::EndRenderTarget() {
-		//ƒfƒoƒCƒX‚ÆƒRƒ“ƒeƒLƒXƒgƒCƒ“ƒ^[ƒtƒFƒCƒX‚Ìæ“¾
+		//ãƒ‡ãƒã‚¤ã‚¹ã¨ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã®å–å¾—
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto pD3D11Device = Dev->GetD3DDevice();
 		auto pD3D11DeviceContext = Dev->GetD3DDeviceContext();
-		//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Í[“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚Ì‚İw’è
+		//ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¯æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ã¿æŒ‡å®š
 		ID3D11RenderTargetView* pnullView = nullptr;
 		pD3D11DeviceContext->OMSetRenderTargets(1, &pnullView, nullptr);
-		//ƒrƒ…[ƒ|[ƒg‚Ìİ’è
+		//ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã®è¨­å®š
 		pD3D11DeviceContext->RSSetViewports(1, &GetViewport());
-		//ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg‚Ìİ’è(İ’è‰ğœ)
+		//ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆã®è¨­å®š(è¨­å®šè§£é™¤)
 		pD3D11DeviceContext->RSSetState(nullptr);
-		//ƒVƒF[ƒ_[‚Íw’è‚µ‚È‚¢
-		//’¸“_ƒVƒF[ƒ_‚Ìİ’è(‚±‚±‚Å‚Íw’è‚µ‚È‚¢)
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¯æŒ‡å®šã—ãªã„
+		//é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š(ã“ã“ã§ã¯æŒ‡å®šã—ãªã„)
 		pD3D11DeviceContext->VSSetShader(nullptr, nullptr, 0);
-		//ƒsƒNƒZƒ‹ƒVƒF[ƒ_‚Ìİ’èig—p‚µ‚È‚¢j
+		//ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®šï¼ˆä½¿ç”¨ã—ãªã„ï¼‰
 		pD3D11DeviceContext->PSSetShader(nullptr, nullptr, 0);
-		//ƒWƒIƒƒgƒŠƒVƒF[ƒ_‚Ìİ’èig—p‚µ‚È‚¢j
+		//ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®šï¼ˆä½¿ç”¨ã—ãªã„ï¼‰
 		pD3D11DeviceContext->GSSetShader(nullptr, nullptr, 0);
 	}
 
 	//--------------------------------------------------------------------------------------
 	//	struct DefaultRenderTarget::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct DefaultRenderTarget::Impl {
-		//ƒrƒ…[ŠÖ˜A
-		ComPtr<ID3D11RenderTargetView> m_D3D11RenderTargetView;	//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒgƒŒƒrƒ…[
-		ComPtr<ID3D11Texture2D>		m_DepthStencil;		//[“xƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@
-		ComPtr<ID3D11DepthStencilView>	m_DepthStencilView;	//[“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[
+		//ãƒ“ãƒ¥ãƒ¼é–¢é€£
+		ComPtr<ID3D11RenderTargetView> m_D3D11RenderTargetView;	//ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ¬ãƒ“ãƒ¥ãƒ¼
+		ComPtr<ID3D11Texture2D>		m_DepthStencil;		//æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡
+		ComPtr<ID3D11DepthStencilView>	m_DepthStencilView;	//æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼
 
 		ComPtr<ID2D1Bitmap1>		m_d2dTargetBitmap;
 
@@ -2420,10 +2420,10 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class DefaultRenderTarget : public RenderTarget;
-	//	—p“r: ƒfƒtƒHƒ‹ƒg‚ÌƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg
-	//	–ƒfƒtƒHƒ‹ƒg‚ÌƒŒƒ“ƒ_ƒ‰[
+	//	ç”¨é€”: ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
+	//	ï¼Šãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼
 	//--------------------------------------------------------------------------------------
-	//\’z
+	//æ§‹ç¯‰
 	DefaultRenderTarget::DefaultRenderTarget() :
 		pImpl(new Impl())
 	{
@@ -2436,24 +2436,24 @@ namespace basecross {
 			auto pD2D11DeviceContext = Dev->GetD2DDeviceContext();
 
 
-			//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒgƒrƒ…[‚Ìì¬
+			//ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 			ComPtr<ID3D11Texture2D> pBackBuffer;
-			//‚Ü‚¸ƒoƒbƒNƒoƒbƒtƒ@‚Ìƒ|ƒCƒ“ƒ^‚ğ“¾‚é
+			//ã¾ãšãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã®ãƒã‚¤ãƒ³ã‚¿ã‚’å¾—ã‚‹
 			ThrowIfFailed(
 				pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer),
-				L"ƒXƒƒbƒvƒ`ƒF[ƒ“‚©‚çƒoƒbƒNƒoƒbƒtƒ@‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã‹ã‚‰ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer)",
 				L"DefaultRenderTarget::DefaultRenderTarget()"
 			);
-			//ƒoƒbƒNƒoƒbƒtƒ@‚©‚çƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Ìƒrƒ…[‚ğì¬‚·‚é
+			//ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã‹ã‚‰ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã™ã‚‹
 			ThrowIfFailed(
 				pD3D11Device->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pImpl->m_D3D11RenderTargetView),
-				L"DX11ƒoƒbƒNƒoƒbƒtƒ@‚©‚ç‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒgƒrƒ…[‚ğì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"DX11ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã‹ã‚‰ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"pD3D11Device->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &m_D3D11RenderTargetView)",
 				L"DefaultRenderTarget::DefaultRenderTarget()"
 			);
 
-			//[“xƒeƒNƒXƒ`ƒƒ‚Ìì¬
+			//æ·±åº¦ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ä½œæˆ
 			D3D11_TEXTURE2D_DESC descDepth;
 			ZeroMemory(&descDepth, sizeof(descDepth));
 			descDepth.Width = App::GetApp()->GetGameWidth();
@@ -2470,12 +2470,12 @@ namespace basecross {
 
 			ThrowIfFailed(
 				pD3D11Device->CreateTexture2D(&descDepth, nullptr, &pImpl->m_DepthStencil),
-				L"DX11[“xƒeƒNƒXƒ`ƒƒ‚Ìì¬¸”s‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"DX11æ·±åº¦ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ä½œæˆå¤±æ•—ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"pD3D11Device->CreateTexture2D(&descDepth, nullptr, &m_DepthStencil)",
 				L"DefaultRenderTarget::DefaultRenderTarget()"
 			);
 
-			//[“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚Ìì¬
+			//æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 			D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
 			ZeroMemory(&descDSV, sizeof(descDSV));
 			descDSV.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -2484,7 +2484,7 @@ namespace basecross {
 
 			ThrowIfFailed(
 				pD3D11Device->CreateDepthStencilView(pImpl->m_DepthStencil.Get(), &descDSV, &pImpl->m_DepthStencilView),
-				L"DX11[“xƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"DX11æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"pD3D11Device->CreateDepthStencilView(m_DepthStencil.Get(), &descDSV, &m_DepthStencilView)",
 				L"DefaultRenderTarget::DefaultRenderTarget()"
 			);
@@ -2492,7 +2492,7 @@ namespace basecross {
 			ComPtr<IDXGISurface2> dxgiBackBuffer;
 			ThrowIfFailed(
 				pSwapChain->GetBuffer(0, IID_PPV_ARGS(&dxgiBackBuffer)),
-				L"2dƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"2dãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"m_d2dDevice->CreateDeviceContext()",
 				L"DeviceResources::Impl::CreateDeviceResources()"
 			);
@@ -2501,19 +2501,19 @@ namespace basecross {
 			ThrowIfFailed(
 				pD2D11DeviceContext->CreateBitmapFromDxgiSurface(
 					dxgiBackBuffer.Get(),
-					nullptr,	//ƒfƒtƒHƒ‹ƒgİ’è
+					nullptr,	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè¨­å®š
 					&pImpl->m_d2dTargetBitmap
 				),
-				L"2dƒrƒbƒgƒ}ƒbƒvì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"2dãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"pD2D11DeviceContext->CreateBitmapFromDxgiSurface()",
 				L"DefaultRenderTarget::DefaultRenderTarget()"
 			);
 
 			pD2D11DeviceContext->SetTarget(pImpl->m_d2dTargetBitmap.Get());
-			//ƒOƒŒ[ƒXƒP[ƒ‹ ƒeƒLƒXƒg‚ÌƒAƒ“ƒ`ƒGƒCƒŠƒAƒVƒ“ƒO
+			//ã‚°ãƒ¬ãƒ¼ã‚¹ã‚±ãƒ¼ãƒ« ãƒ†ã‚­ã‚¹ãƒˆã®ã‚¢ãƒ³ãƒã‚¨ã‚¤ãƒªã‚¢ã‚·ãƒ³ã‚°
 			pD2D11DeviceContext->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
 
-			//ƒfƒtƒHƒ‹ƒgƒrƒ…[ƒ|[ƒg‚ÌƒZƒbƒg
+			//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã®ã‚»ãƒƒãƒˆ
 			D3D11_VIEWPORT ViewPort;
 			ZeroMemory(&ViewPort, sizeof(ViewPort));
 			ViewPort.Width = (float)App::GetApp()->GetGameWidth();
@@ -2533,23 +2533,23 @@ namespace basecross {
 	DefaultRenderTarget::~DefaultRenderTarget() {}
 
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	ID3D11RenderTargetView* DefaultRenderTarget::GetRenderTargetView() const { return pImpl->m_D3D11RenderTargetView.Get(); }
 	ID3D11Texture2D* DefaultRenderTarget::GetDepthStencil() const { return pImpl->m_DepthStencil.Get(); }
 	ID3D11DepthStencilView*	DefaultRenderTarget::GetDepthStencilView() const { return pImpl->m_DepthStencilView.Get(); }
 	ID2D1Bitmap1*			DefaultRenderTarget::GetD2DTargetBitmap() const { return pImpl->m_d2dTargetBitmap.Get(); }
 
 
-	//‘€ì
-	//ƒXƒNƒŠ[ƒ“‘S‘Ì‚ğw’è‚ÌF‚ÅƒNƒŠƒA‚·‚é
+	//æ“ä½œ
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³å…¨ä½“ã‚’æŒ‡å®šã®è‰²ã§ã‚¯ãƒªã‚¢ã™ã‚‹
 	void DefaultRenderTarget::ClearViews(const bsm::Col4& col) {
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto pD3D11Device = Dev->GetD3DDevice();
 		auto pD3D11DeviceContext = Dev->GetD3DDeviceContext();
-		//ƒoƒbƒtƒ@‚ÌƒNƒŠƒA
+		//ãƒãƒƒãƒ•ã‚¡ã®ã‚¯ãƒªã‚¢
 		float Color[4] = { col.x, col.y, col.z, col.w };
 		D3D11_VIEWPORT ViewPort;
-		//ƒrƒ…[ƒ|[ƒg‚ÌƒZƒbƒgƒAƒbƒv
+		//ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—
 		ZeroMemory(&ViewPort, sizeof(ViewPort));
 		ViewPort.Width = (float)App::GetApp()->GetGameWidth();
 		ViewPort.Height = (float)App::GetApp()->GetGameHeight();
@@ -2558,22 +2558,22 @@ namespace basecross {
 		ViewPort.TopLeftX = 0;
 		ViewPort.TopLeftY = 0;
 		pD3D11DeviceContext->RSSetViewports(1, &ViewPort);
-		//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ÌƒNƒŠƒA
+		//ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ã‚¯ãƒªã‚¢
 		pD3D11DeviceContext->ClearRenderTargetView(pImpl->m_D3D11RenderTargetView.Get(), Color);
-		//’Êí‚Ì[“xƒoƒbƒtƒ@‚ÆƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@‚ÌƒNƒŠƒA
+		//é€šå¸¸ã®æ·±åº¦ãƒãƒƒãƒ•ã‚¡ã¨ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡ã®ã‚¯ãƒªã‚¢
 		pD3D11DeviceContext->ClearDepthStencilView(pImpl->m_DepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 	}
 
-	//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğŠJn‚·‚é
+	//ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’é–‹å§‹ã™ã‚‹
 	void DefaultRenderTarget::StartRenderTarget() {
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto pD3D11Device = Dev->GetD3DDevice();
 		auto pD3D11DeviceContext = Dev->GetD3DDeviceContext();
 
 		ID3D11RenderTargetView* pV = pImpl->m_D3D11RenderTargetView.Get();
-		//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ÆƒXƒeƒ“ƒVƒ‹‚ğİ’è
+		//ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚’è¨­å®š
 		pD3D11DeviceContext->OMSetRenderTargets(1, &pV, pImpl->m_DepthStencilView.Get());
-		//ƒrƒ…[ƒ|[ƒg‚Ìİ’è
+		//ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã®è¨­å®š
 		auto ViewPort = GetViewport();
 		pD3D11DeviceContext->RSSetViewports(1, &ViewPort);
 
@@ -2584,38 +2584,38 @@ namespace basecross {
 		rect.bottom = (LONG)ViewPort.Height;
 		pD3D11DeviceContext->RSSetScissorRects(1, &rect);
 
-		//ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ÌƒNƒŠƒA
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ã‚¯ãƒªã‚¢
 		ID3D11ShaderResourceView* pNull[1] = { nullptr };
 		pD3D11DeviceContext->PSSetShaderResources(0, _countof(pNull), pNull);
 		pD3D11DeviceContext->PSSetShaderResources(1, _countof(pNull), pNull);
-		//ƒVƒF[ƒ_[‚Íw’è‚µ‚È‚¢
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¯æŒ‡å®šã—ãªã„
 		pD3D11DeviceContext->VSSetShader(nullptr, nullptr, 0);
 		pD3D11DeviceContext->PSSetShader(nullptr, nullptr, 0);
 		pD3D11DeviceContext->GSSetShader(nullptr, nullptr, 0);
-		//ƒuƒŒƒ“ƒh‚Íw’è‚µ‚È‚¢
+		//ãƒ–ãƒ¬ãƒ³ãƒ‰ã¯æŒ‡å®šã—ãªã„
 		pD3D11DeviceContext->OMSetBlendState(nullptr, nullptr, 0xffffffff);
 
 	}
-	//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğI—¹‚·‚é
+	//ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’çµ‚äº†ã™ã‚‹
 	void DefaultRenderTarget::EndRenderTarget() {
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto pD3D11Device = Dev->GetD3DDevice();
 		auto pD3D11DeviceContext = Dev->GetD3DDeviceContext();
-		//ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚ÌƒNƒŠƒA
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ã‚¯ãƒªã‚¢
 		ID3D11ShaderResourceView* pNull[1] = { nullptr };
 		pD3D11DeviceContext->PSSetShaderResources(0, _countof(pNull), pNull);
 		pD3D11DeviceContext->PSSetShaderResources(1, _countof(pNull), pNull);
-		//ƒVƒF[ƒ_[‚Íw’è‚µ‚È‚¢
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¯æŒ‡å®šã—ãªã„
 		pD3D11DeviceContext->VSSetShader(nullptr, nullptr, 0);
 		pD3D11DeviceContext->PSSetShader(nullptr, nullptr, 0);
 		pD3D11DeviceContext->GSSetShader(nullptr, nullptr, 0);
-		//ƒuƒŒƒ“ƒh‚Íw’è‚µ‚È‚¢
+		//ãƒ–ãƒ¬ãƒ³ãƒ‰ã¯æŒ‡å®šã—ãªã„
 		pD3D11DeviceContext->OMSetBlendState(nullptr, nullptr, 0xffffffff);
 	}
 
 	//--------------------------------------------------------------------------------------
 	//	struct ShaderResource::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct ShaderResource::Impl {
 		Impl() {}
@@ -2625,17 +2625,17 @@ namespace basecross {
 	ShaderResource::~ShaderResource() {}
 	//--------------------------------------------------------------------------------------
 	//	static void ShaderResource::ReadBinaryFile(
-	//		const wstring& fileName,		//ƒtƒ@ƒCƒ‹–¼
-	//		unique_ptr<uint8_t[]>& Data,	//ƒoƒCƒiƒŠƒf[ƒ^‚Ì–ß‚è
-	//		size_t& CsoSz					//ƒTƒCƒY‚Ì–ß‚è
+	//		const wstring& fileName,		//ãƒ•ã‚¡ã‚¤ãƒ«å
+	//		unique_ptr<uint8_t[]>& Data,	//ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿ã®æˆ»ã‚Š
+	//		size_t& CsoSz					//ã‚µã‚¤ã‚ºã®æˆ»ã‚Š
 	//	);
-	//	—p“r: ƒoƒCƒiƒŠƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
+	//	ç”¨é€”: ãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
 	//--------------------------------------------------------------------------------------
 	void ShaderResource::ReadBinaryFile(const wstring& fileName, unique_ptr<uint8_t[]>& Data, size_t& CsoSz) {
 		try {
 			if (fileName == L"") {
 				throw BaseException(
-					L"ƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ",
+					L"ãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“",
 					L"if(fileName == L\"\")",
 					L"ShaderResource::ReadBinaryFile()"
 				);
@@ -2644,7 +2644,7 @@ namespace basecross {
 			RetCode = GetFileAttributes(fileName.c_str());
 			if (RetCode == -1) {
 				throw BaseException(
-					L"ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚Ü‚¹‚ñ",
+					L"ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã›ã‚“",
 					fileName,
 					L"ShaderResource::ReadBinaryFile()"
 				);
@@ -2652,7 +2652,7 @@ namespace basecross {
 
 			ThrowIfFailed(
 				BinaryReader::ReadEntireFile(fileName, Data, &CsoSz),
-				L"ƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				fileName,
 				L"ShaderResource::ReadBinaryFile()"
 			);
@@ -2664,21 +2664,21 @@ namespace basecross {
 	}
 	//--------------------------------------------------------------------------------------
 	//	static void ShaderResource::CreateVertexShader(
-	//		unique_ptr<uint8_t[]>& Data,	//ƒoƒCƒiƒŠƒf[ƒ^
-	//		size_t CsoSz,					//ƒTƒCƒY
-	//		ID3D11VertexShader** pResult			//ó‚¯æ‚éƒVƒF[ƒ_
+	//		unique_ptr<uint8_t[]>& Data,	//ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿
+	//		size_t CsoSz,					//ã‚µã‚¤ã‚º
+	//		ID3D11VertexShader** pResult			//å—ã‘å–ã‚‹ã‚·ã‚§ãƒ¼ãƒ€
 	//	);
-	//	—p“r: ƒoƒCƒiƒŠƒf[ƒ^‚©‚ç’¸“_ƒVƒF[ƒ_‚ğì¬‚·‚é
+	//	ç”¨é€”: ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿ã‹ã‚‰é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã‚’ä½œæˆã™ã‚‹
 	//--------------------------------------------------------------------------------------
 	void ShaderResource::CreateVertexShader(unique_ptr<uint8_t[]>& Data, size_t CsoSz, ID3D11VertexShader** pResult) {
 		try {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ID3D11Device* pDx11Device = Dev->GetD3DDevice();
-			//’¸“_ƒVƒF[ƒ_[‚Ìì¬
+			//é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ä½œæˆ
 			ThrowIfFailed(
 				pDx11Device->CreateVertexShader(Data.get(), CsoSz, nullptr, pResult),
-				L"’¸“_ƒVƒF[ƒ_‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"if( FAILED( pDx11Device->CreateVertexShader() ) )",
 				L"ShaderResource::CreateVertexShader()"
 			);
@@ -2690,33 +2690,33 @@ namespace basecross {
 	}
 	//--------------------------------------------------------------------------------------
 	//	static void ShaderResource::CreateInputLayout(
-	//		unique_ptr<uint8_t[]>& Data,	//’¸“_ƒVƒF[ƒ_‚ÌƒoƒCƒiƒŠƒf[ƒ^
-	//		size_t CsoSz,					//ƒTƒCƒY
-	//		const D3D11_INPUT_ELEMENT_DESC* pElement,	//’¸“_’è‹`
-	//		UINT NumElement,							//’¸“_’è‹`‚Ì”
-	//		ID3D11InputLayout** pResult			//ó‚¯æ‚éƒŒƒCƒAƒEƒg
+	//		unique_ptr<uint8_t[]>& Data,	//é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã®ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿
+	//		size_t CsoSz,					//ã‚µã‚¤ã‚º
+	//		const D3D11_INPUT_ELEMENT_DESC* pElement,	//é ‚ç‚¹å®šç¾©
+	//		UINT NumElement,							//é ‚ç‚¹å®šç¾©ã®æ•°
+	//		ID3D11InputLayout** pResult			//å—ã‘å–ã‚‹ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
 	//	);
-	//	—p“r: ƒoƒCƒiƒŠƒf[ƒ^‚©‚çƒCƒ“ƒvƒbƒgƒŒƒCƒAƒEƒg‚ğì¬‚·‚é
+	//	ç”¨é€”: ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’ä½œæˆã™ã‚‹
 	//--------------------------------------------------------------------------------------
 	void ShaderResource::CreateInputLayout(unique_ptr<uint8_t[]>& Data, size_t CsoSz,
 		const D3D11_INPUT_ELEMENT_DESC* pElement, UINT NumElement, ID3D11InputLayout** pResult) {
 		try {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ID3D11Device* pDx11Device = Dev->GetD3DDevice();
-			//ƒCƒ“ƒvƒbƒgƒŒƒCƒAƒEƒg‚Ìì¬
+			//ã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®ä½œæˆ
 			HRESULT hr = pDx11Device->CreateInputLayout(
-				pElement,	//’¸“_’è‹`
-				NumElement,		//’¸“_’è‹`‚Ì”
+				pElement,	//é ‚ç‚¹å®šç¾©
+				NumElement,		//é ‚ç‚¹å®šç¾©ã®æ•°
 				Data.get(),
 				CsoSz,
 				pResult
 			);
-			//¸”s‚µ‚½‚ç
+			//å¤±æ•—ã—ãŸã‚‰
 			if (FAILED(hr))
 			{
 				throw basecross::BaseException(
-					L"’¸“_ƒVƒF[ƒ_‚ÌƒCƒ“ƒvƒbƒgƒŒƒCƒAƒEƒg‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã®ã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if( FAILED( pDx11Device->CreateInputLayout() ) )",
 					L"ShaderResource::CreateInputLayout()"
 				);
@@ -2729,18 +2729,18 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	static void ShaderResource::CreatePixelShader(
-	//		unique_ptr<uint8_t[]>& Data,	//ƒoƒCƒiƒŠƒf[ƒ^
-	//		size_t CsoSz,					//ƒTƒCƒY
-	//		ID3D11PixelShader** pResult			//ó‚¯æ‚éƒVƒF[ƒ_
+	//		unique_ptr<uint8_t[]>& Data,	//ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿
+	//		size_t CsoSz,					//ã‚µã‚¤ã‚º
+	//		ID3D11PixelShader** pResult			//å—ã‘å–ã‚‹ã‚·ã‚§ãƒ¼ãƒ€
 	//	);
-	//	—p“r: ƒoƒCƒiƒŠƒf[ƒ^‚©‚çƒsƒNƒZƒ‹ƒVƒF[ƒ_‚ğì¬‚·‚é
+	//	ç”¨é€”: ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã‚’ä½œæˆã™ã‚‹
 	//--------------------------------------------------------------------------------------
 	void ShaderResource::CreatePixelShader(unique_ptr<uint8_t[]>& Data, size_t CsoSz, ID3D11PixelShader** pResult) {
 		try {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ID3D11Device* pDx11Device = Dev->GetD3DDevice();
-			//ƒsƒNƒZƒ‹ƒVƒF[ƒ_ì¬
+			//ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ä½œæˆ
 			HRESULT hr = pDx11Device->CreatePixelShader(
 				Data.get(),
 				CsoSz,
@@ -2748,7 +2748,7 @@ namespace basecross {
 				pResult);
 			if (FAILED(hr)) {
 				throw basecross::BaseException(
-					L"ƒsƒNƒZƒ‹ƒVƒF[ƒ_‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"f( FAILED( pDx11Device->CreatePixelShader() ) )",
 					L"ShaderResource::CreatePixelShader()"
 				);
@@ -2761,18 +2761,18 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	static void ShaderResource::CreateGeometryShader(
-	//		unique_ptr<uint8_t[]>& Data,	//ƒoƒCƒiƒŠƒf[ƒ^
-	//		size_t CsoSz,					//ƒTƒCƒY
-	//		ID3D11GeometryShader** pResult			//ó‚¯æ‚éƒVƒF[ƒ_
+	//		unique_ptr<uint8_t[]>& Data,	//ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿
+	//		size_t CsoSz,					//ã‚µã‚¤ã‚º
+	//		ID3D11GeometryShader** pResult			//å—ã‘å–ã‚‹ã‚·ã‚§ãƒ¼ãƒ€
 	//	);
-	//	—p“r: ƒoƒCƒiƒŠƒf[ƒ^‚©‚çƒWƒIƒƒgƒŠƒVƒF[ƒ_‚ğì¬‚·‚é
+	//	ç”¨é€”: ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ã‚’ä½œæˆã™ã‚‹
 	//--------------------------------------------------------------------------------------
 	void ShaderResource::CreateGeometryShader(unique_ptr<uint8_t[]>& Data, size_t CsoSz, ID3D11GeometryShader** pResult) {
 		try {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ID3D11Device* pDx11Device = Dev->GetD3DDevice();
-			//ƒWƒIƒƒgƒŠƒVƒF[ƒ_ì¬
+			//ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ä½œæˆ
 			HRESULT hr = pDx11Device->CreateGeometryShader(
 				Data.get(),
 				CsoSz,
@@ -2780,7 +2780,7 @@ namespace basecross {
 				pResult);
 			if (FAILED(hr)) {
 				throw basecross::BaseException(
-					L"ƒWƒIƒƒgƒŠƒVƒF[ƒ_‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"f( FAILED( pDx11Device->CreateGeometryShader() ) )",
 					L"ShaderResource::CreateGeometryShader()"
 				);
@@ -2794,10 +2794,10 @@ namespace basecross {
 	void ShaderResource::CreateGeometryShader(unique_ptr<uint8_t[]>& Data, size_t CsoSz,
 		const vector<D3D11_SO_DECLARATION_ENTRY>& SOEntries, UINT Stride, UINT NumStride, ID3D11GeometryShader** pResult) {
 		try {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			auto pDx11Device = Dev->GetD3DDevice();
-			//ƒWƒIƒƒgƒŠƒVƒF[ƒ_ì¬
+			//ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ä½œæˆ
 			UINT StridBuff[1] = { Stride };
 			HRESULT hr = pDx11Device->CreateGeometryShaderWithStreamOutput(
 				Data.get(),
@@ -2811,7 +2811,7 @@ namespace basecross {
 				pResult);
 			if (FAILED(hr)) {
 				throw basecross::BaseException(
-					L"ƒWƒIƒƒgƒŠƒVƒF[ƒ_‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"f( FAILED( pDx11Device->CreateGeometryShader() ) )",
 					L"ShaderResource::CreateGeometryShader()"
 				);
@@ -2824,18 +2824,18 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	static void ShaderResource::CreateComputeShader(
-	//		unique_ptr<uint8_t[]>& Data,	//ƒoƒCƒiƒŠƒf[ƒ^
-	//		size_t CsoSz,					//ƒTƒCƒY
-	//		ID3D11ComputeShader** pResult			//ó‚¯æ‚éƒVƒF[ƒ_
+	//		unique_ptr<uint8_t[]>& Data,	//ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿
+	//		size_t CsoSz,					//ã‚µã‚¤ã‚º
+	//		ID3D11ComputeShader** pResult			//å—ã‘å–ã‚‹ã‚·ã‚§ãƒ¼ãƒ€
 	//	);
-	//	—p“r: ƒoƒCƒiƒŠƒf[ƒ^‚©‚çƒRƒ“ƒsƒ…[ƒgƒVƒF[ƒ_‚ğì¬‚·‚é
+	//	ç”¨é€”: ãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆã‚·ã‚§ãƒ¼ãƒ€ã‚’ä½œæˆã™ã‚‹
 	//--------------------------------------------------------------------------------------
 	void ShaderResource::CreateComputeShader(unique_ptr<uint8_t[]>& Data, size_t CsoSz, ID3D11ComputeShader** pResult) {
 		try {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ID3D11Device* pDx11Device = Dev->GetD3DDevice();
-			//ƒsƒNƒZƒ‹ƒVƒF[ƒ_ì¬
+			//ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ä½œæˆ
 			HRESULT hr = pDx11Device->CreateComputeShader(
 				Data.get(),
 				CsoSz,
@@ -2843,7 +2843,7 @@ namespace basecross {
 				pResult);
 			if (FAILED(hr)) {
 				throw basecross::BaseException(
-					L"ƒRƒ“ƒsƒ…[ƒgƒVƒF[ƒ_‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆã‚·ã‚§ãƒ¼ãƒ€ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"f( FAILED( pDx11Device->CreateComputeShader() ) )",
 					L"ShaderResource::CreateComputeShader()"
 				);
@@ -2856,17 +2856,17 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	static void ShaderResource::CreateConstantBuffer(
-	//		UINT BuffSize,					//ƒTƒCƒY
-	//		ID3D11Buffer** pResult			//ó‚¯æ‚éƒVƒF[ƒ_
+	//		UINT BuffSize,					//ã‚µã‚¤ã‚º
+	//		ID3D11Buffer** pResult			//å—ã‘å–ã‚‹ã‚·ã‚§ãƒ¼ãƒ€
 	//	);
-	//	—p“r: ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ğì¬‚·‚é
+	//	ç”¨é€”: ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã‚’ä½œæˆã™ã‚‹
 	//--------------------------------------------------------------------------------------
 	void ShaderResource::CreateConstantBuffer(UINT BuffSize, ID3D11Buffer** pResult) {
 		try {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ID3D11Device* pDx11Device = Dev->GetD3DDevice();
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìì¬
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 			D3D11_BUFFER_DESC bd;
 			ZeroMemory(&bd, sizeof(bd));
 			bd.Usage = D3D11_USAGE_DEFAULT;
@@ -2875,9 +2875,9 @@ namespace basecross {
 			bd.CPUAccessFlags = 0;
 			HRESULT hr = pDx11Device->CreateBuffer(&bd, NULL, pResult);
 			if (FAILED(hr)) {
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				throw BaseException(
-					L"ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@ì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if( FAILED( hr ) )",
 					L"ShaderResource::CreateConstantBuffer()"
 				);

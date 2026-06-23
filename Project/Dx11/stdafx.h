@@ -105,7 +105,7 @@ using namespace std;
 
 
 #pragma warning(disable:4192)
-#import "msxml6.dll" named_guids raw_interfaces_only
+#import <msxml6.dll> named_guids raw_interfaces_only
 #pragma warning(default:4192)
 
 
