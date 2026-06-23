@@ -57,6 +57,7 @@
 #include "SkyCube.h"
 #include "GameOverStage.h"
 #include "PauseMenu.h"
+#include "OptionMenu.h"
 #include "SpriteGeneric.h"
 #include "EffectManager.h"
 

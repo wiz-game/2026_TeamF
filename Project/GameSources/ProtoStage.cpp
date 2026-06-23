@@ -63,7 +63,7 @@ namespace basecross {
 
 			//BGM再生
 			if(!m_stageBGM)
-				m_stageBGM = SoundManager::Get().PlayBGM(L"STAGE", 0.55f);
+				m_stageBGM = SoundManager::Get().PlayBGM(L"GAMESTAGE_BGM", 0.55f);
 
 			//UI作成
 			auto gaugeBack = AddGameObject<GaugeBack>();
@@ -71,6 +71,7 @@ namespace basecross {
 
 			//ポーズメニュー作成
 			m_pauseMenu = ObjectFactory::Create<PauseMenu>(GetThis<Stage>());
+			m_optionMenu = ObjectFactory::Create<OptionMenu>(GetThis<Stage>());
 
 			//プロトタイプ用地面作成
 			JPH::StaticCompoundShapeSettings compoundSettings;

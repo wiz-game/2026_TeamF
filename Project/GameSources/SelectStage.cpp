@@ -59,8 +59,7 @@ namespace basecross {
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
 
 			//BGM再生
-			if (!m_sSelectBGM)
-				m_sSelectBGM = SoundManager::Get().PlayBGM(L"STAGESELECT", m_BGMVolume);
+			SoundManager::Get().PlayBGM(L"STAGESELECT_BGM", m_BGMVolume);
 		}
 		catch (...) {
 			throw;
@@ -80,16 +79,24 @@ namespace basecross {
 
 		//選択移動左
 		if (GameController::IsTrigger_DpadLeft()) {
+			//選択効果音を鳴らす
+			SoundManager::Get().PlaySE(L"SELECT", 1.0f);
+
 			m_SelectIndex = max(0, m_SelectIndex - 1);
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
 		}
 		//選択移動右
 		if (GameController::IsTrigger_DpadRight()) {
+			//選択効果音を鳴らす
+			SoundManager::Get().PlaySE(L"SELECT", 1.0f);
+
 			m_SelectIndex = min(m_MaxSelectIndex - 1, m_SelectIndex + 1);
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
 		}
 		//選択決定(A)
 		if (GameController::IsTrigger_ButtonDown()) {
+			//決定効果音を鳴らす
+			SoundManager::Get().PlaySE(L"CONFIRM", 1.0f);
 			//BGMを止める
 			SoundManager::Get().StopBGM();
 			m_sSelectBGM = nullptr;

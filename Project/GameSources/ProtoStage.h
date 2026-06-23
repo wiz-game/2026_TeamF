@@ -18,6 +18,7 @@ namespace basecross {
 		JoltManager m_jphManger; // Jolt Physics マネージャー
 		shared_ptr<Player> m_Player;	//プレイヤー
 		std::shared_ptr<PauseMenu> m_pauseMenu;	//ポーズメニュー
+		std::shared_ptr<OptionMenu> m_optionMenu;	//設定メニュー
 
 		std::shared_ptr<SoundItem> m_stageBGM;	//BGM
 

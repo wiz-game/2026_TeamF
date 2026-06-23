@@ -15,6 +15,8 @@ namespace basecross {
 	class TitleStage : public Stage
 	{
 		shared_ptr<Sprite> m_Title;
+		std::shared_ptr<SoundItem> m_SelectSE;
+		std::shared_ptr<SoundItem> m_ConfirmSE;
 
 		//BGM‚Ì‰¹—Ê
 		float m_BGMVolume = 0.5f;

@@ -1,11 +1,11 @@
 #include"stdafx.h"
 #include"Project.h"
 #include"Scene.h"
-#include"PauseMenu.h"
+#include"OptionMenu.h"
 
 namespace basecross
 {
-	void PauseMenu::OnCreate()
+	void OptionMenu::OnCreate()
 	{
 		auto& app = App::GetApp();
 		auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
@@ -61,40 +61,40 @@ namespace basecross
 		continueButton->SetColor(Col4(1, 1, 1, 1));
 		m_menuButton.push_back(continueButton);
 
-		//リトライボタン
-		auto retryButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
-		retryButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
-		retryButton->SetPos(m_menuPosList[1]);
-		retryButton->SetTexture(L"Restart");
-		retryButton->SetColor(Col4(1, 1, 1, 1));
-		m_menuButton.push_back(retryButton);
+		////リトライボタン
+		//auto retryButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
+		//retryButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
+		//retryButton->SetPos(m_menuPosList[1]);
+		//retryButton->SetTexture(L"Restart");
+		//retryButton->SetColor(Col4(1, 1, 1, 1));
+		//m_menuButton.push_back(retryButton);
 
-		//設定ボタン
-		auto optionButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
-		optionButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
-		optionButton->SetPos(m_menuPosList[2]);
-		optionButton->SetTexture(L"Option");
-		optionButton->SetColor(Col4(1, 1, 1, 1));
-		m_menuButton.push_back(optionButton);
+		////設定ボタン
+		//auto optionButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
+		//optionButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
+		//optionButton->SetPos(m_menuPosList[2]);
+		//optionButton->SetTexture(L"Option");
+		//optionButton->SetColor(Col4(1, 1, 1, 1));
+		//m_menuButton.push_back(optionButton);
 
-		//ステージセレクトに戻るボタン
-		auto toStageSelectButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
-		toStageSelectButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
-		toStageSelectButton->SetPos(m_menuPosList[3]);
-		toStageSelectButton->SetTexture(L"ToStageSelect");
-		toStageSelectButton->SetColor(Col4(1, 1, 1, 1));
-		m_menuButton.push_back(toStageSelectButton);
+		////ステージセレクトに戻るボタン
+		//auto toStageSelectButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
+		//toStageSelectButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
+		//toStageSelectButton->SetPos(m_menuPosList[3]);
+		//toStageSelectButton->SetTexture(L"ToStageSelect");
+		//toStageSelectButton->SetColor(Col4(1, 1, 1, 1));
+		//m_menuButton.push_back(toStageSelectButton);
 
-		//タイトルボタン
-		auto titleButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
-		titleButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
-		titleButton->SetPos(m_menuPosList[4]);
-		titleButton->SetTexture(L"ToTitle");
-		titleButton->SetColor(Col4(1, 1, 1, 1));
-		m_menuButton.push_back(titleButton);
+		////タイトルボタン
+		//auto titleButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
+		//titleButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
+		//titleButton->SetPos(m_menuPosList[4]);
+		//titleButton->SetTexture(L"ToTitle");
+		//titleButton->SetColor(Col4(1, 1, 1, 1));
+		//m_menuButton.push_back(titleButton);
 	}
 
-	void PauseMenu::OnUpdate()
+	void OptionMenu::OnUpdate()
 	{
 		SelectMenu();
 		//カーソル位置更新
@@ -102,7 +102,7 @@ namespace basecross
 		m_menuCursor->SetPos(cursorPos);
 	}
 
-	void PauseMenu::OnDraw()
+	void OptionMenu::OnDraw()
 	{
 		for (auto obj : m_menuLabel)
 		{
@@ -114,7 +114,7 @@ namespace basecross
 		}
 	}
 
-	void PauseMenu::SelectMenu()
+	void OptionMenu::SelectMenu()
 	{
 		auto& app = App::GetApp();
 		auto scene = app->GetScene<Scene>();
@@ -132,7 +132,6 @@ namespace basecross
 		{
 			if (stickY > threshold || pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
 			{
-				SoundManager::Get().PlaySE(L"SELECT", 1.0f);
 				m_selectMenu = (m_selectMenu == 1) ? m_menuNum : m_selectMenu - 1;
 				//上移動
 				m_selectIndex = m_selectIndex--;
@@ -144,7 +143,6 @@ namespace basecross
 			}
 			else if (stickY < -threshold || pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
 			{
-				SoundManager::Get().PlaySE(L"SELECT", 1.0f);
 				m_selectMenu = (m_selectMenu % m_menuNum) + 1;
 				//下移動
 				m_selectIndex = m_selectIndex++;
@@ -162,37 +160,36 @@ namespace basecross
 
 		if (pad.wPressedButtons & XINPUT_GAMEPAD_A)
 		{
-			SoundManager::Get().PlaySE(L"CONFIRM", 1.0f);
 			switch (m_selectMenu)
 			{
 			case 1:
 				//コンティニュー
-				SetPause(false);
+				ToPause();
 				break;
-			case 2:
-				//リトライ
-				PostEvent(0.50f, GetThis<PauseMenu>(), scene, L"ToProtoStage");
-				break;
-			case 3:
-				//設定
-				ToOption();
-				break;
-			case 4:
-				//ステージセレクトヘ
-				PostEvent(0.1f, GetThis<PauseMenu>(), scene, L"ToSelectStage");
-				break;
-			case 5:
-				//タイトルへ
-				PostEvent(0.1f, GetThis<PauseMenu>(), scene, L"ToTitleStage");
-				break;
+			//case 2:
+			//	//リトライ
+
+			//	break;
+			//case 3:
+			//	//設定
+
+			//	break;
+			//case 4:
+			//	//ステージセレクトヘ
+
+			//	break;
+			//case 5:
+			//	//タイトルへ
+
+			//	break;
 			}
 		}
 		scene->SetDebugString(wss.str());
 	}
 
-	void PauseMenu::ToOption()
+	void OptionMenu::ToPause()
 	{
-		SetPause(false);
-		//m_option->SetOption(true);
+		SetOption(false);
+		//m_pause->SetPause(true);
 	}
 }
