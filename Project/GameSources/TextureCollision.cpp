@@ -100,9 +100,9 @@ namespace basecross {
 		}
 	}
 	void TextureCollision::OnDraw() {
-		for (int i = 0; i < m_ElectricContourIndices.size(); i++) {
+		/*for (int i = 0; i < m_ElectricContourIndices.size(); i++) {
 			DrawContour(i);
-		}
+		}*/
 	}
 	void TextureCollision::DrawContour(int index) {
 		for (auto& triangle : GetWorldTriangles(index)) {

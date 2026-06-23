@@ -90,6 +90,10 @@
       <ShaderModel>5.0</ShaderModel>
       <ObjectFileOutput>$(SolutionDir)media\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+    <PreBuildEvent>
+      <Command>copy /Y "$(SolutionDir)opencv_world4120d.dll" "$(OutDir)"
+copy /Y  "$(SolutionDir)SDL3.dll" "$(OutDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -121,6 +125,10 @@
       <ShaderModel>5.0</ShaderModel>
       <ObjectFileOutput>$(SolutionDir)media\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+    <PreBuildEvent>
+      <Command>xcopy /Y /I /E "$(SolutionDir)opencv_world4120.dll" "$(OutDir)"
+xcopy /Y /I /E "$(SolutionDir)SDL3.dll" "$(OutDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ResourceCompile Include="BaseCrossDx11.rc" />
