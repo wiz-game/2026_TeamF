@@ -94,15 +94,18 @@ namespace basecross {
 			int handle = -1;
 			for (int j = 0; j < spawnEffectCount; j++) {
 				int spwanTriangle = rand() % m_Contour[i].m_Triangles.size();
-				Vec3 position = m_Contour[i].m_Triangles[spwanTriangle].GetCenter();
+				vector<TRIANGLE> triangles = m_Contour[i].GetWorldTriangles(GetGameObject()->GetComponent<Transform>());
+				Vec3 position = triangles[spwanTriangle].GetCenter();
 				EffectManager::g_Instance->PlayEffect(handle, L"ELECTRIC", position, 0);
 			}
 		}
+		if (!m_WaitContour.empty()) {
+			m_Contour = m_WaitContour;
+			m_WaitContour.clear();
+		}
 	}
 	void TextureCollision::OnDraw() {
-		/*for (int i = 0; i < m_ElectricContourIndices.size(); i++) {
-			DrawContour(i);
-		}*/
+		
 	}
 	void TextureCollision::DrawContour(int index) {
 		for (auto& triangle : GetWorldTriangles(index)) {
