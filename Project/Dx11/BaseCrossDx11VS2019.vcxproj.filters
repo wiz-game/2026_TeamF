@@ -43,8 +43,4 @@
       <Filter>リソース ファイル</Filter>
     </ResourceCompile>
   </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="PSInkDraw.hlsl" />
-    <FxCompile Include="VSInkDraw.hlsl" />
-  </ItemGroup>
 </Project>

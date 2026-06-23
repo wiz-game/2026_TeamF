@@ -43,10 +43,7 @@ bool ComputeSystemDX12Impl::Initialize(ComputeSystemResult &outResult)
 
 	// Create DXGI factory
 	if (HRFailed(CreateDXGIFactory1(IID_PPV_ARGS(&mDXGIFactory)), outResult))
-	{
-		outResult.SetError("Failed to create DXGI factory");
 		return false;
-	}
 
 	// Find adapter
 	ComPtr<IDXGIAdapter1> adapter;
@@ -113,8 +110,7 @@ bool ComputeSystemDX12Impl::Initialize(ComputeSystemResult &outResult)
 		return false;
 
 	// Initialize the compute interface
-	if (!ComputeSystemDX12::Initialize(device.Get(), outResult))
-		return false;
+	ComputeSystemDX12::Initialize(device.Get(), EDebug::DebugSymbols);
 
 #ifdef JPH_DEBUG
 	// Enable breaking on errors

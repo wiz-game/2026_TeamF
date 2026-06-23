@@ -87,6 +87,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PauseMenu.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SpriteGeneric.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ObstacleSpring.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h" />
@@ -179,5 +180,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SpriteGeneric.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObstacleSpring.h" />
   </ItemGroup>
 </Project>

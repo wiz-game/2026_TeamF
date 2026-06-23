@@ -69,7 +69,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>JPH_DEBUG_RENDERER;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED;JPH_OBJECT_STREAM;JPH_PROFILE_ENABLED;JPH_DISABLE_CUSTOM_ALLOCATOR;_HAS_STD_BYTE=0;_DEBUG;_WINDOWS;P2T_STATIC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)External\poly2tri;$(SolutionDir)External\openCV;$(SolutionDir)External\Jolt\include\;$(SolutionDir)External\SDL3\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -78,12 +77,21 @@
       <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
-      <DisableSpecificWarnings>4819;4003</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
+      <PreprocessorDefinitions>JPH_PROFILE_ENABLED;
+JPH_DEBUG_RENDERER
+;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED
+;JPH_DISABLE_CUSTOM_ALLOCATOR
+;JPH_OBJECT_STREAM
+;_HAS_STD_BYTE=0
+;NDEBUG;
+_WINDOWS
+;P2T_STATIC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)External\SDL3\lib\x64;$(SolutionDir)External\openCV\lib\Debug;$(SolutionDir)External\Jolt\lib\Debug\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)External\SDL3\lib\x64;$(SolutionDir)External\Jolt\lib\Debug\;$(SolutionDir)External\openCV\lib\Debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>Jolt.lib;SDL3.lib;opencv_world4120d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
@@ -98,9 +106,23 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+<<<<<<< HEAD
       <PreprocessorDefinitions>JPH_PROFILE_ENABLED;JPH_DEBUG_RENDERER;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED;JPH_DISABLE_CUSTOM_ALLOCATOR;JPH_OBJECT_STREAM;_HAS_STD_BYTE=0;NDEBUG;_WINDOWS;P2T_STATIC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)External\SDL3\include;$(SolutionDir)External\poly2tri;$(SolutionDir)External\openCV;$(SolutionDir)External\Jolt\include\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+=======
+      <PreprocessorDefinitions>JPH_PROFILE_ENABLED;
+JPH_DEBUG_RENDERER
+;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED
+;JPH_DISABLE_CUSTOM_ALLOCATOR
+;JPH_OBJECT_STREAM
+;_HAS_STD_BYTE=0
+;NDEBUG;
+_WINDOWS
+;P2T_STATIC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)External\poly2tri;$(SolutionDir)External\openCV;$(SolutionDir)External\SDL3\include;$(SolutionDir)External\Jolt\include\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+>>>>>>> Asuka
       <PrecompiledHeader>Use</PrecompiledHeader>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -113,9 +135,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)External\SDL3\lib\x64;$(SolutionDir)External\openCV\lib\Release;$(SolutionDir)External\Jolt\lib\Release\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)External\SDL3\lib\x64;$(SolutionDir)External\Jolt\lib\Release\;$(SolutionDir)External\openCV\lib\Release</AdditionalLibraryDirectories>
       <AdditionalDependencies>Jolt.lib;SDL3.lib;opencv_world4120.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ShowProgress>LinkVerbose</ShowProgress>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -149,22 +170,11 @@
     <FxCompile Update="C:\Local\Game Programing Files\BaseCross\2026_前期制作\Project\GameSources\GenerateMaskShader.hlsl">
       <FileType>Document</FileType>
     </FxCompile>
-    <FxCompile Update="C:\Users\shiro\WIZ\3年前期チーム制作 2026-TeamF\Project\GameSources\PSTexture2.hlsl">
-      <FileType>Document</FileType>
-    </FxCompile>
     <FxCompile Update="C:\wiz\ゲーム制作\BaseCross11_2026\Project\GameSources\UnionFindFirst.hlsl">
       <FileType>Document</FileType>
     </FxCompile>
     <FxCompile Update="C:\wiz\ゲーム制作\BaseCross11_2026\Project\GameSources\UnionFindSecond.hlsl">
       <FileType>Document</FileType>
-    </FxCompile>
-    <FxCompile Include="PSInkDraw.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="VSInkDraw.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
