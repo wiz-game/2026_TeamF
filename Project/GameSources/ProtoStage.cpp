@@ -126,7 +126,7 @@ namespace basecross {
 			//AddGameObject<PowerSupply>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 11.0f));
 
 			//port										scale				rotation		position
-			auto moveFloor_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(0.0f, -0.3f, 3.0f));
+			auto moveFloor_port = AddGameObject<Port>(Vec3(1.0f, 0.5f, 1.0f), Vec3(0), Vec3(0.0f, -0.3f, 3.0f));
 			//auto trapDoor_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 15.0f));
 			//auto goal_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 25.0f));
 
@@ -204,12 +204,9 @@ namespace basecross {
 
 			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0), Vec3(-3.0f, -0.5f, 12.5f), moveFloorX_4);
 
-<<<<<<< HEAD
 			auto UISprite = AddGameObject<Sprite>(L"BUTTON_AB", Vec3(630,-380,0), Vec2(250,200), Anchor::BottomRight);
 			auto inkprite = AddGameObject<Sprite>(L"INK_MOZI", Vec3(-550, 380, 0), Vec2(100, 30), Anchor::Center);
-=======
 			AddGameObject<ObstacleSpring>();
->>>>>>> Asuka
 
 			//スカイボックス
 			AddGameObject<SkyCube>(L"SKYBOX");

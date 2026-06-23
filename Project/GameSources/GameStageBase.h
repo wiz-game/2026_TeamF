@@ -99,7 +99,8 @@ namespace basecross {
 
 		//構築と破棄
 		GameStageBase() :Stage(){}
-		virtual ~GameStageBase() {}		
+		GameStageBase(const int& num);
+		virtual ~GameStageBase();
 		void CreateViewLight();
 		void OnCreate();
 		void SetStageNum(int num);

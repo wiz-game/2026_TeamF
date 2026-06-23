@@ -39,7 +39,7 @@ namespace basecross {
 	(
 		const int& stageNum
 	):
-		m_StageNum(stageNum)
+		m_StageNum(stageNum),Stage()
 	{
 	}
 
@@ -56,7 +56,7 @@ namespace basecross {
 		EffectManager::g_Instance->RegisterResource(L"ELECTRIC", mediaPath + L"Effects/Electric1.efk");
 
 		//BGM再生
-		SoundManager::Get().PlayBGM(L"GAMESTAGE_BGM", m_BGMVolume);
+		SoundManager::Get().PlayBGM(L"GAMESTAGE_BGM", 1.0f /*m_BGMVolume*/);
 
 		CreateViewLight();
 		StageDateRoad(m_StageNum);

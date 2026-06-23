@@ -1,31 +1,31 @@
-/*!
+ï»¿/*!
 @file Sprite.h
-@brief ƒXƒvƒ‰ƒCƒg
+@brief ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 */
 
 #pragma once
 #include "stdafx.h"
 
-namespace basecross{
+namespace basecross {
 	struct SpriteAnimation {
-		size_t		m_CurrentOrder;		//Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“”Ô†
-		float		m_AnimationTime;	//ƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ}[
-		float		m_UpdateInterval;	//XV•p“x
-		bool		m_IsLoop;			//ƒ‹[ƒv‚·‚é‚©
-		bool		m_IsReverse;		//‹tÄ¶‚©
-		vector<int> m_Order;			//•`‰æ‡
+		size_t		m_CurrentOrder;		//ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç•ªå·
+		float		m_AnimationTime;	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒãƒ¼
+		float		m_UpdateInterval;	//æ›´æ–°é »åº¦
+		bool		m_IsLoop;			//ãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹
+		bool		m_IsReverse;		//é€†å†ç”Ÿã‹
+		vector<int> m_Order;			//æç”»é †
 
 
 		/// <summary>
-		/// ‹ó‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚©‚Ç‚¤‚©æ“¾
+		/// ç©ºã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‹ã©ã†ã‹å–å¾—
 		/// </summary>
-		/// <returns>İ’è‚³‚ê‚Ä‚¢‚È‚¢ƒAƒjƒ[ƒVƒ‡ƒ“‚È‚çtrue</returns>
+		/// <returns>è¨­å®šã•ã‚Œã¦ã„ãªã„ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãªã‚‰true</returns>
 		bool Empty() const {
 			return m_Order.empty();
 		}
 
 		/// <summary>
-		/// ƒAƒjƒ[ƒVƒ‡ƒ“I—¹ˆ—
+		/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†å‡¦ç†
 		/// </summary>
 		void EndAnimation() {
 			if (Empty()) return;
@@ -38,10 +38,10 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// ƒAƒjƒ[ƒVƒ‡ƒ“XVˆ—
+		/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ›´æ–°å‡¦ç†
 		/// </summary>
-		/// <param name="elapsed"> : Œo‰ßŠÔ</param>
-		/// <returns>ƒAƒjƒ[ƒVƒ‡ƒ“‚ªXV‚³‚ê‚½‚ç(‰æ‘œ‚ªØ‚è‘Ö‚í‚Á‚½‚ç)true</returns>
+		/// <param name="elapsed"> : çµŒéæ™‚é–“</param>
+		/// <returns>ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒæ›´æ–°ã•ã‚ŒãŸã‚‰(ç”»åƒãŒåˆ‡ã‚Šæ›¿ã‚ã£ãŸã‚‰)true</returns>
 		bool Update(float elapsed) {
 			if (Empty()) return false;
 
@@ -61,7 +61,7 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		/// </summary>
 		SpriteAnimation() {
 			m_Order = {};
@@ -73,14 +73,14 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		/// </summary>
-		/// <param name="order"> : •`‰æ‡</param>
-		/// <param name="time"> : •s–¾</param>
-		/// <param name="interval"> : XV•p“x</param>
-		/// <param name="isLoop"> : ƒ‹[ƒv‚·‚é‚©</param>
-		/// <param name="isReverse"> : ‹tÄ¶‚©</param>
-		SpriteAnimation(vector<int> order, float interval, const bool isLoop = false, const bool isReverse = false){
+		/// <param name="order"> : æç”»é †</param>
+		/// <param name="time"> : ä¸æ˜</param>
+		/// <param name="interval"> : æ›´æ–°é »åº¦</param>
+		/// <param name="isLoop"> : ãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹</param>
+		/// <param name="isReverse"> : é€†å†ç”Ÿã‹</param>
+		SpriteAnimation(vector<int> order, float interval, const bool isLoop = false, const bool isReverse = false) {
 			m_Order = order;
 			m_CurrentOrder = isReverse ? m_Order.size() - 1 : 0;
 			m_AnimationTime = 0.0f;
@@ -90,17 +90,17 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		/// </summary>
-		/// <param name="startOrder"> : •`‰æŠJn</param>
-		/// <param name="endOrder"> : •`‰æI—¹</param>
-		/// <param name="time"> : •s–¾</param>
-		/// <param name="interval"> : XV•p“x</param>
-		/// <param name="isLoop"> : ƒ‹[ƒv‚·‚é‚©</param>
-		/// <param name="isReverse"> : ‹tÄ¶‚©</param>
-		SpriteAnimation(int startOrder,int endOrder,float interval,const bool isLoop = false,const bool isReverse = false){
+		/// <param name="startOrder"> : æç”»é–‹å§‹</param>
+		/// <param name="endOrder"> : æç”»çµ‚äº†</param>
+		/// <param name="time"> : ä¸æ˜</param>
+		/// <param name="interval"> : æ›´æ–°é »åº¦</param>
+		/// <param name="isLoop"> : ãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹</param>
+		/// <param name="isReverse"> : é€†å†ç”Ÿã‹</param>
+		SpriteAnimation(int startOrder, int endOrder, float interval, const bool isLoop = false, const bool isReverse = false) {
 			vector<int> order;
-			for (int i = startOrder;i <= endOrder;i++) {
+			for (int i = startOrder; i <= endOrder; i++) {
 				order.push_back(i);
 			}
 			m_Order = order;
@@ -126,48 +126,48 @@ namespace basecross{
 
 	//----------------------------------------------------------
 	//
-	//	‰æ‘œ•\¦ƒNƒ‰ƒX						
+	//	ç”»åƒè¡¨ç¤ºã‚¯ãƒ©ã‚¹						
 	//																																
 	//----------------------------------------------------------
 	class Sprite : public GameObject {
-		wstring m_TexKey;				//ƒeƒNƒXƒ`ƒƒƒL[
-		Vec2	m_Size;					//ƒTƒCƒY
-		Vec3	m_Pos;					//ˆÊ’u
-		Vec2	m_Pivot;				//dS
-		size_t	m_MaxAnimationFrame;	//g—p‚Å‚«‚éƒAƒjƒ[ƒVƒ‡ƒ“ƒtƒŒ[ƒ€‚ÌÅ‘å”
-		Vec2	m_cutUV;				//‰æ‘œ‚ÌØ‚èæ‚è”
-		Vec2	m_ScreenHalfSize;			//ƒXƒNƒŠ[ƒ“ƒTƒCƒY
+		wstring m_TexKey;				//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚­ãƒ¼
+		Vec2	m_Size;					//ã‚µã‚¤ã‚º
+		Vec3	m_Pos;					//ä½ç½®
+		Vec2	m_Pivot;				//é‡å¿ƒ
+		size_t	m_MaxAnimationFrame;	//ä½¿ç”¨ã§ãã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ãƒ¬ãƒ¼ãƒ ã®æœ€å¤§æ•°
+		Vec2	m_cutUV;				//ç”»åƒã®åˆ‡ã‚Šå–ã‚Šæ•°
+		Vec2	m_ScreenHalfSize;			//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚µã‚¤ã‚º
 
-		vector<vector<Vec2>>				m_AnimationUV;	//ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌUV
-		vector<VertexPositionColorTexture>	m_Vertices;		//’¸“_
+		vector<vector<Vec2>>				m_AnimationUV;	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®UV
+		vector<VertexPositionColorTexture>	m_Vertices;		//é ‚ç‚¹
 
-		shared_ptr<PCTSpriteDraw>	m_Draw;			//•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
-		shared_ptr<Transform>		m_Transform;	//ˆÊ’uƒRƒ“ƒ|[ƒlƒ“ƒg
+		shared_ptr<PCTSpriteDraw>	m_Draw;			//æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
+		shared_ptr<Transform>		m_Transform;	//ä½ç½®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 
-		bool							m_IsAnimation;		//ƒAƒjƒ[ƒVƒ‡ƒ“‚ª‚ ‚é‚©
-		map<wstring, SpriteAnimation>	m_Animations;		//ƒAƒjƒ[ƒVƒ‡ƒ“ƒ}ƒbƒv
-		SpriteAnimation					m_CurrentAnimation;	//Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
-		SpriteAnimation					m_BeforeAnimation;	//‘O‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
+		bool							m_IsAnimation;		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒã‚ã‚‹ã‹
+		map<wstring, SpriteAnimation>	m_Animations;		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ—
+		SpriteAnimation					m_CurrentAnimation;	//ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
+		SpriteAnimation					m_BeforeAnimation;	//å‰ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 
 
 		/// <summary>
-		/// ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
+		/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†
 		/// </summary>
 		void Animation();
 
 	public:
 
 		/// <summary>
-		/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		/// </summary>
-		/// <param name="ptr"> : ƒXƒe[ƒW</param>
-		/// <param name="texKey"> : ƒeƒNƒXƒ`ƒƒƒL[</param>
-		/// <param name="pos"> : •\¦ˆÊ’u</param>
-		/// <param name="size"> : •\¦ƒTƒCƒY</param>
-		/// <param name="cutUV"> : Ø‚èæ‚è”</param>
-		/// <param name="useCenter"> : •\¦Šî‚ª’†S‚©</param>
-		/// <param name="useIndex"> : ‰Šú•\¦”Ô†</param>
-		/// <param name="isAnimation"> : ƒAƒjƒ[ƒVƒ‡ƒ“‚·‚é‚©</param>
+		/// <param name="ptr"> : ã‚¹ãƒ†ãƒ¼ã‚¸</param>
+		/// <param name="texKey"> : ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚­ãƒ¼</param>
+		/// <param name="pos"> : è¡¨ç¤ºä½ç½®</param>
+		/// <param name="size"> : è¡¨ç¤ºã‚µã‚¤ã‚º</param>
+		/// <param name="cutUV"> : åˆ‡ã‚Šå–ã‚Šæ•°</param>
+		/// <param name="useCenter"> : è¡¨ç¤ºåŸºãŒä¸­å¿ƒã‹</param>
+		/// <param name="useIndex"> : åˆæœŸè¡¨ç¤ºç•ªå·</param>
+		/// <param name="isAnimation"> : ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã™ã‚‹ã‹</param>
 		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 pivot) :
 			GameObject(ptr),
 			m_TexKey(texKey),
@@ -175,8 +175,7 @@ namespace basecross{
 			m_cutUV(Vec2(1, 1)),
 			m_MaxAnimationFrame(1), m_IsAnimation(false),
 			m_CurrentAnimation{}, m_BeforeAnimation{},
-			m_ScreenHalfSize(0, 0) {
-		}
+			m_ScreenHalfSize(0, 0) {}
 
 		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size) : Sprite(ptr, texKey, pos, size, { 0,0 }) {}
 		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Anchor anchor);
@@ -192,156 +191,156 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// •\¦ƒTƒCƒY•ÏX
+		/// è¡¨ç¤ºã‚µã‚¤ã‚ºå¤‰æ›´
 		/// </summary>
-		/// <param name="size"> : ƒTƒCƒY(uv)</param>
+		/// <param name="size"> : ã‚µã‚¤ã‚º(uv)</param>
 		void SetSize(Vec2 size);
 
 		void MatchToScreenSize() {
-			//ƒf[ƒ^ã‚ÌƒTƒCƒY‚ÆÀÛ‚Ì‰æ–ÊƒTƒCƒY‚ª‡‚í‚È‚¢‚½‚ß‚¿‚å‚Á‚Æ‘å‚«‚ß
+			//ãƒ‡ãƒ¼ã‚¿ä¸Šã®ã‚µã‚¤ã‚ºã¨å®Ÿéš›ã®ç”»é¢ã‚µã‚¤ã‚ºãŒåˆã‚ãªã„ãŸã‚ã¡ã‚‡ã£ã¨å¤§ãã‚
 			SetSize(m_ScreenHalfSize * 2.1f);
 		}
 		/// <summary>
-		/// •\¦ƒTƒCƒYæ“¾
+		/// è¡¨ç¤ºã‚µã‚¤ã‚ºå–å¾—
 		/// </summary>
-		/// <returns>ƒTƒCƒY</returns>
+		/// <returns>ã‚µã‚¤ã‚º</returns>
 		Vec2 GetSize() const {
 			return m_Size;
 		}
 
 		/// <summary>
-		/// •\¦ˆÊ’u•ÏX
+		/// è¡¨ç¤ºä½ç½®å¤‰æ›´
 		/// </summary>
-		/// <param name="pos"> : •\¦ˆÊ’u</param>
+		/// <param name="pos"> : è¡¨ç¤ºä½ç½®</param>
 		void SetPosition(Vec3 pos);
 
 		/// <summary>
-		/// •\¦ˆÊ’uæ“¾
+		/// è¡¨ç¤ºä½ç½®å–å¾—
 		/// </summary>
-		/// <returns>•\¦ˆÊ’u</returns>
-		Vec3 GetPosition() const{
+		/// <returns>è¡¨ç¤ºä½ç½®</returns>
+		Vec3 GetPosition() const {
 			return m_Pos;
 		}
 
 		/// <summary>
-		/// dS‚ğİ’è
+		/// é‡å¿ƒã‚’è¨­å®š
 		/// </summary>
-		/// <param name="pivot"> : dS</param>
+		/// <param name="pivot"> : é‡å¿ƒ</param>
 		void SetPivot(Vec2 pivot) {
 			m_Pivot = pivot;
 		}
 
 		/// <summary>
-		/// dS‚ğæ“¾
+		/// é‡å¿ƒã‚’å–å¾—
 		/// </summary>
-		/// <returns>dS</returns>
-		Vec2 GetPivot() const{
+		/// <returns>é‡å¿ƒ</returns>
+		Vec2 GetPivot() const {
 			return m_Pivot;
 		}
 
 		/// <summary>
-		/// w’è‚µ‚½ƒxƒNƒgƒ‹•ûŒü‚ğŒü‚©‚¹‚é
+		/// æŒ‡å®šã—ãŸãƒ™ã‚¯ãƒˆãƒ«æ–¹å‘ã‚’å‘ã‹ã›ã‚‹
 		/// </summary>
-		/// <param name="vec">ƒxƒNƒgƒ‹</param>
+		/// <param name="vec">ãƒ™ã‚¯ãƒˆãƒ«</param>
 		void VectorToward(Vec2 vec);
 
 		/// <summary>
-		/// ƒAƒ“ƒJ[‚É‘Î‰‚µ‚½ˆÊ’u(0`1)‚ğæ“¾
+		/// ã‚¢ãƒ³ã‚«ãƒ¼ã«å¯¾å¿œã—ãŸä½ç½®(0ï½1)ã‚’å–å¾—
 		/// </summary>
-		/// <param name="anchor">ƒAƒ“ƒJ[</param>
-		/// <returns>ˆÊ’u</returns>
+		/// <param name="anchor">ã‚¢ãƒ³ã‚«ãƒ¼</param>
+		/// <returns>ä½ç½®</returns>
 		Vec2 GetAnchorNormalize(Anchor anchor);
 
 		/// <summary>
-		/// F‚Ì•ÏX
+		/// è‰²ã®å¤‰æ›´
 		/// </summary>
-		/// <param name="color"> : F</param>
+		/// <param name="color"> : è‰²</param>
 		void SetDiffuse(Col4 color);
 
 		/// <summary>
-		/// F‚Ìæ“¾
+		/// è‰²ã®å–å¾—
 		/// </summary>
-		/// <returns>F</returns>
+		/// <returns>è‰²</returns>
 		Col4 GetDiffuse()const;
 
 		/// <summary>
-		/// ’¸“_î•ñ‚Ìì¬EXV
+		/// é ‚ç‚¹æƒ…å ±ã®ä½œæˆãƒ»æ›´æ–°
 		/// </summary>
-		/// <param name="size"> : •\¦ƒTƒCƒY</param>
+		/// <param name="size"> : è¡¨ç¤ºã‚µã‚¤ã‚º</param>
 		/// <param name="uv"> : uv</param>
 		void CreateVertex(Vec2 size, vector<Vec2> uv);
 
 		/// <summary>
-		/// ’¸“_ˆÊ’u‚ÌXV
+		/// é ‚ç‚¹ä½ç½®ã®æ›´æ–°
 		/// </summary>
-		/// <param name="positions"> : ˆÊ’uî•ñ</param>
+		/// <param name="positions"> : ä½ç½®æƒ…å ±</param>
 		void SetVertex(vector<Vec3> positions);
 
 		/// <summary>
-		/// Å‘åƒAƒjƒ[ƒVƒ‡ƒ“ƒtƒŒ[ƒ€‚ğæ“¾
+		/// æœ€å¤§ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å–å¾—
 		/// </summary>
-		/// <returns>Å‘åƒAƒjƒ[ƒVƒ‡ƒ“ƒtƒŒ[ƒ€</returns>
+		/// <returns>æœ€å¤§ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ãƒ¬ãƒ¼ãƒ </returns>
 		size_t GetMaxAnimationFrame() const {
 			return m_MaxAnimationFrame;
 		}
 
 		/// <summary>
-		/// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌXVó‘Ô‚ğİ’è
+		/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æ›´æ–°çŠ¶æ…‹ã‚’è¨­å®š
 		/// </summary>
-		/// <param name="flag"> : XVó‘Ô</param>
+		/// <param name="flag"> : æ›´æ–°çŠ¶æ…‹</param>
 		void SetAnimationActive(bool flag) {
 			m_IsAnimation = flag;
 		}
 
 		/// <summary>
-		/// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌXVó‘Ô‚ğæ“¾
+		/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æ›´æ–°çŠ¶æ…‹ã‚’å–å¾—
 		/// </summary>
-		/// <returns>XVó‘Ô</returns>
-		bool GetAnimationActive() const{
+		/// <returns>æ›´æ–°çŠ¶æ…‹</returns>
+		bool GetAnimationActive() const {
 			return m_IsAnimation;
 		}
 
 		/// <summary>
-		/// •`‰æ—Dæ“x‚ğİ’è
+		/// æç”»å„ªå…ˆåº¦ã‚’è¨­å®š
 		/// </summary>
-		/// <param name="index">—Dæ“x</param>
+		/// <param name="index">å„ªå…ˆåº¦</param>
 		void SetLayer(int index) {
 			SetDrawLayer(index);
 		}
 
 		//----------------------------------------------------------
 		//
-		//	UV‘€ì		
+		//	UVæ“ä½œ		
 		//																																
 		//----------------------------------------------------------
 
 		/// <summary>
-		/// ƒAƒjƒ[ƒVƒ‡ƒ“—pUV‚Ìì¬
+		/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨UVã®ä½œæˆ
 		/// </summary>
-		/// <param name="cut"> : Ø‚èæ‚è”</param>
-		/// <param name="maxIndex"> : g—p‚·‚éuv‚ÌÅ‘å”</param>
-		/// <returns>ƒAƒjƒ[ƒVƒ‡ƒ“—pUV</returns>
+		/// <param name="cut"> : åˆ‡ã‚Šå–ã‚Šæ•°</param>
+		/// <param name="maxIndex"> : ä½¿ç”¨ã™ã‚‹uvã®æœ€å¤§æ•°</param>
+		/// <returns>ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨UV</returns>
 		vector<vector<Vec2>> CreateAnimationUV(Vec2 cut, const size_t& maxIndex = 1024);
 
 		/// <summary>
-		/// UV‚ÌXV
+		/// UVã®æ›´æ–°
 		/// </summary>
 		/// <param name="uv">UV</param>
 		void UpdateUV(vector<Vec2> uv);
 
 		/// <summary>
-		/// ƒAƒjƒ[ƒVƒ‡ƒ“—pUV‚Ìæ“¾(”z—ñ)
+		/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨UVã®å–å¾—(é…åˆ—)
 		/// </summary>
-		/// <returns>ƒAƒjƒ[ƒVƒ‡ƒ“—pUV</returns>
+		/// <returns>ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨UV</returns>
 		vector<vector<Vec2>> GetUvVec() {
 			return m_AnimationUV;
 		}
 
 		/// <summary>
-		/// ƒAƒjƒ[ƒVƒ‡ƒ“—pUV‚Ìæ“¾(’P‘Ì)
+		/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨UVã®å–å¾—(å˜ä½“)
 		/// </summary>
-		/// <param name="index"> : ”Ô†</param>
-		/// <returns>ƒAƒjƒ[ƒVƒ‡ƒ“—pUV</returns>
+		/// <param name="index"> : ç•ªå·</param>
+		/// <returns>ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨UV</returns>
 		vector<Vec2> GetUv(int index) {
 			if (m_AnimationUV.size() <= index) {
 				return {};
@@ -351,32 +350,32 @@ namespace basecross{
 
 		//----------------------------------------------------------
 		//
-		//	ƒAƒjƒ[ƒVƒ‡ƒ“‘€ì		
+		//	ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ“ä½œ		
 		//																																
 		//----------------------------------------------------------
 
 
 		/// <summary>
-		/// ‘O‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğæ“¾
+		/// å‰ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å–å¾—
 		/// </summary>
-		/// <returns>ƒAƒjƒ[ƒVƒ‡ƒ“</returns>
+		/// <returns>ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³</returns>
 		SpriteAnimation GetBeforeAnimation() {
 			return m_BeforeAnimation;
 		}
 
 		/// <summary>
-		/// Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğæ“¾
+		/// ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å–å¾—
 		/// </summary>
-		/// <returns>ƒAƒjƒ[ƒVƒ‡ƒ“</returns>
+		/// <returns>ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³</returns>
 		SpriteAnimation GetCurrentAnimation() {
 			return m_CurrentAnimation;
 		}
 
 		/// <summary>
-		/// w’è‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğæ“¾
+		/// æŒ‡å®šã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å–å¾—
 		/// </summary>
-		/// <param name="key"> : ƒAƒjƒ[ƒVƒ‡ƒ“ƒL[</param>
-		/// <returns>ƒAƒjƒ[ƒVƒ‡ƒ“</returns>
+		/// <param name="key"> : ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚­ãƒ¼</param>
+		/// <returns>ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³</returns>
 		SpriteAnimation GetAnimation(const wstring& key) {
 			if (m_Animations.find(key) != m_Animations.end()) {
 				return m_Animations[key];
@@ -385,9 +384,9 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// Ä¶‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ğİ’è
+		/// å†ç”Ÿã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¨­å®š
 		/// </summary>
-		/// <param name="key"> : ƒAƒjƒ[ƒVƒ‡ƒ“ƒL[</param>
+		/// <param name="key"> : ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚­ãƒ¼</param>
 		void SetCurrentAnimation(const wstring& key) {
 			if (m_Animations.find(key) != m_Animations.end()) {
 				m_CurrentAnimation.EndAnimation();
@@ -397,37 +396,37 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ’Ç‰Á
+		/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ 
 		/// </summary>
-		/// <param name="key"> : İ’è‚·‚éƒL[</param>
-		/// <param name="startOrder"> : •`‰æŠJn</param>
-		/// <param name="endOrder"> : •`‰æI—¹</param>
-		/// <param name="interval"> : XV•p“x</param>
-		/// <param name="isLoop"> : ƒ‹[ƒv‚·‚é‚©</param>
-		/// <param name="isReverse"> : ‹tÄ¶‚©</param>
+		/// <param name="key"> : è¨­å®šã™ã‚‹ã‚­ãƒ¼</param>
+		/// <param name="startOrder"> : æç”»é–‹å§‹</param>
+		/// <param name="endOrder"> : æç”»çµ‚äº†</param>
+		/// <param name="interval"> : æ›´æ–°é »åº¦</param>
+		/// <param name="isLoop"> : ãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹</param>
+		/// <param name="isReverse"> : é€†å†ç”Ÿã‹</param>
 		void AddAnimation(const wstring& key, int startOrder, int endOrder, float interval, const bool isLoop = false, const bool isReverse = false) {
 			SpriteAnimation animation = SpriteAnimation(startOrder, endOrder, interval, isLoop, isReverse);
 			m_Animations.insert(pair<wstring, SpriteAnimation>(key, animation));
 		}
 
 		/// <summary>
-		/// ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ’Ç‰Á
+		/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ 
 		/// </summary>
-		/// <param name="key"> : İ’è‚·‚éƒL[</param>
-		/// <param name="order"> : •`‰æ‡</param>
-		/// <param name="interval"> : XV•p“x</param>
-		/// <param name="isLoop"> : ƒ‹[ƒv‚·‚é‚©</param>
-		/// <param name="isReverse"> : ‹tÄ¶‚©</param>
+		/// <param name="key"> : è¨­å®šã™ã‚‹ã‚­ãƒ¼</param>
+		/// <param name="order"> : æç”»é †</param>
+		/// <param name="interval"> : æ›´æ–°é »åº¦</param>
+		/// <param name="isLoop"> : ãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹</param>
+		/// <param name="isReverse"> : é€†å†ç”Ÿã‹</param>
 		void AddAnimation(const wstring& key, vector<int> order, float interval, const bool isLoop = false, const bool isReverse = false) {
 			SpriteAnimation animation = SpriteAnimation(order, interval, isLoop, isReverse);
 			m_Animations.insert(pair<wstring, SpriteAnimation>(key, animation));
 		}
 
 		/// <summary>
-		/// ƒAƒjƒ[ƒVƒ‡ƒ“î•ñ‚ğXV
+		/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æƒ…å ±ã‚’æ›´æ–°
 		/// </summary>
-		/// <param name="key"> : XV‚·‚éƒL[</param>
-		/// <param name="newAnimation"> : V‚µ‚¢ƒAƒjƒ[ƒVƒ‡ƒ“</param>
+		/// <param name="key"> : æ›´æ–°ã™ã‚‹ã‚­ãƒ¼</param>
+		/// <param name="newAnimation"> : æ–°ã—ã„ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³</param>
 		void UpdateAnimationData(const wstring& key, SpriteAnimation newAnimation) {
 			if (m_Animations.find(key) != m_Animations.end()) {
 				m_Animations[key] = newAnimation;
@@ -436,15 +435,15 @@ namespace basecross{
 
 		//----------------------------------------------------------
 		//
-		//	ˆÊ’uİ’èƒeƒ“ƒvƒŒ[ƒg		
+		//	ä½ç½®è¨­å®šãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ		
 		//																																
 		//----------------------------------------------------------
 
 		/// <summary>
-		/// ƒAƒ“ƒJ[ˆÊ’uİ’è
+		/// ã‚¢ãƒ³ã‚«ãƒ¼ä½ç½®è¨­å®š
 		/// </summary>
-		/// <param name="achor"> : ƒAƒ“ƒJ[</param>
-		/// <param name="offset"> : ‚¸‚ê</param>
+		/// <param name="achor"> : ã‚¢ãƒ³ã‚«ãƒ¼</param>
+		/// <param name="offset"> : ãšã‚Œ</param>
 		void ScreenAnchor(Anchor achor, const Vec3& offset = Vec3());
 
 		void ChangeWindowSize(float width, float height);
@@ -456,7 +455,7 @@ namespace basecross{
 
 	//----------------------------------------------------------
 	//																																
-	//	”’l•\¦ƒNƒ‰ƒX																												
+	//	æ•°å€¤è¡¨ç¤ºã‚¯ãƒ©ã‚¹																												
 	//																																
 	//----------------------------------------------------------
 	class NumberSprite : public GameObject {
@@ -471,19 +470,19 @@ namespace basecross{
 
 		vector<Vec2> GetUV(int displayDigit);
 	public:
-		NumberSprite(const shared_ptr<Stage>& ptr,const wstring& texKey) : NumberSprite(ptr,texKey,Vec3(0,0,0),Vec2(200,100),8){}
-		NumberSprite(const shared_ptr<Stage>& ptr,const wstring& texKey,Vec3 pos,Vec2 size,int displayDigit) : NumberSprite(ptr, texKey, pos, size, displayDigit,10) {}
-		NumberSprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, int displayDigit,int cutNum) : 
-			GameObject(ptr) ,
+		NumberSprite(const shared_ptr<Stage>& ptr, const wstring& texKey) : NumberSprite(ptr, texKey, Vec3(0, 0, 0), Vec2(200, 100), 8) {}
+		NumberSprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, int displayDigit) : NumberSprite(ptr, texKey, pos, size, displayDigit, 10) {}
+		NumberSprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, int displayDigit, int cutNum) :
+			GameObject(ptr),
 			m_TexKey(texKey),
-			m_Pos(pos),m_Size(size),
-			m_DisplayDigit(displayDigit),m_DisplayNumber(1234), m_CutNum(cutNum)
+			m_Pos(pos), m_Size(size),
+			m_DisplayDigit(displayDigit), m_DisplayNumber(1234), m_CutNum(cutNum)
 		{}
-		virtual ~NumberSprite(){}
+		virtual ~NumberSprite() {}
 
 		virtual void OnCreate();
 		virtual void OnUpdate();
-		
+
 		void UpdateNumber(int number);
 		void SetDiffuse(Col4 color) {
 			for (auto& number : m_Numbers) {
@@ -510,12 +509,12 @@ namespace basecross{
 
 	//----------------------------------------------------------
 	//																																
-	//	Sprite‘€ìƒRƒ“ƒ|[ƒlƒ“ƒgƒNƒ‰ƒX
+	//	Spriteæ“ä½œã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚¯ãƒ©ã‚¹
 	// 
-	//	< g‚¢•û >
-	//  AddComponent‚Åg‚¢‚½‚¢”h¶ƒNƒ‰ƒX‚ğİ’è
-	//  Play() : XV
-	//  Stop() : ’â~																				
+	//	< ä½¿ã„æ–¹ >
+	//  AddComponentã§ä½¿ã„ãŸã„æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã‚’è¨­å®š
+	//  Play() : æ›´æ–°
+	//  Stop() : åœæ­¢																				
 	//																																
 	//----------------------------------------------------------
 	class SpriteAction : public Component {
@@ -524,13 +523,13 @@ namespace basecross{
 		shared_ptr<SpriteBaseDraw> m_Draw;
 		shared_ptr<Transform> m_Trans;
 	public:
-		SpriteAction(const shared_ptr<GameObject>& ptr) : Component(ptr),m_IsPlay(true){}
+		SpriteAction(const shared_ptr<GameObject>& ptr) : Component(ptr), m_IsPlay(true) {}
 		virtual ~SpriteAction() {}
 
 		virtual void OnCreate()override;
 		virtual void OnDraw()override {}
 
-		virtual void Reset(){}
+		virtual void Reset() {}
 		void Play() {
 			m_IsPlay = true;
 		}
@@ -544,15 +543,15 @@ namespace basecross{
 	};
 	//----------------------------------------------------------
 	//																																
-	//	Sprite‘€ì : “_–Å																								
+	//	Spriteæ“ä½œ : ç‚¹æ»…																								
 	//																																
 	//----------------------------------------------------------
 	class SpriteFlash : public SpriteAction {
 		float m_FlashSpeed;
 	public:
-		SpriteFlash(const shared_ptr<GameObject>& ptr,float flashSpeed) : SpriteAction(ptr),
-			m_FlashSpeed(flashSpeed){}
-		virtual ~SpriteFlash(){}
+		SpriteFlash(const shared_ptr<GameObject>& ptr, float flashSpeed) : SpriteAction(ptr),
+			m_FlashSpeed(flashSpeed) {}
+		virtual ~SpriteFlash() {}
 
 		virtual void OnUpdate()override;
 		virtual void Reset()override;
@@ -563,7 +562,7 @@ namespace basecross{
 	};
 	//----------------------------------------------------------
 	//																																
-	//	Sprite‘€ì : Šg‘åk¬																								
+	//	Spriteæ“ä½œ : æ‹¡å¤§ç¸®å°																								
 	//																																
 	//----------------------------------------------------------
 	class SpriteScaling : public SpriteAction {
@@ -574,8 +573,8 @@ namespace basecross{
 		float m_MinRatio;
 
 	public:
-		SpriteScaling(const shared_ptr<GameObject>& ptr, float scalingSpeed, float max, float min) : SpriteAction(ptr), 
-			m_ScalingSpeed(scalingSpeed), m_MaxRatio(max), m_MinRatio(min),defaultSize(0,0,0),m_Ratio(1.0f) {}
+		SpriteScaling(const shared_ptr<GameObject>& ptr, float scalingSpeed, float max, float min) : SpriteAction(ptr),
+			m_ScalingSpeed(scalingSpeed), m_MaxRatio(max), m_MinRatio(min), defaultSize(0, 0, 0), m_Ratio(1.0f) {}
 		virtual ~SpriteScaling() {}
 
 		virtual void OnCreate()override;
@@ -594,11 +593,11 @@ namespace basecross{
 	};
 	//----------------------------------------------------------
 	//																																
-	//	Sprite‘€ì : ƒtƒF[ƒhƒCƒ“EƒtƒF[ƒhƒAƒEƒg																								
+	//	Spriteæ“ä½œ : ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³ãƒ»ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆ																								
 	//																																
 	//----------------------------------------------------------
 	enum class FadeState {
-		Out,In,InToOut,OutToIn
+		Out, In, InToOut, OutToIn
 	};
 	class SpriteFade : public SpriteAction {
 		float m_FadeSpeed;
@@ -607,8 +606,8 @@ namespace basecross{
 		bool m_HalfFinished;
 		FadeState m_FadeState;
 	public:
-		SpriteFade(const shared_ptr<GameObject>& ptr,float fadeSpeed) : SpriteAction(ptr),m_FadeSpeed(fadeSpeed),m_IsFadeOut(true),m_IsFinished(false), m_FadeState(FadeState::In){}
-		virtual ~SpriteFade(){}
+		SpriteFade(const shared_ptr<GameObject>& ptr, float fadeSpeed) : SpriteAction(ptr), m_FadeSpeed(fadeSpeed), m_IsFadeOut(true), m_IsFinished(false), m_FadeState(FadeState::In) {}
+		virtual ~SpriteFade() {}
 
 		virtual void OnUpdate()override;
 
@@ -649,7 +648,7 @@ namespace basecross{
 	};
 	//----------------------------------------------------------
 	//																																
-	//	ƒ{ƒ^ƒ“																		
+	//	ãƒœã‚¿ãƒ³																		
 	//																																
 	//----------------------------------------------------------
 	class SpriteButton : public SpriteAction {
@@ -670,29 +669,29 @@ namespace basecross{
 		Col4 m_SelectedColor;
 
 		int m_GroupOrder;
-		SpriteButton(shared_ptr<GameObject>& ptr, const wstring& defaultTexture, const wstring& group, const wstring& selectedTexture,Col4 selectedColor) :
+		SpriteButton(shared_ptr<GameObject>& ptr, const wstring& defaultTexture, const wstring& group, const wstring& selectedTexture, Col4 selectedColor) :
 			SpriteAction(ptr),
 			m_BelongGroup(group),
-			m_UnSelectTexture(defaultTexture),m_UnSelectColor(Col4()),
+			m_UnSelectTexture(defaultTexture), m_UnSelectColor(Col4()),
 			m_SelectedTexture(selectedTexture), m_SelectedColor(selectedColor),
-			m_IsSelect(false),m_IsActive(true),
+			m_IsSelect(false), m_IsActive(true),
 			m_GroupOrder(0)
 		{}
 	public:
 
-		SpriteButton(shared_ptr<GameObject>& ptr, const wstring& defaultTexture,const wstring& group,const wstring& selectedTexture) :
-			SpriteButton(ptr,defaultTexture,group,selectedTexture,Col4(0,0,0,0))
+		SpriteButton(shared_ptr<GameObject>& ptr, const wstring& defaultTexture, const wstring& group, const wstring& selectedTexture) :
+			SpriteButton(ptr, defaultTexture, group, selectedTexture, Col4(0, 0, 0, 0))
 		{}
 		SpriteButton(shared_ptr<GameObject>& ptr, const wstring& defaultTexture, const wstring& group, Col4 selectedColor) :
-			SpriteButton(ptr,defaultTexture,group,L"",selectedColor)
+			SpriteButton(ptr, defaultTexture, group, L"", selectedColor)
 		{}
-		virtual ~SpriteButton(){}
+		virtual ~SpriteButton() {}
 
 		virtual void OnCreate()override;
 
 		virtual void OnUpdate()override;
 
-		template<class Comp,typename... params>
+		template<class Comp, typename... params>
 		void AddEffect(params&&... param) {
 			m_Effect = GetGameObject()->AddComponent<Comp>(param...);
 		}
@@ -715,7 +714,7 @@ namespace basecross{
 			sprite->GetComponent<Transform>()->SetParent(GetGameObject());
 			m_FrontSprite.push_back(sprite);
 		}
-		void SetFunction(function<void(shared_ptr<ObjectInterface>&)> func,const shared_ptr<ObjectInterface>& object) {
+		void SetFunction(function<void(shared_ptr<ObjectInterface>&)> func, const shared_ptr<ObjectInterface>& object) {
 			m_Function = func;
 			if (object == nullptr) {
 				m_ArgmentObject = GetStage();
@@ -763,7 +762,7 @@ namespace basecross{
 	};
 	//----------------------------------------------------------
 	//																																
-	//	ƒ{ƒ^ƒ““ü—Íƒf[ƒ^																							
+	//	ãƒœã‚¿ãƒ³å…¥åŠ›ãƒ‡ãƒ¼ã‚¿																							
 	//																																
 	//----------------------------------------------------------
 	enum class InputMode {
@@ -786,10 +785,10 @@ namespace basecross{
 		bool m_BeforeStickState;
 		float m_StickDeadZone;
 
-		InputData(int input,int amount) : m_Input(input),m_MoveAmount(amount),m_Mode(InputMode::Button),m_StickMode(StickMode::LX), m_BeforeStickState(false), m_StickDeadZone(0.0f) {}
-		InputData(StickMode mode, int amount,float deadZone) : m_Input(0), m_MoveAmount(amount), m_Mode(InputMode::Stick),m_StickMode(mode), m_BeforeStickState(false), m_StickDeadZone(deadZone) {}
+		InputData(int input, int amount) : m_Input(input), m_MoveAmount(amount), m_Mode(InputMode::Button), m_StickMode(StickMode::LX), m_BeforeStickState(false), m_StickDeadZone(0.0f) {}
+		InputData(StickMode mode, int amount, float deadZone) : m_Input(0), m_MoveAmount(amount), m_Mode(InputMode::Stick), m_StickMode(mode), m_BeforeStickState(false), m_StickDeadZone(deadZone) {}
 
-		bool CheckInput(WORD input){
+		bool CheckInput(WORD input) {
 			return input & m_Input;
 		}
 		bool CheckInput(float input) {
@@ -813,33 +812,33 @@ namespace basecross{
 
 		}
 	};
-	
+
 	//----------------------------------------------------------
 	//																																
-	//	ƒ{ƒ^ƒ“—pƒ}ƒl[ƒWƒƒ[																							
+	//	ãƒœã‚¿ãƒ³ç”¨ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼																							
 	//																																
 	//----------------------------------------------------------
 
-	class ButtonManager : public GameObject{
+	class ButtonManager : public GameObject {
 
 		template<typename T>
-		using group = map<wstring, T>;	//usingƒeƒ“ƒvƒŒ[ƒg
+		using group = map<wstring, T>;	//usingãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 
-		group<vector<shared_ptr<SpriteButton>>> m_ButtonGroup;			//ƒ{ƒ^ƒ“Ši”[—p”z—ñ
-		group<size_t>							m_SelectIndexes;		//‘I‘ğ’†‚Ì”Ô†
-		group<	Vec3>							m_GroupMovementAmount;	//”½‰f‚³‚¹‚éˆÚ“®—Ê
-		group<vector<InputData>>				m_InputDates;			//ƒRƒ“ƒgƒ[ƒ‰[“ü—Í
-		group<vector<InputData>>				m_KeyboradInputDates;	//ƒL[ƒ{[ƒh“ü—Í
-		group<vector<WORD>>						m_AcceptButtons;		//ƒRƒ“ƒgƒ[ƒ‰[Œˆ’èƒ{ƒ^ƒ“
-		group<vector<WORD>>						m_KeyboradAcceptButtons;//ƒL[ƒ{[ƒhŒˆ’èƒ{ƒ^ƒ“
-		group<	WORD>							m_PressedAccept;		//‚»‚ÌuŠÔ‚É‰Ÿ‚³‚ê‚½Œˆ’èƒ{ƒ^ƒ“
+		group<vector<shared_ptr<SpriteButton>>> m_ButtonGroup;			//ãƒœã‚¿ãƒ³æ ¼ç´ç”¨é…åˆ—
+		group<size_t>							m_SelectIndexes;		//é¸æŠä¸­ã®ç•ªå·
+		group<	Vec3>							m_GroupMovementAmount;	//åæ˜ ã•ã›ã‚‹ç§»å‹•é‡
+		group<vector<InputData>>				m_InputDates;			//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼å…¥åŠ›
+		group<vector<InputData>>				m_KeyboradInputDates;	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å…¥åŠ›
+		group<vector<WORD>>						m_AcceptButtons;		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼æ±ºå®šãƒœã‚¿ãƒ³
+		group<vector<WORD>>						m_KeyboradAcceptButtons;//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æ±ºå®šãƒœã‚¿ãƒ³
+		group<	WORD>							m_PressedAccept;		//ãã®ç¬é–“ã«æŠ¼ã•ã‚ŒãŸæ±ºå®šãƒœã‚¿ãƒ³
 
-		wstring m_UsingGroup;	//g—p’†‚ÌƒOƒ‹[ƒv–¼
-		wstring m_ClickSound;	//ƒNƒŠƒbƒN‰¹‚ÌƒL[
-		wstring m_SelectSound;	//‘I‘ğ‰¹‚ÌƒL[
+		wstring m_UsingGroup;	//ä½¿ç”¨ä¸­ã®ã‚°ãƒ«ãƒ¼ãƒ—å
+		wstring m_ClickSound;	//ã‚¯ãƒªãƒƒã‚¯éŸ³ã®ã‚­ãƒ¼
+		wstring m_SelectSound;	//é¸æŠéŸ³ã®ã‚­ãƒ¼
 
-		bool	m_IsActive;		//Update‚³‚¹‚é‚©
-		bool	m_IsSelectLoop;	//‘I‘ğ‚ğƒ‹[ƒv‚³‚¹‚é‚©
+		bool	m_IsActive;		//Updateã•ã›ã‚‹ã‹
+		bool	m_IsSelectLoop;	//é¸æŠã‚’ãƒ«ãƒ¼ãƒ—ã•ã›ã‚‹ã‹
 
 		shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 
@@ -848,30 +847,30 @@ namespace basecross{
 			auto sprite = stage->AddGameObject<Sprite>(defaultTex, pos, size, true);
 			sprite->AddTag(L"Button");
 			shared_ptr<SpriteButton> button = sprite->AddComponent<SpriteButton>(defaultTex, group, L"");
-			button->SetFunction(func,object);
+			button->SetFunction(func, object);
 			button->AddEffect<Comp>(param...);
 
 			return sprite;
 		}
 		/// <summary>
-		/// w’è‚µ‚½ƒOƒ‹[ƒv‚Ì‰Šú‰»
+		/// æŒ‡å®šã—ãŸã‚°ãƒ«ãƒ¼ãƒ—ã®åˆæœŸåŒ–
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
 		void InitGroup(const wstring& group);
 	public:
 		static shared_ptr<ButtonManager> instance;
 
-		ButtonManager(const shared_ptr<Stage>& ptr) : 
+		ButtonManager(const shared_ptr<Stage>& ptr) :
 			GameObject(ptr),
 			m_IsActive(true), m_IsSelectLoop(false),
-			m_UsingGroup(L""),m_ClickSound(L"")
+			m_UsingGroup(L""), m_ClickSound(L"")
 		{}
-		virtual ~ButtonManager(){}
+		virtual ~ButtonManager() {}
 
-		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size,function<void(shared_ptr<ObjectInterface>&)> func);
-		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size,function<void(shared_ptr<ObjectInterface>&)> func);
+		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func);
+		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func);
 
-		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size,const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
+		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 
 		template<class Comp, typename... params>
@@ -882,45 +881,45 @@ namespace basecross{
 		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func, params&&... param) {
 			return ButtonManager::instance->CreateComp<Comp>(stage, group, defaultTex, pos, size, object, func, param...);
 		}
-		
+
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnDestroy()override;
 
 		/// <summary>
-		/// Updata‚ğÀs‚Å‚«‚éó‘Ô‚©Šm”F
+		/// Updataã‚’å®Ÿè¡Œã§ãã‚‹çŠ¶æ…‹ã‹ç¢ºèª
 		/// </summary>
-		/// <returns>ó‘Ô</returns>
+		/// <returns>çŠ¶æ…‹</returns>
 		bool CheckUpdate();
 
 		/// <summary>
-		/// ƒRƒ“ƒgƒ[ƒ‰[‚Ì“ü—ÍŠm”F
+		/// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®å…¥åŠ›ç¢ºèª
 		/// </summary>
-		/// <param name="input">“ü—Íƒf[ƒ^</param>
-		/// <returns>“ü—Í‚Ì—L–³</returns>
+		/// <param name="input">å…¥åŠ›ãƒ‡ãƒ¼ã‚¿</param>
+		/// <returns>å…¥åŠ›ã®æœ‰ç„¡</returns>
 		bool CheckMoveInput(InputData& input);
 
 		/// <summary>
-		/// w’è‚µ‚½ƒOƒ‹[ƒv‚ª“o˜^‚³‚ê‚Ä‚¢‚é‚©
+		/// æŒ‡å®šã—ãŸã‚°ãƒ«ãƒ¼ãƒ—ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹
 		/// </summary>
-		/// <typeparam name="T">”z—ñƒf[ƒ^‚ÌŒ^</typeparam>
-		/// <param name="vec">ŒŸõ‚·‚é”z—ñ</param>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <returns>“o˜^‚³‚ê‚Ä‚¢‚é‚©</returns>
+		/// <typeparam name="T">é…åˆ—ãƒ‡ãƒ¼ã‚¿ã®å‹</typeparam>
+		/// <param name="vec">æ¤œç´¢ã™ã‚‹é…åˆ—</param>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <returns>ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹</returns>
 		template<typename T>
-		inline bool FindGroup(group<T> vec,const wstring& group) {
+		inline bool FindGroup(group<T> vec, const wstring& group) {
 			return vec.find(group) != end(vec);
 		}
 
 		/// <summary>
-		/// ƒ{ƒ^ƒ“‚ÌƒXƒvƒ‰ƒCƒg‚ğæ“¾
+		/// ãƒœã‚¿ãƒ³ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’å–å¾—
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <param name="index">“o˜^”Ô†</param>
-		/// <returns>ƒ{ƒ^ƒ“‚ÌƒXƒvƒ‰ƒCƒg</returns>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <param name="index">ç™»éŒ²ç•ªå·</param>
+		/// <returns>ãƒœã‚¿ãƒ³ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ</returns>
 		shared_ptr<Sprite> GetButtonSprite(const wstring& group, int index) {
-			if (FindGroup(m_ButtonGroup,group)) {
+			if (FindGroup(m_ButtonGroup, group)) {
 				auto vec = m_ButtonGroup[group];
 				if (vec.size() > index) {
 					auto obj = vec[index]->GetGameObject();
@@ -931,12 +930,12 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// ‘I‘ğ“ü—Í‚ÌŠm”F
+		/// é¸æŠå…¥åŠ›ã®ç¢ºèª
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <param name="data">ƒf[ƒ^Ši”[—p</param>
-		/// <returns>“ü—Í‚Ì—L–³</returns>
-		bool PressSelect(const wstring& group,InputData& data) {
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <param name="data">ãƒ‡ãƒ¼ã‚¿æ ¼ç´ç”¨</param>
+		/// <returns>å…¥åŠ›ã®æœ‰ç„¡</returns>
+		bool PressSelect(const wstring& group, InputData& data) {
 			auto keyborad = App::GetApp()->GetInputDevice().GetKeyState();
 
 			if (FindGroup(m_KeyboradInputDates, group)) {
@@ -965,12 +964,12 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// Œˆ’è“ü—Í‚ÌŠm”F
+		/// æ±ºå®šå…¥åŠ›ã®ç¢ºèª
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <param name="data">ƒf[ƒ^Ši”[—p</param>
-		/// <returns>“ü—Í‚Ì—L–³</returns>
-		bool PressAccept(const wstring& group,WORD& data) {
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <param name="data">ãƒ‡ãƒ¼ã‚¿æ ¼ç´ç”¨</param>
+		/// <returns>å…¥åŠ›ã®æœ‰ç„¡</returns>
+		bool PressAccept(const wstring& group, WORD& data) {
 			auto& inputState = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 			auto& keyborad = App::GetApp()->GetInputDevice().GetKeyState();
 			if (FindGroup(m_KeyboradInputDates, group)) {
@@ -994,10 +993,10 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// ‘I‘ğ’†‚Ì”Ô†‚ğæ“¾
+		/// é¸æŠä¸­ã®ç•ªå·ã‚’å–å¾—
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <returns>”Ô†</returns>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <returns>ç•ªå·</returns>
 		size_t GetSelectIndex(const wstring& group) {
 			if (FindGroup(m_ButtonGroup, group)) {
 				return m_SelectIndexes[group];
@@ -1006,11 +1005,11 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// ‘I‘ğ‚·‚é”Ô†‚Ìw’è
+		/// é¸æŠã™ã‚‹ç•ªå·ã®æŒ‡å®š
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <param name="index">”Ô†</param>
-		void SetSelectIndex(const wstring& group,int index) {
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <param name="index">ç•ªå·</param>
+		void SetSelectIndex(const wstring& group, int index) {
 			if (group == L"") {
 				if (index < m_ButtonGroup[m_UsingGroup].size()) {
 					m_SelectIndexes[m_UsingGroup] = index;
@@ -1026,9 +1025,9 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// g—p’†‚ÌƒOƒ‹[ƒv‚ª‚ ‚é‚©
+		/// ä½¿ç”¨ä¸­ã®ã‚°ãƒ«ãƒ¼ãƒ—ãŒã‚ã‚‹ã‹
 		/// </summary>
-		/// <returns>g—p’†‚ÌƒOƒ‹[ƒv‚Ì—L–³</returns>
+		/// <returns>ä½¿ç”¨ä¸­ã®ã‚°ãƒ«ãƒ¼ãƒ—ã®æœ‰ç„¡</returns>
 		bool ExistOpenGroup() {
 			for (auto& buttons : m_ButtonGroup) {
 				if (buttons.second[0]->GetDrawActive()) {
@@ -1039,10 +1038,10 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// “o˜^‚³‚ê‚½ƒ{ƒ^ƒ“‚Ì”‚ğæ“¾
+		/// ç™»éŒ²ã•ã‚ŒãŸãƒœã‚¿ãƒ³ã®æ•°ã‚’å–å¾—
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <returns>ƒ{ƒ^ƒ“‚Ì”</returns>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <returns>ãƒœã‚¿ãƒ³ã®æ•°</returns>
 		size_t GetSize(const wstring& group) {
 			if (FindGroup(m_ButtonGroup, group)) {
 				return m_ButtonGroup[group].size();
@@ -1053,17 +1052,17 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// ˆÊ’uˆÚ“®—Ê‚Ìİ’è
+		/// ä½ç½®ç§»å‹•é‡ã®è¨­å®š
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <param name="target">ˆÚ“®—Ê</param>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <param name="target">ç§»å‹•é‡</param>
 		void SetMoveAmount(const wstring& group, Vec3 target);
 
 		/// <summary>
-		/// ˆÊ’uˆÚ“®—Ê‚Ìæ“¾
+		/// ä½ç½®ç§»å‹•é‡ã®å–å¾—
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <returns>ˆÚ“®—Ê</returns>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <returns>ç§»å‹•é‡</returns>
 		Vec3 GetMoveAmount(const wstring& group) {
 			if (FindGroup(m_GroupMovementAmount, group)) {
 				return m_GroupMovementAmount[group];
@@ -1071,22 +1070,22 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// Œˆ’è‰¹‚Ìæ“¾
+		/// æ±ºå®šéŸ³ã®å–å¾—
 		/// </summary>
-		/// <param name="sound">ƒTƒEƒ“ƒhƒL[</param>
+		/// <param name="sound">ã‚µã‚¦ãƒ³ãƒ‰ã‚­ãƒ¼</param>
 		void SetSound(const wstring& sound);
 
 		/// <summary>
-		/// ‘I‘ğ‰¹‚Ìİ’è
+		/// é¸æŠéŸ³ã®è¨­å®š
 		/// </summary>
-		/// <param name="sound">ƒTƒEƒ“ƒhƒL[</param>
+		/// <param name="sound">ã‚µã‚¦ãƒ³ãƒ‰ã‚­ãƒ¼</param>
 		void SetSelectSound(const wstring& sound);
 
 		/// <summary>
-		/// ƒRƒ“ƒgƒ[ƒ‰[Œˆ’èƒ{ƒ^ƒ“‚Ì’Ç‰Á
+		/// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼æ±ºå®šãƒœã‚¿ãƒ³ã®è¿½åŠ 
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <param name="accept">ƒ{ƒ^ƒ“‚Ì’l</param>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <param name="accept">ãƒœã‚¿ãƒ³ã®å€¤</param>
 		void AddAcceptButton(const wstring& group, WORD accept) {
 			if (FindGroup(m_AcceptButtons, group)) {
 				m_AcceptButtons[group].push_back(accept);
@@ -1100,10 +1099,10 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// ƒL[ƒ{[ƒhŒˆ’èƒL[‚Ì’Ç‰Á
+		/// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æ±ºå®šã‚­ãƒ¼ã®è¿½åŠ 
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <param name="accept">ƒL[</param>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <param name="accept">ã‚­ãƒ¼</param>
 		void AddKeyboradAccept(const wstring& group, WORD accept) {
 			if (FindGroup(m_KeyboradAcceptButtons, group)) {
 				m_KeyboradAcceptButtons[group].push_back(accept);
@@ -1117,10 +1116,10 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// ‰Ÿ‚³‚ê‚½Œˆ’èƒ{ƒ^ƒ“‚Ìæ“¾
+		/// æŠ¼ã•ã‚ŒãŸæ±ºå®šãƒœã‚¿ãƒ³ã®å–å¾—
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <returns>ƒ{ƒ^ƒ“‚Ì’l</returns>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <returns>ãƒœã‚¿ãƒ³ã®å€¤</returns>
 		WORD GetPressedAccept(const wstring& group) {
 			if (FindGroup(m_PressedAccept, group)) {
 				return m_PressedAccept[group];
@@ -1128,20 +1127,20 @@ namespace basecross{
 			return 0;
 		}
 		/// <summary>
-		/// ƒRƒ“ƒgƒ[ƒ‰[‘I‘ğƒ{ƒ^ƒ“‚Ì’Ç‰Á
+		/// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼é¸æŠãƒœã‚¿ãƒ³ã®è¿½åŠ 
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <param name="input">ƒ{ƒ^ƒ“‚Ì’l</param>
-		/// <param name="amount">ˆÚ“®—Ê</param>
-		void SetInput(const wstring& group,int input,int amount) {
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <param name="input">ãƒœã‚¿ãƒ³ã®å€¤</param>
+		/// <param name="amount">ç§»å‹•é‡</param>
+		void SetInput(const wstring& group, int input, int amount) {
 			SetInput(group, InputData(input, amount));
 		}
 
 		/// <summary>
-		/// ƒRƒ“ƒgƒ[ƒ‰[‘I‘ğƒ{ƒ^ƒ“‚Ì’Ç‰Á
+		/// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼é¸æŠãƒœã‚¿ãƒ³ã®è¿½åŠ 
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <param name="data">“ü—Íƒf[ƒ^</param>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <param name="data">å…¥åŠ›ãƒ‡ãƒ¼ã‚¿</param>
 		void SetInput(const wstring& group, InputData data) {
 			if (FindGroup(m_InputDates, group)) {
 				m_InputDates[group].push_back(data);
@@ -1154,20 +1153,20 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// ƒL[ƒ{[ƒh‘I‘ğƒL[‚Ì’Ç‰Á
+		/// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰é¸æŠã‚­ãƒ¼ã®è¿½åŠ 
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <param name="input">ƒL[</param>
-		/// <param name="amount">ˆÚ“®—Ê</param>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <param name="input">ã‚­ãƒ¼</param>
+		/// <param name="amount">ç§»å‹•é‡</param>
 		void SetKeyborad(const wstring& group, int input, int amount) {
 			SetKeyborad(group, InputData(input, amount));
 		}
-		
+
 		/// <summary>
-		/// ƒL[ƒ{[ƒh‘I‘ğƒL[‚Ì’Ç‰Á
+		/// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰é¸æŠã‚­ãƒ¼ã®è¿½åŠ 
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <param name="data">“ü—Íƒf[ƒ^</param>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <param name="data">å…¥åŠ›ãƒ‡ãƒ¼ã‚¿</param>
 		void SetKeyborad(const wstring& group, InputData data) {
 			if (FindGroup(m_KeyboradInputDates, group)) {
 				m_KeyboradInputDates[group].push_back(data);
@@ -1180,7 +1179,7 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// “o˜^‚³‚ê‚Ä‚¢‚éƒOƒ‹[ƒv‚ğŠJ‚­
+		/// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—ã‚’é–‹ã
 		/// </summary>
 		void OpenAll() {
 			for (auto& buttons : m_ButtonGroup) {
@@ -1189,7 +1188,7 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// “o˜^‚³‚ê‚Ä‚¢‚éƒOƒ‹[ƒv‚ğ•Â‚¶‚é
+		/// ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—ã‚’é–‰ã˜ã‚‹
 		/// </summary>
 		void CloseAll() {
 			for (auto& buttons : m_ButtonGroup) {
@@ -1198,18 +1197,18 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// w’è‚µ‚½ƒOƒ‹[ƒv‚ğŠJ‚«Ag—p‚·‚é
+		/// æŒ‡å®šã—ãŸã‚°ãƒ«ãƒ¼ãƒ—ã‚’é–‹ãã€ä½¿ç”¨ã™ã‚‹
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
 		void OpenAndUse(const wstring& group) {
 			Open(group);
 			UseGroup(group);
 		}
 
 		/// <summary>
-		/// w’è‚µ‚½ƒOƒ‹[ƒv‚ğŠJ‚­
+		/// æŒ‡å®šã—ãŸã‚°ãƒ«ãƒ¼ãƒ—ã‚’é–‹ã
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
 		void Open(const wstring& group) {
 			if (FindGroup(m_ButtonGroup, group)) {
 				for (auto& button : m_ButtonGroup[group]) {
@@ -1220,9 +1219,9 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// w’è‚µ‚½ƒOƒ‹[ƒv‚ğ•Â‚¶‚é
+		/// æŒ‡å®šã—ãŸã‚°ãƒ«ãƒ¼ãƒ—ã‚’é–‰ã˜ã‚‹
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
 		void Close(const wstring& group) {
 			if (FindGroup(m_ButtonGroup, group)) {
 				for (auto& button : m_ButtonGroup[group]) {
@@ -1234,31 +1233,31 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// Update‚Ìİ’è
+		/// Updateã®è¨­å®š
 		/// </summary>
-		/// <param name="flag">Update‚·‚é‚©</param>
+		/// <param name="flag">Updateã™ã‚‹ã‹</param>
 		void SetActive(bool flag) {
 			m_IsActive = flag;
 		}
 
 		/// <summary>
-		/// ƒ‹[ƒv‚Ìİ’è
+		/// ãƒ«ãƒ¼ãƒ—ã®è¨­å®š
 		/// </summary>
-		/// <param name="flag">ƒ‹[ƒv‚·‚é‚©</param>
+		/// <param name="flag">ãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹</param>
 		void SetLoop(bool flag) {
 			m_IsSelectLoop = flag;
 		}
 
 		/// <summary>
-		/// Updataó‘Ô‚Ìæ“¾
+		/// UpdataçŠ¶æ…‹ã®å–å¾—
 		/// </summary>
-		/// <returns>Updateó‘Ô</returns>
+		/// <returns>UpdateçŠ¶æ…‹</returns>
 		bool GetActive() {
 			return m_IsActive;
 		}
 
 		/// <summary>
-		/// ‘I‘ğ’†‚Ì”Ô†‚ª”ÍˆÍŠO‚És‚©‚È‚¢‚æ‚¤‚É§ŒÀ‚·‚é
+		/// é¸æŠä¸­ã®ç•ªå·ãŒç¯„å›²å¤–ã«è¡Œã‹ãªã„ã‚ˆã†ã«åˆ¶é™ã™ã‚‹
 		/// </summary>
 		void LimitIndex(int& selectIndex) {
 			int maxIndex = static_cast<int>(m_ButtonGroup[m_UsingGroup].size() - 1);
@@ -1277,10 +1276,10 @@ namespace basecross{
 			}
 		}
 		/// <summary>
-		/// ˆÚ“®Œã‚Ì”Ô†‚ª”ÍˆÍŠO‚És‚Á‚Ä‚¢‚È‚¢‚©”»’è‚·‚é
+		/// ç§»å‹•å¾Œã®ç•ªå·ãŒç¯„å›²å¤–ã«è¡Œã£ã¦ã„ãªã„ã‹åˆ¤å®šã™ã‚‹
 		/// </summary>
-		/// <param name="amount">ˆÚ“®—Ê</param>
-		/// <returns>”ÍˆÍ“à‚©‚Ç‚¤‚©</returns>
+		/// <param name="amount">ç§»å‹•é‡</param>
+		/// <returns>ç¯„å›²å†…ã‹ã©ã†ã‹</returns>
 		bool CheckOverIndex(int amount) {
 			size_t index = m_SelectIndexes[m_UsingGroup];
 			index += amount;
@@ -1291,17 +1290,17 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// Œ»İg—p’†‚ÌƒOƒ‹[ƒv–¼
+		/// ç¾åœ¨ä½¿ç”¨ä¸­ã®ã‚°ãƒ«ãƒ¼ãƒ—å
 		/// </summary>
-		/// <returns>ƒOƒ‹[ƒv–¼</returns>
+		/// <returns>ã‚°ãƒ«ãƒ¼ãƒ—å</returns>
 		wstring GetUseGroup() {
 			return m_UsingGroup;
 		}
 
 		/// <summary>
-		/// g—p‚·‚éƒOƒ‹|ƒv‚Ìİ’è
+		/// ä½¿ç”¨ã™ã‚‹ã‚°ãƒ«ï¼ãƒ—ã®è¨­å®š
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
 		void UseGroup(const wstring& group) {
 			if (FindGroup(m_SelectIndexes, group)) {
 				InitGroup(m_UsingGroup);
@@ -1311,10 +1310,10 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// w’è‚µ‚½ƒOƒ‹[ƒv–¼‚ÆŒ»İg—p‚µ‚Ä‚¢‚éƒOƒ‹[ƒv–¼‚ªˆê’v‚µ‚Ä‚¢‚é‚©”»’è‚·‚é
+		/// æŒ‡å®šã—ãŸã‚°ãƒ«ãƒ¼ãƒ—åã¨ç¾åœ¨ä½¿ç”¨ã—ã¦ã„ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—åãŒä¸€è‡´ã—ã¦ã„ã‚‹ã‹åˆ¤å®šã™ã‚‹
 		/// </summary>
-		/// <param name="group">ƒOƒ‹[ƒv–¼</param>
-		/// <returns>ˆê’v‚µ‚Ä‚¢‚é‚©</returns>
+		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
+		/// <returns>ä¸€è‡´ã—ã¦ã„ã‚‹ã‹</returns>
 		bool CompareUseGroup(const wstring& group) {
 			return m_UsingGroup == group;
 		}
@@ -1336,7 +1335,7 @@ namespace basecross{
 		}
 
 		/// <summary>
-		/// ƒOƒ‹[ƒv‚ğíœ
+		/// ã‚°ãƒ«ãƒ¼ãƒ—ã‚’å‰Šé™¤
 		/// </summary>
 		/// <param name="group"></param>
 		void DeleteGroup(const wstring& group) {
@@ -1346,27 +1345,27 @@ namespace basecross{
 			}
 		}
 
-		void AddFrontSprite(const wstring& group,int index,shared_ptr<Sprite>& sprite) {
+		void AddFrontSprite(const wstring& group, int index, shared_ptr<Sprite>& sprite) {
 			if (FindGroup(m_ButtonGroup, group)) {
 				if (m_ButtonGroup[group].size() > index) {
 					m_ButtonGroup[group][index]->AddFrontSprite(sprite);
 				}
 			}
 		}
-		void AddFunction(const wstring& group,function<void(shared_ptr<SpriteButton>&)> func) {
+		void AddFunction(const wstring& group, function<void(shared_ptr<SpriteButton>&)> func) {
 			if (FindGroup(m_ButtonGroup, group)) {
 				for (auto& buttons : m_ButtonGroup[group]) {
 					buttons->AddFunction(func);
 				}
 			}
 		}
-		void AddFunction(const wstring& group,int index, function<void(shared_ptr<SpriteButton>&)> func) {
+		void AddFunction(const wstring& group, int index, function<void(shared_ptr<SpriteButton>&)> func) {
 			if (FindGroup(m_ButtonGroup, group)) {
 				if (index < 0 || index >= m_ButtonGroup[group].size()) return;
 				m_ButtonGroup[group][index]->AddFunction(func);
 			}
 		}
-		
+
 	};
 
 	namespace SpriteMoveUtil {
