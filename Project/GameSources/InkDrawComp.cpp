@@ -179,7 +179,7 @@ namespace basecross
 		if (!trans) return;
 
 		//自分自身の位置とスケールを習得
-		Vec3 myPos = trans->GetPosition();
+		Vec3 myPos = trans->GetWorldPosition();
 		Vec3 myScale = trans->GetScale();
 
 		//オブジェクトの中心から距離を計算

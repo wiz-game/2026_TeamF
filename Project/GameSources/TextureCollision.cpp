@@ -24,7 +24,7 @@ namespace basecross {
 		}
 	}
 	vector<TRIANGLE> Contour::GetWorldTriangles(const shared_ptr<Transform>& transform)const {
-		Vec3 position = transform->GetPosition();
+		Vec3 position = transform->GetWorldPosition();
 		Vec3 scale = transform->GetScale();
 		vector<TRIANGLE> worldTriangles;
 
