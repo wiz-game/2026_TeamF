@@ -30,6 +30,8 @@ namespace basecross {
 		auto& app = App::GetApp();
 		wstring mediaPath = App::GetApp()->GetDataDirWString();
 		app->RegisterTexture(L"GoalStage", mediaPath + L"Texture/GoalStage.png");
+		app->RegisterTexture(L"ClearMark", mediaPath + L"Texture/ClearMark.png");
+		app->RegisterTexture(L"Map", mediaPath + L"Texture/ResultMapProto.png");
 		app->RegisterTexture(L"BUTTON_A_TITLE", mediaPath + L"Texture/Button_A_Title.png");
 		app->RegisterTexture(L"NUMBER", mediaPath + L"Texture/Number.png");
 
@@ -43,6 +45,7 @@ namespace basecross {
 			RegisterResources();
 
 			m_sprite = AddGameObject<Sprite>(L"GoalStage", Vec3(), Vec2(1280, 840), Anchor::Center);
+			AddGameObject<Sprite>(L"Map", Vec3(0.0f,80.0f,0.0f), Vec2(350.0f, 210.0f), Anchor::Center);
 			m_sprite_Button = AddGameObject<Sprite>(L"BUTTON_A_TITLE", Vec3(0, -300, 0), Vec2(400, 150), Anchor::Center);
 
 			float ink = scene->GetResultInk();
@@ -50,10 +53,13 @@ namespace basecross {
 
 			int pasent = (ink / maxInk) * 100;
 
-			auto inkSprite = AddGameObject<NumberSprite>(L"NUMBER", Vec3(140.0f, -65.0f, 0.0f), Vec2(30, 50), 2);
+			auto inkSprite = AddGameObject<NumberSprite>(L"NUMBER", Vec3(65.0f, -60.0f, 0.0f), Vec2(30, 50), 3);
 			inkSprite->SetDiffuse(Col4(0, 0, 0, 1));
 			inkSprite->UpdateNumber(pasent);
 
+			m_ClearStanp = AddGameObject<StanpSprite>(L"ClearMark", Vec3(0.0f, 80.0f, 0.0f), Vec2(350.0f, 210.0f), 0.35f, 1.5f, 0.8f);
+			m_ClearStanp->SetSE(L"STAGESELECT");
+			m_ClearStanp->StartAnimation();
 		}
 		catch (...) {
 			throw;
@@ -91,6 +97,57 @@ namespace basecross {
 
 	void GoalStage::OnPushA()
 	{
+	}
+
+
+
+
+	StanpSprite::StanpSprite(
+		const shared_ptr<Stage>& ptr,
+		const wstring& tex, const Vec3& position, const Vec2& scale,
+		float animationTime, float maxScaling, float minScaling) :
+		GameObject(ptr),m_TexKey(tex), m_Postion(position),m_DefaultScale(scale),
+		m_IsPlyedSE(false), m_SEKey(L""),
+		m_IsAnimationUpdate(false),m_AnimaitionFactor(0.0f),m_AnimationTime(animationTime),m_MaxScaling(maxScaling),m_MinScaling(minScaling)
+	{
+
+	}
+
+
+	void StanpSprite::OnCreate() {
+		m_Sprite = GetStage()->AddGameObject<Sprite>(m_TexKey, m_Postion, Vec2(0.0f), Anchor::Center);
+	}
+	void StanpSprite::OnUpdate() {
+		if (!m_IsAnimationUpdate) return;
+
+		float delta = App::GetApp()->GetElapsedTime();
+		m_AnimaitionFactor += ( 1.0f / m_AnimationTime ) * delta;
+		m_AnimaitionFactor = clamp(m_AnimaitionFactor, 0.0f, 1.0f);
+
+		float downScalingFactor = 0.9f;
+		float upScalingFactor = 1.0f - downScalingFactor;
+		float currentScaling = 1.0f;
+		if (m_AnimaitionFactor <= downScalingFactor) {
+			float factor = m_AnimaitionFactor / downScalingFactor;
+			currentScaling = m_MaxScaling - ( m_MaxScaling - m_MinScaling ) * factor;
+		}
+		else {
+			float factor = (m_AnimaitionFactor - downScalingFactor) / upScalingFactor;
+			currentScaling = m_MinScaling + (1.0f - m_MinScaling) * factor;
+		}
+
+		m_Sprite->SetSize(m_DefaultScale * currentScaling);
+
+		if (!m_IsPlyedSE && m_SEKey != L"" && m_AnimaitionFactor > downScalingFactor) {
+			SoundManager::Get().PlaySE(m_SEKey, 1.0f);
+			m_IsPlyedSE = true;
+		}
+	}
+
+	void StanpSprite::StartAnimation() {
+		m_AnimaitionFactor = 0.0f;
+		m_IsAnimationUpdate = true;
+		m_IsPlyedSE = false;
 	}
 }
 //end basecross

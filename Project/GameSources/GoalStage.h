@@ -8,6 +8,7 @@
 #include "Sprite.h"
 
 namespace basecross {
+	class StanpSprite;
 	//--------------------------------------------------------------------------------------
 	//	ゴールステージクラス
 	//--------------------------------------------------------------------------------------
@@ -18,6 +19,7 @@ namespace basecross {
 
 		shared_ptr<Sprite> m_sprite;
 		shared_ptr<Sprite> m_sprite_Button;
+		shared_ptr<StanpSprite> m_ClearStanp;
 
 		InputHandler<GoalStage> m_InputHandler; // 入力ハンドラー
 
@@ -39,6 +41,33 @@ namespace basecross {
 		virtual void OnUpdate()override; //更新
 		void OnPushA();
 		void SpriteMove();
+	};
+
+	class StanpSprite : public GameObject {
+		wstring m_TexKey;
+		Vec3 m_Postion;
+		Vec2 m_DefaultScale;
+		Vec3 m_Rotation;
+
+		wstring m_SEKey;
+		bool m_IsPlyedSE;
+
+		bool m_IsAnimationUpdate;
+		float m_AnimaitionFactor;
+		float m_AnimationTime;
+		float m_MaxScaling;
+		float m_MinScaling;
+
+		shared_ptr<Sprite> m_Sprite;
+	public:
+		StanpSprite(const shared_ptr<Stage>& ptr, const wstring& tex,const Vec3& position,const Vec2& scale,float animationTime,float maxScaling,float minScaling);
+		virtual ~StanpSprite(){}
+
+		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+
+		void StartAnimation();
+		void SetSE(const wstring& key) { m_SEKey = key; }
 	};
 }
 //end basecross
