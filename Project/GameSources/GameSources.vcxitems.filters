@@ -77,7 +77,6 @@
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyCube.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameOverStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Texture2DrawComp.cpp" />
@@ -163,7 +162,6 @@
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyCube.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameOverStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h" />

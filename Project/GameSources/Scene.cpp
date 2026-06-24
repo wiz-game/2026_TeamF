@@ -23,6 +23,13 @@ namespace basecross{
 		app->RegisterTexture(L"SKYBOX", mediaPath + L"Texture/SkyBox/SkyBox.png");
 		app->RegisterTexture(L"PLAYER", mediaPath + L"Texture/Player.png");
 
+		app->RegisterTexture(L"PRINTER_TEX", mediaPath + L"Texture/PrinterTex.tga");
+
+		auto modelPath = mediaPath + L"model\\";
+		auto Goal_Model = MeshResource::CreateBoneModelMesh(modelPath, L"Printer 1.bmf");
+		app->RegisterResource(L"PRINTER_MODEL", Goal_Model);
+
+
 		vector<VertexPositionColor> vertices = {
 			{{0.0f,0.0f,0.0f},{1,1,1}},
 			{{0.0f,0.0f,1.0f},{1,1,1}}
@@ -54,8 +61,8 @@ namespace basecross{
 
 			//自分自身にイベントを送る
 			//これによりゲームステージのオブジェクトがCreate時にシーンにアクセスできる
-			//PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToProtoStage");
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
+			//PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToProtoStage");
 		}
 		catch (...) {
 			throw;
