@@ -42,6 +42,13 @@ namespace basecross {
 		app->RegisterTexture(L"BACKGROUND", mediaPath + L"Texture/background.jpg");
 		app->RegisterTexture(L"BLACK", mediaPath + L"Texture/Black.png");
 		app->RegisterTexture(L"NUMBER", mediaPath + L"Texture/Number.png");
+
+		for (int i = 1; i < m_MaxSelectIndex; i++)
+		{
+			auto texName = L"STAGE" + to_wstring(i);
+			auto texPathName = L"Texture/Select_Stage" + to_wstring(i);
+			app->RegisterTexture(texName, mediaPath + texPathName + L".png");
+		}
 	}
 
 	void SelectStage::OnCreate() {
@@ -60,9 +67,6 @@ namespace basecross {
 
 			//BGM再生
 			SoundManager::Get().PlayBGM(L"STAGESELECT_BGM", m_BGMVolume);
-
-
-
 		}
 		catch (...) {
 			throw;
@@ -103,7 +107,7 @@ namespace basecross {
 	{
 		m_StageSprites.clear();
 		for (int i = 0; i < m_MaxSelectIndex; ++i) {
-			auto texName = L"BLACK"; 
+			auto texName = L""; 
 			auto sprite = AddGameObject<Sprite>(texName, Vec3(), Vec2(180, 120), Anchor::Center);
 			m_StageSprites.push_back(sprite);
 		}
