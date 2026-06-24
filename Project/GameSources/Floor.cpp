@@ -5,7 +5,6 @@
 
 #include "stdafx.h"
 #include "Project.h"
-#include "InkDrawComponentTest.h"
 #include "InkDrawComp.h"
 namespace basecross
 {
@@ -56,6 +55,8 @@ namespace basecross
 
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetFixed(true);
+
+		AddComponent<TextureCollision>();
 	}
 
 	void Floor::OnUpdate()

@@ -30,7 +30,7 @@ namespace basecross {
 		auto& app = App::GetApp();
 		wstring mediaPath = App::GetApp()->GetDataDirWString();
 		app->RegisterTexture(L"GameOver", mediaPath + L"Texture/GameOverStage.png");
-		app->RegisterTexture(L"BUTTON_A", mediaPath + L"Texture/Button_A.png");
+		app->RegisterTexture(L"BUTTON_A_TITLE", mediaPath + L"Texture/Button_A_Title.png");
 
 	}
 
@@ -46,7 +46,7 @@ namespace basecross {
 			CreateViewLight();
 
 			m_sprite = AddGameObject<Sprite>(L"GameOver", Vec3(), Vec2(1280, 840), Anchor::Center);
-			m_sprite_Button = AddGameObject<Sprite>(L"BUTTON_A", Vec3(0,-250,0), Vec2(610, 200), Anchor::Center);
+			m_sprite_Button = AddGameObject<Sprite>(L"BUTTON_A_TITLE", Vec3(0,-255,0), Vec2(400, 150), Anchor::Center);
 		}
 		catch (...) {
 			throw;
@@ -67,12 +67,16 @@ namespace basecross {
 
 		if (CntlVec[0].wPressedButtons && XINPUT_GAMEPAD_A)
 		{
+			m_ButtonScaleTimer = 0;
 			PostEvent(0.3f, GetThis<GameOverStage>(), scene, L"ToTitleStage");
 		}
+		SpriteMove();
 	}
-
-	void GameOverStage::ButtonMove()
+	void GameOverStage::SpriteMove()
 	{
+		SpriteMoveUtil::CalculatePunchScale(m_ButtonScaleTimer, m_ButtonScaleRation, 0.1f);
+
+		m_sprite_Button->SetSize(Vec2(400.0f * m_ButtonScaleRation, 150.0f * m_ButtonScaleRation));
 	}
 
 	void GameOverStage::OnUpdate2()
@@ -86,5 +90,6 @@ namespace basecross {
 	void GameOverStage::OnPushA()
 	{
 	}
+
 }
 //end basecross

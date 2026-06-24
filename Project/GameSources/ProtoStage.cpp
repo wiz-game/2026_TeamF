@@ -124,11 +124,11 @@ namespace basecross {
 			AddGameObject<Floor>(Vec3(8.0f, 0.5f, 15.0f), Vec3(0), Vec3(0.0f, -1.0f, 26.0f));
 
 
-			AddGameObject<PowerSupply>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(0.0f, -0.3f, -4.0f));
+			AddGameObject<PowerSupply>(Vec3(1.0f, 0.5f, 1.0f), Vec3(0), Vec3(0.0f, -0.3f, -4.0f));
 			//AddGameObject<PowerSupply>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 11.0f));
 
 			//port										scale				rotation		position
-			auto moveFloor_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(0.0f, -0.3f, 3.0f));
+			auto moveFloor_port = AddGameObject<Port>(Vec3(1.0f, 0.5f, 1.0f), Vec3(0), Vec3(0.0f, -0.3f, 3.0f));
 			//auto trapDoor_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 15.0f));
 			//auto goal_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 25.0f));
 
@@ -148,13 +148,12 @@ namespace basecross {
 			//	Vec3(1, 0, 0));
 
 			//トラップドアの初期設定
-			//TrapDoorAxisDesc moveDoorX;
-			//moveDoorX.axis = MoveAxis::X;
-			//moveDoorX.speed = -0.01f;
-			//moveDoorX.port = trapDoor_port;
-			////moveDoorX.bReverseConnect = false;
-			//AddGameObject<TrapDoorAxis>(Vec3(2.0f, 0.1f, 4.0f), Vec3(XM_PIDIV2, 0.0f, 0.0f), Vec3(10.0f, 2.2f, 20.1f), moveDoorX);
-
+			TrapDoorAxisDesc moveDoorX;
+			moveDoorX.axis = MoveAxis::X;
+			moveDoorX.speed = -0.01f;
+			moveDoorX.port = nullptr;
+			//moveDoorX.bReverseConnect = false;
+			AddGameObject<TrapDoorAxis>(Vec3(2.0f, 0.1f, 4.0f), Vec3(XM_PIDIV2, 0.0f, 0.0f), Vec3(5.0f, -0.5f, 0.0f), moveDoorX);
 
 			//動く床の初期設定
 			//MoveFloorDesc moveFloorY;
@@ -209,6 +208,7 @@ namespace basecross {
 
 			auto UISprite = AddGameObject<Sprite>(L"BUTTON_AB", Vec3(630,-380,0), Vec2(250,200), Anchor::BottomRight);
 			auto inkprite = AddGameObject<Sprite>(L"INK_MOZI", Vec3(-550, 380, 0), Vec2(100, 30), Anchor::Center);
+			AddGameObject<ObstacleSpring>();
 
 			//スカイボックス
 			AddGameObject<SkyCube>(L"SKYBOX");

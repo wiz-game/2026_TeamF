@@ -90,6 +90,10 @@
       <ShaderModel>5.0</ShaderModel>
       <ObjectFileOutput>$(SolutionDir)media\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -101,6 +105,12 @@
       <PreprocessorDefinitions>JPH_PROFILE_ENABLED;JPH_DEBUG_RENDERER;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED;JPH_DISABLE_CUSTOM_ALLOCATOR;JPH_OBJECT_STREAM;_HAS_STD_BYTE=0;NDEBUG;_WINDOWS;P2T_STATIC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)External\poly2tri;$(SolutionDir)External\openCV;$(SolutionDir)External\SDL3\include;$(SolutionDir)External\Jolt\include\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+<!--=======
+      <AdditionalIncludeDirectories>$(SolutionDir)External\SDL3\include;$(SolutionDir)External\poly2tri;$(SolutionDir)External\openCV;$(SolutionDir)External\Jolt\include\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>JPH_PROFILE_ENABLED;JPH_DEBUG_RENDERER;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED;JPH_DISABLE_CUSTOM_ALLOCATOR;JPH_OBJECT_STREAM;_HAS_STD_BYTE=0;NDEBUG;_WINDOWS;P2T_STATIC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)External\SDL3\include;$(SolutionDir)External\poly2tri;$(SolutionDir)External\openCV;$(SolutionDir)External\Jolt\include\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+>>>>>>> master-->
       <PrecompiledHeader>Use</PrecompiledHeader>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -121,6 +131,10 @@
       <ShaderModel>5.0</ShaderModel>
       <ObjectFileOutput>$(SolutionDir)media\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ResourceCompile Include="BaseCrossDx11.rc" />

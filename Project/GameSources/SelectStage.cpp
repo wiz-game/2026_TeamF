@@ -9,7 +9,7 @@
 #include "Project.h"
 #include "game_controller.h"
 #include "GameProgressManager.h"
-
+#include "Sprite.h"
 namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体

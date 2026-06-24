@@ -1,6 +1,6 @@
-/*********************************************************************
+ï»¿/*********************************************************************
  * \file   game_controller.h
- * \brief  ƒQ[ƒ€ƒRƒ“ƒgƒ[ƒ‰[“ü—ÍŠÇ—iSDL3Š®‘S”Åj
+ * \brief  ã‚²ãƒ¼ãƒ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼å…¥åŠ›ç®¡ç†ï¼ˆSDL3å®Œå…¨ç‰ˆï¼‰
  *********************************************************************/
 #pragma once
 #include <SDL3/SDL.h>
@@ -8,57 +8,57 @@
 #include <cstdint>
 
 //==============================================================================
-// ƒQ[ƒ€ƒpƒbƒhó‘Ô\‘¢‘Ì
+// ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰çŠ¶æ…‹æ§‹é€ ä½“
 //==============================================================================
 struct GamepadState {
-    // ¶ƒXƒeƒBƒbƒNi-1.0 ~ 1.0j
+    // å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯ï¼ˆ-1.0 ~ 1.0ï¼‰
     float leftStickX = 0.0f;
     float leftStickY = 0.0f;
 
-    // ‰EƒXƒeƒBƒbƒNi-1.0 ~ 1.0j
+    // å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯ï¼ˆ-1.0 ~ 1.0ï¼‰
     float rightStickX = 0.0f;
     float rightStickY = 0.0f;
 
-    // ƒgƒŠƒK[i0.0 ~ 1.0j
+    // ãƒˆãƒªã‚¬ãƒ¼ï¼ˆ0.0 ~ 1.0ï¼‰
     float leftTrigger = 0.0f;
     float rightTrigger = 0.0f;
 
-    // \šƒL[
+    // åå­—ã‚­ãƒ¼
     bool dpadUp = false;
     bool dpadDown = false;
     bool dpadLeft = false;
     bool dpadRight = false;
 
-    // ƒƒCƒ“ƒ{ƒ^ƒ“iˆÊ’uƒx[ƒXj
-    bool buttonDown = false;   // A / ~ / B(Switch)
-    bool buttonRight = false;  // B / › / A(Switch)
-    bool buttonLeft = false;   // X /   / Y(Switch)
-    bool buttonUp = false;     // Y / ¢ / X(Switch)
+    // ãƒ¡ã‚¤ãƒ³ãƒœã‚¿ãƒ³ï¼ˆä½ç½®ãƒ™ãƒ¼ã‚¹ï¼‰
+    bool buttonDown = false;   // A / Ã— / B(Switch)
+    bool buttonRight = false;  // B / â—‹ / A(Switch)
+    bool buttonLeft = false;   // X / â–¡ / Y(Switch)
+    bool buttonUp = false;     // Y / â–³ / X(Switch)
 
-    // ƒVƒ‡ƒ‹ƒ_[ƒ{ƒ^ƒ“iLB/RB / L1/R1 / L/Rj
+    // ã‚·ãƒ§ãƒ«ãƒ€ãƒ¼ãƒœã‚¿ãƒ³ï¼ˆLB/RB / L1/R1 / L/Rï¼‰
     bool buttonL1 = false;
     bool buttonR1 = false;
 
-    // ƒgƒŠƒK[ƒ{ƒ^ƒ“iLT/RT / L2/R2 / ZL/ZRj- ƒfƒWƒ^ƒ‹”»’è
+    // ãƒˆãƒªã‚¬ãƒ¼ãƒœã‚¿ãƒ³ï¼ˆLT/RT / L2/R2 / ZL/ZRï¼‰- ãƒ‡ã‚¸ã‚¿ãƒ«åˆ¤å®š
     bool buttonL2 = false;
     bool buttonR2 = false;
 
-    // ƒXƒeƒBƒbƒN‰Ÿ‚µ‚İiLS/RS / L3/R3j
+    // ã‚¹ãƒ†ã‚£ãƒƒã‚¯æŠ¼ã—è¾¼ã¿ï¼ˆLS/RS / L3/R3ï¼‰
     bool buttonL3 = false;
     bool buttonR3 = false;
 
-    // ƒVƒXƒeƒ€ƒ{ƒ^ƒ“
+    // ã‚·ã‚¹ãƒ†ãƒ ãƒœã‚¿ãƒ³
     bool buttonStart = false;   // Start / Options / +
     bool buttonSelect = false;  // Back / Share / -
 
-    // ’Ç‰Áƒ{ƒ^ƒ“
-    bool buttonGuide = false;   // Xboxƒ{ƒ^ƒ“ / PSƒ{ƒ^ƒ“ / Homeƒ{ƒ^ƒ“
+    // è¿½åŠ ãƒœã‚¿ãƒ³
+    bool buttonGuide = false;   // Xboxãƒœã‚¿ãƒ³ / PSãƒœã‚¿ãƒ³ / Homeãƒœã‚¿ãƒ³
     bool buttonMisc = false;    // Share / Mic / Capture
 
-    // Ú‘±ó‘Ô
+    // æ¥ç¶šçŠ¶æ…‹
     bool connected = false;
 
-    // ‚¢‚¸‚ê‚©‚Ìƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚é‚©
+    // ã„ãšã‚Œã‹ã®ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹ã‹
     bool IsAnyButtonPressed() const {
         return buttonDown || buttonRight || buttonLeft || buttonUp ||
             buttonL1 || buttonR1 || buttonL2 || buttonR2 ||
@@ -67,7 +67,7 @@ struct GamepadState {
             dpadUp || dpadDown || dpadLeft || dpadRight;
     }
 
-    // ƒfƒbƒhƒ][ƒ““K—p
+    // ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³é©ç”¨
     static float ApplyDeadzone(float value, float deadzone = 0.15f) {
         if (std::fabs(value) < deadzone) return 0.0f;
         float sign = (value > 0) ? 1.0f : -1.0f;
@@ -76,7 +76,7 @@ struct GamepadState {
 };
 
 //==============================================================================
-// ƒoƒCƒuƒŒ[ƒVƒ‡ƒ“İ’è\‘¢‘Ì
+// ãƒã‚¤ãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³è¨­å®šæ§‹é€ ä½“
 //==============================================================================
 struct VibrationSettings {
     float leftMotor = 0.0f;
@@ -85,7 +85,7 @@ struct VibrationSettings {
 };
 
 //==============================================================================
-// ƒoƒbƒeƒŠ[î•ñ\‘¢‘Ì
+// ãƒãƒƒãƒ†ãƒªãƒ¼æƒ…å ±æ§‹é€ ä½“
 //==============================================================================
 struct BatteryInfo {
     bool isWired = false;
@@ -95,7 +95,7 @@ struct BatteryInfo {
 };
 
 //==============================================================================
-// ƒZƒ“ƒT[ƒf[ƒ^\‘¢‘Ì
+// ã‚»ãƒ³ã‚µãƒ¼ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 //==============================================================================
 struct SensorData {
     float gyroX = 0.0f;
@@ -111,7 +111,7 @@ struct SensorData {
 };
 
 //==============================================================================
-// ƒ^ƒbƒ`ƒpƒbƒhƒf[ƒ^\‘¢‘Ì
+// ã‚¿ãƒƒãƒãƒ‘ãƒƒãƒ‰ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 //==============================================================================
 struct TouchpadData {
     bool hasTouchpad = false;
@@ -126,7 +126,7 @@ struct TouchpadData {
 };
 
 //==============================================================================
-// ƒRƒ“ƒgƒ[ƒ‰[ƒ^ƒCƒv—ñ‹“Œ^
+// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã‚¿ã‚¤ãƒ—åˆ—æŒ™å‹
 //==============================================================================
 enum class ControllerType {
     Unknown,
@@ -142,23 +142,23 @@ enum class ControllerType {
 };
 
 //==============================================================================
-// ƒQ[ƒ€ƒRƒ“ƒgƒ[ƒ‰[ƒNƒ‰ƒXiSDL3Š®‘S”Åj
+// ã‚²ãƒ¼ãƒ ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã‚¯ãƒ©ã‚¹ï¼ˆSDL3å®Œå…¨ç‰ˆï¼‰
 //==============================================================================
 class GameController {
 public:
-    // ‰Šú‰»EI—¹EXV
+    // åˆæœŸåŒ–ãƒ»çµ‚äº†ãƒ»æ›´æ–°
     static bool Initialize();
     static void Finalize();
     static void Update();
 
-    // ó‘Ôæ“¾
+    // çŠ¶æ…‹å–å¾—
     static const GamepadState& GetCurrentState() { return s_currentState; }
     static const GamepadState& GetPrevState() { return s_prevState; }
     static const char* GetControllerName();
     static ControllerType GetControllerType();
     static int GetPlayerIndex();
 
-    // ƒoƒCƒuƒŒ[ƒVƒ‡ƒ“§Œä
+    // ãƒã‚¤ãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³åˆ¶å¾¡
     static void StartVibration(float intensity, float duration);
     static void StartVibrationEx(float leftMotor, float rightMotor, float duration);
     static void StartVibrationEx(const VibrationSettings& settings);
@@ -166,25 +166,25 @@ public:
     static void StopVibration();
     static bool IsVibrating() { return s_isVibrating; }
 
-    // LED§Œä
+    // LEDåˆ¶å¾¡
     static bool SetLED(uint8_t r, uint8_t g, uint8_t b);
     static bool HasLED();
 
-    // ƒZƒ“ƒT[
+    // ã‚»ãƒ³ã‚µãƒ¼
     static bool EnableGyro(bool enable);
     static bool EnableAccelerometer(bool enable);
     static SensorData GetSensorData();
     static bool HasGyro();
     static bool HasAccelerometer();
 
-    // ƒ^ƒbƒ`ƒpƒbƒh
+    // ã‚¿ãƒƒãƒãƒ‘ãƒƒãƒ‰
     static TouchpadData GetTouchpadData();
     static bool HasTouchpad();
 
-    // ƒoƒbƒeƒŠ[î•ñ
+    // ãƒãƒƒãƒ†ãƒªãƒ¼æƒ…å ±
     static BatteryInfo GetBatteryInfo();
 
-    // Press”»’è
+    // Pressåˆ¤å®š
     static bool IsPressed_ButtonDown() { return s_currentState.buttonDown; }
     static bool IsPressed_ButtonRight() { return s_currentState.buttonRight; }
     static bool IsPressed_ButtonLeft() { return s_currentState.buttonLeft; }
@@ -204,7 +204,7 @@ public:
     static bool IsPressed_DpadLeft() { return s_currentState.dpadLeft; }
     static bool IsPressed_DpadRight() { return s_currentState.dpadRight; }
 
-    // Trigger”»’è
+    // Triggeråˆ¤å®š
     static bool IsTrigger_ButtonDown() { return s_currentState.buttonDown && !s_prevState.buttonDown; }
     static bool IsTrigger_ButtonRight() { return s_currentState.buttonRight && !s_prevState.buttonRight; }
     static bool IsTrigger_ButtonLeft() { return s_currentState.buttonLeft && !s_prevState.buttonLeft; }
@@ -224,7 +224,7 @@ public:
     static bool IsTrigger_DpadLeft() { return s_currentState.dpadLeft && !s_prevState.dpadLeft; }
     static bool IsTrigger_DpadRight() { return s_currentState.dpadRight && !s_prevState.dpadRight; }
 
-    // Release”»’è
+    // Releaseåˆ¤å®š
     static bool IsRelease_ButtonDown() { return !s_currentState.buttonDown && s_prevState.buttonDown; }
     static bool IsRelease_ButtonRight() { return !s_currentState.buttonRight && s_prevState.buttonRight; }
     static bool IsRelease_ButtonLeft() { return !s_currentState.buttonLeft && s_prevState.buttonLeft; }
@@ -244,7 +244,7 @@ public:
     static bool IsRelease_DpadLeft() { return !s_currentState.dpadLeft && s_prevState.dpadLeft; }
     static bool IsRelease_DpadRight() { return !s_currentState.dpadRight && s_prevState.dpadRight; }
 
-    // ƒXƒeƒBƒbƒNEƒgƒŠƒK[’læ“¾
+    // ã‚¹ãƒ†ã‚£ãƒƒã‚¯ãƒ»ãƒˆãƒªã‚¬ãƒ¼å€¤å–å¾—
     static float GetLeftStickX() { return s_currentState.leftStickX; }
     static float GetLeftStickY() { return s_currentState.leftStickY; }
     static float GetRightStickX() { return s_currentState.rightStickX; }
@@ -252,7 +252,7 @@ public:
     static float GetLeftTrigger() { return s_currentState.leftTrigger; }
     static float GetRightTrigger() { return s_currentState.rightTrigger; }
 
-    // Ú‘±ó‘Ô
+    // æ¥ç¶šçŠ¶æ…‹
     static bool IsConnected() { return s_currentState.connected; }
 
 private:

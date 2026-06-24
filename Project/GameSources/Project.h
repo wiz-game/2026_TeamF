@@ -62,3 +62,4 @@
 #include "SpriteGeneric.h"
 #include "EffectManager.h"
 
+#include "ObstacleSpring.h"

@@ -32,6 +32,7 @@ namespace basecross
 		float m_defaultSize;
 
 	public:
+		bool isInkDrow = true;
 		InkDrawComp(const shared_ptr<GameObject>& owner) : 
 			PNTStaticDraw(owner) ,
 			m_defaultSize(64)
