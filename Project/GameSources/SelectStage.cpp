@@ -9,7 +9,7 @@
 #include "Project.h"
 #include "game_controller.h"
 #include "GameProgressManager.h"
-
+#include "Sprite.h"
 namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体
@@ -66,7 +66,8 @@ namespace basecross {
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
 
 			//BGM再生
-			SoundManager::Get().PlayBGM(L"STAGESELECT_BGM", m_BGMVolume);
+			if (!m_sSelectBGM)
+				m_sSelectBGM = SoundManager::Get().PlayBGM(L"STAGESELECT", m_BGMVolume);
 		}
 		catch (...) {
 			throw;
@@ -96,6 +97,10 @@ namespace basecross {
 		}
 		//選択決定(A)
 		if (GameController::IsTrigger_ButtonDown()) {
+			//BGMを止める
+			SoundManager::Get().StopBGM();
+			m_sSelectBGM = nullptr;
+
 			//PostEvent(0.2f, GetThis<SelectStage>(), app->GetScene<Scene>(), L"ToGameStage" + to_wstring(m_SelectIndex));
 			PostEvent(0.0f, GetThis<ObjectInterface>(), app->GetScene<Scene>(), L"ToGameStage"+ to_wstring(m_SelectIndex));
 		}

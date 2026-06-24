@@ -28,11 +28,9 @@ namespace basecross {
 		m_transform->SetScale(m_scale);
 		m_transform->SetRotation(m_rot);
 
-		// ドローコンポーネントを追加
-		//m_draw = AddComponent<PNTDXModelDraw>();
-		//m_draw->SetMeshResource(L"DEFAULT_CUBE");
-
 		m_staticDraw = AddComponent<Texture2DrawComp>();
+		m_staticDraw->CreateTexture(m_scale.x, m_scale.z);
+		m_staticDraw->isInkDrow = false;
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
 		m_staticDraw->SetDiffuse(Col4(0, 0, 0, 1));
 		m_staticDraw->SetTextureResource(L"Port");
@@ -42,47 +40,20 @@ namespace basecross {
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetAfterCollision(AfterCollision::None);
 
-		AddComponent<Electrified>();
 		InkConnectChecker::Get().AddPort(GetThis<Port>());
 	}
 
 	// 更新処理
 	void Port::OnUpdate()
 	{
-		// アプリケーションオブジェクトを取得
-		auto& app = App::GetApp();
-		auto elec = GetComponent<Electrified>();
-		//電流の更新
-		elec->UpdateElectrified();
-		auto power = elec->IsPowered();//電流が流れているかどうかを更新
-
 		// 電流の状態に応じて接続状態と色を更新
-		if (power)
+		if (isConnect)
 		{
-			isConnect = true;
 			m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
 		}
 		else
 		{
-			isConnect = false;
-			m_staticDraw->SetDiffuse(Col4(0, 0, 0, 1));
-		}
-	}
-
-	void Port::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
-	{
-		if (auto elec = GetComponent<Electrified>(false))
-		{
-			//リストに追加
-			elec->OnElectrifiedEnter(obj);
-		}
-	}
-
-	void Port::OnCollisionExit(std::shared_ptr<GameObject>& obj)
-	{
-		if (auto elec = GetComponent<Electrified>(false))
-		{
-			elec->OnElectrifiedExit(obj);
+			m_staticDraw->SetDiffuse(Col4(0.5f, 0.5f, 0.5f, 1));
 		}
 	}
 }

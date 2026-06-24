@@ -21,8 +21,17 @@ namespace basecross{
 
 		auto mediaPath = app->GetDataDirWString();
 		app->RegisterTexture(L"SKYBOX", mediaPath + L"Texture/SkyBox/SkyBox.png");
+		app->RegisterTexture(L"PLAYER", mediaPath + L"Texture/Player.png");
 
+		vector<VertexPositionColor> vertices = {
+			{{0.0f,0.0f,0.0f},{1,1,1}},
+			{{0.0f,0.0f,1.0f},{1,1,1}}
+		};
+		vector<uint16_t> indices{
+			0,1
+		};
 
+		App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
 	}
 
 	void Scene::OnCreate(){
@@ -36,6 +45,7 @@ namespace basecross{
 			SoundManager::Get().RegisterSounds();
 			//ステージ数1で初期化
 			GameProgressManager::Get().Initialize(3);
+			ThreadPool::Get().Initialize(thread::hardware_concurrency());
 
 			SetClearColor(Col4(0.0f, 0.11328125f, 0.2578125, 1.0f));
 			
@@ -54,6 +64,7 @@ namespace basecross{
 	void Scene::OnUpdate() {
 		SceneBase::OnUpdate();
 		GameController::Update();
+		
 	}
 	void Scene::OnDraw() {
 		SceneBase::OnDraw();
@@ -61,12 +72,14 @@ namespace basecross{
 	}
 	Scene::~Scene() {
 		JoltManager::StaticTerminate();
+		ThreadPool::Get().Destory();
 	}
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
 		InkConnectChecker::Get().Initialize();
 		if (event->m_MsgStr == L"ToGameStage") {
 			ResetActiveStage<GameStage>();
+			//ResetActiveStage<GameStageBase>();
 		}
 		if (event->m_MsgStr == L"ToProtoStage") {
 			ResetActiveStage<ProtoStage>();
@@ -84,6 +97,11 @@ namespace basecross{
 		if (event->m_MsgStr == L"ToGameStage1") {
 			ResetActiveStage<GameStageBase>(1);
 		}
+		if (event->m_MsgStr == L"ToGameStage0") {
+			ResetActiveStage<ProtoStage>();
+			//ResetActiveStage<GameStageBase>();
+		}
+
 		if (event->m_MsgStr == L"ToGameStage2") {
 			ResetActiveStage<GameStageBase>(2);
 		}

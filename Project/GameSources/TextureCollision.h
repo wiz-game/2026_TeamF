@@ -8,56 +8,50 @@
 #include "Singleton.h"
 #include "ComputeShader.h"
 #include "ProjectShader.h"
-#include "InkDrawComponentTest.h"
 #include "Port.h"
 #include <opencv2/opencv.hpp>
 #include <poly2tri/poly2tri.h>
 
 namespace basecross{
-
-	class DebugLog {
-		static string m_SaveFilename;
-	public:
-		static void Save();
-		static vector<CONTROLER_STATE> Load(const string& filename);
-	};
 	struct CoordContext {
 		UINT m_SizeX = 0;
 		UINT m_SizeY = 0;
 	};
-	class TextureCollision : public Component {
-		struct IndexInfo {
-			int index;
-			int label;
-		};
-		struct GroupInfo {
-			int id;
-			int startIndex;
-			int count;
-		};
+	struct Contour {
+		AABB m_Aabb;
+		vector<TRIANGLE> m_Triangles;
 
+		Contour(const vector<TRIANGLE>& triangles) : m_Triangles(triangles), m_Aabb{ Vec3(numeric_limits<float>::max()),Vec3(numeric_limits<float>::lowest()) } {}
+		void CalcAABB(const shared_ptr<Transform>& transform);
+		vector<TRIANGLE> GetWorldTriangles(const shared_ptr<Transform>& transform)const;
+	};
+
+	struct TextureSnapShot {
+		vector<int> m_Data;
+		CoordContext m_Context;
+		shared_ptr<Transform> m_Transform;
+		vector<vector<cv::Point>> m_CvContours;
+	};
+
+	class TextureCollision : public Component {
 		CoordContext m_TextureContext;
 		vector<int> m_Labels;
 		vector<int> m_ElectricContourIndices;
 
-		//m_ContourTriangles[] : 輪郭
-		//m_ContourTriangles[][] : 輪郭に含まれるポリゴン
-		vector<vector<TRIANGLE>> m_ContourTriangles;
+		float m_EffectSpawnTimer;
+		float m_EffectSpawnInterval;
+		vector<int> m_ElectricEffectHandles;
+
+		vector<Contour> m_Contour;
+		vector<Contour> m_WaitContour;
 		vector<vector<cv::Point>> m_CvContours;
-		vector<cv::Vec4i> m_ContourHierarchy;
 
 		shared_ptr<DX11ComputeShader> m_MaskShader;
-		shared_ptr<DX11ComputeShader> m_UnionFind1Shader;
-		shared_ptr<DX11ComputeShader> m_UnionFind2Shader;
 		shared_ptr<BufferContext> m_LabelBuffer;
-		shared_ptr<BufferContext> m_LabelOutputBuffer;
-		shared_ptr<BufferContext> m_ConvertFlagBuffer;
 		TextureSizeConstantData m_CB;
 
 		void GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc);
-		void CreateAlphaMask();
-		void CreateTextureMesh(vector<int>& cells,vector<int>& groupIDs, CoordContext& context);
-		vector<TRIANGLE> CalcContourWorldTriangle(const vector<p2t::Triangle*>& contour);
+		vector<TRIANGLE> CalcContourWorldTriangle(const vector<p2t::Triangle*>& contour, const TextureSnapShot& snapShot);
 
 		void DrawLine(Vec3 position, Vec3 dir,float length);
 	public:
@@ -66,31 +60,69 @@ namespace basecross{
 		virtual void OnUpdate()override;
 		virtual void OnDraw()override;
 
-		void CreateMeshCollision();
-
 		void ProcessGPU();
 		void ProcessCPU();
 
-		size_t GetContourCount()const { return m_ContourTriangles.size(); }
-		vector<TRIANGLE> GetTriangles(int index) { return m_ContourTriangles[index]; }
+		size_t GetContourCount()const { return m_Contour.size(); }
+		vector<TRIANGLE> GetWorldTriangles(int index)const;
+		const AABB& GetContourAABB(int index)const { return m_Contour[index].m_Aabb; }
 		void DrawContour(int index);
 
 		void ClearElectricIndex();
-		void AddElectricIndex(int index);
+		void SetElectricfield(int index);
 		bool IsElectrified(int index);
+
+		void CreateMeshInThread(const TextureSnapShot& snapShot,vector<Contour>& result);
+		TextureSnapShot SnapShot();
+		void ApplyThreadResult(vector<Contour>& result) {
+			m_WaitContour = result;
+			m_ElectricContourIndices.resize(m_Contour.size(), 0);
+
+		}
 	};
 
+
+	//スレッドプール(後で別ファイルに移行)
+	class ThreadPool : public SingletonBase<ThreadPool>{
+		friend class SingletonBase<ThreadPool>;
+
+		vector<thread> m_Workers;
+		queue<function<void()>> m_Tasks;
+
+		mutex m_Mutex;
+		condition_variable m_Condition;
+
+		bool m_ThreadStop;
+	public:
+
+		void Initialize(size_t numThreads);
+		void Destory();
+		void Execute(function<void()> task);
+
+	};
+
+	struct MeshResult {
+		TextureCollision* m_Ptr;
+		vector<Contour> m_Result;
+	};
 	class TextureMeshManager : public SingletonBase<TextureMeshManager> {
 		friend class SingletonBase<TextureMeshManager>;
 		vector<shared_ptr<TextureCollision>> m_ReloadMeshCollisions;
-	public:
-		void AddReload(const shared_ptr<TextureCollision>& meshCollision) {
-			m_ReloadMeshCollisions.push_back(meshCollision);
-		}
 
+		unordered_map<TextureCollision*, TextureSnapShot> m_Pending;
+		unordered_map<TextureCollision*, TextureSnapShot> m_Proccess;
+		queue<MeshResult> m_ResultQueue;
+		atomic_int m_ProccessCount;
+
+		mutex m_Mutex;
+
+		void DecreeseProccessCount();
+	public:
+		void AddReload(const shared_ptr<TextureCollision>& meshCollision);
 		void Reload();
 	};
 
+	class PowerSupply;
 	class InkConnectChecker : public SingletonBase<InkConnectChecker> {
 		friend class SingletonBase<InkConnectChecker>;
 
@@ -102,7 +134,7 @@ namespace basecross{
 		vector<weak_ptr<TextureCollision>> m_TextureCollisions;
 
 		bool IsConnectedSupplyToInk(const OBB& supplyOBB, const AABB& supplyAABB, const vector<TRIANGLE>& triangles);
-		bool IsConnectedInkToInk(const vector<TRIANGLE>& triangles, const shared_ptr<TextureCollision>& fromCollision);
+		bool IsConnectedInkToInk(const vector<TRIANGLE>& triangles, const AABB& inkAABB);
 		bool IsConnectedInkToPort(const OBB& portOBB, const AABB& portAABB, const vector<TRIANGLE>& triangles);
 	public:
 

@@ -30,6 +30,9 @@ namespace basecross {
 		auto& app = App::GetApp();
 		wstring mediaPath = App::GetApp()->GetDataDirWString();
 		app->RegisterTexture(L"GoalStage", mediaPath + L"Texture/GoalStage.png");
+		app->RegisterTexture(L"BUTTON_A_TITLE", mediaPath + L"Texture/Button_A_Title.png");
+		app->RegisterTexture(L"NUMBER", mediaPath + L"Texture/Number.png");
+
 	}
 
 	void GoalStage::OnCreate() {
@@ -40,7 +43,8 @@ namespace basecross {
 			RegisterResources();
 
 			m_sprite = AddGameObject<Sprite>(L"GoalStage", Vec3(), Vec2(1280, 840), Anchor::Center);
-			
+			m_sprite_Button = AddGameObject<Sprite>(L"BUTTON_A_TITLE", Vec3(0, -300, 0), Vec2(400, 150), Anchor::Center);
+
 			float ink = scene->GetResultInk();
 			float maxInk = scene->GetMaxInk();
 
@@ -67,13 +71,24 @@ namespace basecross {
 
 		auto CntlVec = app->GetInputDevice().GetControlerVec();
 
-		//scene->SetDebugString(L"GoalStage \n Abutton -> TitleStage");
-
 		if (CntlVec[0].wPressedButtons && XINPUT_GAMEPAD_A)
 		{
+			m_ButtonScaleTimer = 0;
 			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToTitleStage");
 		}
+
+		SpriteMove();
 	}
+
+	//ボタンの押し込みアニメーション
+	void GoalStage::SpriteMove()
+	{
+		SpriteMoveUtil::CalculatePunchScale(m_ButtonScaleTimer, m_ButtonScaleRation, 0.1f);
+
+		m_sprite_Button->SetSize(Vec2(400.0f * m_ButtonScaleRation, 150.0f * m_ButtonScaleRation));
+	}
+
+
 	void GoalStage::OnPushA()
 	{
 	}

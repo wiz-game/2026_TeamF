@@ -9,6 +9,9 @@
 namespace basecross {
 	void SoundManager::RegisterSounds() {
 		m_Audio = App::GetApp()->GetXAudio2Manager();
+		RegisterSound(L"TITLEBGM", L"Title.wav");
+		RegisterSound(L"STAGESELECT", L"StageSelect.wav");
+		RegisterSound(L"STAGE", L"Stage.wav");
 		RegisterSound(L"PLAYER_MOVE", L"PlayerMove.wav");
 		RegisterSound(L"ELECTRIC", L"Electric.wav");
 		RegisterSound(L"ELEVATER_MOVE", L"ElevatorMove.wav");

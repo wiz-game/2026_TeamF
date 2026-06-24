@@ -64,7 +64,7 @@ namespace basecross{
 
 		SetAlphaActive(true);
 		//m_draw->SetDiffuse(Col4(0, 0, 0, 1.0f));
-		m_draw->SetEmissive(Col4(0, 0, 0, 1.0f));
+		m_draw->SetEmissive(Col4(0.80f, 0.80f, 0.80f, 1.0f));
 
 		auto cc = AddComponent<CharacterController>();
 		//CharacterController::Settings settings;
@@ -108,7 +108,7 @@ namespace basecross{
 		//m_transform->SetQuaternion(rotY);
 
 		OnMove();
-		DropInk();
+		//DropInk();
 		OnDied();
 
 		if (m_pos.y <= -10.0f)
@@ -121,14 +121,33 @@ namespace basecross{
 			PostEvent(0.0f, GetThis<Player>(), scene, L"ToGameOverStage");
 		}
 
-		//scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
-		//	+ L"\n"
-		//	+ L"ink残量 : " + std::to_wstring(m_ink)
-		//	+ L"\n"
-		//	+ L"isGround : " + (m_isGround ? L"true" : L"false")
-		//	+ L"\n"
-		//	+ L" m_FloorDecision : " + (m_floorDecision ? L"Valid" : L"null"));
+		float fps = 1.0f / App::GetApp()->GetElapsedTime();
+	//	scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
+	//		+ L"\n"
+	//		+ L"ink残量 : " + std::to_wstring(m_ink)
+	//		+ L"\n"
+	//		+ L"isGround : " + (m_isGround ? L"true" : L"false")
+	//		+ L"\n"
+	//		+ L" m_FloorDecision : " + (m_floorDecision ? L"Valid" : L"null")
+	//		+ L"\n"
+	//		+ L"FPS : " + std::to_wstring(fps));
 	}
+
+	void Player::OnUpdate2()
+	{
+		m_isDraw = false;
+	}
+
+	void Player::DecreaseInk()
+	{
+		if (m_isDraw) return;
+
+		auto delta = App::GetApp()->GetElapsedTime();
+		m_ink -= m_inkDecrease * delta;
+		m_isDraw = true;
+	}
+
+
 	void Player::OnDestroy() {
 		if (m_MoveSound) {
 			SoundManager::Get().StopLoopSE(m_MoveSound);
@@ -187,7 +206,7 @@ namespace basecross{
 
 			//cc->SetLinearVelocity(m_moveSpeed * m_velocity * m_moveDir);
 			if (!m_MoveSound) {
-				m_MoveSound = SoundManager::Get().PlayLoopSE(L"PLAYER_MOVE", 0.5f);
+				m_MoveSound = SoundManager::Get().PlayLoopSE(L"PLAYER_MOVE", 0.75f);
 			}
 		}
 		else {
@@ -208,14 +227,10 @@ namespace basecross{
 			m_velocity *= m_accel;
 
 		//転がす処理
-		if (m_isGround)
-		{
-			m_rotAngle.x += m_velocity.x * m_moveSpeed * 0.10f;
-			m_rotAngle.y = 0;
-			m_rotAngle.z += m_velocity.z * m_moveSpeed * 0.10f;
-			//m_transform->SetRotation(m_rotAngle);
-			
-		}
+		m_rotAngle.x += m_velocity.z * m_moveSpeed * 0.10f;
+		m_rotAngle.y = 0;
+		m_rotAngle.z += m_velocity.x * m_moveSpeed * 0.10f;
+		m_transform->SetRotation(m_rotAngle);
 
 		m_pos.x += m_moveSpeed * m_velocity.x * delta;
 		m_pos.z += m_moveSpeed * m_velocity.z * delta;

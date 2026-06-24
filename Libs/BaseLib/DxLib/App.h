@@ -1,6 +1,6 @@
-/*!
+ï»¿/*!
 @file App.h
-@brief ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒNƒ‰ƒXB“ü—Í‹@Ší“™
+@brief ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹ã€‚å…¥åŠ›æ©Ÿå™¨ç­‰
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #pragma once
@@ -13,14 +13,14 @@ namespace basecross {
 	class AudioResource;
 
 	//--------------------------------------------------------------------------------------
-	///	ƒ}ƒ‹ƒ`ƒTƒEƒ“ƒh‚Åg—p‚·‚éƒAƒCƒeƒ€
+	///	ãƒãƒ«ãƒã‚µã‚¦ãƒ³ãƒ‰ã§ä½¿ç”¨ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ 
 	//--------------------------------------------------------------------------------------
 	struct SoundItem {
 		weak_ptr<AudioResource> m_AudioResource;
 		IXAudio2SourceVoice* m_SourceVoice;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		SoundItem() :
@@ -28,7 +28,7 @@ namespace basecross {
 		{}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		~SoundItem() {
@@ -36,94 +36,94 @@ namespace basecross {
 	};
 
 	//--------------------------------------------------------------------------------------
-	/// XAudio2ƒ}ƒl[ƒWƒƒƒNƒ‰ƒX
+	/// XAudio2ãƒãƒãƒ¼ã‚¸ãƒ£ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class XAudio2Manager : public ObjectInterface ,public ShapeInterface {
 	public:
-		//\’z‚Æ”jŠü
+		//æ§‹ç¯‰ã¨ç ´æ£„
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		@brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		XAudio2Manager();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒfƒXƒgƒ‰ƒNƒ^
+		@brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual ~XAudio2Manager();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒI[ƒfƒBƒI‚ª—LŒø‚©‚Ç‚¤‚©
-		@return	—LŒø‚È‚çtrue
+		@brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãŒæœ‰åŠ¹ã‹ã©ã†ã‹
+		@return	æœ‰åŠ¹ãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsAudioActive() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief XAudio2ƒCƒ“ƒ^[ƒtƒFƒCƒX‚ğ“¾‚é
-		@return	XAudio2ƒCƒ“ƒ^[ƒtƒFƒCƒX
+		@brief XAudio2ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã‚’å¾—ã‚‹
+		@return	XAudio2ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<IXAudio2> GetXAudio2() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒ}ƒXƒ^ƒŠƒ“ƒOƒ{ƒCƒX‚ğ“¾‚é
-		@return	ƒ}ƒXƒ^ƒŠƒ“ƒOƒ{ƒCƒX
+		@brief ãƒã‚¹ã‚¿ãƒªãƒ³ã‚°ãƒœã‚¤ã‚¹ã‚’å¾—ã‚‹
+		@return	ãƒã‚¹ã‚¿ãƒªãƒ³ã‚°ãƒœã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		IXAudio2MasteringVoice* GetMasteringVoice() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒTƒEƒ“ƒhƒAƒCƒeƒ€‚Ì”z—ñ‚ğ“¾‚é
-		@return	ƒTƒEƒ“ƒhƒAƒCƒeƒ€‚Ì”z—ñ‚ÌQÆ
+		@brief ã‚µã‚¦ãƒ³ãƒ‰ã‚¢ã‚¤ãƒ†ãƒ ã®é…åˆ—ã‚’å¾—ã‚‹
+		@return	ã‚µã‚¦ãƒ³ãƒ‰ã‚¢ã‚¤ãƒ†ãƒ ã®é…åˆ—ã®å‚ç…§
 		*/
 		//--------------------------------------------------------------------------------------
 		vector<shared_ptr<SoundItem>>& GetSoundItemVec();
 		const vector<shared_ptr<SoundItem>>& GetSoundItemVec() const;
-		//‘€ì
+		//æ“ä½œ
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Ä¶ŠJnB
-		@param[in]	ResKey	ƒŠƒ\[ƒXƒL[
-		@param[in]	LoopCount = 0	ƒ‹[ƒv‰ñ”iXAUDIO2_LOOP_INFINITE‚Å–³ŒÀƒ‹[ƒvj
-		@param[in]	Volume = 1.0f	ƒ{ƒŠƒ…[ƒ€
-		@return	SoundItem‚Ìƒ|ƒCƒ“ƒ^B¸”s‚Ånullptr
+		@brief	å†ç”Ÿé–‹å§‹ã€‚
+		@param[in]	ResKey	ãƒªã‚½ãƒ¼ã‚¹ã‚­ãƒ¼
+		@param[in]	LoopCount = 0	ãƒ«ãƒ¼ãƒ—å›æ•°ï¼ˆXAUDIO2_LOOP_INFINITEã§ç„¡é™ãƒ«ãƒ¼ãƒ—ï¼‰
+		@param[in]	Volume = 1.0f	ãƒœãƒªãƒ¥ãƒ¼ãƒ 
+		@return	SoundItemã®ãƒã‚¤ãƒ³ã‚¿ã€‚å¤±æ•—ã§nullptr
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<SoundItem> Start(const wstring& ResKey, size_t LoopCount = 0, float Volume = 1.0f);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒTƒEƒ“ƒh‚Ì‹­§I—¹
-		@param[in]	Item	ƒAƒCƒeƒ€
-		@return	‚È‚µiw’è‚ÌƒTƒEƒ“ƒh‚ª‚Ü‚¾Ä¶’†‚È‚çI—¹‚³‚¹‚éj
+		@brief	ã‚µã‚¦ãƒ³ãƒ‰ã®å¼·åˆ¶çµ‚äº†
+		@param[in]	Item	ã‚¢ã‚¤ãƒ†ãƒ 
+		@return	ãªã—ï¼ˆæŒ‡å®šã®ã‚µã‚¦ãƒ³ãƒ‰ãŒã¾ã å†ç”Ÿä¸­ãªã‚‰çµ‚äº†ã•ã›ã‚‹ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		void Stop(const shared_ptr<SoundItem>& Item);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief OnCreateˆ—
-		@return	‚È‚µ
+		@brief OnCreateå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief OnUpdateˆ—
-		@return	‚È‚µ
+		@brief OnUpdateå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnUpdate();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnDrawˆ—
-		@return	‚È‚µ
+		@brief	OnDrawå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw() {}
 	private:
-		// pImplƒCƒfƒBƒIƒ€
+		// pImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
 	};
@@ -131,49 +131,49 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	ƒI[ƒfƒBƒIƒŠƒ\[ƒXiwavjƒNƒ‰ƒX
+	///	ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒªã‚½ãƒ¼ã‚¹ï¼ˆwavï¼‰ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class AudioResource : public BaseResource {
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^<br />
-		ƒEƒFƒuƒtƒ@ƒCƒ‹–¼‚ğ“n‚·
-		@param[in]	FileName	ƒtƒ@ƒCƒ‹–¼
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿<br />
+		ã‚¦ã‚§ãƒ–ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æ¸¡ã™
+		@param[in]	FileName	ãƒ•ã‚¡ã‚¤ãƒ«å
 		*/
 		//--------------------------------------------------------------------------------------
 		AudioResource(const wstring& FileName);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual ~AudioResource();
-		//ƒAƒNƒZƒT
+		//ã‚¢ã‚¯ã‚»ã‚µ
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒTƒEƒ“ƒhƒf[ƒ^‚Ìæ“¾
-		@return	‚±‚ÌƒEƒFƒuƒŠƒ\[ƒX‚ÌƒTƒEƒ“ƒhƒf[ƒ^
+		@brief	ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+		@return	ã“ã®ã‚¦ã‚§ãƒ–ãƒªã‚½ãƒ¼ã‚¹ã®ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		const vector<byte>& GetSoundData()const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒEƒFƒuƒtƒH[ƒ}ƒbƒg‚Ìæ“¾
-		@return	‚±‚ÌƒEƒFƒuƒŠƒ\[ƒX‚ÌWAVEFORMATEXƒEƒFƒuƒtƒH[ƒ}ƒbƒg‚Ìƒ|ƒCƒ“ƒ^
+		@brief	ã‚¦ã‚§ãƒ–ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®å–å¾—
+		@return	ã“ã®ã‚¦ã‚§ãƒ–ãƒªã‚½ãƒ¼ã‚¹ã®WAVEFORMATEXã‚¦ã‚§ãƒ–ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		WAVEFORMATEX*  GetOutputWaveFormatEx() const;
 
 	private:
-		// pImplƒCƒfƒBƒIƒ€
+		// pImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	///	ƒoƒbƒNƒAƒbƒvƒf[ƒ^iej
+	///	ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ï¼ˆè¦ªï¼‰
 	//--------------------------------------------------------------------------------------
 	struct BackupDataBase {
 		BackupDataBase() {}
@@ -181,7 +181,7 @@ namespace basecross {
 
 	};
 	//--------------------------------------------------------------------------------------
-	///	ƒoƒbƒNƒAƒbƒvƒf[ƒ^
+	///	ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿
 	//--------------------------------------------------------------------------------------
 	template<typename T>
 	struct BackupData : public BackupDataBase {
@@ -190,163 +190,163 @@ namespace basecross {
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	VertexPositionNormalTexture“Ç‚İ‚İ—p\‘¢‘Ì
+	///	VertexPositionNormalTextureèª­ã¿è¾¼ã¿ç”¨æ§‹é€ ä½“
 	//--------------------------------------------------------------------------------------
 	struct VertexPositionNormalTexturePOD {
-		float position[3];	///< ˆÊ’uî•ñ
-		float normal[3];	///< –@ü
-		float textureCoordinate[2];	///< ƒeƒNƒXƒ`ƒƒUV
+		float position[3];	///< ä½ç½®æƒ…å ±
+		float normal[3];	///< æ³•ç·š
+		float textureCoordinate[2];	///< ãƒ†ã‚¯ã‚¹ãƒãƒ£UV
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	VertexPositionNormalTangentTexture“Ç‚İ‚İ—p\‘¢‘Ì
+	///	VertexPositionNormalTangentTextureèª­ã¿è¾¼ã¿ç”¨æ§‹é€ ä½“
 	//--------------------------------------------------------------------------------------
 	struct VertexPositionNormalTangentTexturePOD {
-		float position[3];	///< ˆÊ’uî•ñ
-		float normal[3];	///< –@ü
-		float tangent[4];	///< ƒ^ƒ“ƒWƒFƒ“ƒg
-		float textureCoordinate[2];	///< ƒeƒNƒXƒ`ƒƒUV
+		float position[3];	///< ä½ç½®æƒ…å ±
+		float normal[3];	///< æ³•ç·š
+		float tangent[4];	///< ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆ
+		float textureCoordinate[2];	///< ãƒ†ã‚¯ã‚¹ãƒãƒ£UV
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	VertexPositionNormalTextureSkinning“Ç‚İ‚İ—p\‘¢‘Ì
+	///	VertexPositionNormalTextureSkinningèª­ã¿è¾¼ã¿ç”¨æ§‹é€ ä½“
 	//--------------------------------------------------------------------------------------
 	struct VertexPositionNormalTextureSkinningPOD {
-		float position[3];	///< ˆÊ’uî•ñ
-		float normal[3];	///< –@ü
-		float textureCoordinate[2];	///< ƒeƒNƒXƒ`ƒƒUV
-		uint32_t indices[4];	///< ƒ{[ƒ“‚ÌƒCƒ“ƒfƒbƒNƒX
-		float weights[4];	///< Šeƒ{[ƒ“‚ÌƒEƒGƒCƒg
+		float position[3];	///< ä½ç½®æƒ…å ±
+		float normal[3];	///< æ³•ç·š
+		float textureCoordinate[2];	///< ãƒ†ã‚¯ã‚¹ãƒãƒ£UV
+		uint32_t indices[4];	///< ãƒœãƒ¼ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		float weights[4];	///< å„ãƒœãƒ¼ãƒ³ã®ã‚¦ã‚¨ã‚¤ãƒˆ
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	VertexPositionNormalTangentTextureSkinning“Ç‚İ‚İ—p\‘¢‘Ì
+	///	VertexPositionNormalTangentTextureSkinningèª­ã¿è¾¼ã¿ç”¨æ§‹é€ ä½“
 	//--------------------------------------------------------------------------------------
 	struct VertexPositionNormalTangentTextureSkinningPOD {
-		float position[3];	///< ˆÊ’uî•ñ
-		float normal[3];	///< –@ü
-		float tangent[4];	///< ƒ^ƒ“ƒWƒFƒ“ƒg
-		float textureCoordinate[2];	///< ƒeƒNƒXƒ`ƒƒUV
-		uint32_t indices[4];	///< ƒ{[ƒ“‚ÌƒCƒ“ƒfƒbƒNƒX
-		float weights[4];	///< Šeƒ{[ƒ“‚ÌƒEƒGƒCƒg
+		float position[3];	///< ä½ç½®æƒ…å ±
+		float normal[3];	///< æ³•ç·š
+		float tangent[4];	///< ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆ
+		float textureCoordinate[2];	///< ãƒ†ã‚¯ã‚¹ãƒãƒ£UV
+		uint32_t indices[4];	///< ãƒœãƒ¼ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		float weights[4];	///< å„ãƒœãƒ¼ãƒ³ã®ã‚¦ã‚¨ã‚¤ãƒˆ
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	///	ƒ}ƒeƒŠƒAƒ‹\‘¢‘Ì
+	///	ãƒãƒ†ãƒªã‚¢ãƒ«æ§‹é€ ä½“
 	//--------------------------------------------------------------------------------------
 	struct MaterialEx {
-		///ŠJnƒCƒ“ƒfƒbƒNƒX
+		///é–‹å§‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		UINT m_StartIndex;
-		///•`‰æƒCƒ“ƒfƒbƒNƒXƒJƒEƒ“ƒg
+		///æç”»ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚«ã‚¦ãƒ³ãƒˆ
 		UINT m_IndexCount;
-		/// ƒfƒtƒB[ƒYi•¨‘Ì‚ÌFj
+		/// ãƒ‡ãƒ•ã‚£ãƒ¼ã‚ºï¼ˆç‰©ä½“ã®è‰²ï¼‰
 		bsm::Col4 m_Diffuse;
-		/// ƒXƒyƒLƒ…ƒ‰[i”½ËŒõj
+		/// ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ï¼ˆåå°„å…‰ï¼‰
 		bsm::Col4 m_Specular;
-		/// ƒAƒ“ƒrƒGƒ“ƒgiŠÂ‹«Fj
+		/// ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆï¼ˆç’°å¢ƒè‰²ï¼‰
 		bsm::Col4 m_Ambient;
-		/// ƒGƒ~ƒbƒVƒui•úËŒõj
+		/// ã‚¨ãƒŸãƒƒã‚·ãƒ–ï¼ˆæ”¾å°„å…‰ï¼‰
 		bsm::Col4 m_Emissive;
-		/// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[iƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒXj
+		/// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ï¼ˆãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ï¼‰
 		shared_ptr<TextureResource> m_TextureResource;
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ƒ}ƒeƒŠƒAƒ‹“Ç‚İ‚İ—p\‘¢‘Ì
+	///	ãƒãƒ†ãƒªã‚¢ãƒ«èª­ã¿è¾¼ã¿ç”¨æ§‹é€ ä½“
 	//--------------------------------------------------------------------------------------
 	struct MaterialExPOD {
-		///ŠJnƒCƒ“ƒfƒbƒNƒX
+		///é–‹å§‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		UINT m_StartIndex;
-		///•`‰æƒCƒ“ƒfƒbƒNƒXƒJƒEƒ“ƒg
+		///æç”»ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚«ã‚¦ãƒ³ãƒˆ
 		UINT m_IndexCount;
-		/// ƒfƒtƒB[ƒYi•¨‘Ì‚ÌFj
+		/// ãƒ‡ãƒ•ã‚£ãƒ¼ã‚ºï¼ˆç‰©ä½“ã®è‰²ï¼‰
 		float m_Diffuse[4];
-		/// ƒXƒyƒLƒ…ƒ‰[i”½ËŒõj
+		/// ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ï¼ˆåå°„å…‰ï¼‰
 		float m_Specular[4];
-		/// ƒAƒ“ƒrƒGƒ“ƒgiŠÂ‹«Fj
+		/// ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆï¼ˆç’°å¢ƒè‰²ï¼‰
 		float m_Ambient[4];
-		/// ƒGƒ~ƒbƒVƒui•úËŒõj
+		/// ã‚¨ãƒŸãƒƒã‚·ãƒ–ï¼ˆæ”¾å°„å…‰ï¼‰
 		float m_Emissive[4];
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	s—ñ“Ç‚İ‚İ—p\‘¢‘Ì
+	///	è¡Œåˆ—èª­ã¿è¾¼ã¿ç”¨æ§‹é€ ä½“
 	//--------------------------------------------------------------------------------------
 	struct	MatrixPOD
 	{
-		float	m_Mat[4][4];	///>s—ñ
+		float	m_Mat[4][4];	///>è¡Œåˆ—
 	};
 
 
 
 	//--------------------------------------------------------------------------------------
-	///	ƒuƒƒbƒNƒ^ƒCƒv’è‹`iƒ‚ƒfƒ‹ƒƒbƒVƒ…“Ç‚İ‚İ—pj
+	///	ãƒ–ãƒ­ãƒƒã‚¯ã‚¿ã‚¤ãƒ—å®šç¾©ï¼ˆãƒ¢ãƒ‡ãƒ«ãƒ¡ãƒƒã‚·ãƒ¥èª­ã¿è¾¼ã¿ç”¨ï¼‰
 	//--------------------------------------------------------------------------------------
 	enum class BlockType {
-		Vertex,	///< ’¸“_
-		Index,	///< ƒCƒ“ƒfƒbƒNƒX
-		Material,	///< ƒ}ƒeƒŠƒAƒ‹
-		MaterialCount,	///< ƒ}ƒeƒŠƒAƒ‹”
-		SkinedVertex,	///< ƒXƒLƒ“’¸“_
-		BoneCount,	///< ƒ{[ƒ“”
-		AnimeMatrix,	///< ƒAƒjƒ[ƒVƒ‡ƒ“s—ñ
-		VertexWithTangent,	///< ƒ^ƒ“ƒWƒFƒ“ƒg•t‚«’¸“_
-		SkinedVertexWithTangent,	///< ƒXƒLƒ“ƒ^ƒ“ƒWƒFƒ“ƒg•t‚«’¸“_
-		MashCount,				///< ƒƒbƒVƒ…”iƒ}ƒ‹ƒ`ƒƒbƒVƒ…—pj
-		End = 100	///< I—¹
+		Vertex,	///< é ‚ç‚¹
+		Index,	///< ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		Material,	///< ãƒãƒ†ãƒªã‚¢ãƒ«
+		MaterialCount,	///< ãƒãƒ†ãƒªã‚¢ãƒ«æ•°
+		SkinedVertex,	///< ã‚¹ã‚­ãƒ³é ‚ç‚¹
+		BoneCount,	///< ãƒœãƒ¼ãƒ³æ•°
+		AnimeMatrix,	///< ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è¡Œåˆ—
+		VertexWithTangent,	///< ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆä»˜ãé ‚ç‚¹
+		SkinedVertexWithTangent,	///< ã‚¹ã‚­ãƒ³ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆä»˜ãé ‚ç‚¹
+		MashCount,				///< ãƒ¡ãƒƒã‚·ãƒ¥æ•°ï¼ˆãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ç”¨ï¼‰
+		End = 100	///< çµ‚äº†
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ƒuƒƒbƒNƒwƒbƒ_\‘¢‘Ì
+	///	ãƒ–ãƒ­ãƒƒã‚¯ãƒ˜ãƒƒãƒ€æ§‹é€ ä½“
 	//--------------------------------------------------------------------------------------
 	struct BlockHeader {
-		BlockType m_Type;	///< ƒuƒƒbƒNƒ^ƒCƒv
-		UINT m_Size;	///< ƒoƒCƒg”
+		BlockType m_Type;	///< ãƒ–ãƒ­ãƒƒã‚¯ã‚¿ã‚¤ãƒ—
+		UINT m_Size;	///< ãƒã‚¤ãƒˆæ•°
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	/// XBoxƒRƒ“ƒgƒ[ƒ‰[‚ÌƒXƒe[ƒ^ƒXBXINPUT_STATE”h¶
+	/// XBoxã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã€‚XINPUT_STATEæ´¾ç”Ÿ
 	//--------------------------------------------------------------------------------------
 	struct CONTROLER_STATE : public XINPUT_STATE
 	{
 
-		WORD wButtons;		///< ƒ{ƒ^ƒ“ó‘Ô
-		BYTE bLeftTrigger;	///< ¶ƒgƒŠƒK
-		BYTE bRightTrigger;	///< ‰EƒgƒŠƒK
+		WORD wButtons;		///< ãƒœã‚¿ãƒ³çŠ¶æ…‹
+		BYTE bLeftTrigger;	///< å·¦ãƒˆãƒªã‚¬
+		BYTE bRightTrigger;	///< å³ãƒˆãƒªã‚¬
 
-		float fThumbRX;	///< ‰EƒXƒeƒBƒbƒNX‚Ìflort•ÏŠ·
-		float fThumbRY;	///< ‰EƒXƒeƒBƒbƒNY‚Ìflort•ÏŠ·
-		float fThumbLX;	///< ¶ƒXƒeƒBƒbƒNX‚Ìflort•ÏŠ·
-		float fThumbLY;	///< ¶ƒXƒeƒBƒbƒNY‚Ìflort•ÏŠ·
-		WORD wNowUpdateButtons;	///< ó‘Ô‚ª•Ï‚í‚Á‚½‚Æ‚«‚Éƒtƒ‰ƒO‚ª—§‚Âƒ{ƒ^ƒ“
-		WORD wPressedButtons;	///< ‰Ÿ‚³‚ê‚½uŠÔ‚ğŠ‚·‚éƒ{ƒ^ƒ“
-		WORD wReleasedButtons;	///< —£‚³‚ê‚½uŠÔ‚ğŠ‚·‚éƒ{ƒ^ƒ“
-		WORD wLastButtons;	///< ˆê‚Â‘O‚Ìƒ{ƒ^ƒ“
-		bool bConnected;	///< Ú‘±‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+		float fThumbRX;	///< å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯Xã®flortå¤‰æ›
+		float fThumbRY;	///< å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯Yã®flortå¤‰æ›
+		float fThumbLX;	///< å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯Xã®flortå¤‰æ›
+		float fThumbLY;	///< å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯Yã®flortå¤‰æ›
+		WORD wNowUpdateButtons;	///< çŠ¶æ…‹ãŒå¤‰ã‚ã£ãŸã¨ãã«ãƒ•ãƒ©ã‚°ãŒç«‹ã¤ãƒœã‚¿ãƒ³
+		WORD wPressedButtons;	///< æŠ¼ã•ã‚ŒãŸç¬é–“ã‚’æ‰€æŒã™ã‚‹ãƒœã‚¿ãƒ³
+		WORD wReleasedButtons;	///< é›¢ã•ã‚ŒãŸç¬é–“ã‚’æ‰€æŒã™ã‚‹ãƒœã‚¿ãƒ³
+		WORD wLastButtons;	///< ä¸€ã¤å‰ã®ãƒœã‚¿ãƒ³
+		bool bConnected;	///< æ¥ç¶šã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
 	};
 	//--------------------------------------------------------------------------------------
-	///ƒL[ƒ{[ƒh‚ÌƒXƒe[ƒ^ƒXBƒ}ƒEƒX‚ÌƒXƒe[ƒ^ƒX‚àæ“¾‚·‚é
+	///ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã€‚ãƒã‚¦ã‚¹ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚‚å–å¾—ã™ã‚‹
 	//--------------------------------------------------------------------------------------
 	struct KEYBOARD_STATE {
-		static const DWORD MAX_KEYVCODE = 256; ///< ƒL[”ãŒÀ
-		bool m_bPushKeyTbl[MAX_KEYVCODE];	///< Œ»İ‚ÌƒL[ƒ{[ƒh‚Ìó‘Ô
-		bool m_bLastKeyTbl[MAX_KEYVCODE];	///< ˆê‚Â‘O‚ÌƒL[ƒ{[ƒh‚Ìó‘Ô
-		bool m_bPressedKeyTbl[MAX_KEYVCODE];	///< ‰Ÿ‚³‚ê‚½uŠÔ‚ÌƒL[ƒ{[ƒh
-		bool m_bUpKeyTbl[MAX_KEYVCODE];		///< —£‚³‚ê‚½uŠÔ‚ÌƒL[ƒ{[ƒh
-		bool m_KeyMessageActive;	///<‰½‚©‚ÌƒL[ƒCƒxƒ“ƒg‚ª”­¶
-		Point2D<int> m_MouseClientPoint; ///< ƒNƒ‰ƒCƒAƒ“ƒgã‚Ìƒ}ƒEƒXƒ|ƒCƒ“ƒg
+		static const DWORD MAX_KEYVCODE = 256; ///< ã‚­ãƒ¼æ•°ä¸Šé™
+		bool m_bPushKeyTbl[MAX_KEYVCODE];	///< ç¾åœ¨ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®çŠ¶æ…‹
+		bool m_bLastKeyTbl[MAX_KEYVCODE];	///< ä¸€ã¤å‰ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®çŠ¶æ…‹
+		bool m_bPressedKeyTbl[MAX_KEYVCODE];	///< æŠ¼ã•ã‚ŒãŸç¬é–“ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰
+		bool m_bUpKeyTbl[MAX_KEYVCODE];		///< é›¢ã•ã‚ŒãŸç¬é–“ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰
+		bool m_KeyMessageActive;	///<ä½•ã‹ã®ã‚­ãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆãŒç™ºç”Ÿ
+		Point2D<int> m_MouseClientPoint; ///< ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆä¸Šã®ãƒã‚¦ã‚¹ãƒã‚¤ãƒ³ãƒˆ
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		KEYBOARD_STATE() :
 			m_KeyMessageActive{ false },
 			m_MouseClientPoint{ 0, 0 }
 		{
-			//ƒL[ƒ{[ƒhƒe[ƒuƒ‹‚Ì‰Šú‰»
+			//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒ†ãƒ¼ãƒ–ãƒ«ã®åˆæœŸåŒ–
 			::ZeroMemory(&m_bLastKeyTbl, sizeof(m_bLastKeyTbl));
 			::ZeroMemory(&m_bPressedKeyTbl, sizeof(m_bPressedKeyTbl));
 			::ZeroMemory(&m_bPushKeyTbl, sizeof(m_bPushKeyTbl));
@@ -354,27 +354,27 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ}ƒEƒXg—p‚Åƒ}ƒEƒX‚ªƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚É‚ ‚é‚©‚Ç‚¤‚©‚Ìƒ`ƒFƒbƒN
-		@param[in]	hWnd	ƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹B
-		@param[in]	UseKeyVec	g—p‚·‚éƒL[ƒR[ƒh”z—ñ
-		@return ƒ}ƒEƒXg—p‚Åƒ}ƒEƒX‚ªƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚É‚ ‚ê‚Îtrue
+		@brief	ãƒã‚¦ã‚¹ä½¿ç”¨ã§ãƒã‚¦ã‚¹ãŒã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé ˜åŸŸã«ã‚ã‚‹ã‹ã©ã†ã‹ã®ãƒã‚§ãƒƒã‚¯
+		@param[in]	hWnd	ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã€‚
+		@param[in]	UseKeyVec	ä½¿ç”¨ã™ã‚‹ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰é…åˆ—
+		@return ãƒã‚¦ã‚¹ä½¿ç”¨ã§ãƒã‚¦ã‚¹ãŒã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé ˜åŸŸã«ã‚ã‚Œã°true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsMouseEnabled(HWND hWnd, vector<DWORD>& UseKeyVec) {
-			//ƒ}ƒEƒXƒ|ƒCƒ“ƒg‚Í0,0‚É‰Šú‰»
+			//ãƒã‚¦ã‚¹ãƒã‚¤ãƒ³ãƒˆã¯0,0ã«åˆæœŸåŒ–
 			m_MouseClientPoint = { 0,0 };
-			//ƒ}ƒEƒX—˜—p‚É‚©‚©‚í‚ç‚¸Aƒ}ƒEƒXƒ|ƒCƒ“ƒ^À•W‚Íİ’è
+			//ãƒã‚¦ã‚¹åˆ©ç”¨ã«ã‹ã‹ã‚ã‚‰ãšã€ãƒã‚¦ã‚¹ãƒã‚¤ãƒ³ã‚¿åº§æ¨™ã¯è¨­å®š
 			POINT p;
 			::GetCursorPos(&p);
 			if (::ScreenToClient(hWnd, &p)) {
-				//ƒNƒ‰ƒCƒAƒ“ƒgÀ•W‚É•ÏŠ·‚Å‚«‚½‚Æ‚«‚Ì‚İAƒ}ƒEƒXÀ•W‚ğİ’è
+				//ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ã«å¤‰æ›ã§ããŸã¨ãã®ã¿ã€ãƒã‚¦ã‚¹åº§æ¨™ã‚’è¨­å®š
 				m_MouseClientPoint = { p.x, p.y };
 			}
 			else {
 				return false;
 			}
 
-			//UseKeyVec‚Éƒ}ƒEƒX‚ª‚ ‚Á‚½ê‡
+			//UseKeyVecã«ãƒã‚¦ã‚¹ãŒã‚ã£ãŸå ´åˆ
 			vector<DWORD> MouseTemp = { VK_LBUTTON, VK_RBUTTON, VK_MBUTTON };
 			bool MouseChk = false;
 			for (auto chk : MouseTemp) {
@@ -384,7 +384,7 @@ namespace basecross {
 					break;
 				}
 			}
-			//ƒ}ƒEƒXg—p‚ÅÀ•W‚ªƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ“à‚È‚çtrue
+			//ãƒã‚¦ã‚¹ä½¿ç”¨ã§åº§æ¨™ãŒã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé ˜åŸŸå†…ãªã‚‰true
 			if (MouseChk) {
 				RECT rc;
 				::GetClientRect(hWnd, &rc);
@@ -396,29 +396,29 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒL[ƒXƒe[ƒg‚ğ“¾‚é
-		@param[in]	hWnd	ƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹BEscƒL[“ü—Í‚ÉƒƒbƒZ[ƒW‚ğ‘—‚é‚½‚ß
-		@param[in]	UseKeyVec	g—p‚·‚éƒL[ƒR[ƒh”z—ñ
-		@return ƒL[“ü—Í‚ª‚ ‚ê‚Îtrue
+		@brief	ã‚­ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å¾—ã‚‹
+		@param[in]	hWnd	ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã€‚Escã‚­ãƒ¼å…¥åŠ›æ™‚ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ã‚‹ãŸã‚
+		@param[in]	UseKeyVec	ä½¿ç”¨ã™ã‚‹ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰é…åˆ—
+		@return ã‚­ãƒ¼å…¥åŠ›ãŒã‚ã‚Œã°true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool GetKeyState(HWND hWnd, vector<DWORD>& UseKeyVec) {
 			m_KeyMessageActive = false;
-			//ˆê‚Â‘O‚ÉƒRƒs[
+			//ä¸€ã¤å‰ã«ã‚³ãƒ”ãƒ¼
 			CopyMemory(m_bLastKeyTbl, m_bPushKeyTbl, sizeof(m_bLastKeyTbl));
-			//ƒL[ƒ{[ƒh‚Ìó‘Ô‚ğ‰Šú‰»
+			//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®çŠ¶æ…‹ã‚’åˆæœŸåŒ–
 			::ZeroMemory(&m_bPushKeyTbl, sizeof(m_bPushKeyTbl));
 			::ZeroMemory(&m_bPressedKeyTbl, sizeof(m_bPressedKeyTbl));
 			::ZeroMemory(&m_bUpKeyTbl, sizeof(m_bUpKeyTbl));
-			//ƒ}ƒEƒX‚Ìƒ`ƒFƒbƒN
+			//ãƒã‚¦ã‚¹ã®ãƒã‚§ãƒƒã‚¯
 			bool MouseEnabled = IsMouseEnabled(hWnd, UseKeyVec);
-			//©•ª©g‚ÉƒtƒH[ƒJƒX‚ª‚È‚¢ê‡‚Ífalse
+			//è‡ªåˆ†è‡ªèº«ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ãŒãªã„å ´åˆã¯false
 			if (::GetFocus() != hWnd) {
 				return false;
 			}
 			SHORT ret = GetAsyncKeyState((int)VK_ESCAPE);
 			if (ret & 0x8000) {
-				//EscƒL[‚Í–³ğŒ‚Éfalse
+				//Escã‚­ãƒ¼ã¯ç„¡æ¡ä»¶ã«false
 				return false;
 			}
 			size_t sz = UseKeyVec.size();
@@ -426,24 +426,24 @@ namespace basecross {
 				ret = GetAsyncKeyState((int)UseKeyVec[i]);
 				if (UseKeyVec[i] == VK_LBUTTON || UseKeyVec[i] == VK_RBUTTON || UseKeyVec[i] == VK_MBUTTON) {
 					if (!MouseEnabled) {
-						//ƒ}ƒEƒX‚ª–³Œø‚È‚çUsed‚É“ü‚Á‚Ä‚¢‚Ä‚à–³‹
+						//ãƒã‚¦ã‚¹ãŒç„¡åŠ¹ãªã‚‰Usedã«å…¥ã£ã¦ã„ã¦ã‚‚ç„¡è¦–
 						continue;
 					}
 				}
 				if (ret & 0x8000) {
 					m_bPushKeyTbl[UseKeyVec[i]] = true;
-					m_KeyMessageActive = true;	//ƒƒbƒZ[ƒW‚ğƒQ[ƒ€‚ªó‚¯æ‚é
+					m_KeyMessageActive = true;	//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ã‚²ãƒ¼ãƒ ãŒå—ã‘å–ã‚‹
 					if (!m_bLastKeyTbl[UseKeyVec[i]]) {
-						//‘O‰ñ‰Ÿ‚³‚ê‚Ä‚È‚­‚Ä¡‰ñ‰Ÿ‚³‚ê‚½
+						//å‰å›æŠ¼ã•ã‚Œã¦ãªãã¦ä»Šå›æŠ¼ã•ã‚ŒãŸ
 						m_bPressedKeyTbl[UseKeyVec[i]] = true;
 					}
 				}
 				else {
-					//ƒL[‚Í‰Ÿ‚³‚ê‚Ä‚È‚¢
+					//ã‚­ãƒ¼ã¯æŠ¼ã•ã‚Œã¦ãªã„
 					if (m_bLastKeyTbl[UseKeyVec[i]]) {
-						//‘O‰ñ‰Ÿ‚³‚ê‚Ä‚¢‚Ä¡‰ñ‰Ÿ‚³‚ê‚Ä‚È‚¢
+						//å‰å›æŠ¼ã•ã‚Œã¦ã„ã¦ä»Šå›æŠ¼ã•ã‚Œã¦ãªã„
 						m_bUpKeyTbl[UseKeyVec[i]] = true;
-						m_KeyMessageActive = true;	//ƒƒbƒZ[ƒW‚ğƒQ[ƒ€‚ªó‚¯æ‚é
+						m_KeyMessageActive = true;	//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ã‚²ãƒ¼ãƒ ãŒå—ã‘å–ã‚‹
 					}
 				}
 			}
@@ -452,16 +452,16 @@ namespace basecross {
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	“ü—Í‹@Ší
+	///	å…¥åŠ›æ©Ÿå™¨
 	//--------------------------------------------------------------------------------------
 	class InputDevice {
-		static const DWORD MAX_CONTROLLERS = 4; // ƒRƒ“ƒgƒ[ƒ‰”
-		vector<CONTROLER_STATE> m_State; // ƒRƒ“ƒgƒ[ƒ‰ƒXƒe[ƒg‚Ì”z—ñ
-		KEYBOARD_STATE m_KeyState; // ƒL[ƒ{[ƒhƒXƒe[ƒg
+		static const DWORD MAX_CONTROLLERS = 4; // ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©æ•°
+		vector<CONTROLER_STATE> m_State; // ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã‚¹ãƒ†ãƒ¼ãƒˆã®é…åˆ—
+		KEYBOARD_STATE m_KeyState; // ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆ
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		@brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		InputDevice() :
@@ -474,16 +474,16 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒfƒXƒgƒ‰ƒNƒ^
+		@brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		~InputDevice() {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒ}ƒEƒX‚ÆƒL[ƒ{[ƒh‚Ìó‘Ô‚ğ“¾‚é
-		@param[in]	hWnd	ƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹BEscƒL[“ü—Í‚ÉƒƒbƒZ[ƒW‚ğ‘—‚é‚½‚ß
-		@param[in]	UseKeyVec	g—p‚·‚éƒL[
-		@return	ƒ}ƒEƒX‚©ƒL[ƒ{[ƒhƒƒbƒZ[ƒW‚ª‚ ‚ê‚Îtrue
+		@brief ãƒã‚¦ã‚¹ã¨ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®çŠ¶æ…‹ã‚’å¾—ã‚‹
+		@param[in]	hWnd	ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã€‚Escã‚­ãƒ¼å…¥åŠ›æ™‚ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ã‚‹ãŸã‚
+		@param[in]	UseKeyVec	ä½¿ç”¨ã™ã‚‹ã‚­ãƒ¼
+		@return	ãƒã‚¦ã‚¹ã‹ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒã‚ã‚Œã°true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool ResetInputState(HWND hWnd, vector<DWORD>& UseKeyVec) {
@@ -492,37 +492,37 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒRƒ“ƒgƒ[ƒ‰[‚Ìó‘Ô‚ğm_State‚Éæ“¾‚·‚é
+		@brief ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®çŠ¶æ…‹ã‚’m_Stateã«å–å¾—ã™ã‚‹
 		*/
 		//--------------------------------------------------------------------------------------
 		void ResetControlerState() {
 			DWORD dwResult;
 			for (DWORD i = 0; i < MAX_CONTROLLERS; i++)
 			{
-				//ˆê‚Â‘O‚Ìó‘Ô‚ğ•Û‘¶
+				//ä¸€ã¤å‰ã®çŠ¶æ…‹ã‚’ä¿å­˜
 				m_State[i].wLastButtons = m_State[i].Gamepad.wButtons;
-				// XInput‚©‚çŒ»İ‚ÌƒXƒe[ƒ^ƒX‚ğ“¾‚é
+				// XInputã‹ã‚‰ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’å¾—ã‚‹
 				XINPUT_STATE State;
 				dwResult = XInputGetState(i, &State);
 				if (dwResult == ERROR_SUCCESS) {
 					m_State[i].dwPacketNumber = State.dwPacketNumber;
 					m_State[i].Gamepad = State.Gamepad;
 					m_State[i].bConnected = true;
-					//ƒ{ƒ^ƒ“‚Ìİ’è
-					//ƒRƒs[
+					//ãƒœã‚¿ãƒ³ã®è¨­å®š
+					//ã‚³ãƒ”ãƒ¼
 					m_State[i].wButtons = m_State[i].Gamepad.wButtons;
-					//XVƒ{ƒ^ƒ“
+					//æ›´æ–°ãƒœã‚¿ãƒ³
 					m_State[i].wNowUpdateButtons = m_State[i].Gamepad.wButtons;
 					m_State[i].bLeftTrigger = m_State[i].Gamepad.bLeftTrigger;
 					m_State[i].bRightTrigger = m_State[i].Gamepad.bRightTrigger;
-					//‘O‰ñ‚æ‚è•Ï‰»‚µ‚Ä‚¢‚éƒ{ƒ^ƒ“‚Ì‚İƒtƒ‰ƒO‚ğ—§‚Ä‚é
-					//XOR‰‰Z‚É‚æ‚èÀ‘•
+					//å‰å›ã‚ˆã‚Šå¤‰åŒ–ã—ã¦ã„ã‚‹ãƒœã‚¿ãƒ³ã®ã¿ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
+					//XORæ¼”ç®—ã«ã‚ˆã‚Šå®Ÿè£…
 					m_State[i].wNowUpdateButtons ^= m_State[i].wLastButtons;
-					//‰Ÿ‚³‚ê‚½uŠÔ‚ğƒZƒbƒg
+					//æŠ¼ã•ã‚ŒãŸç¬é–“ã‚’ã‚»ãƒƒãƒˆ
 					m_State[i].wPressedButtons = m_State[i].wNowUpdateButtons & m_State[i].wButtons;
-					//—£‚³‚ê‚½uŠÔ‚ğƒZƒbƒg
+					//é›¢ã•ã‚ŒãŸç¬é–“ã‚’ã‚»ãƒƒãƒˆ
 					m_State[i].wReleasedButtons = m_State[i].wNowUpdateButtons & (m_State[i].wButtons ^ 0xffff);
-					//ƒŒƒo[‚Ìƒfƒbƒhƒ][ƒ“‚Ìİ’è
+					//ãƒ¬ãƒãƒ¼ã®ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³ã®è¨­å®š
 					if ((m_State[i].Gamepad.sThumbLX < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
 						m_State[i].Gamepad.sThumbLX > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) &&
 						(m_State[i].Gamepad.sThumbLY < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
@@ -570,18 +570,18 @@ namespace basecross {
 				}
 			}
 		}
-		//	ƒAƒNƒZƒT
+		//	ã‚¢ã‚¯ã‚»ã‚µ
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒL[ƒ{[ƒhƒXƒe[ƒg‚Ìæ“¾
-		@return	ƒL[ƒ{[ƒhƒXƒe[ƒg
+		@brief ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã®å–å¾—
+		@return	ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		const KEYBOARD_STATE& GetKeyState() const { return m_KeyState; }
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒRƒ“ƒgƒ[ƒ‰ƒXƒe[ƒg‚Ìæ“¾
-		@return	ƒRƒ“ƒgƒ[ƒ‰ƒXƒe[ƒg
+		@brief ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã‚¹ãƒ†ãƒ¼ãƒˆã®å–å¾—
+		@return	ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã‚¹ãƒ†ãƒ¼ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		const vector<CONTROLER_STATE>& GetControlerVec()const { return m_State; }
@@ -592,20 +592,20 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	ƒCƒxƒ“ƒg”z‘—ƒNƒ‰ƒX
+	///	ã‚¤ãƒ™ãƒ³ãƒˆé…é€ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class EventDispatcher {
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	SceneBasePtr	ƒV[ƒ“ƒx[ƒX‚Ìƒ|ƒCƒ“ƒ^
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	SceneBasePtr	ã‚·ãƒ¼ãƒ³ãƒ™ãƒ¼ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		explicit EventDispatcher();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual ~EventDispatcher();
@@ -613,60 +613,60 @@ namespace basecross {
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒCƒxƒ“ƒg‚ğó‚¯æ‚éƒOƒ‹[ƒv‚É’Ç‰ÁiƒOƒ‹[ƒv‚ª‚È‚¯‚ê‚Î‚»‚Ì–¼‘O‚Åì¬j
-		@param[in]	GroupKey	ƒOƒ‹[ƒv–¼
-		@param[in]	Receiver	ó‚¯è‘¤ƒIƒuƒWƒFƒNƒg
-		@return	‚È‚µ
+		@brief	ã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—ã«è¿½åŠ ï¼ˆã‚°ãƒ«ãƒ¼ãƒ—ãŒãªã‘ã‚Œã°ãã®åå‰ã§ä½œæˆï¼‰
+		@param[in]	GroupKey	ã‚°ãƒ«ãƒ¼ãƒ—å
+		@param[in]	Receiver	å—ã‘æ‰‹å´ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void AddEventReceiverGroup(const wstring& GroupKey, const shared_ptr<ObjectInterface>& Receiver);
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒCƒxƒ“ƒg‚ÌPOSTiƒLƒ…[‚É“ü‚ê‚éj
-		@param[in]	Delay	”z‘—‚Ü‚Å‚ÌŠÔ
-		@param[in]	Sender	‘—‚è‘¤ƒIƒuƒWƒFƒNƒginullptr‰Âj
-		@param[in]	Receiver	ó‚¯è‘¤ƒIƒuƒWƒFƒNƒg
-		@param[in]	MsgStr	ƒƒbƒZ[ƒW•¶š—ñ
-		@param[in]	Info	’Ç‰Áî•ñ‚ğ‚à‚Âƒ†[ƒU[ƒf[ƒ^
-		@return	‚È‚µ
+		@brief	ã‚¤ãƒ™ãƒ³ãƒˆã®POSTï¼ˆã‚­ãƒ¥ãƒ¼ã«å…¥ã‚Œã‚‹ï¼‰
+		@param[in]	Delay	é…é€ã¾ã§ã®æ™‚é–“
+		@param[in]	Sender	é€ã‚Šå´ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆnullptrå¯ï¼‰
+		@param[in]	Receiver	å—ã‘æ‰‹å´ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+		@param[in]	MsgStr	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸æ–‡å­—åˆ—
+		@param[in]	Info	è¿½åŠ æƒ…å ±ã‚’ã‚‚ã¤ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void PostEvent(float Delay, const shared_ptr<ObjectInterface>& Sender, const shared_ptr<ObjectInterface>& Receiver,
 			const wstring& MsgStr, const  shared_ptr<void>& Info = shared_ptr<void>());
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒCƒxƒ“ƒg‚ÌPOSTiƒLƒ…[‚É“ü‚ê‚éj
-		@param[in]	DispatchTime	POST‚·‚éŠÔi0‚ÅŸ‚Ìƒ^[ƒ“j
-		@param[in]	Sender	ƒCƒxƒ“ƒg‘—MÒinullptr‰Âj
-		@param[in]	ReceiverKey	ó‚¯è‘¤ƒIƒuƒWƒFƒNƒg‚ğ”»•Ê‚·‚éƒL[
-		@param[in]	MsgStr	ƒƒbƒZ[ƒW
-		@param[in,out]	Info	’Ç‰Áî•ñ
-		@return	‚È‚µ
+		@brief	ã‚¤ãƒ™ãƒ³ãƒˆã®POSTï¼ˆã‚­ãƒ¥ãƒ¼ã«å…¥ã‚Œã‚‹ï¼‰
+		@param[in]	DispatchTime	POSTã™ã‚‹æ™‚é–“ï¼ˆ0ã§æ¬¡ã®ã‚¿ãƒ¼ãƒ³ï¼‰
+		@param[in]	Sender	ã‚¤ãƒ™ãƒ³ãƒˆé€ä¿¡è€…ï¼ˆnullptrå¯ï¼‰
+		@param[in]	ReceiverKey	å—ã‘æ‰‹å´ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’åˆ¤åˆ¥ã™ã‚‹ã‚­ãƒ¼
+		@param[in]	MsgStr	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+		@param[in,out]	Info	è¿½åŠ æƒ…å ±
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void PostEvent(float DispatchTime, const shared_ptr<ObjectInterface>& Sender, const wstring& ReceiverKey,
 			const wstring& MsgStr, const  shared_ptr<void>& Info = shared_ptr<void>());
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒCƒxƒ“ƒg‚ÌSENDiƒLƒ…[‚É“ü‚ê‚¸‚É‚»‚Ì‚Ü‚Ü‘—‚éj
-		@param[in]	Sender	‘—‚è‘¤ƒIƒuƒWƒFƒNƒginullptr‰Âj
-		@param[in]	Receiver	ó‚¯è‘¤ƒIƒuƒWƒFƒNƒg
-		@param[in]	MsgStr	ƒƒbƒZ[ƒW•¶š—ñ
-		@param[in]	Info	’Ç‰Áî•ñ‚ğ‚à‚Âƒ†[ƒU[ƒf[ƒ^
-		@return	‚È‚µ
+		@brief	ã‚¤ãƒ™ãƒ³ãƒˆã®SENDï¼ˆã‚­ãƒ¥ãƒ¼ã«å…¥ã‚Œãšã«ãã®ã¾ã¾é€ã‚‹ï¼‰
+		@param[in]	Sender	é€ã‚Šå´ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆnullptrå¯ï¼‰
+		@param[in]	Receiver	å—ã‘æ‰‹å´ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+		@param[in]	MsgStr	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸æ–‡å­—åˆ—
+		@param[in]	Info	è¿½åŠ æƒ…å ±ã‚’ã‚‚ã¤ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SendEvent(const shared_ptr<ObjectInterface>& Sender, const shared_ptr<ObjectInterface>& Receiver,
 			const wstring& MsgStr, const  shared_ptr<void>& Info = shared_ptr<void>());
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒCƒxƒ“ƒg‚ÌSENDiƒLƒ…[‚É“ü‚ê‚¸‚É‚»‚Ì‚Ü‚Ü‘—‚éj
-		@param[in]	Sender	ƒCƒxƒ“ƒg‘—MÒinullptr‰Âj
-		@param[in]	Receiver	ƒCƒxƒ“ƒgóMÒinullptr•s‰Âj
-		@param[in]	MsgStr	ƒƒbƒZ[ƒW
-		@param[in,out]	Info	’Ç‰Áî•ñ
-		@return	‚È‚µ
+		@brief	ã‚¤ãƒ™ãƒ³ãƒˆã®SENDï¼ˆã‚­ãƒ¥ãƒ¼ã«å…¥ã‚Œãšã«ãã®ã¾ã¾é€ã‚‹ï¼‰
+		@param[in]	Sender	ã‚¤ãƒ™ãƒ³ãƒˆé€ä¿¡è€…ï¼ˆnullptrå¯ï¼‰
+		@param[in]	Receiver	ã‚¤ãƒ™ãƒ³ãƒˆå—ä¿¡è€…ï¼ˆnullpträ¸å¯ï¼‰
+		@param[in]	MsgStr	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+		@param[in,out]	Info	è¿½åŠ æƒ…å ±
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SendEvent(const shared_ptr<ObjectInterface>& Sender, const wstring& ReceiverKey,
@@ -674,26 +674,26 @@ namespace basecross {
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	POSTƒCƒxƒ“ƒg‚Ì‘—M(ƒƒCƒ“ƒ‹[ƒv‚ÅŒÄ‚Î‚ê‚é)
-		@return	‚È‚µ
+		@brief	POSTã‚¤ãƒ™ãƒ³ãƒˆã®é€ä¿¡(ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—ã§å‘¼ã°ã‚Œã‚‹)
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void DispatchDelayedEvwnt();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒLƒ…[‚É‚½‚Ü‚Á‚Ä‚¢‚éƒƒbƒZ[ƒW‚ğíœ‚·‚é
-		@return	‚È‚µ
+		@brief	ã‚­ãƒ¥ãƒ¼ã«ãŸã¾ã£ã¦ã„ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‰Šé™¤ã™ã‚‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void ClearEventQ();
 	private:
-		// pImplƒCƒfƒBƒIƒ€
+		// pImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
-		//ƒRƒs[‹Ö~
+		//ã‚³ãƒ”ãƒ¼ç¦æ­¢
 		EventDispatcher(const EventDispatcher&) = delete;
 		EventDispatcher& operator=(const EventDispatcher&) = delete;
-		//ƒ€[ƒu‹Ö~
+		//ãƒ ãƒ¼ãƒ–ç¦æ­¢
 		EventDispatcher(const EventDispatcher&&) = delete;
 		EventDispatcher& operator=(const EventDispatcher&&) = delete;
 	};
@@ -705,7 +705,7 @@ namespace basecross {
 #include <mferror.h>
 
 	//--------------------------------------------------------------------------------------
-	///	ƒ€[ƒr[—pƒR[ƒ‹ƒoƒbƒNƒNƒ‰ƒX
+	///	ãƒ ãƒ¼ãƒ“ãƒ¼ç”¨ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class MediaPlayerCallback : public IMFPMediaPlayerCallback
 	{
@@ -747,206 +747,206 @@ namespace basecross {
 */
 
 	//--------------------------------------------------------------------------------------
-	///	ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒNƒ‰ƒX
+	///	ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class App {
-		// ƒfƒŠ[ƒ^[
+		// ãƒ‡ãƒªãƒ¼ã‚¿ãƒ¼
 		struct AppDeleter
 		{
 			void operator()(App *p) { delete p; }
 		};
-		static unique_ptr<App, AppDeleter> m_App;		///< Singleton‚Å—˜—p‚·‚é©•ª©g‚Ìƒ|ƒCƒ“ƒ^
-		HINSTANCE m_hInstance;							///< ƒ‚ƒWƒ…[ƒ‹‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
-		HWND m_hWnd;									///< ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹
-		bool m_FullScreen;								///< ƒtƒ‹ƒXƒNƒŠ[ƒ“‚©‚Ç‚¤‚©
-		UINT m_GameWidth;								///< ƒQ[ƒ€”Õ•(ƒsƒNƒZƒ‹)
-		UINT m_GameHeight;								///< ƒQ[ƒ€”Õ‚‚³(ƒsƒNƒZƒ‹)
-		bool m_ShadowActive;							///< ‰e‚ª—LŒø‚©‚Ç‚¤‚©
-		shared_ptr<DeviceResources> m_DeviceResources;	///< ƒfƒoƒCƒX
-		shared_ptr<SceneInterface> m_SceneInterface;	///< ƒV[ƒ“
-		shared_ptr<EventDispatcher> m_EventDispatcher;	///< ƒCƒxƒ“ƒg‘—MƒIƒuƒWƒFƒNƒg
+		static unique_ptr<App, AppDeleter> m_App;		///< Singletonã§åˆ©ç”¨ã™ã‚‹è‡ªåˆ†è‡ªèº«ã®ãƒã‚¤ãƒ³ã‚¿
+		HINSTANCE m_hInstance;							///< ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
+		HWND m_hWnd;									///< ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«
+		bool m_FullScreen;								///< ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‹ã©ã†ã‹
+		UINT m_GameWidth;								///< ã‚²ãƒ¼ãƒ ç›¤å¹…(ãƒ”ã‚¯ã‚»ãƒ«)
+		UINT m_GameHeight;								///< ã‚²ãƒ¼ãƒ ç›¤é«˜ã•(ãƒ”ã‚¯ã‚»ãƒ«)
+		bool m_ShadowActive;							///< å½±ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
+		shared_ptr<DeviceResources> m_DeviceResources;	///< ãƒ‡ãƒã‚¤ã‚¹
+		shared_ptr<SceneInterface> m_SceneInterface;	///< ã‚·ãƒ¼ãƒ³
+		shared_ptr<EventDispatcher> m_EventDispatcher;	///< ã‚¤ãƒ™ãƒ³ãƒˆé€ä¿¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
-		map<wstring, shared_ptr<BaseResource> > m_ResMap;		///< ƒL[‚ÆƒŠƒ\[ƒX‚ğŒ‹‚Ñ•t‚¯‚éƒ}ƒbƒv
-		StepTimer m_Timer;										///< ƒ^ƒCƒ}[
-		InputDevice m_InputDevice;					///< “ü—Í‹@Ší
-		shared_ptr<XAudio2Manager> m_XAudio2Manager; ///< XAudio2ƒI[ƒfƒBƒIƒ}ƒl[ƒWƒƒ
-		wstring		m_wstrModulePath;		///< ƒ‚ƒWƒ…[ƒ‹–¼ƒtƒ‹ƒpƒX
-		wstring		m_wstrDir;				///< ƒ‚ƒWƒ…[ƒ‹‚ª‚ ‚éƒfƒBƒŒƒNƒgƒŠ
-		wstring		m_wstrDataPath;			///< â‘ÎƒpƒX‚ÌƒƒfƒBƒAƒfƒBƒŒƒNƒgƒŠ
-		wstring		m_wstrShadersPath;		///< â‘ÎƒpƒX‚ÌƒVƒF[ƒ_ƒfƒBƒŒƒNƒgƒŠ
-		wstring		m_wstrRelativeDataPath;	///< ‘Š‘ÎƒpƒX‚ÌƒƒfƒBƒAƒfƒBƒŒƒNƒgƒŠ
-		wstring		m_wstrRelativeShadersPath;	///< ‘Š‘ÎƒpƒX‚ÌƒVƒF[ƒ_ƒfƒBƒŒƒNƒgƒŠ
+		map<wstring, shared_ptr<BaseResource> > m_ResMap;		///< ã‚­ãƒ¼ã¨ãƒªã‚½ãƒ¼ã‚¹ã‚’çµã³ä»˜ã‘ã‚‹ãƒãƒƒãƒ—
+		StepTimer m_Timer;										///< ã‚¿ã‚¤ãƒãƒ¼
+		InputDevice m_InputDevice;					///< å…¥åŠ›æ©Ÿå™¨
+		shared_ptr<XAudio2Manager> m_XAudio2Manager; ///< XAudio2ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒãƒãƒ¼ã‚¸ãƒ£
+		wstring		m_wstrModulePath;		///< ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«åãƒ•ãƒ«ãƒ‘ã‚¹
+		wstring		m_wstrDir;				///< ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãŒã‚ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+		wstring		m_wstrDataPath;			///< çµ¶å¯¾ãƒ‘ã‚¹ã®ãƒ¡ãƒ‡ã‚£ã‚¢ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+		wstring		m_wstrShadersPath;		///< çµ¶å¯¾ãƒ‘ã‚¹ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+		wstring		m_wstrRelativeDataPath;	///< ç›¸å¯¾ãƒ‘ã‚¹ã®ãƒ¡ãƒ‡ã‚£ã‚¢ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+		wstring		m_wstrRelativeShadersPath;	///< ç›¸å¯¾ãƒ‘ã‚¹ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 
-		bool m_ScriptsDirActive;				///<ƒXƒNƒŠƒvƒgƒfƒBƒŒƒNƒgƒŠ‚ª—LŒø‚©‚Ç‚¤‚©
-		wstring		m_wstrScriptsPath;			///< â‘ÎƒpƒX‚ÌƒXƒNƒŠƒvƒgƒfƒBƒŒƒNƒgƒŠ
-		wstring		m_wstrRelativeScriptsPath;	///< ‘Š‘ÎƒpƒX‚ÌƒXƒNƒŠƒvƒgƒfƒBƒŒƒNƒgƒŠ
+		bool m_ScriptsDirActive;				///<ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒæœ‰åŠ¹ã‹ã©ã†ã‹
+		wstring		m_wstrScriptsPath;			///< çµ¶å¯¾ãƒ‘ã‚¹ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+		wstring		m_wstrRelativeScriptsPath;	///< ç›¸å¯¾ãƒ‘ã‚¹ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 
-		wstring		m_wstrRelativeAssetsPath;	///< ‘Š‘ÎƒpƒX‚ÌƒAƒZƒbƒgƒfƒBƒŒƒNƒgƒŠ
+		wstring		m_wstrRelativeAssetsPath;	///< ç›¸å¯¾ãƒ‘ã‚¹ã®ã‚¢ã‚»ãƒƒãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 
 		App(HINSTANCE hInstance, HWND hWnd, bool FullScreen, UINT Width, UINT Height);
 		virtual ~App() {}
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒVƒ“ƒOƒ‹ƒgƒ“\’z‚ÆƒAƒNƒZƒTi\’z‚Í‚·‚×‚Ä‚Ìƒpƒ‰ƒ[ƒ^‚ğİ’è‚·‚éj
-		@param[in]	hInstance	ƒCƒ“ƒXƒ^ƒ“ƒX
-		@param[in]	hWnd		ƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹
-		@param[in]	FullScreen	ƒtƒ‹ƒXƒNƒŠ[ƒ“‚©‚Ç‚¤‚©
-		@param[in]	Width	•
-		@param[in]	Height	‚‚³
-		@param[in]	ShadowActive	‰e‚ª—LŒø‚©‚Ç‚¤‚©
-		@return	App‚Ìunique_ptr
+		@brief ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³æ§‹ç¯‰ã¨ã‚¢ã‚¯ã‚»ã‚µï¼ˆæ§‹ç¯‰æ™‚ã¯ã™ã¹ã¦ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹ï¼‰
+		@param[in]	hInstance	ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
+		@param[in]	hWnd		ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«
+		@param[in]	FullScreen	ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‹ã©ã†ã‹
+		@param[in]	Width	å¹…
+		@param[in]	Height	é«˜ã•
+		@param[in]	ShadowActive	å½±ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
+		@return	Appã®unique_ptr
 		*/
 		//--------------------------------------------------------------------------------------
 		static unique_ptr<App, AppDeleter>& CreateApp(HINSTANCE hInstance, HWND hWnd,
 			bool FullScreen, UINT Width, UINT Height,bool ShadowActive = true);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒVƒ“ƒOƒ‹ƒgƒ“ƒAƒNƒZƒT
-		@return	App‚Ìunique_ptr
+		@brief ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¢ã‚¯ã‚»ã‚µ
+		@return	Appã®unique_ptr
 		*/
 		//--------------------------------------------------------------------------------------
 		static unique_ptr<App, AppDeleter>& GetApp();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief App‚ªì¬‚³‚ê‚Ä‚é‚©ƒ`ƒFƒbƒN
-		@return	ì¬‚³‚ê‚Ä‚¢‚ê‚Îtrue
+		@brief AppãŒä½œæˆã•ã‚Œã¦ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+		@return	ä½œæˆã•ã‚Œã¦ã„ã‚Œã°true
 		*/
 		//--------------------------------------------------------------------------------------
 		static bool AppCheck();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ‹­§”jŠü
-		@return	‚È‚µ
+		@brief å¼·åˆ¶ç ´æ£„
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void DeleteApp();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ’Ç‰Á‰Šú‰»iƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Ì€”õ‚È‚Çj
-		@param[in]	ShadowActive	‰e‚ª—LŒø‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief è¿½åŠ åˆæœŸåŒ–ï¼ˆãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®æº–å‚™ãªã©ï¼‰
+		@param[in]	ShadowActive	å½±ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void AfterInitContents(bool ShadowActive);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒI[ƒfƒBƒIƒ}ƒl[ƒWƒƒ‚Ìæ“¾
-		@return	ƒI[ƒfƒBƒIƒ}ƒl[ƒWƒƒ
+		@brief ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒãƒãƒ¼ã‚¸ãƒ£ã®å–å¾—
+		@return	ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒãƒãƒ¼ã‚¸ãƒ£
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<XAudio2Manager>& GetXAudio2Manager();
-		//ƒAƒNƒZƒT
+		//ã‚¢ã‚¯ã‚»ã‚µ
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
-		@return	ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
+		@brief ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
+		@return	ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		HINSTANCE GetHInstance() const { return m_hInstance; }
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹‚Ìæ“¾
-		@return	ƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹
+		@brief ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã®å–å¾—
+		@return	ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«
 		*/
 		//--------------------------------------------------------------------------------------
 		HWND GetHWnd() const { return m_hWnd; }
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒtƒ‹ƒXƒNƒŠ[ƒ“‚©‚Ç‚¤‚©
-		@return	ƒtƒ‹ƒXƒNƒŠ[ƒ“‚È‚çtrue
+		@brief ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‹ã©ã†ã‹
+		@return	ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsFullScreen() const { return m_FullScreen; }
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒtƒ‹ƒXƒNƒŠ[ƒ“‚©‚Ç‚¤‚©
-		@return	ƒtƒ‹ƒXƒNƒŠ[ƒ“‚È‚çtrue
+		@brief ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‹ã©ã†ã‹
+		@return	ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool GetFullScreen() const { return m_FullScreen; }
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒ‚[ƒh‚É‚·‚é
-		@return	‚È‚µ
+		@brief ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ãƒ¢ãƒ¼ãƒ‰ã«ã™ã‚‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetFullScreenMode();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒEƒBƒ“ƒhƒEƒ‚[ƒh‚É‚·‚é
-		@param[in]	r	V‚µ‚¢ƒEƒCƒ“ƒhƒEƒTƒCƒY
-		@return	‚È‚µ
+		@brief ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰ã«ã™ã‚‹
+		@param[in]	r	æ–°ã—ã„ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetWindowMode(const RECT& r);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒQ[ƒ€”Õ‚Ì•‚Ìæ“¾
-		@return	ƒQ[ƒ€”Õ‚Ì•
+		@brief ã‚²ãƒ¼ãƒ ç›¤ã®å¹…ã®å–å¾—
+		@return	ã‚²ãƒ¼ãƒ ç›¤ã®å¹…
 		*/
 		//--------------------------------------------------------------------------------------
 		UINT GetGameWidth() const { return m_GameWidth; }
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒQ[ƒ€”Õ‚Ì•‚Ìæ“¾
-		@return	ƒQ[ƒ€”Õ‚Ì•
+		@brief ã‚²ãƒ¼ãƒ ç›¤ã®å¹…ã®å–å¾—
+		@return	ã‚²ãƒ¼ãƒ ç›¤ã®å¹…
 		*/
 		//--------------------------------------------------------------------------------------
 		UINT GetGameHeight() const { return m_GameHeight; }
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒfƒoƒCƒXƒŠƒ\[ƒX‚Ìæ“¾
-		@return	ƒfƒoƒCƒXƒŠƒ\[ƒX
+		@brief ãƒ‡ãƒã‚¤ã‚¹ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
+		@return	ãƒ‡ãƒã‚¤ã‚¹ãƒªã‚½ãƒ¼ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<DeviceResources> GetDeviceResources() const { return m_DeviceResources; }
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒV[ƒ“ƒCƒ“ƒ^[ƒtƒFƒCƒX‚Ìæ“¾
-		@return	ƒV[ƒ“ƒCƒ“ƒ^[ƒtƒFƒCƒX
+		@brief ã‚·ãƒ¼ãƒ³ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã®å–å¾—
+		@return	ã‚·ãƒ¼ãƒ³ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<SceneInterface> GetSceneInterface() const { return m_SceneInterface; }
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒV[ƒ“ƒCƒ“ƒ^[ƒtƒFƒCƒX‚Ìİ’è
-		@param[in]	ptr	ƒV[ƒ“ƒCƒ“ƒ^[ƒtƒFƒCƒX
-		@return	‚È‚µ
+		@brief ã‚·ãƒ¼ãƒ³ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã®è¨­å®š
+		@param[in]	ptr	ã‚·ãƒ¼ãƒ³ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetSceneInterface(const shared_ptr<SceneInterface>& ptr) { m_SceneInterface = ptr; }
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒCƒxƒ“ƒg‘—MƒIƒuƒWƒFƒNƒg‚Ìæ“¾
-		@return	ƒCƒxƒ“ƒg‘—MƒIƒuƒWƒFƒNƒg
+		@brief ã‚¤ãƒ™ãƒ³ãƒˆé€ä¿¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å–å¾—
+		@return	ã‚¤ãƒ™ãƒ³ãƒˆé€ä¿¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<EventDispatcher> GetEventDispatcher() const { return m_EventDispatcher; }
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒCƒxƒ“ƒg‘—MƒIƒuƒWƒFƒNƒg‚Ìİ’è
-		@param[in]	ptr	ƒCƒxƒ“ƒg‘—MƒIƒuƒWƒFƒNƒg
-		@return	‚È‚µ
+		@brief ã‚¤ãƒ™ãƒ³ãƒˆé€ä¿¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¨­å®š
+		@param[in]	ptr	ã‚¤ãƒ™ãƒ³ãƒˆé€ä¿¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetEventDispatcher(const shared_ptr<EventDispatcher>& ptr) { m_EventDispatcher = ptr; }
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒ^ƒCƒ}[‚Ìæ“¾(İ’èƒAƒNƒZƒT‚Í‚È‚¢)
-		@return	ƒ^ƒCƒ}[
+		@brief ã‚¿ã‚¤ãƒãƒ¼ã®å–å¾—(è¨­å®šã‚¢ã‚¯ã‚»ã‚µã¯ãªã„)
+		@return	ã‚¿ã‚¤ãƒãƒ¼
 		*/
 		//--------------------------------------------------------------------------------------
 		StepTimer& GetStepTimer() { return m_Timer; }
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŒo‰ßŠÔ‚ğ“¾‚é
-		@return	‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŒo‰ßŠÔ
+		@brief å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®çµŒéæ™‚é–“ã‚’å¾—ã‚‹
+		@return	å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®çµŒéæ™‚é–“
 		*/
 		//--------------------------------------------------------------------------------------
 		float GetElapsedTime() {
 			double d = m_Timer.GetElapsedSeconds();
-			//0œZ‰ñ”ğ‚Ì‚½‚ß1000•ª‚Ì1–¢–‚Í•Ô‚ç‚È‚¢‚æ‚¤‚É‚·‚é
+			//0é™¤ç®—å›é¿ã®ãŸã‚1000åˆ†ã®1æœªæº€ã¯è¿”ã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
 			if (d < 0.001) {
 				d = 0.001;
 			}
@@ -954,17 +954,17 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief “ü—Í‹@Ší‚Ìæ“¾
-		@return	“ü—Í‹@Ší
+		@brief å…¥åŠ›æ©Ÿå™¨ã®å–å¾—
+		@return	å…¥åŠ›æ©Ÿå™¨
 		*/
 		//--------------------------------------------------------------------------------------
 		const InputDevice& GetInputDevice() const { return m_InputDevice; }
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒ}ƒEƒX‚ÆƒL[ƒ{[ƒh‚Ìó‘Ô‚ğ“¾‚é
-		@param[in]	hWnd	ƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹BEscƒL[“ü—Í‚ÉƒƒbƒZ[ƒW‚ğ‘—‚é‚½‚ß
-		@param[in]	UseKeyVec	g—p‚·‚éƒL[
-		@return	ƒ}ƒEƒX‚©ƒL[ƒ{[ƒhƒƒbƒZ[ƒW‚ª‚ ‚ê‚Îtrue
+		@brief ãƒã‚¦ã‚¹ã¨ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®çŠ¶æ…‹ã‚’å¾—ã‚‹
+		@param[in]	hWnd	ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã€‚Escã‚­ãƒ¼å…¥åŠ›æ™‚ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ã‚‹ãŸã‚
+		@param[in]	UseKeyVec	ä½¿ç”¨ã™ã‚‹ã‚­ãƒ¼
+		@return	ãƒã‚¦ã‚¹ã‹ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒã‚ã‚Œã°true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool ResetInputState(HWND hWnd, vector<DWORD>& UseKeyVec) {
@@ -973,19 +973,19 @@ namespace basecross {
 			}
 			return m_InputDevice.ResetInputState(hWnd, UseKeyVec);
 		}
-		//‘€ì
+		//æ“ä½œ
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief  ƒV[ƒ“‚Ìì¬
-		@tparam	T	ƒV[ƒ“ƒNƒ‰ƒX
-		@tparam Ts...	‰Â•Ï’·ƒpƒ‰ƒ[ƒ^Œ^
-		@return	ƒV[ƒ“
+		@brief  ã‚·ãƒ¼ãƒ³ã®ä½œæˆ
+		@tparam	T	ã‚·ãƒ¼ãƒ³ã‚¯ãƒ©ã‚¹
+		@tparam Ts...	å¯å¤‰é•·ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿å‹
+		@return	ã‚·ãƒ¼ãƒ³
 		*/
 		//--------------------------------------------------------------------------------------
 		template<typename T, typename... Ts>
 		shared_ptr<T> CreateScene(Ts&&... params) {
 			try {
-				//ƒV[ƒ“‚Ìì¬
+				//ã‚·ãƒ¼ãƒ³ã®ä½œæˆ
 				auto Ptr = ObjectFactory::Create<T>(params...);
 				m_SceneInterface = Ptr;
 				return Ptr;
@@ -996,9 +996,9 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒV[ƒ“‚Ìæ“¾
-		@tparam	T	ƒV[ƒ“ƒNƒ‰ƒX
-		@return	ƒV[ƒ“
+		@brief ã‚·ãƒ¼ãƒ³ã®å–å¾—
+		@tparam	T	ã‚·ãƒ¼ãƒ³ã‚¯ãƒ©ã‚¹
+		@return	ã‚·ãƒ¼ãƒ³
 		*/
 		//--------------------------------------------------------------------------------------
 		template<typename T>
@@ -1006,9 +1006,9 @@ namespace basecross {
 			try {
 				auto Ptr = dynamic_pointer_cast<T>(m_SceneInterface);
 				if (!Ptr) {
-					wstring str = L"m_SceneInterface‚ğ";
+					wstring str = L"m_SceneInterfaceã‚’";
 					str += Util::GetWSTypeName<T>();
-					str += L"Œ^‚ÌƒV[ƒ“‚ÉŒ^•ÏŠ·‚Å‚«‚Ü‚¹‚ñ";
+					str += L"å‹ã®ã‚·ãƒ¼ãƒ³ã«å‹å¤‰æ›ã§ãã¾ã›ã‚“";
 					throw BaseException(
 						str,
 						L"if(!dynamic_pointer_cast<T>(m_SceneInterface))",
@@ -1024,17 +1024,17 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒV[ƒ“‚ÌXV‚Æ•`‰æ
-		@param[in]	SyncInterval	ƒCƒ“ƒ^[ƒoƒ‹’l
-		@return	‚È‚µ
+		@brief ã‚·ãƒ¼ãƒ³ã®æ›´æ–°ã¨æç”»
+		@param[in]	SyncInterval	ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«å€¤
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void UpdateDraw(unsigned int SyncInterval);
-		//!ƒtƒŒ[ƒ€ƒJƒEƒ“ƒg‚ğ“¾‚é
+		//!ãƒ•ãƒ¬ãƒ¼ãƒ ã‚«ã‚¦ãƒ³ãƒˆã‚’å¾—ã‚‹
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒtƒŒ[ƒ€ƒJƒEƒ“ƒg‚ğ“¾‚é
-		@return	ƒtƒŒ[ƒ€ƒJƒEƒ“ƒg
+		@brief ãƒ•ãƒ¬ãƒ¼ãƒ ã‚«ã‚¦ãƒ³ãƒˆã‚’å¾—ã‚‹
+		@return	ãƒ•ãƒ¬ãƒ¼ãƒ ã‚«ã‚¦ãƒ³ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		unsigned int GetFrameCount() {
@@ -1042,48 +1042,48 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒŠƒ\[ƒX‚Ì“o˜^id•¡‚ª‚ ‚ê‚Î‰½‚à‚µ‚È‚¢‚ªA–µ‚‚ª‚ ‚ê‚Î—áŠOj
-		@param[in]	Key ƒŠƒ\[ƒXƒL[
-		@param[in]	ResObj ƒŠƒ\[ƒX
-		@return	‚È‚µi–µ‚‚ª‚ ‚ê‚Î—áŠOj
+		@brief ãƒªã‚½ãƒ¼ã‚¹ã®ç™»éŒ²ï¼ˆé‡è¤‡ãŒã‚ã‚Œã°ä½•ã‚‚ã—ãªã„ãŒã€çŸ›ç›¾ãŒã‚ã‚Œã°ä¾‹å¤–ï¼‰
+		@param[in]	Key ãƒªã‚½ãƒ¼ã‚¹ã‚­ãƒ¼
+		@param[in]	ResObj ãƒªã‚½ãƒ¼ã‚¹
+		@return	ãªã—ï¼ˆçŸ›ç›¾ãŒã‚ã‚Œã°ä¾‹å¤–ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		void RegisterResource(const wstring& Key, const shared_ptr<BaseResource>& ResObj);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒeƒNƒXƒ`ƒƒ‚Ì“o˜^(“¯‚¶ƒL[‚ÌƒeƒNƒXƒ`ƒƒ‚ª‚È‚¯‚ê‚Îƒtƒ@ƒCƒ‹–¼‚Åì¬‚µA“o˜^)B<br />
-		“¯‚¶–¼‘O‚ÌƒeƒNƒXƒ`ƒƒ‚ª‚ ‚ê‚Î‚»‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‚·
-		@param[in]	Key	ƒŠƒ\[ƒXƒL[
-		@param[in]	TextureFileName ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼
-		@param[in]	TexType = L"WIC" ƒeƒNƒXƒ`ƒƒƒ^ƒCƒviƒfƒtƒHƒ‹ƒgWICj
-		@return	ƒŠƒ\[ƒX‚ÌƒXƒ}[ƒgƒ|ƒCƒ“ƒ^
+		@brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç™»éŒ²(åŒã˜ã‚­ãƒ¼ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒãªã‘ã‚Œã°ãƒ•ã‚¡ã‚¤ãƒ«åã§ä½œæˆã—ã€ç™»éŒ²)ã€‚<br />
+		åŒã˜åå‰ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒã‚ã‚Œã°ãã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¿”ã™
+		@param[in]	Key	ãƒªã‚½ãƒ¼ã‚¹ã‚­ãƒ¼
+		@param[in]	TextureFileName ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«å
+		@param[in]	TexType = L"WIC" ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¿ã‚¤ãƒ—ï¼ˆãƒ‡ãƒ•ã‚©ãƒ«ãƒˆWICï¼‰
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<TextureResource> RegisterTexture(const wstring& Key,
 			const wstring& TextureFileName, const wstring& TexType = L"WIC");
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief WavƒŠƒ\[ƒX‚Ì“o˜^(“¯‚¶ƒL[‚ÌWavƒŠƒ\[ƒX‚ª‚È‚¯‚ê‚Îƒtƒ@ƒCƒ‹–¼‚Åì¬‚µA“o˜^)B<br />
-		“¯‚¶–¼‘O‚ÌWavƒŠƒ\[ƒX‚ª‚ ‚ê‚Î‚»‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‚·
-		@param[in]	Key ƒŠƒ\[ƒXƒL[
-		@param[in]	WavFileName ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼
-		@return	ƒŠƒ\[ƒX‚ÌƒXƒ}[ƒgƒ|ƒCƒ“ƒ^
+		@brief Wavãƒªã‚½ãƒ¼ã‚¹ã®ç™»éŒ²(åŒã˜ã‚­ãƒ¼ã®Wavãƒªã‚½ãƒ¼ã‚¹ãŒãªã‘ã‚Œã°ãƒ•ã‚¡ã‚¤ãƒ«åã§ä½œæˆã—ã€ç™»éŒ²)ã€‚<br />
+		åŒã˜åå‰ã®Wavãƒªã‚½ãƒ¼ã‚¹ãŒã‚ã‚Œã°ãã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¿”ã™
+		@param[in]	Key ãƒªã‚½ãƒ¼ã‚¹ã‚­ãƒ¼
+		@param[in]	WavFileName ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«å
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<AudioResource> RegisterWav(const wstring& Key, const wstring& WavFileName);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒŠƒ\[ƒX‚ÌŠm”F
-		@tparam	T Šm”F‚·‚éƒŠƒ\[ƒXŒ^
-		@param[in]	Key ƒŠƒ\[ƒXƒL[
-		@return	‚»‚ÌƒL[‚ÌƒŠƒ\[ƒX‚ª‚ ‚ê‚ÎtrueA–³‚¯‚ê‚ÎfalseiŒ©‚Â‚©‚Á‚Ä‚àw’è‚ÌŒ^‚Å‚È‚¯‚ê‚Î—áŠOj
+		@brief ãƒªã‚½ãƒ¼ã‚¹ã®ç¢ºèª
+		@tparam	T ç¢ºèªã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹å‹
+		@param[in]	Key ãƒªã‚½ãƒ¼ã‚¹ã‚­ãƒ¼
+		@return	ãã®ã‚­ãƒ¼ã®ãƒªã‚½ãƒ¼ã‚¹ãŒã‚ã‚Œã°trueã€ç„¡ã‘ã‚Œã°falseï¼ˆè¦‹ã¤ã‹ã£ã¦ã‚‚æŒ‡å®šã®å‹ã§ãªã‘ã‚Œã°ä¾‹å¤–ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		template <typename T>
 		bool CheckResource(const wstring& Key) const {
 			if (Key == L"") {
 				throw BaseException(
-					L"ƒL[‚ª‹ó”’‚Å‚·",
+					L"ã‚­ãƒ¼ãŒç©ºç™½ã§ã™",
 					L"if(Key == L\"\")",
 					L"App::CheckResource()"
 				);
@@ -1091,16 +1091,16 @@ namespace basecross {
 			map<wstring, shared_ptr<BaseResource> >::const_iterator it;
 			it = m_ResMap.find(Key);
 			if (it != m_ResMap.end()) {
-				//w’è‚Ì–¼‘O‚ªŒ©‚Â‚©‚Á‚½
+				//æŒ‡å®šã®åå‰ãŒè¦‹ã¤ã‹ã£ãŸ
 				shared_ptr<T> pT = dynamic_pointer_cast<T>(it->second);
 				if (pT) {
 					return true;
 				}
 				else {
 					wstring keyerr = Key;
-					wstring str = L"w’è‚ÌƒL[‚Í";
+					wstring str = L"æŒ‡å®šã®ã‚­ãƒ¼ã¯";
 					str += Util::GetWSTypeName<T>();
-					str += L"*Œ^‚É•ÏŠ·‚Å‚«‚Ü‚¹‚ñ";
+					str += L"*å‹ã«å¤‰æ›ã§ãã¾ã›ã‚“";
 					throw BaseException(
 						str,
 						keyerr,
@@ -1112,15 +1112,15 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒL[‚ÌŠm”F
-		@param[in]	Key ƒŠƒ\[ƒXƒL[
-		@return	‚»‚ÌƒL[‚ª‘¶İ‚·‚ê‚ÎtrueBƒŠƒ\[ƒX‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‚·‚í‚¯‚Å‚Í‚È‚¢BƒL[‚Ìd•¡‚Ì‚İƒ`ƒFƒbƒN
+		@brief ã‚­ãƒ¼ã®ç¢ºèª
+		@param[in]	Key ãƒªã‚½ãƒ¼ã‚¹ã‚­ãƒ¼
+		@return	ãã®ã‚­ãƒ¼ãŒå­˜åœ¨ã™ã‚Œã°trueã€‚ãƒªã‚½ãƒ¼ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¿”ã™ã‚ã‘ã§ã¯ãªã„ã€‚ã‚­ãƒ¼ã®é‡è¤‡ã®ã¿ãƒã‚§ãƒƒã‚¯
 		*/
 		//--------------------------------------------------------------------------------------
 		bool CheckResourceKey(const wstring& Key) const {
 			if (Key == L"") {
 				throw BaseException(
-					L"ƒL[‚ª‹ó”’‚Å‚·",
+					L"ã‚­ãƒ¼ãŒç©ºç™½ã§ã™",
 					L"if(Key == L\"\")",
 					L"App::CheckResourceKey()"
 				);
@@ -1134,17 +1134,17 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒŠƒ\[ƒX‚Ìæ“¾
-		@tparam	T æ“¾‚·‚éƒŠƒ\[ƒXŒ^
-		@param[in]	Key ƒŠƒ\[ƒXƒL[
-		@return	ƒŠƒ\[ƒX‚Ìƒ|ƒCƒ“ƒ^i“o˜^‚ª‚È‚¯‚ê‚Î—áŠOj
+		@brief ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
+		@tparam	T å–å¾—ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹å‹
+		@param[in]	Key ãƒªã‚½ãƒ¼ã‚¹ã‚­ãƒ¼
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿ï¼ˆç™»éŒ²ãŒãªã‘ã‚Œã°ä¾‹å¤–ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		template <typename T>
 		shared_ptr<T> GetResource(const wstring& Key) const {
 			if (Key == L"") {
 				throw BaseException(
-					L"ƒL[‚ª‹ó”’‚Å‚·",
+					L"ã‚­ãƒ¼ãŒç©ºç™½ã§ã™",
 					L"if(Key == L\"\")",
 					L"App::GetResource()"
 				);
@@ -1152,16 +1152,16 @@ namespace basecross {
 			map<wstring, shared_ptr<BaseResource> >::const_iterator it;
 			it = m_ResMap.find(Key);
 			if (it != m_ResMap.end()) {
-				//w’è‚Ì–¼‘O‚ªŒ©‚Â‚©‚Á‚½
+				//æŒ‡å®šã®åå‰ãŒè¦‹ã¤ã‹ã£ãŸ
 				shared_ptr<T> pT = dynamic_pointer_cast<T>(it->second);
 				if (pT) {
 					return pT;
 				}
 				else {
 					wstring keyerr = Key;
-					wstring str = L"w’è‚ÌƒL[‚Í";
+					wstring str = L"æŒ‡å®šã®ã‚­ãƒ¼ã¯";
 					str += Util::GetWSTypeName<T>();
-					str += L"*Œ^‚É•ÏŠ·‚Å‚«‚Ü‚¹‚ñ";
+					str += L"*å‹ã«å¤‰æ›ã§ãã¾ã›ã‚“";
 					throw BaseException(
 						str,
 						keyerr,
@@ -1170,10 +1170,10 @@ namespace basecross {
 				}
 			}
 			else {
-				//Œ©‚Â‚©‚ç‚È‚¢
+				//è¦‹ã¤ã‹ã‚‰ãªã„
 				wstring keyerr = Key;
 				throw BaseException(
-					L"w’è‚ÌƒL[‚Í‘¶İ‚µ‚Ü‚¹‚ñ",
+					L"æŒ‡å®šã®ã‚­ãƒ¼ã¯å­˜åœ¨ã—ã¾ã›ã‚“",
 					keyerr,
 					L"App::GetResource()"
 				);
@@ -1181,10 +1181,10 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒŠƒ\[ƒXƒL[‚Ìæ“¾
-		@tparam	T æ“¾‚·‚éƒŠƒ\[ƒXŒ^
-		@param[in]	Ptr ƒŠƒ\[ƒX‚Ìƒ|ƒCƒ“ƒ^
-		@return	ƒŠƒ\[ƒXƒL[i“o˜^‚ª‚È‚¯‚ê‚Î—áŠOj
+		@brief ãƒªã‚½ãƒ¼ã‚¹ã‚­ãƒ¼ã®å–å¾—
+		@tparam	T å–å¾—ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹å‹
+		@param[in]	Ptr ãƒªã‚½ãƒ¼ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã‚­ãƒ¼ï¼ˆç™»éŒ²ãŒãªã‘ã‚Œã°ä¾‹å¤–ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		template <typename T>
@@ -1195,26 +1195,26 @@ namespace basecross {
 					return it->first;
 				}
 			}
-			//Œ©‚Â‚©‚ç‚È‚¢
+			//è¦‹ã¤ã‹ã‚‰ãªã„
 			wstring str = Util::GetWSTypeName<T>();
 			throw BaseException(
-				L"w’è‚ÌƒŠƒ\[ƒX‚Í‘¶İ‚µ‚Ü‚¹‚ñB",
+				L"æŒ‡å®šã®ãƒªã‚½ãƒ¼ã‚¹ã¯å­˜åœ¨ã—ã¾ã›ã‚“ã€‚",
 				str,
 				L"App::GetResourceKey()"
 			);
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒŠƒ\[ƒX‚Ì‰ğ•ú
-		@tparam	T ‰ğ•ú‚·‚éƒŠƒ\[ƒXŒ^
-		@param[in]	Key ƒŠƒ\[ƒXƒL[
-		@return	‚È‚µi“o˜^‚ª‚È‚¯‚ê‚Î—áŠOj
+		@brief ãƒªã‚½ãƒ¼ã‚¹ã®è§£æ”¾
+		@tparam	T è§£æ”¾ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹å‹
+		@param[in]	Key ãƒªã‚½ãƒ¼ã‚¹ã‚­ãƒ¼
+		@return	ãªã—ï¼ˆç™»éŒ²ãŒãªã‘ã‚Œã°ä¾‹å¤–ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		template <typename T>
 		void UnRegisterResource(const wstring& Key) {
 			try {
-				//ˆÈ‰º‚É¸”s‚µ‚½‚ç—áŠO‚ª“Š‚°‚ç‚ê‚é
+				//ä»¥ä¸‹ã«å¤±æ•—ã—ãŸã‚‰ä¾‹å¤–ãŒæŠ•ã’ã‚‰ã‚Œã‚‹
 				shared_ptr<T> p = GetResource<T>(Key);
 				m_ResMap.erase(Key);
 				p.reset();
@@ -1226,9 +1226,9 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒ‚ƒWƒ…[ƒ‹ƒfƒBƒŒƒNƒgƒŠ‚Ìæ“¾
-		@param[out]	Dir æ“¾‚·‚é•¶š—ñ
-		@return	‚È‚µiDir‚É‘Š‘ÎƒpƒX‚ª“ü‚éj
+		@brief ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å–å¾—
+		@param[out]	Dir å–å¾—ã™ã‚‹æ–‡å­—åˆ—
+		@return	ãªã—ï¼ˆDirã«ç›¸å¯¾ãƒ‘ã‚¹ãŒå…¥ã‚‹ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		void GetModuleDirectory(wstring& Dir) {
@@ -1237,9 +1237,9 @@ namespace basecross {
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒf[ƒ^ƒfƒBƒŒƒNƒgƒŠ‚Ìæ“¾
-		@param[out]	Dir æ“¾‚·‚é•¶š—ñ
-		@return	‚È‚µiDir‚É‘Š‘ÎƒpƒX‚ª“ü‚éj
+		@brief ãƒ‡ãƒ¼ã‚¿ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å–å¾—
+		@param[out]	Dir å–å¾—ã™ã‚‹æ–‡å­—åˆ—
+		@return	ãªã—ï¼ˆDirã«ç›¸å¯¾ãƒ‘ã‚¹ãŒå…¥ã‚‹ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		void GetDataDirectory(wstring& Dir) {
@@ -1247,8 +1247,8 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒf[ƒ^ƒfƒBƒŒƒNƒgƒŠ‚Ìæ“¾i•¶š—ñ‚ÌQÆ‚ğæ“¾j
-		@return	ƒf[ƒ^ƒfƒBƒŒƒNƒgƒŠ‚Ì‘Š‘ÎƒpƒX
+		@brief ãƒ‡ãƒ¼ã‚¿ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å–å¾—ï¼ˆæ–‡å­—åˆ—ã®å‚ç…§ã‚’å–å¾—ï¼‰
+		@return	ãƒ‡ãƒ¼ã‚¿ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ç›¸å¯¾ãƒ‘ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		const wstring& GetDataDirWString()const {
@@ -1257,9 +1257,9 @@ namespace basecross {
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒVƒF[ƒ_ƒfƒBƒŒƒNƒgƒŠ‚Ìæ“¾
-		@param[out]	Dir æ“¾‚·‚é•¶š—ñ
-		@return	‚È‚µiDir‚É‘Š‘ÎƒpƒX‚ª“ü‚éj
+		@brief ã‚·ã‚§ãƒ¼ãƒ€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å–å¾—
+		@param[out]	Dir å–å¾—ã™ã‚‹æ–‡å­—åˆ—
+		@return	ãªã—ï¼ˆDirã«ç›¸å¯¾ãƒ‘ã‚¹ãŒå…¥ã‚‹ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		void GetShadersDirectory(wstring& Dir) {
@@ -1267,8 +1267,8 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒVƒF[ƒ_ƒfƒBƒŒƒNƒgƒŠ‚Ìæ“¾i•¶š—ñ‚ÌQÆ‚ğæ“¾j
-		@return	ƒVƒF[ƒ_ƒfƒBƒŒƒNƒgƒŠ‚Ì‘Š‘ÎƒpƒX
+		@brief ã‚·ã‚§ãƒ¼ãƒ€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å–å¾—ï¼ˆæ–‡å­—åˆ—ã®å‚ç…§ã‚’å–å¾—ï¼‰
+		@return	ã‚·ã‚§ãƒ¼ãƒ€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ç›¸å¯¾ãƒ‘ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		const wstring& GetShadersPath()const {
@@ -1276,8 +1276,8 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒXƒNƒŠƒvƒgƒfƒBƒŒƒNƒgƒŠ‚ª—LŒø‚©‚Ç‚¤‚©
-		@return	—LŒø‚È‚çtrue
+		@brief ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒæœ‰åŠ¹ã‹ã©ã†ã‹
+		@return	æœ‰åŠ¹ãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsScriptsDirActive() const {
@@ -1285,15 +1285,15 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒXƒNƒŠƒvƒgƒfƒBƒŒƒNƒgƒŠ‚Ìæ“¾
-		@param[out]	Dir æ“¾‚·‚é•¶š—ñ
-		@return	‚È‚µiDir‚É‘Š‘ÎƒpƒX‚ª“ü‚éj
+		@brief ã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å–å¾—
+		@param[out]	Dir å–å¾—ã™ã‚‹æ–‡å­—åˆ—
+		@return	ãªã—ï¼ˆDirã«ç›¸å¯¾ãƒ‘ã‚¹ãŒå…¥ã‚‹ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		void GetScriptsDirectory(wstring& Dir) {
 			if (!m_ScriptsDirActive) {
 				throw BaseException(
-					L"ƒXƒNƒŠƒvƒg‚ª—LŒø‚Å‚Í‚ ‚è‚Ü‚¹‚ñB",
+					L"ã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒæœ‰åŠ¹ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚",
 					L"if (!m_ScriptsDirActive)",
 					L"App::GetScriptsDirectory()"
 				);
@@ -1302,15 +1302,15 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒXƒNƒŠƒvƒg‚Ìâ‘ÎƒfƒBƒŒƒNƒgƒŠ‚Ìæ“¾
-		@param[out]	Dir æ“¾‚·‚é•¶š—ñ
-		@return	‚È‚µiDir‚É‘Š‘ÎƒpƒX‚ª“ü‚éj
+		@brief ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®çµ¶å¯¾ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å–å¾—
+		@param[out]	Dir å–å¾—ã™ã‚‹æ–‡å­—åˆ—
+		@return	ãªã—ï¼ˆDirã«ç›¸å¯¾ãƒ‘ã‚¹ãŒå…¥ã‚‹ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		void GetScriptsFullDirectory(wstring& Dir) {
 			if (!m_ScriptsDirActive) {
 				throw BaseException(
-					L"ƒXƒNƒŠƒvƒg‚ª—LŒø‚Å‚Í‚ ‚è‚Ü‚¹‚ñB",
+					L"ã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒæœ‰åŠ¹ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚",
 					L"if (!m_ScriptsDirActive)",
 					L"App::GetScriptsFullDirectory()"
 				);
@@ -1320,9 +1320,9 @@ namespace basecross {
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒAƒZƒbƒgƒfƒBƒŒƒNƒgƒŠ‚Ìæ“¾
-		@param[out]	Dir æ“¾‚·‚é•¶š—ñ
-		@return	‚È‚µiDir‚É‘Š‘ÎƒpƒX‚ª“ü‚éj
+		@brief ã‚¢ã‚»ãƒƒãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å–å¾—
+		@param[out]	Dir å–å¾—ã™ã‚‹æ–‡å­—åˆ—
+		@return	ãªã—ï¼ˆDirã«ç›¸å¯¾ãƒ‘ã‚¹ãŒå…¥ã‚‹ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		void GetAssetsDirectory(wstring& Dir) {
@@ -1330,78 +1330,78 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒEƒCƒ“ƒhƒEƒƒbƒZ[ƒW
-		@param[in]	message	ƒƒbƒZ[ƒW
-		@param[in]	wParam	‘æ1ƒpƒ‰ƒ[ƒ^
-		@param[in]	lParam	‘æ2ƒpƒ‰ƒ[ƒ^
-		@return	‚È‚µ
+		@brief ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+		@param[in]	message	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+		@param[in]	wParam	ç¬¬1ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+		@param[in]	lParam	ç¬¬2ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void OnMessage(UINT message, WPARAM wParam, LPARAM lParam);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒEƒCƒ“ƒhƒEƒƒbƒZ[ƒWiƒTƒCƒY‚ª•ÏX‚³‚ê‚½Bƒ€[ƒr[—pj
-		@return	‚È‚µ
+		@brief ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ï¼ˆã‚µã‚¤ã‚ºãŒå¤‰æ›´ã•ã‚ŒãŸã€‚ãƒ ãƒ¼ãƒ“ãƒ¼ç”¨ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void OnSize();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒ€[ƒr[‚ğ“Ç‚İ‚ñ‚ÅƒvƒŒƒC‚·‚é
-		@param[in]	MovieFileName	ƒ€[ƒr[–¼
-		@return	‚È‚µ
+		@brief ãƒ ãƒ¼ãƒ“ãƒ¼ã‚’èª­ã¿è¾¼ã‚“ã§ãƒ—ãƒ¬ã‚¤ã™ã‚‹
+		@param[in]	MovieFileName	ãƒ ãƒ¼ãƒ“ãƒ¼å
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void PlayMovie(const wstring& MovieFileName);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒ€[ƒr[‚ª—LŒø‚©‚Ç‚¤‚©
-		@return	—LŒø‚È‚çtrue
+		@brief ãƒ ãƒ¼ãƒ“ãƒ¼ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
+		@return	æœ‰åŠ¹ãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsMovieActive();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒ€[ƒr[‚ğupdate‚·‚é
-		@return	‚È‚µ
+		@brief ãƒ ãƒ¼ãƒ“ãƒ¼ã‚’updateã™ã‚‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void UpdateMovie();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒ€[ƒr[‚ğƒNƒŠƒA‚·‚é
-		@return	‚È‚µ
+		@brief ãƒ ãƒ¼ãƒ“ãƒ¼ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void ClearMovie();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒ€[ƒr[‚ª©“®ƒŠƒs[ƒg‚©‚Ç‚¤‚©
-		@return	—LŒø‚È‚çtrue
+		@brief ãƒ ãƒ¼ãƒ“ãƒ¼ãŒè‡ªå‹•ãƒªãƒ”ãƒ¼ãƒˆã‹ã©ã†ã‹
+		@return	æœ‰åŠ¹ãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsMovieAutoRepeat() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒ€[ƒr[‚ª©“®ƒŠƒs[ƒg‚©‚Ç‚¤‚©‚ğİ’è‚·‚é
-		@param[in]	b	ƒ€[ƒr[‚ª©“®ƒŠƒs[ƒg‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief ãƒ ãƒ¼ãƒ“ãƒ¼ãŒè‡ªå‹•ãƒªãƒ”ãƒ¼ãƒˆã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹
+		@param[in]	b	ãƒ ãƒ¼ãƒ“ãƒ¼ãŒè‡ªå‹•ãƒªãƒ”ãƒ¼ãƒˆã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetMovieAutoRepeat(bool b);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒŠƒ\[ƒX‚ğíœ‚·‚é
-		@return	‚È‚µ
+		@brief ãƒªã‚½ãƒ¼ã‚¹ã‚’å‰Šé™¤ã™ã‚‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void OnDestroy();
-		map<wstring, wstring> m_ConfigMap;		///< ”Ä—pƒ}ƒbƒviŠeƒAƒvƒŠƒPƒVƒ‡ƒ“‚Åg—p‚Å‚«‚éj
+		map<wstring, wstring> m_ConfigMap;		///< æ±ç”¨ãƒãƒƒãƒ—ï¼ˆå„ã‚¢ãƒ—ãƒªã‚±ã‚·ãƒ§ãƒ³ã§ä½¿ç”¨ã§ãã‚‹ï¼‰
 	private:
-		//ƒRƒs[‹Ö~
+		//ã‚³ãƒ”ãƒ¼ç¦æ­¢
 		App(const App&) = delete;
 		App& operator=(const App&) = delete;
-		//ƒ€[ƒu‹Ö~
+		//ãƒ ãƒ¼ãƒ–ç¦æ­¢
 		App(const App&&) = delete;
 		App& operator=(const App&&) = delete;
 	};

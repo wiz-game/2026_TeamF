@@ -22,6 +22,7 @@ namespace basecross
 
 		//Drawコンポーネント
 		m_draw = AddComponent<Texture2DrawComp>();
+		m_draw->CreateTexture(m_scale.x, m_scale.z);
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
 		m_draw->SetTextureResource(L"GoalDoor");
 		m_draw->SetTexture2(L"Black");
@@ -45,6 +46,8 @@ namespace basecross
 
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetFixed(true);
+
+		AddComponent<TextureCollision>();
 	}
 
 	void GoalDoor::OnUpdate()
