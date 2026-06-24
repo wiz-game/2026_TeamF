@@ -7,6 +7,8 @@ namespace basecross
 {
 	class PauseMenu :public GameObject
 	{
+		std::shared_ptr<OptionMenu>m_option;
+
 		std::vector<std::shared_ptr<SpriteGeneric>> m_menuLabel;
 		std::vector<std::shared_ptr<SpriteGeneric>> m_menuButton;
 		std::vector<Vec2> m_menuPosList;
@@ -39,6 +41,7 @@ namespace basecross
 		void OnDraw()override;
 
 		void SelectMenu();
+		void ClosePause();
 		void ToOption();
 
 		void SetPause(bool isPause)

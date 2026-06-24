@@ -162,12 +162,14 @@ namespace basecross
 
 		if (pad.wPressedButtons & XINPUT_GAMEPAD_A)
 		{
+			auto stagte = GetStage();
 			SoundManager::Get().PlaySE(L"CONFIRM", 1.0f);
 			switch (m_selectMenu)
 			{
 			case 1:
 				//コンティニュー
 				SetPause(false);
+				ClosePause();
 				break;
 			case 2:
 				//リトライ
@@ -188,6 +190,18 @@ namespace basecross
 			}
 		}
 		scene->SetDebugString(wss.str());
+	}
+
+	void PauseMenu::ClosePause()
+	{
+		auto stage = GetStage();
+		auto objs = stage->GetGameObjectVec();
+		for (auto& obj : objs)
+		{
+			obj->SetUpdateActive(true);
+		}
+		//BGMを再開
+		SoundManager::Get().PauseBGM(false);
 	}
 
 	void PauseMenu::ToOption()

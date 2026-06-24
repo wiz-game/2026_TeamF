@@ -96,6 +96,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PauseMenu.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SpriteGeneric.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OptionMenu.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Pause.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h" />
@@ -190,5 +191,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OptionMenu.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Pause.h" />
   </ItemGroup>
 </Project>

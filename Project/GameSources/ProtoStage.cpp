@@ -70,6 +70,7 @@ namespace basecross {
 			auto gauge = AddGameObject<InkGauge>();
 
 			//ポーズメニュー作成
+			//m_pause = ObjectFactory::Create<Pause>(GetThis<Stage>());
 			m_pauseMenu = ObjectFactory::Create<PauseMenu>(GetThis<Stage>());
 			m_optionMenu = ObjectFactory::Create<OptionMenu>(GetThis<Stage>());
 
@@ -226,13 +227,15 @@ namespace basecross {
 		auto& pad = device.GetControlerVec()[0];
 		GameController::Update();
 
+		//m_pause->PauseBase();
 		bool pause = m_pauseMenu->GetPause();
-		//m_isPause = pause;
+		m_isPause = pause;
 
 		if (pad.wPressedButtons & XINPUT_GAMEPAD_START)
 		{
 			m_pauseMenu->SetPause(!pause);
 			Pause(!pause);
+			//m_pause->OnPause(!pause);
 			//BGMを中断
 			SoundManager::Get().PauseBGM(!pause);
 		}
