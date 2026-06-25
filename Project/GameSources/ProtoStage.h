@@ -28,6 +28,16 @@ namespace basecross {
 		void CreateViewLight(); //ビューの作成
 
 		bool m_isPause = false;
+		bool m_isOption = false;
+
+		enum PauseState
+		{
+			none,
+			pause,
+			option
+		};
+
+		PauseState m_ps = PauseState::none;
 
 	public:
 		//構築と破棄
@@ -41,6 +51,9 @@ namespace basecross {
 
 		void Pause(bool isPause);
 		bool IsPause()const;
+
+		void Option(bool isOption);
+		bool IsOption()const;
 	};
 }
 //end basecross

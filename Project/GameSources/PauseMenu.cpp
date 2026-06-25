@@ -162,13 +162,12 @@ namespace basecross
 
 		if (pad.wPressedButtons & XINPUT_GAMEPAD_A)
 		{
-			auto stagte = GetStage();
+			m_lock = true;
 			SoundManager::Get().PlaySE(L"CONFIRM", 1.0f);
 			switch (m_selectMenu)
 			{
 			case 1:
 				//コンティニュー
-				SetPause(false);
 				ClosePause();
 				break;
 			case 2:
@@ -181,14 +180,20 @@ namespace basecross
 				break;
 			case 4:
 				//ステージセレクトヘ
-				PostEvent(0.1f, GetThis<PauseMenu>(), scene, L"ToSelectStage");
+				PostEvent(0.05f, GetThis<PauseMenu>(), scene, L"ToSelectStage");
 				break;
 			case 5:
 				//タイトルへ
-				PostEvent(0.1f, GetThis<PauseMenu>(), scene, L"ToTitleStage");
+				PostEvent(0.05f, GetThis<PauseMenu>(), scene, L"ToTitleStage");
 				break;
 			}
 		}
+		if (pad.wPressedButtons & XINPUT_GAMEPAD_B)
+		{
+			SoundManager::Get().PlaySE(L"SELECT", 1.0f);
+			ClosePause();
+		}
+
 		scene->SetDebugString(wss.str());
 	}
 
@@ -200,13 +205,15 @@ namespace basecross
 		{
 			obj->SetUpdateActive(true);
 		}
+		SetPause(false);
 		//BGMを再開
 		SoundManager::Get().PauseBGM(false);
 	}
 
 	void PauseMenu::ToOption()
 	{
+		bool a = false;
 		SetPause(false);
-		//m_option->SetOption(true);
+		//m_option->ToPause();
 	}
 }

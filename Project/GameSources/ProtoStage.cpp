@@ -243,6 +243,7 @@ namespace basecross {
 		if (IsPause())
 		{
 			m_pauseMenu->OnUpdate();
+			//m_optionMenu->OnUpdate();
 		}
 	}
 
@@ -259,15 +260,13 @@ namespace basecross {
 		}
 	}
 
-	bool ProtoStage::IsPause() const
-	{
-		return m_pauseMenu->GetPause() && m_pauseMenu;
-	}
-
 	void ProtoStage::Pause(bool isPause)
 	{
 		bool pause = m_pauseMenu->GetPause();
 		m_isPause = isPause;
+		m_ps = PauseState::pause;
+
+		SoundManager::Get().PlaySE(L"SELECT", 1.0f);
 
 		auto objs = GetGameObjectVec();
 		auto view = GetView();
@@ -277,6 +276,23 @@ namespace basecross {
 			obj->SetUpdateActive(!m_isPause);
 		}
 		//EffectManager::g_Instance->OnDraw();
+	}
+
+	bool ProtoStage::IsPause() const
+	{
+		return m_pauseMenu->GetPause() && m_pauseMenu;
+	}
+
+	void ProtoStage::Option(bool isOption)
+	{
+		bool option = m_optionMenu->GetOption();
+		m_isOption = isOption;
+		m_ps = PauseState::option;
+	}
+
+	bool ProtoStage::IsOption() const
+	{
+		return m_optionMenu->GetOption() && m_optionMenu;
 	}
 }
 //end basecross

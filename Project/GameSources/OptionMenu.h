@@ -11,6 +11,7 @@ namespace basecross
 		std::vector<std::shared_ptr<SpriteGeneric>> m_menuButton;
 		std::vector<Vec2> m_menuPosList;
 		std::shared_ptr<SpriteGeneric> m_menuCursor;
+		//std::shared_ptr<PauseMenu> m_pause;
 
 		bool m_isOption = false;
 		int m_selectMenu;	//選択中のメニュー
