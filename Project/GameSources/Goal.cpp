@@ -100,6 +100,7 @@ namespace basecross {
 			break;
 
 		case basecross::Goal::State::End:
+			scene->SetResultInk(m_player->GetInk(), m_player->GetMaxInk());
 			//演出終了、画面遷移
 			PostEvent(0.0f, GetThis<Goal>(), scene, L"ToGoalStage");
 
