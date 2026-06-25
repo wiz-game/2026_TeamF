@@ -191,8 +191,22 @@ namespace basecross
 		float localZ = relativeZ / myScale.z;
 
 		//テクスチャの座標（0.0～1.0）に変換
-		float uvX = localX + 0.5f;
-		float uvY = 1.0f - (localZ + 0.5f);//上下を反転させる
+		float uvX = 0.0f;
+		float uvY = 0.0f;
+
+		//オブジェクトの前方向を取得
+		Vec3 forward = trans->GetForward();
+
+		if (forward.z >= 0.0f)
+		{
+			uvY = 1.0f - (localZ + 0.5f);
+			uvX = localX + 0.5f;
+		}
+		else
+		{
+			uvY = localZ + 0.5f;//trapDoor用
+			uvX = 1.0f - (localX + 0.5f);
+		}
 
 		//プレイヤーが自分の上に乗っているかつ、
 		// Playerと接触している場合のみインクを塗る
