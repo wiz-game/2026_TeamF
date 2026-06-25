@@ -107,7 +107,7 @@ struct Basin {
   {
   }
 
-  void Clear()
+  void ClearCurrentStage()
   {
     left_node = nullptr;
     bottom_node = nullptr;
