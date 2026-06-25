@@ -46,8 +46,6 @@ namespace basecross{
 			JoltManager::StaticInitialize();
 
 			GameController::Initialize();
-			GameController::EnableGyro(true);
-			GameController::StartVibration(0.0f, 10.0f);
 
 			SoundManager::Get().RegisterSounds();
 			//ステージ数1で初期化
@@ -84,11 +82,6 @@ namespace basecross{
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
 		InkConnectChecker::Get().Initialize();
 
-
-		if (event->m_MsgStr == L"ToGameStage") {
-			ResetActiveStage<GameStage>();
-			//ResetActiveStage<GameStageBase>();
-		}
 		if (event->m_MsgStr == L"ToProtoStage") {
 			ResetActiveStage<ProtoStage>();
 		}

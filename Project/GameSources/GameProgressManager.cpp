@@ -26,11 +26,11 @@ namespace basecross{
 		return m_GameDates[index].m_IsUnlocked;
 	}
 	void GameProgressManager::ClearCurrentStage() {
-		if (m_GameDates.size() >= m_CurrentStage) return;
+		if (m_GameDates.size() >= m_CurrentStage || m_CurrentStage == -1) return;
 		m_GameDates[m_CurrentStage].m_IsClear = true;
 	}
 	bool GameProgressManager::IsClear(int stage)const {
-		if (m_GameDates.size() >= stage) return false;
+		if (m_GameDates.size() >= stage || m_CurrentStage == -1) return false;
 		return m_GameDates[stage].m_IsClear;
 	}
 }
