@@ -8,6 +8,13 @@
 #include "Sprite.h"
 
 namespace basecross {
+
+	void Goal::RegisterResources() {
+		auto& app = App::GetApp();
+		wstring mediaPath = App::GetApp()->GetDataDirWString();
+		app->RegisterTexture(L"BACKGROUND", mediaPath + L"Texture/background.jpg");
+	}
+
 	//初期化
 	void Goal::OnCreate()
 	{
@@ -45,7 +52,7 @@ namespace basecross {
 		m_draw->SetDrawActive(true);
 		m_draw->AddAnimation(L"PRINTER_MODEL", 0, 120, false);
 		
-		m_resultSprite = GetStage()->AddGameObject<Sprite>(L"PRINTER_TEX", Vec3(0,0,0), Vec2(100, 100),Anchor::Center);
+		m_resultSprite = GetStage()->AddGameObject<Sprite>(L"BACKGROUND", Vec3(0,0,0), Vec2(100, 100),Anchor::Center);
 		m_resultSprite->SetDrawActive(false);
 		m_resultSprite->SetDrawLayer(1);
 
@@ -94,7 +101,7 @@ namespace basecross {
 
 		case basecross::Goal::State::End:
 			//演出終了、画面遷移
-			//PostEvent(0.0f, GetThis<GoalStage>(), scene, L"ToGoalStage");
+			PostEvent(0.0f, GetThis<Goal>(), scene, L"ToGoalStage");
 
 			break;
 		}
@@ -145,7 +152,7 @@ namespace basecross {
 					float halfHeight = App::GetApp()->GetGameHeight() * 0.5f;
 
 					m_spriteStartPos2D.x = screenSpacePos.x * halfWidth;
-					m_spriteStartPos2D.y = screenSpacePos.y * halfHeight;
+					m_spriteStartPos2D.y = screenSpacePos.y * halfHeight - 2.0f;
 				}
 			}
 
@@ -178,14 +185,31 @@ namespace basecross {
 		float t = m_animatimer / duration;
 		if (t > 1.0f) t = 1.0f;
 
+		float t_ease = 1.0f - pow(1.0f - t, 3.0f);
+
+		Vec2 startPos = m_spriteStartPos2D;//元の位置
+		Vec2 targetPos = Vec2(0.0f);//画面中央
+
+		//中間地点
+		Vec2 controlPos = (startPos + targetPos) * 0.5f;
+		controlPos.x += 0.0f;
+		controlPos.y += 200.0f;
+
+		//二次ベジエ曲線：B(t) = (1-t)^2 * P0 + 2(1-t)t * P1 + t^2 * P2
+		Vec2 m_spritePos2D =
+			startPos * (1.0f - t_ease) * (1.0f - t_ease) +
+			controlPos * 2.0f * (1.0f - t_ease) * t_ease +
+			targetPos * t_ease * t_ease;
+
+		//サイン波による揺らぎ
+		float floatOffset = sin(t * XM_PI * 3.0f) * 30.0f * (1.0f - t);
+		m_spritePos2D.y += floatOffset;//上下にふわふわさせる
+
 		//サイズ補間計算
 		Vec3 startSize = Vec3(100.0f, 100.0f,100.0f);
 		Vec3 endSize = Vec3(1280.0f, 840.0f,1.0f);
 
-		Vec3 currentSize = startSize * (1.0f - t) + endSize * t;
-
-		Vec2 targetPos = Vec2(0.0f);//画面中央
-		Vec2 m_spritePos2D = m_spriteStartPos2D + (targetPos - m_spriteStartPos2D) * t;
+		Vec3 currentSize = startSize * (1.0f - t_ease) + endSize * t_ease;
 
 		m_resultSprite->SetPosition(Vec3(m_spritePos2D.x, m_spritePos2D.y,0.0f));
 		m_resultSprite->SetSize(Vec2(currentSize.x, currentSize.y));

@@ -61,6 +61,8 @@ namespace basecross {
 		virtual void OnCreate() override; // 初期化
 		virtual void OnUpdate() override; // 更新
 		//virtual void OnDraw() override; // 描画
+		void RegisterResources();
+
 		void VibrateAnimation(float delta);
 		void SpriteAnimation(float delta);
 	};
