@@ -128,12 +128,12 @@ namespace basecross {
 			//AddGameObject<PowerSupply>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 11.0f));
 
 			//port										scale				rotation		position
-			auto moveFloor_port = AddGameObject<Port>(Vec3(1.0f, 0.5f, 1.0f), Vec3(0), Vec3(0.0f, -0.3f, 3.0f));
+			auto goal_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(0.0f, -0.5f, 3.0f));
 			//auto trapDoor_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 15.0f));
 			//auto goal_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(10.0f, 2.4f, 25.0f));
 
 			//Goal					scale			rotation		position			portの指定(nullptrの場合最初から表示)
-			AddGameObject<Goal>(Vec3(3.0f,3.0f,0.5f), Vec3(0), Vec3(0.0f, 1.0f, 33.0f), nullptr);
+			AddGameObject<Goal>(Vec3(0.7f,0.7f,0.7f), Vec3(0,-XM_PIDIV2,0), Vec3(-5.0f, 0.0f, 0.0f), goal_port);
 
 			
 			//左に開く扉
@@ -150,7 +150,7 @@ namespace basecross {
 			//トラップドアの初期設定
 			TrapDoorAxisDesc moveDoorX;
 			moveDoorX.axis = MoveAxis::X;
-			moveDoorX.speed = -0.01f;
+			moveDoorX.speed = 0.01f;
 			moveDoorX.port = nullptr;
 			//moveDoorX.bReverseConnect = false;
 			AddGameObject<TrapDoorAxis>(Vec3(2.0f, 0.1f, 4.0f), Vec3(XM_PIDIV2, 0.0f, 0.0f), Vec3(5.0f, -0.5f, 0.0f), moveDoorX);

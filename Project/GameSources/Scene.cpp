@@ -23,6 +23,13 @@ namespace basecross{
 		app->RegisterTexture(L"SKYBOX", mediaPath + L"Texture/SkyBox/SkyBox.png");
 		app->RegisterTexture(L"PLAYER", mediaPath + L"Texture/Player.png");
 
+		app->RegisterTexture(L"PRINTER_TEX", mediaPath + L"Texture/PrinterTex.tga");
+
+		auto modelPath = mediaPath + L"model\\";
+		auto Goal_Model = MeshResource::CreateBoneModelMesh(modelPath, L"Printer 1.bmf");
+		app->RegisterResource(L"PRINTER_MODEL", Goal_Model);
+
+
 		vector<VertexPositionColor> vertices = {
 			{{0.0f,0.0f,0.0f},{1,1,1}},
 			{{0.0f,0.0f,1.0f},{1,1,1}}
@@ -39,8 +46,6 @@ namespace basecross{
 			JoltManager::StaticInitialize();
 
 			GameController::Initialize();
-			GameController::EnableGyro(true);
-			GameController::StartVibration(0.0f, 10.0f);
 
 			SoundManager::Get().RegisterSounds();
 			//ステージ数1で初期化
@@ -50,7 +55,6 @@ namespace basecross{
 			SetClearColor(Col4(0.0f, 0.11328125f, 0.2578125, 1.0f));
 			
 			CreateResourses();
-
 
 			//自分自身にイベントを送る
 			//これによりゲームステージのオブジェクトがCreate時にシーンにアクセスできる
@@ -77,10 +81,7 @@ namespace basecross{
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
 		InkConnectChecker::Get().Initialize();
-		if (event->m_MsgStr == L"ToGameStage") {
-			ResetActiveStage<GameStage>();
-			//ResetActiveStage<GameStageBase>();
-		}
+
 		if (event->m_MsgStr == L"ToProtoStage") {
 			ResetActiveStage<ProtoStage>();
 		}
@@ -89,6 +90,12 @@ namespace basecross{
 		}
 		if (event->m_MsgStr == L"ToGameOverStage") {
 			ResetActiveStage<GameOverStage>();
+		}
+		if (event->m_MsgStr == L"ToGameStage") {
+			if (!event->m_Info) return;
+			auto stageNum = *(static_pointer_cast<int>(event->m_Info).get());
+			GameProgressManager::Get().SetCurrentStage(stageNum);
+			ResetActiveStage<GameStageBase>(stageNum);
 		}
 
 		if (event->m_MsgStr == L"ToGameStage-1") {

@@ -1370,18 +1370,18 @@ namespace basecross {
 
 	namespace SpriteMoveUtil {
 		/// <summary>
-		/// ƒ{ƒ^ƒ“‰Ÿ‰ºŽž‚Ìƒpƒ“ƒ`ƒXƒP[ƒ‹i¬‚³‚­‚È‚Á‚Ä–ß‚éj‚Ì”{—¦‚ðŒvŽZ‚·‚é
+		/// ï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìƒpï¿½ï¿½ï¿½`ï¿½Xï¿½Pï¿½[ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½Ä–ß‚ï¿½jï¿½Ì”{ï¿½ï¿½ï¿½ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½
 		/// </summary>
-		/// <param name="timer">Œ»Ý‚ÌƒAƒjƒ[ƒVƒ‡ƒ“Œo‰ßŽžŠÔi•bj</param>
-		/// <param name="ratio">ƒTƒCƒY</param>
-		/// <param name="maxShrink">Å‘å‚Å‚Ç‚ê‚¾‚¯¬‚³‚­‚·‚é‚©i0.1f = 10%j</param>
-		/// <returns>Œ»Ý‚ÌƒXƒP[ƒ‹”{—¦i1.0f ‚ª“™”{j</returns>		
+		/// <param name="timer">ï¿½ï¿½ï¿½Ý‚ÌƒAï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ßŽï¿½ï¿½Ôiï¿½bï¿½j</param>
+		/// <param name="ratio">ï¿½Tï¿½Cï¿½Y</param>
+		/// <param name="maxShrink">ï¿½Å‘ï¿½Å‚Ç‚ê‚¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é‚©ï¿½i0.1f = 10%ï¿½j</param>
+		/// <returns>ï¿½ï¿½ï¿½Ý‚ÌƒXï¿½Pï¿½[ï¿½ï¿½ï¿½{ï¿½ï¿½ï¿½i1.0f ï¿½ï¿½ï¿½ï¿½ï¿½{ï¿½j</returns>		
 		inline void CalculatePunchScale(float& timer, float& ratio, float maxShirink = 0.1f)
 		{
-			//ƒAƒjƒ[ƒVƒ‡ƒ“‚µ‚Ä‚¢‚È‚¢i-1j‚È‚ç‰½‚à‚µ‚È‚¢
+			//ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½i-1ï¿½jï¿½È‚ç‰½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
 			if (timer < 0.0f)
 			{
-				//“™”{‚ðˆÛŽ
+				//ï¿½ï¿½ï¿½{ï¿½ï¿½ÛŽï¿½
 				ratio = 1.0f;
 				return;
 			}
@@ -1389,12 +1389,12 @@ namespace basecross {
 			float elapsed = App::GetApp()->GetElapsedTime();
 			timer += elapsed;
 
-			//ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‘‡ŽžŠÔ
+			//ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ì‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			const float AnimationDuration = 0.2f;
 
 			if (timer >= AnimationDuration)
 			{
-				//ƒAƒjƒ[ƒVƒ‡ƒ“I—¹AŒ³‚Ì‘å‚«‚³‚É–ß‚é
+				//ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Ì‘å‚«ï¿½ï¿½ï¿½É–ß‚ï¿½
 				timer = -1.0f;
 				ratio = 1.0f;
 			}
@@ -1403,7 +1403,7 @@ namespace basecross {
 				float progress = timer / AnimationDuration;
 				float sinValue = sin(progress * XM_PI);
 
-				//Å‘å‚Å‚Q‚O“¬‚³‚­‚·‚é
+				//ï¿½Å‘ï¿½Å‚Qï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				ratio = 1.0f - maxShirink * sinValue;
 			}
 		}
