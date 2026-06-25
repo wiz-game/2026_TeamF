@@ -839,6 +839,9 @@ namespace basecross {
 
 		bool	m_IsActive;		//Updateさせるか
 		bool	m_IsSelectLoop;	//選択をループさせるか
+		bool	m_IsMoveStop;   //移動が終了しているか
+
+		float	m_GroupMovementSpeed;	//グループの移動速度
 
 		shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 
@@ -862,8 +865,9 @@ namespace basecross {
 
 		ButtonManager(const shared_ptr<Stage>& ptr) :
 			GameObject(ptr),
-			m_IsActive(true), m_IsSelectLoop(false),
-			m_UsingGroup(L""), m_ClickSound(L"")
+			m_IsActive(true), m_IsSelectLoop(false),m_IsMoveStop(true),
+			m_UsingGroup(L""), m_ClickSound(L""),
+			m_GroupMovementSpeed(30.0f)
 		{}
 		virtual ~ButtonManager() {}
 
@@ -1056,6 +1060,8 @@ namespace basecross {
 		/// </summary>
 		/// <param name="group">グループ名</param>
 		/// <param name="target">移動量</param>
+		/// <param name="speed">移動速度</param>
+		void SetMoveAmount(const wstring& group, Vec3 target, float speed);
 		void SetMoveAmount(const wstring& group, Vec3 target);
 
 		/// <summary>
@@ -1067,6 +1073,13 @@ namespace basecross {
 			if (FindGroup(m_GroupMovementAmount, group)) {
 				return m_GroupMovementAmount[group];
 			}
+		}
+
+		/// <summary>
+		/// 移動が終了しているかの取得
+		///
+		bool GetMoveStop() {
+			return m_IsMoveStop;
 		}
 
 		/// <summary>

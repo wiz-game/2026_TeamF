@@ -465,9 +465,10 @@ namespace basecross {
 			Vec3 movementAmount = groupMovementAmount.second;
 			if (movementAmount.length() != 0) {
 				movementAmount = movementAmount.normalize();
-				movementAmount *= 30.0f;//ˆÚ“®‘¬“x
+				movementAmount *= m_GroupMovementSpeed;//ˆÚ“®‘¬“x
 				if (groupMovementAmount.second.length() < movementAmount.length()) {
 					movementAmount = groupMovementAmount.second;
+					m_IsMoveStop = true;
 				}
 				for (auto& button : m_ButtonGroup[groupMovementAmount.first]) {
 					auto trans = button->GetGameObject()->GetComponent<Transform>();
@@ -524,8 +525,22 @@ namespace basecross {
 	void ButtonManager::SetSelectSound(const wstring& sound) {
 		m_SelectSound = sound;
 	}
+
 	void ButtonManager::SetMoveAmount(const wstring& group, Vec3 target) {
-		if (FindGroup(m_GroupMovementAmount,group)) {
+		if (FindGroup(m_GroupMovementAmount, group)) {
+			m_GroupMovementSpeed = 30.0f;
+			m_IsMoveStop = false;
+			if (m_GroupMovementAmount[group].length() == 0) {
+				m_GroupMovementAmount[group] = target;
+			}
+		}
+	}
+
+
+	void ButtonManager::SetMoveAmount(const wstring& group, Vec3 target, float speed) {
+		if (FindGroup(m_GroupMovementAmount, group)) {
+			m_GroupMovementSpeed = speed;
+			m_IsMoveStop = false;
 			if (m_GroupMovementAmount[group].length() == 0) {
 				m_GroupMovementAmount[group] = target;
 			}
