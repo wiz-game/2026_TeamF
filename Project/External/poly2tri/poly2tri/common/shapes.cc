@@ -83,7 +83,7 @@ void Triangle::MarkNeighbor(Triangle& t)
 /**
  * Clears all references to all other triangles and points
  */
-void Triangle::Clear()
+void Triangle::ClearCurrentStage()
 {
     Triangle *t;
     for (auto& neighbor : neighbors_) {

@@ -2517,7 +2517,7 @@ namespace basecross{
 		@return	なし
 		*/
 		//--------------------------------------------------------------------------------------
-		void Clear() {
+		void ClearCurrentStage() {
 			auto ow_shptr = m_Owner.lock();
 			if (ow_shptr && !m_StateStack.empty()) {
 				while (!m_StateStack.empty()) {
@@ -2534,7 +2534,7 @@ namespace basecross{
 		*/
 		//--------------------------------------------------------------------------------------
 		void Reset(const shared_ptr< ObjState<T> >& Ptr) {
-			Clear();
+			ClearCurrentStage();
 			Push(Ptr);
 		}
 		//--------------------------------------------------------------------------------------

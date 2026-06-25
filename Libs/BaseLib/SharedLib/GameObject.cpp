@@ -5,7 +5,7 @@
 */
 
 #include "stdafx.h"
-
+#include "../../../Project/GameSources/SoundManager.h"
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
@@ -1359,6 +1359,10 @@ namespace basecross {
 		}
 		//©g‚Ìíœˆ—
 		OnDestroy();
+	}
+
+	void Stage::OnDestroy() {
+		SoundManager::Get().StopAll();
 	}
 
 

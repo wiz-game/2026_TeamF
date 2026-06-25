@@ -218,9 +218,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Singleton.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h">
-      <Filter>Stage</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
@@ -406,6 +403,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h">
       <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h">
+      <Filter>Stage\Select</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

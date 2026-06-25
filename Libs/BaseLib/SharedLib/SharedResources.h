@@ -930,11 +930,11 @@ namespace basecross {
 			return !(m_CurWaypoint != m_WayPoints.end());
 		}
 		//--------------------------------------------------------------------------------------
-		//	void Clear();
+		//	void ClearCurrentStage();
 		//	用途: リストをクリアする
 		//	戻り値: なし
 		//--------------------------------------------------------------------------------------
-		void Clear() { m_WayPoints.clear(); }
+		void ClearCurrentStage() { m_WayPoints.clear(); }
 		//--------------------------------------------------------------------------------------
 		//	void SetList(
 		//	const list<bsm::Vec3> new_path	//新しいリスト
@@ -943,7 +943,7 @@ namespace basecross {
 		//	戻り値: なし
 		//--------------------------------------------------------------------------------------
 		void SetList(const list<bsm::Vec3>& new_path) {
-			Clear();
+			ClearCurrentStage();
 			auto it = new_path.begin();
 			while (it != new_path.end()) {
 				m_WayPoints.push_back(*it);

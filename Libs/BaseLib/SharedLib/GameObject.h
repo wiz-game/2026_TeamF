@@ -1928,6 +1928,8 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void DestroyStage();
+
+		virtual void OnDestroy()override;
 	private:
 		// pImplイディオム
 		struct Impl;
