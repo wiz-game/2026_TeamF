@@ -29,7 +29,6 @@ namespace basecross {
 
 		//TrapDoorの作成と位置をずらすためのObject
 		m_trapDoor = GetStage()->AddGameObject<TrapDoor>(offsetObj, m_trapDoorScale);
-
 	}
 
 	void TrapDoorAxis::OnUpdate()
