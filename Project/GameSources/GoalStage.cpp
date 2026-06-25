@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "Project.h"
 #include "game_controller.h"
+#include "GameProgressManager.h"
 namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体
@@ -32,7 +33,9 @@ namespace basecross {
 		app->RegisterTexture(L"GoalStage", mediaPath + L"Texture/GoalStage.png");
 		app->RegisterTexture(L"ClearMark", mediaPath + L"Texture/ClearMark.png");
 		app->RegisterTexture(L"Map", mediaPath + L"Texture/ResultMapProto.png");
-		app->RegisterTexture(L"BUTTON_A_TITLE", mediaPath + L"Texture/Button_A_Title.png");
+		app->RegisterTexture(L"BUTTON_A_TITLE", mediaPath + L"Texture/Button_A_Title_Take.png");
+		app->RegisterTexture(L"BUTTON_B_SELECT", mediaPath + L"Texture/Button_B_Select.png");
+		app->RegisterTexture(L"BUTTON_X_NEXT", mediaPath + L"Texture/Button_X_Next.png");
 		app->RegisterTexture(L"NUMBER", mediaPath + L"Texture/Number.png");
 
 	}
@@ -46,7 +49,11 @@ namespace basecross {
 
 			m_sprite = AddGameObject<Sprite>(L"GoalStage", Vec3(), Vec2(1280, 840), Anchor::Center);
 			AddGameObject<Sprite>(L"Map", Vec3(0.0f,80.0f,0.0f), Vec2(350.0f, 210.0f), Anchor::Center);
-			m_sprite_Button = AddGameObject<Sprite>(L"BUTTON_A_TITLE", Vec3(0, -300, 0), Vec2(400, 150), Anchor::Center);
+			m_sprite_Buttons.push_back(AddGameObject<Sprite>(L"BUTTON_A_TITLE", Vec3(-400, -300, 0), Vec2(400, 150), Anchor::Center));
+			m_sprite_Buttons.push_back(AddGameObject<Sprite>(L"BUTTON_B_SELECT", Vec3(0, -300, 0), Vec2(400, 150), Anchor::Center));
+			if (GameProgressManager::Get().IsExistsNextStage()) {
+				m_sprite_Buttons.push_back(AddGameObject<Sprite>(L"BUTTON_X_NEXT", Vec3(400, -300, 0), Vec2(400, 150), Anchor::Center));
+			}
 
 			float ink = scene->GetResultInk();
 			float maxInk = scene->GetMaxInk();
@@ -60,6 +67,9 @@ namespace basecross {
 			m_ClearStanp = AddGameObject<StanpSprite>(L"ClearMark", Vec3(0.0f, 80.0f, 0.0f), Vec2(350.0f, 210.0f), 0.35f, 1.5f, 0.8f);
 			m_ClearStanp->SetSE(L"STAGESELECT");
 			m_ClearStanp->StartAnimation();
+
+			GameProgressManager::Get().ClearCurrentStage();
+			
 		}
 		catch (...) {
 			throw;
@@ -76,14 +86,36 @@ namespace basecross {
 		m_InputHandler.PushHandle(GetThis<GoalStage>());
 
 		auto CntlVec = app->GetInputDevice().GetControlerVec();
-
-		if (CntlVec[0].wPressedButtons && XINPUT_GAMEPAD_A)
-		{
-			m_ButtonScaleTimer = 0;
-			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToTitleStage");
+		if (m_ButtonScaleTimer != -1) {
+			SpriteMove();
+			return;
 		}
 
-		SpriteMove();
+		if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
+		{
+			m_ButtonScaleTimer = 0;
+			m_ButtonScaleIndex = 0;
+			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToTitleStage");
+		}
+		if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+		{
+			m_ButtonScaleTimer = 0;
+			m_ButtonScaleIndex = 1;
+			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToSelectStage");
+		}
+
+		if (!GameProgressManager::Get().IsExistsNextStage()) return;
+		if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)
+		{
+			m_ButtonScaleTimer = 0;
+			m_ButtonScaleIndex = 2;
+			int currentStage = GameProgressManager::Get().GetCurrentStage();
+			currentStage++;
+			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToGameStage", make_shared<int>(currentStage));
+			GameProgressManager::Get().SetCurrentStage(currentStage);
+		}
+		
+		
 	}
 
 	//ボタンの押し込みアニメーション
@@ -91,7 +123,7 @@ namespace basecross {
 	{
 		SpriteMoveUtil::CalculatePunchScale(m_ButtonScaleTimer, m_ButtonScaleRation, 0.1f);
 
-		m_sprite_Button->SetSize(Vec2(400.0f * m_ButtonScaleRation, 150.0f * m_ButtonScaleRation));
+		m_sprite_Buttons[m_ButtonScaleIndex]->SetSize(Vec2(400.0f * m_ButtonScaleRation, 150.0f * m_ButtonScaleRation));
 	}
 
 

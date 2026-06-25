@@ -18,11 +18,12 @@ namespace basecross {
 		void RegisterResources();
 
 		shared_ptr<Sprite> m_sprite;
-		shared_ptr<Sprite> m_sprite_Button;
+		vector<shared_ptr<Sprite>> m_sprite_Buttons;
 		shared_ptr<StanpSprite> m_ClearStanp;
 
 		InputHandler<GoalStage> m_InputHandler; // 入力ハンドラー
 
+		int m_ButtonScaleIndex = 0;
 		float m_ButtonScaleTimer;//アニメーションしていない時は-1
 		float m_ButtonScaleRation;//現在のscale倍率
 

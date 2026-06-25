@@ -196,7 +196,7 @@ void Legalize(Point& opoint, Point& npoint);
 /**
  * Clears all references to all other triangles and points
  */
-void Clear();
+void ClearCurrentStage();
 void ClearNeighbor(const Triangle *triangle);
 void ClearNeighbors();
 void ClearDelunayEdges();

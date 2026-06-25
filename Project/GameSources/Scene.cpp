@@ -76,6 +76,8 @@ namespace basecross{
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
 		InkConnectChecker::Get().Initialize();
+
+
 		if (event->m_MsgStr == L"ToGameStage") {
 			ResetActiveStage<GameStage>();
 			//ResetActiveStage<GameStageBase>();
@@ -88,6 +90,11 @@ namespace basecross{
 		}
 		if (event->m_MsgStr == L"ToGameOverStage") {
 			ResetActiveStage<GameOverStage>();
+		}
+		if (event->m_MsgStr == L"ToGameStage") {
+			if (!event->m_Info) return;
+			auto stageNumPtr = static_pointer_cast<int>(event->m_Info);
+			ResetActiveStage<GameStageBase>(*(stageNumPtr.get()));
 		}
 
 		if (event->m_MsgStr == L"ToGameStage-1") {
