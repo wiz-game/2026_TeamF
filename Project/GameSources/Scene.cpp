@@ -93,8 +93,9 @@ namespace basecross{
 		}
 		if (event->m_MsgStr == L"ToGameStage") {
 			if (!event->m_Info) return;
-			auto stageNumPtr = static_pointer_cast<int>(event->m_Info);
-			ResetActiveStage<GameStageBase>(*(stageNumPtr.get()));
+			auto stageNum = *(static_pointer_cast<int>(event->m_Info).get());
+			GameProgressManager::Get().SetCurrentStage(stageNum);
+			ResetActiveStage<GameStageBase>(stageNum);
 		}
 
 		if (event->m_MsgStr == L"ToGameStage-1") {

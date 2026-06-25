@@ -112,7 +112,6 @@ namespace basecross {
 			int currentStage = GameProgressManager::Get().GetCurrentStage();
 			currentStage++;
 			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToGameStage", make_shared<int>(currentStage));
-			GameProgressManager::Get().SetCurrentStage(currentStage);
 		}
 		
 		
