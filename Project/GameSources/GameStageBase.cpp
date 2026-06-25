@@ -32,7 +32,7 @@ namespace basecross {
 			0,1
 		};
 
-		App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
+		//App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
 	}
 
 	GameStageBase::GameStageBase

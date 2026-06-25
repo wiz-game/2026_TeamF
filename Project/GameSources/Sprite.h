@@ -839,6 +839,9 @@ namespace basecross {
 
 		bool	m_IsActive;		//Updateã•ã›ã‚‹ã‹
 		bool	m_IsSelectLoop;	//é¸æŠã‚’ãƒ«ãƒ¼ãƒ—ã•ã›ã‚‹ã‹
+		bool	m_IsMoveStop;   //ç§»å‹•ãŒçµ‚äº†ã—ã¦ã„ã‚‹ã‹
+
+		float	m_GroupMovementSpeed;	//ã‚°ãƒ«ãƒ¼ãƒ—ã®ç§»å‹•é€Ÿåº¦
 
 		shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 
@@ -862,8 +865,9 @@ namespace basecross {
 
 		ButtonManager(const shared_ptr<Stage>& ptr) :
 			GameObject(ptr),
-			m_IsActive(true), m_IsSelectLoop(false),
-			m_UsingGroup(L""), m_ClickSound(L"")
+			m_IsActive(true), m_IsSelectLoop(false),m_IsMoveStop(true),
+			m_UsingGroup(L""), m_ClickSound(L""),
+			m_GroupMovementSpeed(30.0f)
 		{}
 		virtual ~ButtonManager() {}
 
@@ -1056,6 +1060,8 @@ namespace basecross {
 		/// </summary>
 		/// <param name="group">ã‚°ãƒ«ãƒ¼ãƒ—å</param>
 		/// <param name="target">ç§»å‹•é‡</param>
+		/// <param name="speed">ç§»å‹•é€Ÿåº¦</param>
+		void SetMoveAmount(const wstring& group, Vec3 target, float speed);
 		void SetMoveAmount(const wstring& group, Vec3 target);
 
 		/// <summary>
@@ -1067,6 +1073,13 @@ namespace basecross {
 			if (FindGroup(m_GroupMovementAmount, group)) {
 				return m_GroupMovementAmount[group];
 			}
+		}
+
+		/// <summary>
+		/// ç§»å‹•ãŒçµ‚äº†ã—ã¦ã„ã‚‹ã‹ã®å–å¾—
+		///
+		bool GetMoveStop() {
+			return m_IsMoveStop;
 		}
 
 		/// <summary>
@@ -1370,18 +1383,18 @@ namespace basecross {
 
 	namespace SpriteMoveUtil {
 		/// <summary>
-		/// ƒ{ƒ^ƒ“‰Ÿ‰º‚Ìƒpƒ“ƒ`ƒXƒP[ƒ‹i¬‚³‚­‚È‚Á‚Ä–ß‚éj‚Ì”{—¦‚ğŒvZ‚·‚é
+		/// ï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìƒpï¿½ï¿½ï¿½`ï¿½Xï¿½Pï¿½[ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½Ä–ß‚ï¿½jï¿½Ì”{ï¿½ï¿½ï¿½ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½
 		/// </summary>
-		/// <param name="timer">Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“Œo‰ßŠÔi•bj</param>
-		/// <param name="ratio">ƒTƒCƒY</param>
-		/// <param name="maxShrink">Å‘å‚Å‚Ç‚ê‚¾‚¯¬‚³‚­‚·‚é‚©i0.1f = 10%j</param>
-		/// <returns>Œ»İ‚ÌƒXƒP[ƒ‹”{—¦i1.0f ‚ª“™”{j</returns>		
+		/// <param name="timer">ï¿½ï¿½ï¿½İ‚ÌƒAï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ßï¿½ï¿½Ôiï¿½bï¿½j</param>
+		/// <param name="ratio">ï¿½Tï¿½Cï¿½Y</param>
+		/// <param name="maxShrink">ï¿½Å‘ï¿½Å‚Ç‚ê‚¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é‚©ï¿½i0.1f = 10%ï¿½j</param>
+		/// <returns>ï¿½ï¿½ï¿½İ‚ÌƒXï¿½Pï¿½[ï¿½ï¿½ï¿½{ï¿½ï¿½ï¿½i1.0f ï¿½ï¿½ï¿½ï¿½ï¿½{ï¿½j</returns>		
 		inline void CalculatePunchScale(float& timer, float& ratio, float maxShirink = 0.1f)
 		{
-			//ƒAƒjƒ[ƒVƒ‡ƒ“‚µ‚Ä‚¢‚È‚¢i-1j‚È‚ç‰½‚à‚µ‚È‚¢
+			//ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½i-1ï¿½jï¿½È‚ç‰½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
 			if (timer < 0.0f)
 			{
-				//“™”{‚ğˆÛ
+				//ï¿½ï¿½ï¿½{ï¿½ï¿½Ûï¿½
 				ratio = 1.0f;
 				return;
 			}
@@ -1389,12 +1402,12 @@ namespace basecross {
 			float elapsed = App::GetApp()->GetElapsedTime();
 			timer += elapsed;
 
-			//ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‘‡ŠÔ
+			//ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ì‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			const float AnimationDuration = 0.2f;
 
 			if (timer >= AnimationDuration)
 			{
-				//ƒAƒjƒ[ƒVƒ‡ƒ“I—¹AŒ³‚Ì‘å‚«‚³‚É–ß‚é
+				//ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Ì‘å‚«ï¿½ï¿½ï¿½É–ß‚ï¿½
 				timer = -1.0f;
 				ratio = 1.0f;
 			}
@@ -1403,7 +1416,7 @@ namespace basecross {
 				float progress = timer / AnimationDuration;
 				float sinValue = sin(progress * XM_PI);
 
-				//Å‘å‚Å‚Q‚O“¬‚³‚­‚·‚é
+				//ï¿½Å‘ï¿½Å‚Qï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				ratio = 1.0f - maxShirink * sinValue;
 			}
 		}
