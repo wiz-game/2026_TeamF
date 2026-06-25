@@ -104,14 +104,14 @@ namespace basecross{
 		if (event->m_MsgStr == L"ToGameStage1") {
 			ResetActiveStage<GameStageBase>(1);
 		}
-		//if (event->m_MsgStr == L"ToGameStage2") {
-		//	ResetActiveStage<GameStageBase>(2);
-		//}
 		if (event->m_MsgStr == L"ToGameStage0") {
 			ResetActiveStage<ProtoStage>();
 			//ResetActiveStage<GameStageBase>();
 		}
 
+		if (event->m_MsgStr == L"ToGameStage2") {
+			ResetActiveStage<GameStageBase>(2);
+		}
 
 
 		if (event->m_MsgStr == L"ToTitleStage") {
