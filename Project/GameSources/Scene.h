@@ -13,6 +13,7 @@ namespace basecross{
 	//--------------------------------------------------------------------------------------
 	class Scene : public SceneBase
 	{
+		int m_clearStage;
 		float m_playerInk;
 		float m_playerMaxInk;
 		//--------------------------------------------------------------------------------------

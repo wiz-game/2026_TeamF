@@ -23,10 +23,10 @@ namespace basecross {
 		void SetAABB(const AABB& aabb) {
 			m_AABB = aabb;
 		}
-		void Clear() {
+		void ClearCurrentStage() {
 			for (int i = 0; i < 4; i++) {
 				if (m_Children[i]) {
-					m_Children[i]->Clear();
+					m_Children[i]->ClearCurrentStage();
 				}
 				m_Children[i] = nullptr;
 			}
@@ -54,7 +54,7 @@ namespace basecross {
 			m_RootAABB = aabb;
 		}
 		void AllClear() {
-			m_RootPiece.Clear();
+			m_RootPiece.ClearCurrentStage();
 			m_RootPiece.SetAABB(m_RootAABB);
 			g_NextPoolIndex = 0;
 		}
@@ -85,7 +85,7 @@ namespace basecross {
 							//余裕がない子供ブロックの作成
 							for (int i = 0; i < 4; i++) {
 								tgt.m_Children[i] = &g_PiecePool[g_NextPoolIndex];
-								tgt.m_Children[i]->Clear();
+								tgt.m_Children[i]->ClearCurrentStage();
 								g_NextPoolIndex++;
 								if (g_NextPoolIndex >= MAX_PIECE_COUNT) {
 									throw BaseException(

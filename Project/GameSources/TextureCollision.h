@@ -43,6 +43,7 @@ namespace basecross{
 		vector<int> m_ElectricEffectHandles;
 
 		vector<Contour> m_Contour;
+		vector<Contour> m_WaitContour;
 		vector<vector<cv::Point>> m_CvContours;
 
 		shared_ptr<DX11ComputeShader> m_MaskShader;
@@ -74,7 +75,7 @@ namespace basecross{
 		void CreateMeshInThread(const TextureSnapShot& snapShot,vector<Contour>& result);
 		TextureSnapShot SnapShot();
 		void ApplyThreadResult(vector<Contour>& result) {
-			m_Contour = result;
+			m_WaitContour = result;
 			m_ElectricContourIndices.resize(m_Contour.size(), 0);
 
 		}

@@ -58,7 +58,6 @@ namespace basecross{
 			
 			CreateResourses();
 
-
 			//自分自身にイベントを送る
 			//これによりゲームステージのオブジェクトがCreate時にシーンにアクセスできる
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
@@ -84,8 +83,11 @@ namespace basecross{
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
 		InkConnectChecker::Get().Initialize();
+
+
 		if (event->m_MsgStr == L"ToGameStage") {
 			ResetActiveStage<GameStage>();
+			//ResetActiveStage<GameStageBase>();
 		}
 		if (event->m_MsgStr == L"ToProtoStage") {
 			ResetActiveStage<ProtoStage>();
@@ -96,6 +98,12 @@ namespace basecross{
 		if (event->m_MsgStr == L"ToGameOverStage") {
 			ResetActiveStage<GameOverStage>();
 		}
+		if (event->m_MsgStr == L"ToGameStage") {
+			if (!event->m_Info) return;
+			auto stageNum = *(static_pointer_cast<int>(event->m_Info).get());
+			GameProgressManager::Get().SetCurrentStage(stageNum);
+			ResetActiveStage<GameStageBase>(stageNum);
+		}
 
 		if (event->m_MsgStr == L"ToGameStage-1") {
 			ResetActiveStage<ProtoStage>();
@@ -103,14 +111,14 @@ namespace basecross{
 		if (event->m_MsgStr == L"ToGameStage1") {
 			ResetActiveStage<GameStageBase>(1);
 		}
-		//if (event->m_MsgStr == L"ToGameStage2") {
-		//	ResetActiveStage<GameStageBase>(2);
-		//}
 		if (event->m_MsgStr == L"ToGameStage0") {
 			ResetActiveStage<ProtoStage>();
 			//ResetActiveStage<GameStageBase>();
 		}
 
+		if (event->m_MsgStr == L"ToGameStage2") {
+			ResetActiveStage<GameStageBase>(2);
+		}
 
 
 		if (event->m_MsgStr == L"ToTitleStage") {

@@ -15,11 +15,19 @@ namespace basecross{
 		friend class SingletonBase<GameProgressManager>;
 		
 		vector<GameProgressContext> m_GameDates;
+		int m_CurrentStage;
 	public:
 		void Initialize(UINT gameStageCount);
 
 		UINT GetStageSize() const{ return m_GameDates.size(); }
 		bool IsUnlocked(UINT index)const;
+
+		void SetCurrentStage(int stage) { m_CurrentStage = stage; }
+		int GetCurrentStage()const { return m_CurrentStage; }
+		bool IsExistsNextStage()const { return ( m_GameDates.size() - 1 ) < m_CurrentStage; }
+
+		void ClearCurrentStage();
+		bool IsClear(int stage)const;
 	};
 }
 //end basecross
