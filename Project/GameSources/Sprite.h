@@ -460,6 +460,7 @@ namespace basecross {
 	//----------------------------------------------------------
 	class NumberSprite : public GameObject {
 		vector<shared_ptr<Sprite>> m_Numbers;
+		vector<char> m_DrawActives;
 		int m_CutNum;
 		int m_DisplayNumber;
 		int m_DisplayDigit;

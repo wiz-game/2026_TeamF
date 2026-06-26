@@ -32,7 +32,6 @@ namespace basecross {
 		wstring mediaPath = App::GetApp()->GetDataDirWString();
 		app->RegisterTexture(L"GoalStage", mediaPath + L"Texture/GoalStage.png");
 		app->RegisterTexture(L"ClearMark", mediaPath + L"Texture/ClearMark.png");
-		app->RegisterTexture(L"Map", mediaPath + L"Texture/ResultMapProto.png");
 		app->RegisterTexture(L"BUTTON_A_TITLE", mediaPath + L"Texture/Button_A_Title_Take.png");
 		app->RegisterTexture(L"BUTTON_B_SELECT", mediaPath + L"Texture/Button_B_Select.png");
 		app->RegisterTexture(L"BUTTON_X_NEXT", mediaPath + L"Texture/Button_X_Next.png");
@@ -48,7 +47,8 @@ namespace basecross {
 			RegisterResources();
 
 			m_sprite = AddGameObject<Sprite>(L"GoalStage", Vec3(), Vec2(1280, 840), Anchor::Center);
-			AddGameObject<Sprite>(L"Map", Vec3(0.0f,80.0f,0.0f), Vec2(350.0f, 210.0f), Anchor::Center);
+			wstring mapStr = to_wstring(GameProgressManager::Get().GetCurrentStage());
+			AddGameObject<Sprite>(L"Map" + mapStr, Vec3(0.0f, 80.0f, 0.0f), Vec2(350.0f, 210.0f), Anchor::Center);
 			m_sprite_Buttons.push_back(AddGameObject<Sprite>(L"BUTTON_A_TITLE", Vec3(-400, -300, 0), Vec2(400, 150), Anchor::Center));
 			m_sprite_Buttons.push_back(AddGameObject<Sprite>(L"BUTTON_B_SELECT", Vec3(0, -300, 0), Vec2(400, 150), Anchor::Center));
 			if (GameProgressManager::Get().IsExistsNextStage()) {
