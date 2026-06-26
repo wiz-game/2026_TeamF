@@ -196,7 +196,7 @@ namespace basecross {
 
 			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0), Vec3(-3.0f, -0.5f, 12.5f), moveFloorX_4);
 
-			AddGameObject<ObstacleSpring>();
+			//AddGameObject<ObstacleSpring>();
 
 			//スカイボックス
 			AddGameObject<SkyCube>(L"SKYBOX");
