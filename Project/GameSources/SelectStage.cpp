@@ -14,7 +14,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
-	SelectStage::SelectStage():Stage(),m_SelectIndex(0),m_MaxSelectIndex(3){}
+	SelectStage::SelectStage() :Stage(), m_SelectIndex(0), m_MaxSelectIndex(5) {}
 
 	SelectStage::~SelectStage()
 	{
@@ -43,23 +43,29 @@ namespace basecross {
 		app->RegisterTexture(L"BLACK", mediaPath + L"Texture/Black.png");
 		app->RegisterTexture(L"NUMBER", mediaPath + L"Texture/Number.png");
 
-		for (int i = 1; i < m_MaxSelectIndex; i++)
+		for (int i = 1; i < m_MaxSelectIndex + 1; i++)
 		{
 			auto texName = L"STAGE" + to_wstring(i);
+			auto SelectedTexName = texName + L"SELECTED";
 			auto texPathName = L"Texture/Select_Stage" + to_wstring(i);
 			app->RegisterTexture(texName, mediaPath + texPathName + L".png");
+			app->RegisterTexture(SelectedTexName, mediaPath + texPathName + L"_SelectedTex.png");
 		}
 	}
 
 	void SelectStage::OnCreate() {
 		try {
 			auto& app = App::GetApp();
+			AddGameObject<ButtonManager>();
+			m_Title = GetThis<SelectStage>();
+
 			CreateViewLight();
 			RegisterResources();
 
-			m_Title = AddGameObject<Sprite>(L"BACKGROUND", Vec3(), Vec2(600, 200), Anchor::Center);
-			m_Title->MatchToScreenSize();
+			auto bac = AddGameObject<Sprite>(L"BACKGROUND", Vec3(), Vec2(600, 200), Anchor::Center);
+			bac->MatchToScreenSize();
 			SpriteCreation();
+
 
 			m_MaxSelectIndex = GameProgressManager::Get().GetStageSize();
 			m_SelectingSprite = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-25.0f, 50.0f, 0.0f), Vec2(50, 100), 2);
@@ -79,21 +85,19 @@ namespace basecross {
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
 
-		//ステージ0選択用
-		if (GameController::IsTrigger_ButtonUp()) {
-			m_SelectIndex = -1;
-			m_SelectingSprite->UpdateNumber(m_SelectIndex);
-		}
-
 		//選択移動左
-		if (GameController::IsTrigger_DpadLeft()) {
+		if (GameController::IsTrigger_DpadLeft() && ButtonManager::instance->GetMoveStop()) {
+			if (m_SelectIndex >= 1)ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((1980 / 2), 0, 0), 60.0f);
 			m_SelectIndex = max(0, m_SelectIndex - 1);
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
+			ButtonManager::instance->SetSelectIndex(L"SelectPage1", m_SelectIndex);
 		}
 		//選択移動右
-		if (GameController::IsTrigger_DpadRight()) {
+		if (GameController::IsTrigger_DpadRight() && ButtonManager::instance->GetMoveStop()) {
+			if (m_SelectIndex < m_MaxSelectIndex - 1)ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((-1980 / 2), 0, 0), 60.0f);
 			m_SelectIndex = min(m_MaxSelectIndex - 1, m_SelectIndex + 1);
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
+			ButtonManager::instance->SetSelectIndex(L"SelectPage1", m_SelectIndex);
 		}
 		//選択決定(A)
 		if (GameController::IsTrigger_ButtonDown()) {
@@ -102,25 +106,21 @@ namespace basecross {
 			m_sSelectBGM = nullptr;
 
 			//PostEvent(0.2f, GetThis<SelectStage>(), app->GetScene<Scene>(), L"ToGameStage" + to_wstring(m_SelectIndex));
-			PostEvent(0.0f, GetThis<ObjectInterface>(), app->GetScene<Scene>(), L"ToGameStage"+ to_wstring(m_SelectIndex));
+			PostEvent(0.0f, GetThis<ObjectInterface>(), app->GetScene<Scene>(), L"ToGameStage", make_shared<int>(m_SelectIndex));
 		}
-
-		TitleControl();
 	}
 
 	void SelectStage::SpriteCreation()
 	{
-		m_StageSprites.clear();
-		for (int i = 0; i < m_MaxSelectIndex; ++i) {
-			auto texName = L""; 
-			auto sprite = AddGameObject<Sprite>(texName, Vec3(), Vec2(180, 120), Anchor::Center);
-			m_StageSprites.push_back(sprite);
+
+		for (int i = 1; i < m_MaxSelectIndex + 1; ++i)
+		{
+			auto texName = L"STAGE" + to_wstring(i);
+			auto texSelected = texName + L"SELECTED";
+
+			m_Scale = Vec2(600, 600);
+			ButtonManager::instance->Create(m_Title, L"SelectPage1", texName, texSelected, Vec3((((1980 / 2) * (i - 1)) - (m_Scale.x / 2)), m_Scale.y / 2, 0), m_Scale, [](shared_ptr<ObjectInterface>& object) {});
 		}
-	}
-
-	void SelectStage::TitleControl()
-	{
-
 	}
 }
 //end basecross
