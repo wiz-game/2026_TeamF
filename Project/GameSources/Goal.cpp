@@ -84,17 +84,28 @@ namespace basecross {
 				m_draw->UpdateAnimation(delta * 0.5f);
 				m_state = State::Vibrate;
 				m_animatimer = 0.0f;
+
+				if (!m_MoveSound_1) {
+					m_MoveSound_1 = SoundManager::Get().PlaySE(L"PRINTER_SE_1");
+				}
+
 			}
 			break;
 
 		case basecross::Goal::State::Vibrate:
 			//振動アニメーション
 			m_draw->UpdateAnimation(delta * 0.5f);
+
+			if (!m_MoveSound_2) {
+				m_MoveSound_2 = SoundManager::Get().PlayLoopSE(L"PRINTER_SE_2");
+			}
+
 			VibrateAnimation(delta);
 			break;
 
 		case basecross::Goal::State::SpriteScale:
 			//スプライトアニメーション
+			SoundManager::Get().StopLoopSE(m_MoveSound_2);
 			m_resultSprite->SetDrawActive(true);//スプライトの表示
 			SpriteAnimation(delta);
 			break;

@@ -32,6 +32,10 @@ namespace basecross {
 
 		std::shared_ptr<Sprite> m_resultSprite;
 
+		std::shared_ptr<SoundItem> m_MoveSound_1;
+		std::shared_ptr<SoundItem> m_MoveSound_2;
+
+
 		Vec3 m_startPos;	   //初期位置
 		float m_speed;
 		float m_animatimer;	   //共通のタイマー
