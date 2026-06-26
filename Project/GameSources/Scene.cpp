@@ -39,6 +39,17 @@ namespace basecross{
 		};
 
 		App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
+
+		app->RegisterTexture(L"Map-1", mediaPath + L"Texture/Map/MapProto.png");
+		for (int i = 0; i < GameProgressManager::Get().GetStageSize(); i++) {
+			wstring indexStr = to_wstring(i);
+			try {
+				app->RegisterTexture(L"Map" + indexStr, mediaPath + L"Texture/Map/Map" + indexStr + L".png");
+			}
+			catch (...) {
+				app->RegisterTexture(L"Map" + indexStr, mediaPath + L"Texture/Map/MapProto.png");
+			}
+		}
 	}
 
 	void Scene::OnCreate(){
