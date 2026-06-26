@@ -1,80 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="$(MSBuildThisFileDirectory)InkFresnelPixelShader.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)InkPixelShader.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)InkVertexShader.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)PSInkDrawShadow.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)PSInkDrop.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)PSPNTInkDraw.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)PSTexture2.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)PSTexture2Shadow.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)PSUpper.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)PSUpperShadow.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindFirst.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)UnionFindSecond.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)VSInkDrawShadow.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)VSInkDrop.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)VSPNTInkDraw.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)GenerateMaskShader.hlsl">
+      <Filter>CS\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSInkDrawShadow.hlsl">
+      <Filter>InkShader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSInkDrop.hlsl">
+      <Filter>InkShader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSTexture2.hlsl">
+      <Filter>InkShader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSTexture2Shadow.hlsl">
+      <Filter>InkShader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSUpper.hlsl">
+      <Filter>InkShader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSUpperShadow.hlsl">
+      <Filter>InkShader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)VSInkDrawShadow.hlsl">
+      <Filter>InkShader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)VSInkDrop.hlsl">
+      <Filter>InkShader\HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\common\shapes.cc" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\advancing_front.cc" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\cdt.cc" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\sweep.cc" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\sweep_context.cc" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)BaseEnemy.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyorTex.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Box.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)CharacterController.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ComputeShader.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)DXModel.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Electrified.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)FloorDecision.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameOverStage.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameProgressManager.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameStageBase.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)game_controller.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Goal.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GoalDoor.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GoalStage.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)InkCloud.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)InkDrawComp.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)InkGauge.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)MainCamera.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Json.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Port.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)PowerSupply.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ProtoStage.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)MoveFloor.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)SkyCube.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)StageObjBase.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Texture2DrawComp.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)TextureCollision.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoor.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoorAxis.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyorTex.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Box.cpp">
       <Filter>Object</Filter>
     </ClCompile>
@@ -84,71 +39,185 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)SkyCube.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameOverStage.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Texture2DrawComp.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)UpperDrawComp.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\advancing_front.cc">
+      <Filter>Pri2Tri</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\cdt.cc">
+      <Filter>Pri2Tri</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BaseEnemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyor.cpp">
+      <Filter>Object\BeltConveyor</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BeltConveyorTex.cpp">
+      <Filter>Object\BeltConveyor</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)CharacterController.cpp">
+      <Filter>Jolt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ComputeShader.cpp">
+      <Filter>CS</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp">
+      <Filter>Object\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)FloorDecision.cpp">
+      <Filter>Object\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)game_controller.cpp">
+      <Filter>SDL</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DXModel.cpp">
+      <Filter>DXModel</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp">
+      <Filter>DXModel</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameStageBase.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameOverStage.cpp">
+      <Filter>Stage\GameOver</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Goal.cpp">
+      <Filter>Object\Goal</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GoalDoor.cpp">
+      <Filter>Object\Goal</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GoalStage.cpp">
+      <Filter>Stage\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)JoltManager.cpp">
+      <Filter>Jolt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)JoltRigidBody.cpp">
+      <Filter>Jolt</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Box.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Electrified.cpp">
+      <Filter>Electric</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameProgressManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkDrawComp.cpp">
+      <Filter>InkShader</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProtoStage.cpp">
+      <Filter>Stage\Proto</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PauseMenu.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MoveFloor.cpp">
+      <Filter>Object\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Port.cpp">
+      <Filter>Object\Port</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PowerSupply.cpp">
+      <Filter>Object\Supply</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkCloud.cpp">
+      <Filter>InkObject</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkDraw.cpp">
+      <Filter>InkObject</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkGauge.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.cpp">
+      <Filter>DXModel</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp">
+      <Filter>Stage\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\common\shapes.cc">
+      <Filter>Pri2Tri</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\sweep.cc">
+      <Filter>Pri2Tri</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\sweep_context.cc">
+      <Filter>Pri2Tri</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp">
+      <Filter>Stage\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MainCamera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Json.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp">
+      <Filter>UI\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SkyCube.cpp">
+      <Filter>SkyCube</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Texture2DrawComp.cpp">
+      <Filter>InkShader</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextureCollision.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)StageObjBase.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoor.cpp">
+      <Filter>Object\TrapDoor</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TrapDoorAxis.cpp">
+      <Filter>Object\TrapDoor</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UpperDrawComp.cpp">
+      <Filter>InkShader</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SpriteGeneric.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)PauseMenu.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)SpriteGeneric.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ObstacleSpring.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyorTex.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Box.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ComputeShader.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)DrEnemy.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Electrified.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)FloorDecision.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameOverStage.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameProgressManager.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameStageBase.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)game_controller.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Goal.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GoalDoor.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GoalStage.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)InkCloud.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)InkDraw.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)InkDrawComp.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)InkGauge.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)JoltLayers.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)JoltManager.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)JoltRigidBody.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)MainCamera.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Json.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Port.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)PowerSupply.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Project.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectBehavior.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectShader.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ProtoStage.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)MoveFloor.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Singleton.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SkyCube.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h">
-      <Filter>Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameProgressManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
@@ -158,8 +227,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameStageBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Box.h">
       <Filter>Object</Filter>
     </ClInclude>
@@ -172,23 +239,281 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)SkyCube.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)InkDrawComponentTest.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameOverStage.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Texture2DrawComp.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)TextureCollision.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoor.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoorAxis.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)UpperDrawComp.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)PauseMenu.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SpriteGeneric.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyorTex.h">
+      <Filter>Object\BeltConveyor</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BeltConveyor.h">
+      <Filter>Object\BeltConveyor</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CharacterController.h">
+      <Filter>Jolt</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ComputeShader.h">
+      <Filter>CS</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DrEnemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h">
+      <Filter>Object\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FloorDecision.h">
+      <Filter>Object\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)game_controller.h">
+      <Filter>SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DXModel.h">
+      <Filter>DXModel</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h">
+      <Filter>DXModel</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameStageBase.h">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameOverStage.h">
+      <Filter>Stage\GameOver</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Goal.h">
+      <Filter>Object\Goal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GoalDoor.h">
+      <Filter>Object\Goal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GoalStage.h">
+      <Filter>Stage\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)JoltLayers.h">
+      <Filter>Jolt</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)JoltManager.h">
+      <Filter>Jolt</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)JoltRigidBody.h">
+      <Filter>Jolt</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Box.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Electrified.h">
+      <Filter>Electric</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameProgressManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkDrawComp.h">
+      <Filter>InkShader</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProtoStage.h">
+      <Filter>Stage\Proto</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PauseMenu.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MoveFloor.h">
+      <Filter>Object\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Port.h">
+      <Filter>Object\Port</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PowerSupply.h">
+      <Filter>Object\Supply</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkCloud.h">
+      <Filter>InkObject</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkDraw.h">
+      <Filter>InkObject</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkGauge.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PNTDXModelDraw.h">
+      <Filter>DXModel</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h">
+      <Filter>Stage\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h">
+      <Filter>Stage\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MainCamera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Json.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Project.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectBehavior.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectShader.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h">
+      <Filter>UI\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SkyCube.h">
+      <Filter>SkyCube</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Texture2DrawComp.h">
+      <Filter>InkShader</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextureCollision.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)StageObjBase.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoor.h">
+      <Filter>Object\TrapDoor</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TrapDoorAxis.h">
+      <Filter>Object\TrapDoor</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UpperDrawComp.h">
+      <Filter>InkShader</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SpriteGeneric.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h">
+      <Filter>Stage\Select</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Pri2Tri">
+      <UniqueIdentifier>{ba264349-d090-46bc-96e4-85c8d707990b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{5554a5c8-afdf-40dd-b838-f1b0c8abbd49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{b9591106-bf3c-49f1-828d-087c9ebac261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\BeltConveyor">
+      <UniqueIdentifier>{eb470c63-2a98-443b-b1ca-a90bd1a0642d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Jolt">
+      <UniqueIdentifier>{a3eb4f6f-e780-4254-98cb-e9b754aa2b2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CS">
+      <UniqueIdentifier>{368ea91d-d81f-4876-a9a8-766b62f35d41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CS\HLSL">
+      <UniqueIdentifier>{13949f02-6589-41c6-8a6a-f047fb978f01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InkShader">
+      <UniqueIdentifier>{a65e76f6-32e8-4220-8a27-1a3c1508267f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InkShader\HLSL">
+      <UniqueIdentifier>{f7180e6a-2534-48ae-ac98-752ff2b3b662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{e351a3da-3fd3-45de-ab85-97e39ec74bae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Floor">
+      <UniqueIdentifier>{cd34622e-4088-4702-a567-d395ba939cbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SDL">
+      <UniqueIdentifier>{5c7a0add-4dd4-496d-827e-5e75c355e8b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DXModel">
+      <UniqueIdentifier>{8fffc4ad-12a5-4308-bba9-cfba458e6e4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage">
+      <UniqueIdentifier>{09d4eb55-b028-42d1-813a-b333717f1271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage\Proto">
+      <UniqueIdentifier>{355d60fa-eb84-4fde-8a77-6dcd73c88a4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage\GameOver">
+      <UniqueIdentifier>{1eeaaab1-a941-4516-a34c-69da803f9bff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage\Select">
+      <UniqueIdentifier>{3f31ffab-8518-48df-bee8-dd8822536545}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage\Title">
+      <UniqueIdentifier>{41e711e2-1916-4b1d-8eb5-335267bece16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Goal">
+      <UniqueIdentifier>{71978a84-3ef8-493e-a158-ac142772a6e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage\Result">
+      <UniqueIdentifier>{aa3a062d-9cef-4aa2-8d59-0ee2ebeda7a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{a8f09a4d-8bc0-4de1-aa64-2e1bc9ac48cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Electric">
+      <UniqueIdentifier>{d9857b4f-b5a5-449e-9e9a-aafdf0242a8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{86bb30c1-7937-43ba-be8a-bd9e236069c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{0f988635-07bf-4023-b4a4-54e36a76f8a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Port">
+      <UniqueIdentifier>{b43052a6-2366-4a81-9277-0ecf8a4770f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Supply">
+      <UniqueIdentifier>{cc5ab61a-299d-4719-b153-790b192a99ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{cfa14db2-0c9e-49e8-b574-7a221cc4f084}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InkObject">
+      <UniqueIdentifier>{4635c673-8b50-473d-9e78-19e633065f58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{c8274457-c23c-4008-b9be-27304028c009}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Json">
+      <UniqueIdentifier>{3babb341-1d81-4938-b43a-45fa2812d8da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{17433eab-9613-4fa3-b668-ee4ca059f2b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Sprite">
+      <UniqueIdentifier>{5f6b3b46-54b5-444c-bda9-caa758607c36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SkyCube">
+      <UniqueIdentifier>{3cef305f-f5d2-433e-9b34-85768d772efb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{c688fdbd-3344-42dd-81a9-ea5ea870e08b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\TrapDoor">
+      <UniqueIdentifier>{8fd7bf3f-7a78-4e97-b4ed-a2d782afbff7}</UniqueIdentifier>
+    </Filter>
     <ClInclude Include="$(MSBuildThisFileDirectory)ObstacleSpring.h" />
   </ItemGroup>
 </Project>

@@ -23,10 +23,10 @@ void main( uint3 DTid : SV_DispatchThreadID )
     float alpha = inputTexture.Load(int3(x, y, 0)).a;
     if (alpha > 0)
     {
-        outputBuffer[index] = index;
+        outputBuffer[index] = 255;
     }
     else
     {
-        outputBuffer[index] = -1;
+        outputBuffer[index] = 0;
     }
 }

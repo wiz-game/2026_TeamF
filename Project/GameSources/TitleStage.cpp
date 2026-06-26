@@ -30,11 +30,12 @@ namespace basecross {
 		auto& app = App::GetApp();
 		wstring mediaPath = App::GetApp()->GetDataDirWString();
 		app->RegisterTexture(L"TITLE", mediaPath + L"Texture/Title1.png");
+		app->RegisterTexture(L"BUTTON_A_START", mediaPath + L"Texture/Button_A_Start.png");
+
 	}
 
 	TitleStage::~TitleStage()
 	{
-		SoundManager::Get().StopBGM();
 	}
 
 	void TitleStage::OnCreate() {
@@ -48,6 +49,11 @@ namespace basecross {
 
 			m_Title = AddGameObject<Sprite>(L"TITLE", Vec3(), Vec2(600, 200), Anchor::Center);
 			m_Title->MatchToScreenSize();
+			m_sprite_Button = AddGameObject<Sprite>(L"BUTTON_A_START", Vec3(0, -300, 0), Vec2(400, 150), Anchor::Center);
+
+			//BGM再生
+			if (!m_titleBGM)
+				m_titleBGM = SoundManager::Get().PlayBGM(L"TITLEBGM", 0.60f);
 		}
 		catch (...) {
 			throw;
@@ -63,8 +69,25 @@ namespace basecross {
 		//Aボタン
 		if (GameController::IsTrigger_ButtonDown()) {
 			auto& scene = app->GetScene<Scene>();
-			PostEvent(0.0f, GetThis<TitleStage>(), scene, L"ToSelectStage");
+
+			//BGMを止める
+			SoundManager::Get().StopBGM();
+			m_titleBGM = nullptr;
+
+			m_ButtonScaleTimer = 0;//アニメーションスタート
+
+			PostEvent(0.3f, GetThis<TitleStage>(), scene, L"ToSelectStage");
 		}
+		SpriteMove();
 	}
+
+	//ボタンの押し込みアニメーション
+	void TitleStage::SpriteMove()
+	{
+		SpriteMoveUtil::CalculatePunchScale(m_ButtonScaleTimer, m_ButtonScaleRation, 0.1f);
+
+		m_sprite_Button->SetSize(Vec2(400.0f * m_ButtonScaleRation, 150.0f * m_ButtonScaleRation));
+	}
+
 }
 //end basecross

@@ -35,8 +35,8 @@ namespace basecross
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
 		m_draw->SetTextureResource(L"MoveFloor");
 		m_draw->SetTexture2(L"Black");
+		//m_draw->SetRevarse(true);
 		m_draw->SetDiffuse(Col4(1, 1, 1, 1));
-
 
 		m_draw->SetOwnShadowActive(true);
 
@@ -45,6 +45,8 @@ namespace basecross
 
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetFixed(true);
+
+		AddComponent<TextureCollision>();
 	}
 
 	void TrapDoor::OnUpdate()

@@ -85,19 +85,21 @@ namespace basecross {
 			int PortID;
 		};
 
+		//テスト用のパラメータ
+		//struct SUTRUCT_BoxParams
+		//{
+		//	int HP;
+		//	int MaxHP;
+		//};
+
 		map<int, shared_ptr<Port>>Map_Ports;
 
-		//ステージ番号
-		int m_StageNum = 1;	
-
-		//BGMの音量
-		float m_BGMVolume = 0.5f;
-
-		//BGMのポインタ
-		shared_ptr<SoundItem> m_BGM;
+		////ステージ番号
+		int m_StageNum = 11;	
 
 		//構築と破棄
-		GameStageBase(const int& stageNum);
+		GameStageBase() :Stage(){}
+		GameStageBase(const int& num);
 		virtual ~GameStageBase();
 		void CreateViewLight();
 		void OnCreate();
@@ -128,6 +130,9 @@ namespace basecross {
 
 		//ゴールの扉のパラメーターの取得
 		GameStageBase::STRUCT_GoalDoorParams GoalDoorParams(JsonObject& json);
+
+		//ボックスのパラメータの取得
+		//SUTRUCT_BoxParams BoxParams(JsonObject& json, STRUCT_BaseParams params);
 
 		//ゲームオブジェクトの生成
 		void AddStaticObj(STRUCT_BaseParams params);

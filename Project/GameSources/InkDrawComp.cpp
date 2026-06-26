@@ -2,6 +2,7 @@
 #include "InkDrawComp.h"
 #include "game_controller.h"
 #include "Player.h"
+#include "TextureCollision.h"
 
 namespace basecross
 {
@@ -9,12 +10,12 @@ namespace basecross
 	{
 		App::GetApp()->RegisterTexture(L"InkTest", App::GetApp()->GetDataDirWString() + L"Texture/Test/InkCollisionTest3.png");
 		m_player = GetStage()->GetSharedGameObject<Player>(L"Player");
-
+		
 	}
 
 	void InkDrawComp::OnUpdate()
 	{
-		if (!m_player) return;
+		if (!m_player && !isInkDrow) return;
 		auto pTrans = m_player->GetComponent<Transform>();
 		auto size = m_defaultSize * 0.5f;
 		AddPointFromWorldPos(pTrans->GetWorldPosition());
@@ -24,6 +25,7 @@ namespace basecross
 
 	void InkDrawComp::InkDrawStart()
 	{
+		if (!isInkDrow) return;
 		auto dev = App::GetApp()->GetDeviceResources();
 		auto devContext = dev->GetD3DDeviceContext();//描画するためのデバイスコンテキストの取得
 
@@ -148,6 +150,8 @@ namespace basecross
 		pD3D11DeviceContext->RSSetState(RenderState->GetCullBack());
 		//描画
 		pD3D11DeviceContext->DrawIndexed(data.m_NumIndicis, 0, 0);
+
+		TextureMeshManager::Get().AddReload(GetGameObject()->GetComponent<TextureCollision>());
 		ClearPoint();
 
 	}
@@ -175,24 +179,40 @@ namespace basecross
 		if (!trans) return;
 
 		//自分自身の位置とスケールを習得
-		Vec3 myPos = trans->GetPosition();
+		Vec3 myPos = trans->GetWorldPosition();
 		Vec3 myScale = trans->GetScale();
 
 		//オブジェクトの中心から距離を計算
 		float relativeX = playerWorldPos.x - myPos.x;
+		float relativeY = playerWorldPos.y - myPos.y;
 		float relativeZ = playerWorldPos.z - myPos.z;
 
 		//cubeメッシュのサイズを考慮して一律の範囲に収める
 		float localX = relativeX / myScale.x;
+		float localY = relativeY / myScale.y;
 		float localZ = relativeZ / myScale.z;
 
 		//テクスチャの座標（0.0～1.0）に変換
-		float uvX = localX + 0.5f;
-		float uvY = 1.0f - (localZ + 0.5f);//上下を反転させる
+		float uvX = 0.0f;
+		float uvY = 0.0f;
+
+		//オブジェクトの前方向を取得
+		Vec3 forward = trans->GetForward();
+
+		if (forward.z >= 0.0f)
+		{
+			uvY = 1.0f - (localZ + 0.5f);
+			uvX = localX + 0.5f;
+		}
+		else
+		{
+			uvY = localZ + 0.5f;//trapDoor用
+			uvX = 1.0f - (localX + 0.5f);
+		}
 
 		//プレイヤーが自分の上に乗っているかつ、
 		// Playerと接触している場合のみインクを塗る
-		if (uvX >= 0.0f && uvX <= 1.0f && uvY >= 0.0f && uvY <= 1.0f && playerWorldPos.y < 0.5f)
+		if (uvX >= 0.0f && uvX <= 1.0f && uvY >= 0.0f && uvY <= 1.0f && relativeY <= 1.2f)
 		{
 			if (GameController::IsPressed_ButtonDown())
 			{

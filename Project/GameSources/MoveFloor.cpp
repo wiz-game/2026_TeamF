@@ -30,10 +30,9 @@ namespace basecross {
 		m_staticDraw = AddComponent<Texture2DrawComp>();
 		m_staticDraw->CreateTexture(m_scale.x,m_scale.z);
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
-		//m_staticDraw->SetEmissive(Col4(1, 1, 1, 1));
-		m_staticDraw->SetDiffuse(Col4(1, 1, 1, 1));
 		m_staticDraw->SetTextureResource(L"MoveFloor");
 		m_staticDraw->SetTexture2(L"Black");
+		m_staticDraw->SetDiffuse(Col4(1, 1, 1, 1));
 		m_staticDraw->SetOwnShadowActive(true);
 
 		auto shadowMap = AddComponent<Shadowmap>();
@@ -50,6 +49,8 @@ namespace basecross {
 		}
 		catch (...) {
 		}
+
+		AddComponent<TextureCollision>();
 	}
 
 	void MoveFloor::OnUpdate()

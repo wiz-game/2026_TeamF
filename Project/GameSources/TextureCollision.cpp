@@ -8,8 +8,9 @@
 #include <filesystem>
 namespace basecross {
 
-	void Contour::CalcAABB() {
-		for (auto& triangle : m_Triangles) {
+	void Contour::CalcAABB(const shared_ptr<Transform>& transform) {
+		auto triangles = GetWorldTriangles(transform);
+		for (auto& triangle : triangles) {
 			for (int i = 0; i < 3; i++) {
 				m_Aabb.m_Min.x = min(m_Aabb.m_Min.x, triangle[i].x);
 				m_Aabb.m_Min.y = min(m_Aabb.m_Min.y, triangle[i].y);
@@ -21,6 +22,23 @@ namespace basecross {
 			}
 			
 		}
+	}
+	vector<TRIANGLE> Contour::GetWorldTriangles(const shared_ptr<Transform>& transform)const {
+		Vec3 position = transform->GetWorldPosition();
+		Vec3 scale = transform->GetScale();
+		vector<TRIANGLE> worldTriangles;
+
+		size_t triangleSize = m_Triangles.size();
+		worldTriangles.resize(triangleSize);
+		for (int i = 0; i < triangleSize; i++) {
+			const TRIANGLE& triangle = m_Triangles[i];
+
+			for (int j = 0; j < 3; j++) {
+				worldTriangles[i][j] = triangle[j] * scale;
+				worldTriangles[i][j] += position;
+			}
+		}
+		return worldTriangles;
 	}
 	TextureCollision::TextureCollision(const shared_ptr<GameObject>& ptr) : 
 		Component(ptr),m_EffectSpawnInterval(0.1f),m_EffectSpawnTimer(0.0f),
@@ -42,7 +60,7 @@ namespace basecross {
 		m_CB.width = m_TextureContext.m_SizeX;
 		m_CB.height = m_TextureContext.m_SizeY;
 
-		m_Labels.resize(textureFullSize,-1);
+		m_Labels.resize(textureFullSize,0);
 
 		m_LabelBuffer = make_shared<BufferContext>(sizeof(int), textureFullSize);
 		if(!m_LabelBuffer->CreateUAV()) {
@@ -52,50 +70,18 @@ namespace basecross {
 			int checker = 0;
 		}
 
-		m_LabelOutputBuffer = make_shared<BufferContext>(sizeof(int), textureFullSize);
-		if(!m_LabelOutputBuffer->CreateSRV()) {
-			int checker = 0;
-		}
-		if(!m_LabelOutputBuffer->CreateUAV()){
-			int checker = 0;
-		}
-
-		m_ConvertFlagBuffer = make_shared<BufferContext>(sizeof(int), 1);
-		if (!m_ConvertFlagBuffer->CreateUAV()) {
-			int checker = 0;
-		}
-
 		//シェーダー初期化
 		m_MaskShader = make_shared<DX11ComputeShader>();
-		m_UnionFind1Shader = make_shared<DX11ComputeShader>();
-		m_UnionFind2Shader = make_shared<DX11ComputeShader>();
-
 		m_MaskShader->Initialize({ 8,8,1,m_TextureContext.m_SizeX,m_TextureContext.m_SizeY,1 });
-		m_UnionFind1Shader->Initialize({ 8,8,1,m_TextureContext.m_SizeX,m_TextureContext.m_SizeY,1 });
-		m_UnionFind2Shader->Initialize({ 8,8,1,m_TextureContext.m_SizeX,m_TextureContext.m_SizeY,1 });
-
-		m_MaskShader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
-		m_UnionFind1Shader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
-		m_UnionFind2Shader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
 
 		auto object = GetGameObject();
-		auto draw = object->GetComponent<InkDrawComponentTest>();
+		auto draw = object->GetComponent<InkDrawComp>();
 		//srvから情報を取得
-		auto srv = draw->GetInkShaderResourceView();
-
+		auto srv = draw->GetSRV();
 		//SRV,UAVの場所を仮で取っておく
 		m_MaskShader->AddSRV(srv.Get());
 		m_MaskShader->AddUAV(m_LabelBuffer->m_UAV.Get());
 		m_MaskShader->SetShader(GenerateMaskShader::GetPtr()->GetShader());
-
-		m_UnionFind1Shader->AddSRV(m_LabelBuffer->m_SRV.Get());
-		m_UnionFind1Shader->AddUAV(m_LabelOutputBuffer->m_UAV.Get());
-		m_UnionFind1Shader->SetShader(UnionFindFirst::GetPtr()->GetShader());
-
-		m_UnionFind2Shader->AddSRV(m_LabelBuffer->m_SRV.Get());
-		m_UnionFind2Shader->AddUAV(m_LabelOutputBuffer->m_UAV.Get());
-		m_UnionFind2Shader->SetShader(UnionFindSecond::GetPtr()->GetShader());
-
 		InkConnectChecker::Get().AddTextureCollision(GetThis<TextureCollision>());
 	}
 	void TextureCollision::OnUpdate() {
@@ -108,20 +94,21 @@ namespace basecross {
 			int handle = -1;
 			for (int j = 0; j < spawnEffectCount; j++) {
 				int spwanTriangle = rand() % m_Contour[i].m_Triangles.size();
-				Vec3 position = m_Contour[i].m_Triangles[spwanTriangle].GetCenter();
+				vector<TRIANGLE> triangles = m_Contour[i].GetWorldTriangles(GetGameObject()->GetComponent<Transform>());
+				Vec3 position = triangles[spwanTriangle].GetCenter();
 				EffectManager::g_Instance->PlayEffect(handle, L"ELECTRIC", position, 0);
 			}
 		}
-	}
-	void TextureCollision::OnDraw() {
-		for (int i = 0; i < m_ElectricContourIndices.size(); i++) {
-			if (m_ElectricContourIndices[i] != 0) {
-				//DrawContour(i);
-			}
+		if (!m_WaitContour.empty()) {
+			m_Contour = m_WaitContour;
+			m_WaitContour.clear();
 		}
 	}
+	void TextureCollision::OnDraw() {
+		
+	}
 	void TextureCollision::DrawContour(int index) {
-		for (auto& triangle : m_Contour[index].m_Triangles) {
+		for (auto& triangle : GetWorldTriangles(index)) {
 			Vec3 dir = triangle.m_B - triangle.m_A;
 			float length = dir.length();
 			DrawLine(triangle.m_A, dir.normalize(), length);
@@ -150,10 +137,10 @@ namespace basecross {
 	}
 	void TextureCollision::GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc) {
 		auto object = GetGameObject();
-		auto draw = object->GetComponent<InkDrawComponentTest>(false);
+		auto draw = object->GetComponent<InkDrawComp>(false);
 		if (!draw) return;
 		//srvから情報を取得
-		auto srv = draw->GetInkShaderResourceView().Get();
+		auto srv = draw->GetSRV().Get();
 		ID3D11Resource* gpuResource = nullptr;
 		srv->GetResource(&gpuResource);
 
@@ -167,11 +154,18 @@ namespace basecross {
 	}
 	void TextureCollision::ProcessGPU() {
 		//カラーマスク抽出
+		m_MaskShader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
 		m_MaskShader->Execute();
 		m_LabelBuffer->ReadBuffer(m_Labels.data());
 	}
 
 
+	vector<TRIANGLE> TextureCollision::GetWorldTriangles(int index)const {
+		auto& gameObject = GetGameObject();
+		auto transform = gameObject->GetComponent<Transform>();
+
+		return m_Contour[index].GetWorldTriangles(transform);
+	}
 	void TextureCollision::CreateMeshInThread(const TextureSnapShot& snapShot, vector<Contour>& result) {
 		cv::Mat mask(snapShot.m_Context.m_SizeY, snapShot.m_Context.m_SizeX, CV_8UC1);
 		for (UINT y = 0; y < snapShot.m_Context.m_SizeY; y++) {
@@ -179,7 +173,10 @@ namespace basecross {
 
 			UINT offset = y * snapShot.m_Context.m_SizeX;
 			for (UINT x = 0; x < snapShot.m_Context.m_SizeX; x++) {
-				row[x] = snapShot.m_Data[offset + x] != -1 ? 255 : 0;
+				row[x] = snapShot.m_Data[offset + x];
+				if (row[x] == 255) {
+					int checker = 0;
+				}
 			}
 		}
 
@@ -245,10 +242,10 @@ namespace basecross {
 				}
 				
 				cdt.Triangulate();
-				auto triangles = cdt.GetTriangles();
+				auto triangles = cdt.GetWorldTriangles();
 
 				Contour data = Contour(CalcContourWorldTriangle(triangles,snapShot));
-				data.CalcAABB();
+				data.CalcAABB(snapShot.m_Transform);
 				result.push_back(data);
 			}
 		}
@@ -258,17 +255,13 @@ namespace basecross {
 		TextureSnapShot snapShot;
 		snapShot.m_Context = m_TextureContext;
 		snapShot.m_Data = m_Labels;
-		auto transform = GetGameObject()->GetComponent<Transform>();
-		snapShot.m_Position = transform->GetPosition();
-		snapShot.m_Scale = transform->GetScale();
+		snapShot.m_Transform = GetGameObject()->GetComponent<Transform>();
 		return snapShot;
 	}
 	vector<TRIANGLE> TextureCollision::CalcContourWorldTriangle(const vector<p2t::Triangle*>& triangles, const TextureSnapShot& snapShot) {
 		vector<TRIANGLE> worldPositions;
 		worldPositions.reserve(triangles.size());
 
-		auto& scale = snapShot.m_Scale;
-		auto& position = snapShot.m_Position;
 		auto& labels = snapShot.m_Data;
 		auto& context = snapShot.m_Context;
 
@@ -281,19 +274,17 @@ namespace basecross {
 			}
 			float px = (float)x / (float)context.m_SizeX;
 			float py = (float)y / (float)context.m_SizeY;
-			Vec3 vertexPosition = Vec3((px - 0.5f) * scale.x, scale.y * 0.5f, -(py - 0.5f) * scale.z);
+			Vec3 vertexPosition = Vec3((px - 0.5f),0.5f, -(py - 0.5f));
 
 			int vertexId = y * (int)context.m_SizeX + x;
 
 			if (x >= (int)context.m_SizeX - 1 || labels[vertexId + 1] == -1) {
-				vertexPosition.x += scale.x / (float)context.m_SizeX;
+				vertexPosition.x += 1.0f / (float)context.m_SizeX;
 			}
 			if (y >= (int)context.m_SizeY - 1 || labels[vertexId + context.m_SizeX] == -1) {
-				vertexPosition.z -= scale.z / (float)context.m_SizeY;
+				vertexPosition.z -= 1.0f / (float)context.m_SizeY;
 			}
-
-			Vec3 worldPosition = vertexPosition + position;
-			return worldPosition;
+			return vertexPosition;
 			};
 
 		for (auto* triangle : triangles) {
@@ -504,7 +495,7 @@ namespace basecross {
 				const auto& otherInkAABB = collision->GetContourAABB(i);
 				if (!HitTest::AABB_AABB(inkAABB, otherInkAABB)) continue;
 
-				const auto& otherTriangles = collision->GetTriangles(i);
+				const auto& otherTriangles = collision->GetWorldTriangles(i);
 				bool isConnected = false;
 
 				for (auto& triangle : triangles) {
@@ -532,7 +523,8 @@ namespace basecross {
 
 			if (!HitTest::AABB_AABB(inkAABB, portAABB)) continue;
 			if (IsConnectedInkToPort(portOBB, portAABB, triangles)) {
-				port->GetComponent<PNTStaticDraw>()->SetDiffuse(Col4(1, 0, 1, 1));
+				port->SetConnect(true);
+				//port->GetComponent<PNTStaticDraw>()->SetDiffuse(Col4(1, 0, 1, 1));
 			}
 		}
 		return false;
@@ -559,6 +551,12 @@ namespace basecross {
 
 			collision->ClearElectricIndex();
 		}
+		for (auto& weakPort : m_Ports) {
+			auto port = weakPort.lock();
+			if (!port) continue;
+
+			port->SetConnect(false);
+		}
 		vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> result;
 		for (auto& weakSupply : m_PowerSupplies) {
 			auto supply = weakSupply.lock();
@@ -576,7 +574,7 @@ namespace basecross {
 					const auto& inkAABB = collision->GetContourAABB(i);
 					if (!HitTest::AABB_AABB(supplyAABB, inkAABB)) continue;
 
-					const auto& triangles = collision->GetTriangles(i);
+					const auto& triangles = collision->GetWorldTriangles(i);
 					bool isConnectedSupply = IsConnectedSupplyToInk(supplyOBB, supplyAABB, triangles);
 					
 					if (isConnectedSupply) {

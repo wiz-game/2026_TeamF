@@ -24,6 +24,7 @@ namespace basecross {
 		auto light = CreateLight<MultiLight>();
 		light->SetDefaultLighting(); //デフォルトのライティングを指定
 
+
 		vector<VertexPositionColor> vertices = {
 			{{0.0f,0.0f,0.0f},{1,1,1}},
 			{{0.0f,0.0f,1.0f},{1,1,1}}
@@ -32,20 +33,20 @@ namespace basecross {
 			0,1
 		};
 
-		App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
+		//App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
+
 	}
 
 	GameStageBase::GameStageBase
 	(
 		const int& stageNum
 	):
-		m_StageNum(stageNum)
+		m_StageNum(stageNum),Stage()
 	{
 	}
 
 	GameStageBase::~GameStageBase()
 	{
-		SoundManager::Get().StopBGM();
 	}
 
 	void GameStageBase::OnCreate()
@@ -57,7 +58,7 @@ namespace basecross {
 		EffectManager::g_Instance->RegisterResource(L"ELECTRIC", mediaPath + L"Effects/Electric1.efk");
 
 		//BGM再生
-		SoundManager::Get().PlayBGM(L"GAMESTAGE_BGM", m_BGMVolume);
+		SoundManager::Get().PlayBGM(L"GAMESTAGE_BGM", 1.0f /*m_BGMVolume*/);
 
 		CreateViewLight();
 		StageDateRoad(m_StageNum);

@@ -23,7 +23,33 @@ namespace basecross{
 		app->RegisterTexture(L"SKYBOX", mediaPath + L"Texture/SkyBox/SkyBox.png");
 		app->RegisterTexture(L"PLAYER", mediaPath + L"Texture/Player.png");
 
+		app->RegisterTexture(L"PRINTER_TEX", mediaPath + L"Texture/PrinterTex.tga");
 
+		auto modelPath = mediaPath + L"model\\";
+		auto Goal_Model = MeshResource::CreateBoneModelMesh(modelPath, L"Printer 1.bmf");
+		app->RegisterResource(L"PRINTER_MODEL", Goal_Model);
+
+
+		vector<VertexPositionColor> vertices = {
+			{{0.0f,0.0f,0.0f},{1,1,1}},
+			{{0.0f,0.0f,1.0f},{1,1,1}}
+		};
+		vector<uint16_t> indices{
+			0,1
+		};
+
+		App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
+
+		app->RegisterTexture(L"Map-1", mediaPath + L"Texture/Map/MapProto.png");
+		for (int i = 0; i < GameProgressManager::Get().GetStageSize(); i++) {
+			wstring indexStr = to_wstring(i);
+			try {
+				app->RegisterTexture(L"Map" + indexStr, mediaPath + L"Texture/Map/Map" + indexStr + L".png");
+			}
+			catch (...) {
+				app->RegisterTexture(L"Map" + indexStr, mediaPath + L"Texture/Map/MapProto.png");
+			}
+		}
 	}
 
 	void Scene::OnCreate(){
@@ -31,18 +57,15 @@ namespace basecross{
 			JoltManager::StaticInitialize();
 
 			GameController::Initialize();
-			GameController::EnableGyro(true);
-			GameController::StartVibration(0.0f, 10.0f);
 
 			SoundManager::Get().RegisterSounds();
 			//ステージ数1で初期化
-			GameProgressManager::Get().Initialize(3);
+			GameProgressManager::Get().Initialize(5);
 			ThreadPool::Get().Initialize(thread::hardware_concurrency());
 
 			SetClearColor(Col4(0.0f, 0.11328125f, 0.2578125, 1.0f));
 			
 			CreateResourses();
-
 
 			//自分自身にイベントを送る
 			//これによりゲームステージのオブジェクトがCreate時にシーンにアクセスできる
@@ -69,9 +92,7 @@ namespace basecross{
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
 		InkConnectChecker::Get().Initialize();
-		if (event->m_MsgStr == L"ToGameStage") {
-			ResetActiveStage<GameStage>();
-		}
+
 		if (event->m_MsgStr == L"ToProtoStage") {
 			ResetActiveStage<ProtoStage>();
 		}
@@ -81,6 +102,12 @@ namespace basecross{
 		if (event->m_MsgStr == L"ToGameOverStage") {
 			ResetActiveStage<GameOverStage>();
 		}
+		if (event->m_MsgStr == L"ToGameStage") {
+			if (!event->m_Info) return;
+			auto stageNum = *(static_pointer_cast<int>(event->m_Info).get());
+			GameProgressManager::Get().SetCurrentStage(stageNum);
+			ResetActiveStage<GameStageBase>(stageNum);
+		}
 
 		if (event->m_MsgStr == L"ToGameStage-1") {
 			ResetActiveStage<ProtoStage>();
@@ -88,14 +115,14 @@ namespace basecross{
 		if (event->m_MsgStr == L"ToGameStage1") {
 			ResetActiveStage<GameStageBase>(1);
 		}
-		//if (event->m_MsgStr == L"ToGameStage2") {
-		//	ResetActiveStage<GameStageBase>(2);
-		//}
 		if (event->m_MsgStr == L"ToGameStage0") {
 			ResetActiveStage<ProtoStage>();
 			//ResetActiveStage<GameStageBase>();
 		}
 
+		if (event->m_MsgStr == L"ToGameStage2") {
+			ResetActiveStage<GameStageBase>(2);
+		}
 
 
 		if (event->m_MsgStr == L"ToTitleStage") {
