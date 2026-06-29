@@ -8,6 +8,7 @@
 
 namespace basecross {
 	class Sprite;
+	class GoalEreaEffect;
 	//--------------------------------------------------------------------------------------
 	//	class Goal : public GameObject;
 	//--------------------------------------------------------------------------------------
@@ -71,5 +72,41 @@ namespace basecross {
 		void SpriteAnimation(float delta);
 	};
 
+
+	class GoalEreaEffect : public GameObject
+	{
+	public:
+		struct InitParams
+		{
+			std::wstring textureKey; // テクスチャリソースのキー
+			int sides; // 円形の分割数
+			float height; // オーラの高さ
+			float topRadius; // 上部円の半径
+			float bottomRadius; // 下部円の半径
+			Col4 topColor; // 上部の色
+			Col4 bottomColor; // 下部の色
+			Vec2 uvOffsetSpeed; // UVアニメーションの秒速
+			float textureLoops; // テクスチャの「u座標」
+
+			InitParams(const wstring& textureKey, int sides, float height, float radiusX, float radiusZ, const Col4& topColor, const Col4& bottomColor, const Vec2& speed, float textureLoops)
+				: textureKey(textureKey), sides(sides), height(height), topRadius(radiusX), bottomRadius(radiusZ), topColor(topColor), bottomColor(bottomColor), uvOffsetSpeed(speed), textureLoops(textureLoops)
+			{}
+
+			InitParams()
+				: InitParams(L"", 30, 1.0f, 1.0f, 1.0f, Col4(1.0f), Col4(1.0f), Vec2(0.0f), 1.0f)
+			{}
+		};
+	private:
+		std::vector<VertexPositionNormalTexture> vertices; // 頂点データを保持するベクター
+		InitParams params; // 初期化パラメータを保持する構造体
+
+	public:
+		GoalEreaEffect(const std::shared_ptr<Stage>& stage, const InitParams& params)
+			: GameObject(stage),
+			params(params)
+		{}
+		void OnCreate() override;
+		void OnUpdate() override;
+	};
 }
 //end basecross

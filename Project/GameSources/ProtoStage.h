@@ -37,6 +37,7 @@ namespace basecross {
 
 		void Pause(bool isPause);
 		bool IsPause()const;
+		void OnDestroy();
 	};
 }
 //end basecross

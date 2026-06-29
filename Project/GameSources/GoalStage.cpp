@@ -111,7 +111,7 @@ namespace basecross {
 			m_ButtonScaleIndex = 2;
 			int currentStage = GameProgressManager::Get().GetCurrentStage();
 			currentStage++;
-			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToGameStage", make_shared<int>(currentStage));
+			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToProtoStage"/*, make_shared<int>(currentStage)*/);
 		}
 		
 		
