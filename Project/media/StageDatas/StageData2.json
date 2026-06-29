@@ -1,5 +1,26 @@
 {
   "Gameobj": [
+    {
+    "type": "Player",
+    "position": {
+        "x": 31.799999237060548,
+        "y": 1.5,
+        "z": 0.09735321998596192
+    },
+    "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "childObjectData": {
+        "InkMax": 10.0
+    }
+},
 {
     "type": "Port",
     "position": {
@@ -202,27 +223,7 @@
         "PortID": 0
     }
 },
-{
-    "type": "Player",
-    "position": {
-        "x": 31.799999237060548,
-        "y": 1.5,
-        "z": 0.09735321998596192
-    },
-    "scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "rotation": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "childObjectData": {
-        "InkMax": 10.0
-    }
-},
+
 {
     "type": "Floor",
     "position": {

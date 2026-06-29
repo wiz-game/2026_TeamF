@@ -95,14 +95,14 @@ namespace basecross {
 		map<int, shared_ptr<Port>>Map_Ports;
 
 		////ステージ番号
-		int m_StageNum = 11;	
-
+		int m_StageNum = 11;
 		//構築と破棄
 		GameStageBase() :Stage(){}
 		GameStageBase(const int& num);
 		virtual ~GameStageBase();
 		void CreateViewLight();
 		void OnCreate();
+		void OnUpdate();
 		void SetStageNum(int num);
 		int GetStageNum();
 		void StageDateRoad(int num);

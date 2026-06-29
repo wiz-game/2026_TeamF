@@ -56,12 +56,29 @@ namespace basecross {
 
 		wstring mediaPath = App::GetApp()->GetDataDirWString();
 		EffectManager::g_Instance->RegisterResource(L"ELECTRIC", mediaPath + L"Effects/Electric1.efk");
-
+		wstring texPath = App::GetApp()->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+		App::GetApp()->RegisterTexture(L"BUTTON_AB", texPath + L"Button_AB.png");
+		App::GetApp()->RegisterTexture(L"INK_MOZI", texPath + L"Ink_mozi.png");
 		//BGM再生
 		SoundManager::Get().PlayBGM(L"GAMESTAGE_BGM", 1.0f /*m_BGMVolume*/);
 
 		CreateViewLight();
 		StageDateRoad(m_StageNum);
+
+		auto UISprite = AddGameObject<Sprite>(L"BUTTON_AB", Vec3(630, -380, 0), Vec2(250, 200), Anchor::BottomRight);
+		auto inkprite = AddGameObject<Sprite>(L"INK_MOZI", Vec3(-550, 380, 0), Vec2(100, 30), Anchor::Center);
+
+		//スカイボックス
+		AddGameObject<SkyCube>(L"SKYBOX");
+
+		////UI作成
+		//auto gaugeBack = AddGameObject<GaugeBack>();
+		//auto gauge = AddGameObject<InkGauge>();
+
+	}
+
+	void GameStageBase::OnUpdate() {
+		
 	}
 
 	void GameStageBase::SetStageNum(int num)
