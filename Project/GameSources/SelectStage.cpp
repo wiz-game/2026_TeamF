@@ -121,6 +121,7 @@ namespace basecross {
 			m_Scale = Vec2(600, 600);
 			ButtonManager::instance->Create(m_Title, L"SelectPage1", texName, texSelected, Vec3((((1980 / 2) * (i - 1)) - (m_Scale.x / 2)), m_Scale.y / 2, 0), m_Scale, [](shared_ptr<ObjectInterface>& object) {});
 		}
+
 	}
 }
 //end basecross

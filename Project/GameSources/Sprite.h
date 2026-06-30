@@ -844,6 +844,8 @@ namespace basecross {
 
 		float	m_GroupMovementSpeed;	//グループの移動速度
 
+		group<function<bool()>> m_PressFunc;
+
 		shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 
 		template<typename Comp, typename... params>
@@ -934,6 +936,10 @@ namespace basecross {
 			return nullptr;
 		}
 
+		void SetPressFunction(const wstring& group, const function<bool()>& func) {
+			m_PressFunc[group] = func;
+		}
+
 		/// <summary>
 		/// 選択入力の確認
 		/// </summary>
@@ -942,6 +948,10 @@ namespace basecross {
 		/// <returns>入力の有無</returns>
 		bool PressSelect(const wstring& group, InputData& data) {
 			auto keyborad = App::GetApp()->GetInputDevice().GetKeyState();
+
+			if (FindGroup(m_PressFunc, group)) {
+				if (!m_PressFunc[group]()) return;
+			}
 
 			if (FindGroup(m_KeyboradInputDates, group)) {
 				for (auto& inputData : m_KeyboradInputDates[group]) {
