@@ -1,7 +1,7 @@
 #include"stdafx.h"
 #include"Scene.h"
 #include"PauseMenu.h"
-
+#include "GameProgressManager.h"
 namespace basecross
 {
 	void PauseMenu::OnCreate()
@@ -165,10 +165,12 @@ namespace basecross
 				//コンティニュー
 
 				break;
-			case 2:
+			case 2: {
 				//リトライ
-				PostEvent(0.50f, GetThis<PauseMenu>(), scene, L"ToProtoStage");
+				int currentStage = GameProgressManager::Get().GetCurrentStage();
+				PostEvent(0.50f, GetThis<PauseMenu>(), scene, L"ToGameStage", make_shared<int>(currentStage));
 				break;
+			}
 			case 3:
 				//設定
 

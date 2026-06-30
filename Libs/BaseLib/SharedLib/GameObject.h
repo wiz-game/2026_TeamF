@@ -2095,6 +2095,7 @@ namespace basecross {
 				//破棄を伝える
 				ActStagePtr->DestroyStage();
 			}
+			if (!_CrtCheckMemory()) __debugbreak();
 			auto Ptr = ObjectFactory::Create<T>(params...);
 			auto StagePtr = dynamic_pointer_cast<Stage>(Ptr);
 			if (!StagePtr) {
@@ -2104,10 +2105,12 @@ namespace basecross {
 					L"SceneBase::ResetActiveStage<T>()"
 				);
 			}
+			if (!_CrtCheckMemory()) __debugbreak();
 			SetActiveStage(StagePtr);
 			//デバッグ用文字列
 			auto dbgPtr = StagePtr->AddGameObject<DebugString>();
 			StagePtr->SetSharedGameObject(L"DebugString", dbgPtr);
+			if (!_CrtCheckMemory()) __debugbreak();
 			return Ptr;
 		}
 		//--------------------------------------------------------------------------------------

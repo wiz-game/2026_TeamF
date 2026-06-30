@@ -69,7 +69,7 @@ namespace basecross{
 
 		float power = 5.0f;
 
-		player->AddForce(dir * power);
+		//player->AddForce(dir * power);
 
 	}
 
