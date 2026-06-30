@@ -79,8 +79,7 @@ namespace basecross {
 			m_sprite_Buttons.push_back(AddGameObject<Sprite>(L"BUTTON_A", Vec3(400, -300, 0), Vec2(400, 150), Anchor::Center));
 
 			//BGM再生
-			if (!m_sSelectBGM)
-				m_sSelectBGM = SoundManager::Get().PlayBGM(L"STAGESELECT", m_BGMVolume);
+			SoundManager::Get().PlayBGM(L"STAGESELECT_BGM", m_BGMVolume);
 		}
 		catch (...) {
 			throw;
@@ -107,6 +106,12 @@ namespace basecross {
 		}
 
 		//選択移動左
+		if (GameController::IsTrigger_DpadLeft()) 
+		{
+			//選択効果音を鳴らす
+			SoundManager::Get().PlaySE(L"SELECT", 1.0f);
+		}
+
 		if (GameController::IsTrigger_DpadLeft() && ButtonManager::instance->GetMoveStop()) {
 			m_ButtonScaleTimer = 0;
 			m_ButtonScaleIndex = 1;
@@ -117,6 +122,12 @@ namespace basecross {
 			ButtonManager::instance->SetSelectIndex(L"SelectPage1", m_SelectIndex);
 		}
 		//選択移動右
+		if (GameController::IsTrigger_DpadRight()) 
+		{
+			//選択効果音を鳴らす
+			SoundManager::Get().PlaySE(L"SELECT", 1.0f);
+		}
+
 		if (GameController::IsTrigger_DpadRight() && ButtonManager::instance->GetMoveStop()) {
 			m_ButtonScaleTimer = 0;
 			m_ButtonScaleIndex = 1;
@@ -129,6 +140,8 @@ namespace basecross {
 		}
 		//選択決定(A)
 		if (GameController::IsTrigger_ButtonDown()) {
+			//決定効果音を鳴らす
+			SoundManager::Get().PlaySE(L"CONFIRM", 1.0f);
 			m_ButtonScaleTimer = 0;
 			m_ButtonScaleIndex = 2;
 

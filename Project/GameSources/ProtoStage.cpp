@@ -63,14 +63,16 @@ namespace basecross {
 
 			//BGM再生
 			if(!m_stageBGM)
-				m_stageBGM = SoundManager::Get().PlayBGM(L"STAGE", 0.55f);
+				m_stageBGM = SoundManager::Get().PlayBGM(L"GAMESTAGE_BGM", 0.55f);
 
 			//UI作成
 			auto gaugeBack = AddGameObject<GaugeBack>();
 			auto gauge = AddGameObject<InkGauge>();
 
 			//ポーズメニュー作成
+			//m_pause = ObjectFactory::Create<Pause>(GetThis<Stage>());
 			m_pauseMenu = ObjectFactory::Create<PauseMenu>(GetThis<Stage>());
+			m_optionMenu = ObjectFactory::Create<OptionMenu>(GetThis<Stage>());
 
 			//プロトタイプ用地面作成
 			JPH::StaticCompoundShapeSettings compoundSettings;
@@ -225,13 +227,15 @@ namespace basecross {
 		auto& pad = device.GetControlerVec()[0];
 		GameController::Update();
 
+		//m_pause->PauseBase();
 		bool pause = m_pauseMenu->GetPause();
-		//m_isPause = pause;
+		m_isPause = pause;
 
 		if (pad.wPressedButtons & XINPUT_GAMEPAD_START)
 		{
 			m_pauseMenu->SetPause(!pause);
 			Pause(!pause);
+			//m_pause->OnPause(!pause);
 			//BGMを中断
 			SoundManager::Get().PauseBGM(!pause);
 		}
@@ -239,6 +243,7 @@ namespace basecross {
 		if (IsPause())
 		{
 			m_pauseMenu->OnUpdate();
+			//m_optionMenu->OnUpdate();
 		}
 	}
 
@@ -255,15 +260,13 @@ namespace basecross {
 		}
 	}
 
-	bool ProtoStage::IsPause() const
-	{
-		return m_pauseMenu->GetPause() && m_pauseMenu;
-	}
-
 	void ProtoStage::Pause(bool isPause)
 	{
 		bool pause = m_pauseMenu->GetPause();
 		m_isPause = isPause;
+		m_ps = PauseState::pause;
+
+		SoundManager::Get().PlaySE(L"SELECT", 1.0f);
 
 		auto objs = GetGameObjectVec();
 		auto view = GetView();
@@ -273,6 +276,23 @@ namespace basecross {
 			obj->SetUpdateActive(!m_isPause);
 		}
 		//EffectManager::g_Instance->OnDraw();
+	}
+
+	bool ProtoStage::IsPause() const
+	{
+		return m_pauseMenu->GetPause() && m_pauseMenu;
+	}
+
+	void ProtoStage::Option(bool isOption)
+	{
+		bool option = m_optionMenu->GetOption();
+		m_isOption = isOption;
+		m_ps = PauseState::option;
+	}
+
+	bool ProtoStage::IsOption() const
+	{
+		return m_optionMenu->GetOption() && m_optionMenu;
 	}
 }
 //end basecross
