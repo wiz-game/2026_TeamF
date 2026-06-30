@@ -48,6 +48,17 @@ namespace basecross{
 		void OnCollisionEnter(std::shared_ptr<GameObject>& obj);
 		void OnCollisionExcute(std::shared_ptr<GameObject>& obj);
 		void OnCollisionExit(std::shared_ptr<GameObject>& obj);
+	
+	private:
+		static const Vec3 SCALE;
+		static const Vec3 START_POS;
+		static const float ROTATION_Z;
+
+		static const float PUSH_POWER;
+		static const float NORMALIZE_EPS;
+
+		static const float LOOP_ANGLE;
+
 	};
 
 }

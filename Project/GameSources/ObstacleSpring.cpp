@@ -8,15 +8,22 @@
 
 namespace basecross{
 
-	//初期化
+	// ===== 定数まとめ =====
+	const Vec3 ObstacleSpring::SCALE = Vec3(1.0f, 2.0f, 1.0f);
+	const Vec3 ObstacleSpring::START_POS = Vec3(0.0f, 5.0f, 0.0f);
+	const float ObstacleSpring::ROTATION_Z = XM_PIDIV2;
+	const float ObstacleSpring::PUSH_POWER = 0.5f;
+	const float ObstacleSpring::NORMALIZE_EPS = 0.001f;
+	const float ObstacleSpring::LOOP_ANGLE = XM_2PI;
+
 	void ObstacleSpring::OnCreate()
 	{
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_CYLINDER");
 		m_transform = GetComponent<Transform>();
-		m_transform->SetScale(1, 2, 1);
-		m_transform->SetPosition(0, 1, 0);
-		m_transform->SetRotation(0, 0, XM_PIDIV2);
+		m_transform->SetScale(SCALE);
+		m_transform->SetPosition(START_POS);
+		m_transform->SetRotation(0, 0, ROTATION_Z);
 		m_draw->SetOwnShadowActive(true);
 
 		auto shadowMap = AddComponent<Shadowmap>();
@@ -26,6 +33,8 @@ namespace basecross{
 		auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
 		app->RegisterTexture(L"Spring", path + L"Spring.png");
 		m_draw->SetTextureResource(L"Spring");
+		auto coll = AddComponent<CollisionObb>();
+
 	}
 
 	void ObstacleSpring::OnUpdate()
@@ -62,15 +71,12 @@ namespace basecross{
 		Vec3 dir = playerPos - myPos;
 		dir.y = 0.0f;
 
-		if (dir.length() > 0.001f)
+		if (dir.length() > NORMALIZE_EPS)
 		{
 			dir.normalize();
 		}
 
-		float power = 5.0f;
-
-		player->AddForce(dir * power);
-
+		player->AddVelocity(dir * PUSH_POWER);
 	}
 
 
@@ -91,6 +97,9 @@ namespace basecross{
 		}
 		else
 		{
+			m_velocity += m_gravity * delta;
+			pos.y += m_velocity * delta;
+
 			m_isGround = false;
 		}
 
@@ -99,20 +108,29 @@ namespace basecross{
 
 	void ObstacleSpring::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
 	{
+		OutputDebugStringA("Obstacle Execute!\n");
 		if (auto floor = dynamic_pointer_cast<Floor>(obj))
 		{
 			m_isGround = true;
 			m_velocity = 0.0f;
 		}
+
+		if (auto player = std::dynamic_pointer_cast<Player>(obj))
+		{
+			PushPlayer(player);
+		}
+
 	}
 
 
 	void ObstacleSpring::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
 	{
-		if (auto player = dynamic_pointer_cast<Player>(obj))
+		OutputDebugStringA("Obstacle Execute!\n");
+		if (auto player = std::dynamic_pointer_cast<Player>(obj))
 		{
 			PushPlayer(player);
 		}
+
 	}
 
 
