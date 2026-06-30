@@ -23,6 +23,18 @@ namespace basecross {
 		//マルチライトの作成
 		auto light = CreateLight<MultiLight>();
 		light->SetDefaultLighting(); //デフォルトのライティングを指定
+
+
+		vector<VertexPositionColor> vertices = {
+			{{0.0f,0.0f,0.0f},{1,1,1}},
+			{{0.0f,0.0f,1.0f},{1,1,1}}
+		};
+		vector<uint16_t> indices{
+			0,1
+		};
+
+		//App::GetApp()->RegisterResource(L"DEFAULT_PC_LINE", MeshResource::CreateMeshResource(vertices, indices, false));
+
 	}
 
 	GameStageBase::GameStageBase
@@ -258,6 +270,7 @@ namespace basecross {
 	void GameStageBase::AddPlayerObj(STRUCT_PlayerParams params)
 	{
 		auto playerPtr = AddGameObject<Player>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, params.InkMax);
+		SetSharedGameObject(L"player", playerPtr);
 
 		auto view = GetView();
 		auto camera = view->GetTargetCamera();
