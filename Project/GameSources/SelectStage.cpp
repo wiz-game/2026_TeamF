@@ -137,7 +137,7 @@ namespace basecross {
 			m_sSelectBGM = nullptr;
 
 			//PostEvent(0.2f, GetThis<SelectStage>(), app->GetScene<Scene>(), L"ToProtoStage");
-			PostEvent(0.0f, GetThis<ObjectInterface>(), app->GetScene<Scene>(), L"ToGameStage", make_shared<int>(m_SelectIndex));
+			PostEvent(0.3f, GetThis<ObjectInterface>(), app->GetScene<Scene>(), L"ToGameStage", make_shared<int>(m_SelectIndex));
 		}
 	}
 
