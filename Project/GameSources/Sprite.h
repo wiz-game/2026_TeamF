@@ -950,7 +950,7 @@ namespace basecross {
 			auto keyborad = App::GetApp()->GetInputDevice().GetKeyState();
 
 			if (FindGroup(m_PressFunc, group)) {
-				if (!m_PressFunc[group]()) return;
+				if (!m_PressFunc[group]()) return false;
 			}
 
 			if (FindGroup(m_KeyboradInputDates, group)) {
