@@ -2401,12 +2401,12 @@ namespace basecross{
 		@return	è’ìÀÇµÇƒÇ¢ÇÍÇŒtrue
 		*/
 		//--------------------------------------------------------------------------------------
-		static bool AABB_AABB(const AABB& a, const AABB& b){
-			if(a.m_Max.x < b.m_Min.x || a.m_Min.x > b.m_Max.x)
+		static bool AABB_AABB(const AABB& a, const AABB& b,const bsm::Vec3& epsilon = bsm::Vec3()){
+			if(a.m_Max.x < b.m_Min.x - epsilon.x || a.m_Min.x > b.m_Max.x + epsilon.x)
 				return false;
-			if(a.m_Max.y < b.m_Min.y || a.m_Min.y > b.m_Max.y)
+			if(a.m_Max.y < b.m_Min.y - epsilon.y || a.m_Min.y > b.m_Max.y + epsilon.y)
 				return false;
-			if(a.m_Max.z < b.m_Min.z || a.m_Min.z > b.m_Max.z)
+			if(a.m_Max.z < b.m_Min.z - epsilon.z || a.m_Min.z > b.m_Max.z + epsilon.z)
 				return false;
 			return true;
 		}
