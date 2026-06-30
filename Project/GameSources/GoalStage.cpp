@@ -43,9 +43,9 @@ namespace basecross {
 		try {
 			auto& app = App::GetApp();
 			auto scene = app->GetScene<Scene>();
+			
 			CreateViewLight();
 			RegisterResources();
-
 			m_sprite = AddGameObject<Sprite>(L"GoalStage", Vec3(), Vec2(1280, 840), Anchor::Center);
 			wstring mapStr = to_wstring(GameProgressManager::Get().GetCurrentStage());
 			AddGameObject<Sprite>(L"Map" + mapStr, Vec3(0.0f, 80.0f, 0.0f), Vec2(350.0f, 210.0f), Anchor::Center);
@@ -66,7 +66,7 @@ namespace basecross {
 
 			m_ClearStanp = AddGameObject<StanpSprite>(L"ClearMark", Vec3(0.0f, 80.0f, 0.0f), Vec2(350.0f, 210.0f), 0.35f, 1.5f, 0.8f);
 			m_ClearStanp->SetSE(L"STAGESELECT");
-			m_ClearStanp->StartAnimation();
+			//m_ClearStanp->StartAnimation();
 
 			GameProgressManager::Get().ClearCurrentStage();
 			
@@ -111,7 +111,7 @@ namespace basecross {
 			m_ButtonScaleIndex = 2;
 			int currentStage = GameProgressManager::Get().GetCurrentStage();
 			currentStage++;
-			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToGameStage", make_shared<int>(currentStage));
+			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToGameStage",make_shared<int>(currentStage));
 		}
 		
 		

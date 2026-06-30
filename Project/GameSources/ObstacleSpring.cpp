@@ -1,6 +1,6 @@
 /*!
 @file ObstacleSpring.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇŽÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -8,7 +8,7 @@
 
 namespace basecross{
 
-	// ===== ’è”‚Ü‚Æ‚ß =====
+	// ===== å®šæ•°ã¾ã¨ã‚ =====
 	const Vec3 ObstacleSpring::SCALE = Vec3(1.0f, 2.0f, 1.0f);
 	const Vec3 ObstacleSpring::START_POS = Vec3(0.0f, 5.0f, 0.0f);
 	const float ObstacleSpring::ROTATION_Z = XM_PIDIV2;
@@ -30,7 +30,7 @@ namespace basecross{
 		shadowMap->SetMeshResource(L"DEFAULT_CYLINDER");
 
 		auto& app = App::GetApp();
-		auto path = app->GetDataDirWString() + L"Texture\\"; // ƒeƒNƒXƒ`ƒƒ‚ÌƒpƒX‚ð\’z
+		auto path = app->GetDataDirWString() + L"Texture\\"; // ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ‘ã‚¹ã‚’æ§‹ç¯‰
 		app->RegisterTexture(L"Spring", path + L"Spring.png");
 		m_draw->SetTextureResource(L"Spring");
 		auto coll = AddComponent<CollisionObb>();
@@ -75,8 +75,9 @@ namespace basecross{
 		{
 			dir.normalize();
 		}
-
+    
 		player->AddVelocity(dir * PUSH_POWER);
+
 	}
 
 

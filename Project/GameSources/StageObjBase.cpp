@@ -20,6 +20,7 @@ namespace basecross {
 
 	StageObjBase::~StageObjBase()
 	{
+		int checker = 0;
 	}
 
 

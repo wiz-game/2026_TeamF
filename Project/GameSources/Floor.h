@@ -24,7 +24,8 @@ namespace basecross
 			const Vec3& Pos
 		);
 
-		virtual ~Floor(){}
+		virtual ~Floor(){
+		}
 
 		std::shared_ptr<InkDrawComp> m_draw;
 		std::shared_ptr<Transform> m_trans;

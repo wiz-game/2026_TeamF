@@ -56,12 +56,64 @@ namespace basecross {
 
 		wstring mediaPath = App::GetApp()->GetDataDirWString();
 		EffectManager::g_Instance->RegisterResource(L"ELECTRIC", mediaPath + L"Effects/Electric1.efk");
-
+		wstring texPath = App::GetApp()->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+		App::GetApp()->RegisterTexture(L"BUTTON_AB", texPath + L"Button_AB.png");
+		App::GetApp()->RegisterTexture(L"INK_MOZI", texPath + L"Ink_mozi.png");
 		//BGM再生
 		SoundManager::Get().PlayBGM(L"GAMESTAGE_BGM", 1.0f /*m_BGMVolume*/);
 
+		//スカイボックス
+		AddGameObject<SkyCube>(L"SKYBOX");
+
 		CreateViewLight();
 		StageDateRoad(m_StageNum);
+
+		auto UISprite = AddGameObject<Sprite>(L"BUTTON_AB", Vec3(630, -380, 0), Vec2(250, 200), Anchor::BottomRight);
+		auto inkprite = AddGameObject<Sprite>(L"INK_MOZI", Vec3(-550, 380, 0), Vec2(100, 30), Anchor::Center);
+
+		//スカイボックス
+		AddGameObject<SkyCube>(L"SKYBOX");
+
+		//UI作成
+		auto gaugeBack = AddGameObject<GaugeBack>();
+		auto gauge = AddGameObject<InkGauge>();
+
+		//ポーズメニュー作成
+		m_pauseMenu = ObjectFactory::Create<PauseMenu>(GetThis<Stage>());
+	}
+
+	void GameStageBase::OnUpdate()
+	{
+		// アプリケーションオブジェクトを取得
+		auto& app = App::GetApp();
+		auto device = App::GetApp()->GetInputDevice();
+		auto& pad = device.GetControlerVec()[0];
+		GameController::Update();
+
+		bool pause = m_pauseMenu->GetPause();
+		//m_isPause = pause;
+
+		if (pad.wPressedButtons & XINPUT_GAMEPAD_START)
+		{
+			m_pauseMenu->SetPause(!pause);
+			Pause(!pause);
+			//BGMを中断
+			SoundManager::Get().PauseBGM(!pause);
+		}
+
+		if (IsPause())
+		{
+			m_pauseMenu->OnUpdate();
+		}
+
+	}
+
+	void GameStageBase::OnDraw()
+	{
+		if (IsPause())
+		{
+			m_pauseMenu->OnDraw();
+		}
 	}
 
 	void GameStageBase::SetStageNum(int num)
@@ -270,6 +322,7 @@ namespace basecross {
 	void GameStageBase::AddPlayerObj(STRUCT_PlayerParams params)
 	{
 		auto playerPtr = AddGameObject<Player>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, params.InkMax);
+		SetSharedGameObject(L"player", playerPtr);
 
 		auto view = GetView();
 		auto camera = view->GetTargetCamera();
@@ -336,6 +389,27 @@ namespace basecross {
 		desc.PortID = params.PortID;
 		AddGameObject<GoalDoor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID], desc.MoveDir);
 	}
+
+	bool GameStageBase::IsPause() const
+	{
+		return m_pauseMenu->GetPause() && m_pauseMenu;
+	}
+
+	void GameStageBase::Pause(bool isPause)
+	{
+		bool pause = m_pauseMenu->GetPause();
+		m_isPause = isPause;
+
+		auto objs = GetGameObjectVec();
+		auto view = GetView();
+		auto camera = view->GetTargetCamera();
+		for (auto& obj : objs)
+		{
+			obj->SetUpdateActive(!m_isPause);
+		}
+		//EffectManager::g_Instance->OnDraw();
+	}
+
 
 }
 //end basecross

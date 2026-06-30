@@ -101,7 +101,9 @@ namespace basecross {
 		}
 		if (!m_WaitContour.empty()) {
 			m_Contour = m_WaitContour;
+			m_ElectricContourIndices = m_WaitElectricContourIndices;
 			m_WaitContour.clear();
+			m_WaitElectricContourIndices.clear();
 		}
 	}
 	void TextureCollision::OnDraw() {
@@ -132,7 +134,7 @@ namespace basecross {
 		m_ElectricContourIndices[index] = 1;
 	}
 	bool TextureCollision::IsElectrified(int index) {
-		if (m_ElectricContourIndices.size() <= index) return false;
+		if (m_ElectricContourIndices.size() <= index) return true;
 		return m_ElectricContourIndices[index];
 	}
 	void TextureCollision::GetSrvResource(ID3D11Texture2D** texture, D3D11_TEXTURE2D_DESC* desc) {

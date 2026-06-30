@@ -37,6 +37,7 @@ namespace basecross{
 		CoordContext m_TextureContext;
 		vector<int> m_Labels;
 		vector<int> m_ElectricContourIndices;
+		vector<int> m_WaitElectricContourIndices;
 
 		float m_EffectSpawnTimer;
 		float m_EffectSpawnInterval;
@@ -76,7 +77,7 @@ namespace basecross{
 		TextureSnapShot SnapShot();
 		void ApplyThreadResult(vector<Contour>& result) {
 			m_WaitContour = result;
-			m_ElectricContourIndices.resize(m_Contour.size(), 0);
+			m_WaitElectricContourIndices.resize(m_Contour.size(), 0);
 
 		}
 	};
