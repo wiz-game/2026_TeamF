@@ -42,6 +42,9 @@ namespace basecross {
 		app->RegisterTexture(L"BACKGROUND", mediaPath + L"Texture/background.jpg");
 		app->RegisterTexture(L"BLACK", mediaPath + L"Texture/Black.png");
 		app->RegisterTexture(L"NUMBER", mediaPath + L"Texture/Number.png");
+		app->RegisterTexture(L"BUTTON_A", mediaPath + L"Texture/Button_A_Select.png");
+		app->RegisterTexture(L"BUTTON_SELECT", mediaPath + L"Texture/Button_Select.png");
+		app->RegisterTexture(L"BUTTON_X", mediaPath + L"Texture/Button_A_Title_Take.png");
 
 		for (int i = 1; i < m_MaxSelectIndex + 1; i++)
 		{
@@ -71,6 +74,10 @@ namespace basecross {
 			m_SelectingSprite = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-25.0f, 50.0f, 0.0f), Vec2(50, 100), 2);
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
 
+			m_sprite_Buttons.push_back(AddGameObject<Sprite>(L"BUTTON_X", Vec3(-400, -300, 0), Vec2(400, 150), Anchor::Center));
+			m_sprite_Buttons.push_back(AddGameObject<Sprite>(L"BUTTON_SELECT", Vec3(0, -300, 0), Vec2(400, 150), Anchor::Center));
+			m_sprite_Buttons.push_back(AddGameObject<Sprite>(L"BUTTON_A", Vec3(400, -300, 0), Vec2(400, 150), Anchor::Center));
+
 			//BGM再生
 			if (!m_sSelectBGM)
 				m_sSelectBGM = SoundManager::Get().PlayBGM(L"STAGESELECT", m_BGMVolume);
@@ -85,8 +92,25 @@ namespace basecross {
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
 
+		if (m_ButtonScaleTimer != -1) {
+			SpriteMove();
+			return;
+		}
+
+		//タイトルに戻る
+		if (GameController::IsTrigger_ButtonLeft())
+		{
+			m_ButtonScaleTimer = 0;
+			m_ButtonScaleIndex = 0;
+
+			PostEvent(0.3f, GetThis<ObjectInterface>(), app->GetScene<Scene>(), L"ToTitleStage");
+		}
+
 		//選択移動左
 		if (GameController::IsTrigger_DpadLeft() && ButtonManager::instance->GetMoveStop()) {
+			m_ButtonScaleTimer = 0;
+			m_ButtonScaleIndex = 1;
+
 			if (m_SelectIndex >= 1)ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((1980 / 2), 0, 0), 60.0f);
 			m_SelectIndex = max(0, m_SelectIndex - 1);
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
@@ -94,6 +118,10 @@ namespace basecross {
 		}
 		//選択移動右
 		if (GameController::IsTrigger_DpadRight() && ButtonManager::instance->GetMoveStop()) {
+			m_ButtonScaleTimer = 0;
+			m_ButtonScaleIndex = 1;
+
+
 			if (m_SelectIndex < m_MaxSelectIndex - 1)ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((-1980 / 2), 0, 0), 60.0f);
 			m_SelectIndex = min(m_MaxSelectIndex - 1, m_SelectIndex + 1);
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
@@ -101,6 +129,9 @@ namespace basecross {
 		}
 		//選択決定(A)
 		if (GameController::IsTrigger_ButtonDown()) {
+			m_ButtonScaleTimer = 0;
+			m_ButtonScaleIndex = 2;
+
 			//BGMを止める
 			SoundManager::Get().StopBGM();
 			m_sSelectBGM = nullptr;
@@ -109,6 +140,14 @@ namespace basecross {
 			PostEvent(0.0f, GetThis<ObjectInterface>(), app->GetScene<Scene>(), L"ToGameStage", make_shared<int>(m_SelectIndex));
 		}
 	}
+
+	void SelectStage::SpriteMove()
+	{
+		SpriteMoveUtil::CalculatePunchScale(m_ButtonScaleTimer, m_ButtonScaleRation, 0.1f);
+
+		m_sprite_Buttons[m_ButtonScaleIndex]->SetSize(Vec2(400.0f * m_ButtonScaleRation, 150.0f * m_ButtonScaleRation));
+	}
+
 
 	void SelectStage::SpriteCreation()
 	{
