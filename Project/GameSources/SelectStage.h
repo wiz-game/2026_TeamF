@@ -16,6 +16,12 @@ namespace basecross {
 		int m_SelectIndex;
 		int m_MaxSelectIndex;
 
+		vector<shared_ptr<Sprite>> m_sprite_Buttons;
+		int m_ButtonScaleIndex = 1;
+		float m_ButtonScaleTimer;
+		float m_ButtonScaleRation;
+
+
 		shared_ptr<Stage> m_Title;
 		int m_MaxPageNum;
 		int m_PageNum = 1;
@@ -38,6 +44,8 @@ namespace basecross {
 		
 		virtual void OnCreate()override; //������
 		virtual void OnUpdate()override; //�X�V
+
+		void SpriteMove();
 
 		//�X�e�[�W�I���X�v���C�g�̍쐬
 		void SpriteCreation();
