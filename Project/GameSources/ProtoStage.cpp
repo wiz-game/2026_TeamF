@@ -209,7 +209,6 @@ namespace basecross {
 			//AddGameObject<ObstacleSpring>();
 			auto UISprite = AddGameObject<Sprite>(L"BUTTON_AB", Vec3(630,-380,0), Vec2(250,200), Anchor::BottomRight);
 			auto inkprite = AddGameObject<Sprite>(L"INK_MOZI", Vec3(-550, 380, 0), Vec2(100, 30), Anchor::Center);
-			AddGameObject<ObstacleSpring>();
 
 			//スカイボックス
 			AddGameObject<SkyCube>(L"SKYBOX");

@@ -19,7 +19,7 @@ namespace basecross {
 			const Vec3& Position
 		);
 
-		~StageObjBase();
+		virtual ~StageObjBase();
 
 	};
 

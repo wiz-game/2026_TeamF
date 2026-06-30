@@ -17,7 +17,9 @@ namespace basecross {
 		m_Stage(StagePtr)
 	{}
 
-	GameObject::~GameObject() {}
+	GameObject::~GameObject() {
+		int checker = 0;
+	}
 
 	shared_ptr<Stage> GameObject::GetStage(bool ExceptionActive) const {
 		auto shptr = m_Stage.lock();
@@ -1362,7 +1364,7 @@ namespace basecross {
 	}
 
 	void Stage::OnDestroy() {
-		SoundManager::Get().StopAll();
+		//SoundManager::Get().StopAll();
 	}
 
 

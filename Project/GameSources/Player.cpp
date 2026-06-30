@@ -8,7 +8,7 @@
 #include "MainCamera.h"
 #include "game_controller.h"
 #include "CharacterController.h"
-
+#include "GameProgressManager.h"
 namespace basecross{
 	Player::Player
 	(
@@ -113,7 +113,8 @@ namespace basecross{
 
 		if (m_pos.y <= -10.0f)
 		{
-			PostEvent(0.0f, GetThis<Player>(), scene, L"ToProtoStage");
+			int currentStage = GameProgressManager::Get().GetCurrentStage();
+			PostEvent(0.0f, GetThis<Player>(), scene, L"ToGameStage", make_shared<int>(currentStage));
 		}
 
 		if (m_ink <= 0)
