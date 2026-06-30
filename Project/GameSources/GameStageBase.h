@@ -6,6 +6,7 @@
 #pragma once
 #include "stdafx.h"
 #include "Json.h"
+#include "PauseMenu.h"
 
 #include <unordered_set>
 #include <string>
@@ -95,7 +96,13 @@ namespace basecross {
 		map<int, shared_ptr<Port>>Map_Ports;
 
 		////ステージ番号
-		int m_StageNum = 11;
+		int m_StageNum = 11;	
+
+		//ポーズメニュー
+		std::shared_ptr<PauseMenu> m_pauseMenu;	
+		bool m_isPause = false;
+
+
 		//構築と破棄
 		GameStageBase() :Stage(){}
 		GameStageBase(const int& num);
@@ -103,6 +110,7 @@ namespace basecross {
 		void CreateViewLight();
 		void OnCreate();
 		void OnUpdate();
+		void OnDraw();
 		void SetStageNum(int num);
 		int GetStageNum();
 		void StageDateRoad(int num);
@@ -160,6 +168,9 @@ namespace basecross {
 
 		//ゴールの扉オブジェクトの生成
 		void AddGoalDoorObj(STRUCT_GoalDoorParams params);
+
+		bool IsPause() const;
+		void Pause(bool isPause);
 	};
 }
 //end basecross
