@@ -833,6 +833,8 @@ namespace basecross {
 		group<vector<WORD>>						m_AcceptButtons;		//コントローラー決定ボタン
 		group<vector<WORD>>						m_KeyboradAcceptButtons;//キーボード決定ボタン
 		group<	WORD>							m_PressedAccept;		//その瞬間に押された決定ボタン
+		group<function<bool()>>					m_PressFunc;
+		group<InputData>						m_SelectPressed;
 
 		wstring m_UsingGroup;	//使用中のグループ名
 		wstring m_ClickSound;	//クリック音のキー
@@ -844,7 +846,6 @@ namespace basecross {
 
 		float	m_GroupMovementSpeed;	//グループの移動速度
 
-		group<function<bool()>> m_PressFunc;
 
 		shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 
@@ -1150,6 +1151,12 @@ namespace basecross {
 			}
 			return 0;
 		}
+		InputData GetChangeSelectValue(const wstring& group) {
+			if (FindGroup(m_SelectPressed, group)) {
+				return m_SelectPressed[group];
+			}
+			return { 0,0 };
+		}
 		/// <summary>
 		/// コントローラー選択ボタンの追加
 		/// </summary>
@@ -1283,7 +1290,7 @@ namespace basecross {
 		/// <summary>
 		/// 選択中の番号が範囲外に行かないように制限する
 		/// </summary>
-		void LimitIndex(int& selectIndex) {
+		bool LimitIndex(int& selectIndex) {
 			int maxIndex = static_cast<int>(m_ButtonGroup[m_UsingGroup].size() - 1);
 			int minIndex = 0;
 			if (!m_IsSelectLoop) {
@@ -1293,11 +1300,14 @@ namespace basecross {
 			else {
 				if (selectIndex < minIndex) {
 					selectIndex = maxIndex;
+					return false;
 				}
 				if (selectIndex > maxIndex) {
 					selectIndex = minIndex;
+					return false;
 				}
 			}
+			return true;
 		}
 		/// <summary>
 		/// 移動後の番号が範囲外に行っていないか判定する
