@@ -79,7 +79,7 @@ namespace basecross{
 	void Scene::OnUpdate() {
 		SceneBase::OnUpdate();
 		GameController::Update();
-		
+		TextureMeshManager::Get().Update();
 	}
 	void Scene::OnDraw() {
 		SceneBase::OnDraw();

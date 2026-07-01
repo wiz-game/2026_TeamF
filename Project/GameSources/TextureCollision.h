@@ -108,15 +108,18 @@ namespace basecross{
 	};
 
 	struct MeshResult {
-		TextureCollision* m_Ptr;
+		shared_ptr<TextureCollision> m_Ptr;
 		vector<Contour> m_Result;
+		~MeshResult() {
+			
+		}
 	};
 	class TextureMeshManager : public SingletonBase<TextureMeshManager> {
 		friend class SingletonBase<TextureMeshManager>;
 		vector<shared_ptr<TextureCollision>> m_ReloadMeshCollisions;
 
-		unordered_map<TextureCollision*, TextureSnapShot> m_Pending;
-		unordered_map<TextureCollision*, TextureSnapShot> m_Proccess;
+		unordered_map<shared_ptr<TextureCollision>, TextureSnapShot> m_Pending;
+		unordered_map<shared_ptr<TextureCollision>, TextureSnapShot> m_Proccess;
 		queue<MeshResult> m_ResultQueue;
 		atomic_int m_ProccessCount;
 
@@ -124,6 +127,7 @@ namespace basecross{
 
 		void DecreeseProccessCount();
 	public:
+		void Update();
 		void Clear();
 		void AddReload(const shared_ptr<TextureCollision>& meshCollision);
 		void Reload();

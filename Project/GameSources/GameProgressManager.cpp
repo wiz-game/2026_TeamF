@@ -12,7 +12,7 @@ namespace basecross{
 		m_CurrentStage = -1;
 		m_GameDates.clear();
 		if (gameStageCount <= 0) return;
-		for (int i = 0; i < gameStageCount; i++) {
+		for (UINT i = 0; i < gameStageCount; i++) {
 			m_GameDates.push_back(GameProgressContext());
 		}
 

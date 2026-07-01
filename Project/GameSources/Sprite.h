@@ -786,6 +786,7 @@ namespace basecross {
 		bool m_BeforeStickState;
 		float m_StickDeadZone;
 
+		InputData(){}
 		InputData(int input, int amount) : m_Input(input), m_MoveAmount(amount), m_Mode(InputMode::Button), m_StickMode(StickMode::LX), m_BeforeStickState(false), m_StickDeadZone(0.0f) {}
 		InputData(StickMode mode, int amount, float deadZone) : m_Input(0), m_MoveAmount(amount), m_Mode(InputMode::Stick), m_StickMode(mode), m_BeforeStickState(false), m_StickDeadZone(deadZone) {}
 
@@ -951,7 +952,7 @@ namespace basecross {
 			auto keyborad = App::GetApp()->GetInputDevice().GetKeyState();
 
 			if (FindGroup(m_PressFunc, group)) {
-				if (!m_PressFunc[group]()) return;
+				if (!m_PressFunc[group]()) return false;
 			}
 
 			if (FindGroup(m_KeyboradInputDates, group)) {

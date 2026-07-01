@@ -457,27 +457,32 @@ namespace basecross {
 	void TextureMeshManager::DecreeseProccessCount() {
 		if (m_ProccessCount <= 0) return;
 		m_ProccessCount--;
-		if (m_ProccessCount == 0) {
-			while (!m_ResultQueue.empty()) {
-				MeshResult result;
-				{
-					lock_guard lock(m_Mutex);
-					result = m_ResultQueue.front();
-					m_ResultQueue.pop();
-				}
-
-				result.m_Ptr->ApplyThreadResult(result.m_Result);
-			}
-		}
 	}
 
-
+	void TextureMeshManager::Update() {
+		InkConnectChecker::Get().CheckConnect();
+		if (m_ProccessCount == 0) {
+			if (!m_ResultQueue.empty()) {
+				MeshResult result = m_ResultQueue.front();
+				string debug = to_string(result.m_Result.size()) + "/" + to_string(result.m_Result.capacity()) + "\n";
+				OutputDebugStringA(debug.c_str());
+				m_ResultQueue.pop();
+			}
+			/*while (!m_ResultQueue.empty()) {
+				MeshResult result;
+				result = m_ResultQueue.front();
+				m_ResultQueue.pop();
+				if (!result.m_Ptr) continue;
+				result.m_Ptr->ApplyThreadResult(result.m_Result);
+			}*/
+		}
+	}
 	void TextureMeshManager::Clear() {
 		m_Proccess.clear();
 		m_Pending.clear();
 	}
 	void TextureMeshManager::AddReload(const shared_ptr<TextureCollision>& meshCollision) {
-		m_Pending[meshCollision.get()] = meshCollision->SnapShot();
+		m_Pending[meshCollision] = meshCollision->SnapShot();
 	}
 
 	void TextureMeshManager::Reload() {
@@ -497,13 +502,12 @@ namespace basecross {
 					proccess.first->CreateMeshInThread(proccess.second, result.m_Result);
 					{
 						lock_guard lock(m_Mutex);
-						m_ResultQueue.push(result);
+						m_ResultQueue.push(move(result));
 					}
 					DecreeseProccessCount();
 					});
 			}
 		}
-		InkConnectChecker::Get().CheckConnect();
 	}
 
 	bool InkConnectChecker::IsConnectedSupplyToInk(const OBB& supplyOBB, const AABB& supplyAABB, const vector<TRIANGLE>& triangles) {
