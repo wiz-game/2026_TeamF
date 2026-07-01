@@ -35,6 +35,9 @@ namespace basecross {
 		//BGM�̉���
 		float m_BGMVolume = 0.5f;
 
+		float m_TimeCount = 0.5f;
+
+
 		void CreateViewLight(); //�r���[�̍쐬
 		void RegisterResources();
 	public:
@@ -50,8 +53,7 @@ namespace basecross {
 		//�X�e�[�W�I���X�v���C�g�̍쐬
 		void SpriteCreation();
 
-		//�^�C�g���R���g���[��
-		void TitleControl();
+		bool Timer(float deltaTime, float& count, float time, bool loop = false);
 	};
 }
 //end basecross

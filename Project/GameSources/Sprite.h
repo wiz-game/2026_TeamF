@@ -785,7 +785,7 @@ namespace basecross {
 
 		bool m_BeforeStickState;
 		float m_StickDeadZone;
-
+		InputData(){}
 		InputData(int input, int amount) : m_Input(input), m_MoveAmount(amount), m_Mode(InputMode::Button), m_StickMode(StickMode::LX), m_BeforeStickState(false), m_StickDeadZone(0.0f) {}
 		InputData(StickMode mode, int amount, float deadZone) : m_Input(0), m_MoveAmount(amount), m_Mode(InputMode::Stick), m_StickMode(mode), m_BeforeStickState(false), m_StickDeadZone(deadZone) {}
 
@@ -833,6 +833,8 @@ namespace basecross {
 		group<vector<WORD>>						m_AcceptButtons;		//コントローラー決定ボタン
 		group<vector<WORD>>						m_KeyboradAcceptButtons;//キーボード決定ボタン
 		group<	WORD>							m_PressedAccept;		//その瞬間に押された決定ボタン
+		group<function<bool()>>					m_PressFunc;
+		group<InputData>						m_SelectPressed;
 
 		wstring m_UsingGroup;	//使用中のグループ名
 		wstring m_ClickSound;	//クリック音のキー
@@ -843,6 +845,7 @@ namespace basecross {
 		bool	m_IsMoveStop;   //移動が終了しているか
 
 		float	m_GroupMovementSpeed;	//グループの移動速度
+
 
 		shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 
@@ -934,6 +937,10 @@ namespace basecross {
 			return nullptr;
 		}
 
+		void SetPressFunction(const wstring& group, const function<bool()>& func) {
+			m_PressFunc[group] = func;
+		}
+
 		/// <summary>
 		/// 選択入力の確認
 		/// </summary>
@@ -942,6 +949,10 @@ namespace basecross {
 		/// <returns>入力の有無</returns>
 		bool PressSelect(const wstring& group, InputData& data) {
 			auto keyborad = App::GetApp()->GetInputDevice().GetKeyState();
+
+			if (FindGroup(m_PressFunc, group)) {
+				if (!m_PressFunc[group]()) return false;
+			}
 
 			if (FindGroup(m_KeyboradInputDates, group)) {
 				for (auto& inputData : m_KeyboradInputDates[group]) {
@@ -1140,6 +1151,12 @@ namespace basecross {
 			}
 			return 0;
 		}
+		InputData GetChangeSelectValue(const wstring& group) {
+			if (FindGroup(m_SelectPressed, group)) {
+				return m_SelectPressed[group];
+			}
+			return { 0,0 };
+		}
 		/// <summary>
 		/// コントローラー選択ボタンの追加
 		/// </summary>
@@ -1273,7 +1290,7 @@ namespace basecross {
 		/// <summary>
 		/// 選択中の番号が範囲外に行かないように制限する
 		/// </summary>
-		void LimitIndex(int& selectIndex) {
+		bool LimitIndex(int& selectIndex) {
 			int maxIndex = static_cast<int>(m_ButtonGroup[m_UsingGroup].size() - 1);
 			int minIndex = 0;
 			if (!m_IsSelectLoop) {
@@ -1283,11 +1300,14 @@ namespace basecross {
 			else {
 				if (selectIndex < minIndex) {
 					selectIndex = maxIndex;
+					return false;
 				}
 				if (selectIndex > maxIndex) {
 					selectIndex = minIndex;
+					return false;
 				}
 			}
+			return true;
 		}
 		/// <summary>
 		/// 移動後の番号が範囲外に行っていないか判定する
