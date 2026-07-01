@@ -91,7 +91,8 @@ namespace basecross {
 	{
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
-
+		app->GetElapsedTime();
+		
 		if (m_ButtonScaleTimer != -1) {
 			SpriteMove();
 			return;
@@ -106,27 +107,36 @@ namespace basecross {
 			PostEvent(0.3f, GetThis<ObjectInterface>(), app->GetScene<Scene>(), L"ToTitleStage");
 		}
 
-		////選択移動左
-		//if (GameController::IsTrigger_DpadLeft() && ButtonManager::instance->GetMoveStop()) {
-		//	m_ButtonScaleTimer = 0;
-		//	m_ButtonScaleIndex = 1;
+		
+		auto leftStickX = GameController::GetLeftStickX();
 
-		//	if (m_SelectIndex >= 1)ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((1980 / 2), 0, 0), 60.0f);
-		//	m_SelectIndex = max(0, m_SelectIndex - 1);
-		//	m_SelectingSprite->UpdateNumber(m_SelectIndex);
-		//	ButtonManager::instance->SetSelectIndex(L"SelectPage1", m_SelectIndex);
-		//}
-		////選択移動右
-		//if (GameController::IsTrigger_DpadRight() && ButtonManager::instance->GetMoveStop()) {
-		//	m_ButtonScaleTimer = 0;
-		//	m_ButtonScaleIndex = 1;
+		//選択移動左
+		if ((GameController::IsPressed_DpadLeft() || leftStickX < -0.5f) && Timer(app->GetElapsedTime(), m_TimeCount, 0.3f) && ButtonManager::instance->GetMoveStop()) {
+			m_ButtonScaleTimer = 0;
+			m_ButtonScaleIndex = 1;
+			m_TimeCount = 0;
 
+			if (m_SelectIndex >= 1)ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((1980 / 2), 0, 0), 60.0f);
+			m_SelectIndex = max(0, m_SelectIndex - 1);
+			m_SelectingSprite->UpdateNumber(m_SelectIndex);
+			ButtonManager::instance->SetSelectIndex(L"SelectPage1", m_SelectIndex);
+		}
+		//選択移動右
+		if ((GameController::IsPressed_DpadRight() || leftStickX > 0.5f) && Timer(app->GetElapsedTime(), m_TimeCount, 0.3f) && ButtonManager::instance->GetMoveStop()) {
+			m_ButtonScaleTimer = 0;
+			m_ButtonScaleIndex = 1;
+			m_TimeCount = 0;
 
-		//	if (m_SelectIndex < m_MaxSelectIndex - 1)ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((-1980 / 2), 0, 0), 60.0f);
-		//	m_SelectIndex = min(m_MaxSelectIndex - 1, m_SelectIndex + 1);
-		//	m_SelectingSprite->UpdateNumber(m_SelectIndex);
-		//	ButtonManager::instance->SetSelectIndex(L"SelectPage1", m_SelectIndex);
-		//}
+			if (m_SelectIndex < m_MaxSelectIndex - 1)ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((-1980 / 2), 0, 0), 60.0f);
+			m_SelectIndex = min(m_MaxSelectIndex - 1, m_SelectIndex + 1);
+			m_SelectingSprite->UpdateNumber(m_SelectIndex);
+			ButtonManager::instance->SetSelectIndex(L"SelectPage1", m_SelectIndex);
+		}
+		if (GameController::IsRelease_DpadLeft() || GameController::IsRelease_DpadRight() || leftStickX == 0.0f)
+		{
+			m_TimeCount = 10.0f;
+		}
+		
 
 		//選択決定(A)
 		if (GameController::IsTrigger_ButtonDown()) {
@@ -139,17 +149,6 @@ namespace basecross {
 
 			//PostEvent(0.2f, GetThis<SelectStage>(), app->GetScene<Scene>(), L"ToProtoStage");
 			PostEvent(0.3f, GetThis<ObjectInterface>(), app->GetScene<Scene>(), L"ToGameStage", make_shared<int>(m_SelectIndex));
-		}
-
-
-		m_SelectIndex = ButtonManager::instance->GetSelectIndex(L"SelectPage1");
-		InputData date = InputData(0, 0);
-		if (ButtonManager::instance->PressSelect(L"SelectPage1", date))
-		{
-			if (date.m_MoveAmount < 0 && m_SelectIndex <= 0)return;
-			if (date.m_MoveAmount > 0 && m_SelectIndex >= m_MaxSelectIndex - 1)return;
-
-			ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((-1980 / 2), 0, 0) * date.m_MoveAmount, 60.0f);
 		}
 	}
 
@@ -171,12 +170,28 @@ namespace basecross {
 
 			m_Scale = Vec2(600, 600);
 			ButtonManager::instance->Create(m_Title, L"SelectPage1", texName, texSelected, Vec3((((1980 / 2) * (i - 1)) - (m_Scale.x / 2)), m_Scale.y / 2, 0), m_Scale, [](shared_ptr<ObjectInterface>& object) {});
-		
-			ButtonManager::instance->SetInput(L"SelectPage1",InputData(XINPUT_GAMEPAD_DPAD_LEFT,1));
-			ButtonManager::instance->SetInput(L"SelectPage1",InputData(XINPUT_GAMEPAD_DPAD_RIGHT,-1));
-			ButtonManager::instance->SetPressFunction(L"SelectPage1", []() {return ButtonManager::instance->GetMoveStop();});
 		}
+	}
 
+	bool SelectStage::Timer(float deltaTime,float& count, float time, bool loop)
+	{
+		if (count < time)
+		{
+			count += deltaTime;
+		}
+		else if (count >= time)
+		{
+			if (loop)
+			{
+				count = 0.0f;
+			}
+			else
+			{
+				count = time;
+			}
+			return true;
+		}
+		return false;
 	}
 }
 //end basecross
