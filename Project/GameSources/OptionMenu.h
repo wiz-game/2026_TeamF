@@ -1,19 +1,19 @@
 #pragma once
 #include "stdafx.h"
 #include "SpriteGeneric.h"
-#include "OptionMenu.h"
+#include "PauseMenu.h"
 
 namespace basecross
 {
-	class PauseMenu :public GameObject
+	class OptionMenu :public GameObject
 	{
 		std::vector<std::shared_ptr<SpriteGeneric>> m_menuLabel;
 		std::vector<std::shared_ptr<SpriteGeneric>> m_menuButton;
 		std::vector<Vec2> m_menuPosList;
 		std::shared_ptr<SpriteGeneric> m_menuCursor;
-		std::shared_ptr<OptionMenu> m_option;
+		//std::shared_ptr<PauseMenu> m_pause;
 
-		bool m_isPause = false;
+		bool m_isOption = false;
 		int m_selectMenu;	//選択中のメニュー
 		int m_menuNum;		//メニュー数
 		bool m_lock;
@@ -23,15 +23,15 @@ namespace basecross
 		Vec2 cursorPos = Vec2(0, 0);
 
 	public:
-		PauseMenu(const std::shared_ptr<Stage>stage) :
+		OptionMenu(const std::shared_ptr<Stage>stage) :
 			GameObject(stage),
 			m_selectMenu(1),
-			m_menuNum(5),
+			m_menuNum(1),
 			m_lock(false)
 		{
 		}
 
-		virtual ~PauseMenu()
+		virtual ~OptionMenu()
 		{
 		}
 
@@ -40,17 +40,16 @@ namespace basecross
 		void OnDraw()override;
 
 		void SelectMenu();
-		void ClosePause();
-		void ToOption();
+		void ToPause();
 
-		void SetPause(bool isPause)
+		void SetOption(bool isPause)
 		{
-			m_isPause = isPause;
+			m_isOption = isPause;
 		}
 
-		bool GetPause()
+		bool GetOption()
 		{
-			return m_isPause;
+			return m_isOption;
 		}
 	};
 }

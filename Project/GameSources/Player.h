@@ -98,6 +98,12 @@ class MoveFloor;
 			m_velocity.y = 0.0f;
 			m_transform->SetPosition(m_pos);
 		}
+
+		void AddVelocity(const Vec3& v)
+		{
+			m_velocity += v;
+		}
+
 	};
 
 }

@@ -74,7 +74,7 @@ namespace basecross {
 		if (isConnect)
 		{
 			if (!m_MoveSound) {
-				m_MoveSound = SoundManager::Get().PlayLoopSE(L"ELEVATER_MOVE",0.1f);
+				m_MoveSound = SoundManager::Get().PlayLoopSE(L"ELEVATER_MOVE",0.05f);
 			}
 			m_staticDraw->SetDiffuse(Col4(1, 1, 0, 1));
 			m_staticDraw->SetEmissive(Col4(1, 1, 0, 1));
@@ -208,68 +208,11 @@ namespace basecross {
 			m_staticDraw->SetEmissive(Col4(1, 1, 1, 1));
 
 			m_isUp = false;
-			//床を元の位置に戻すための速度を計算する
-			float returnSpeed = fabsf(m_speed) * 0.5f;
-			float diff = 0.0f; // 現在の位置と元の位置の差
 
-			switch (m_moveAxis)
-			{
-			case MoveAxis::X:
-				diff = newPos.x - m_pos.x;
-				if (fabs(diff) > 0.001f) // ある程度の差がある場合のみ移動する
-				{
-					if (diff > 0)//右にいるなら左に戻る
-					{
-						newPos.x -= returnSpeed * delta;
-						if (newPos.x < m_pos.x) newPos.x = m_pos.x;
-					}
-					else//左にいるなら右に戻る
-					{
-						newPos.x += returnSpeed * delta;
-						if (newPos.x > m_pos.x) newPos.x = m_pos.x;
-					}
-				}
-				break;
-			case MoveAxis::Y:
-				diff = newPos.y - m_pos.y;
-				if (fabs(diff) > 0.001f) // ある程度の差がある場合のみ移動する
-				{
-					if (diff > 0)//上にいるなら下に戻る
-					{
-						newPos.y -= returnSpeed * delta;
-						if (newPos.y < m_pos.y) newPos.y = m_pos.y;
-					}
-					else//下にいるなら上に戻る
-					{
-						newPos.y += returnSpeed * delta;
-						if (newPos.y > m_pos.y) newPos.y = m_pos.y;
-					}
-				}
-				break;
-			case MoveAxis::Z:
-				diff = newPos.z - m_pos.z;
-				if (fabs(diff) > 0.001f) // ある程度の差がある場合のみ移動する
-				{
-					if (diff > 0)//前にいるなら後ろに戻る
-					{
-						newPos.z -= returnSpeed * delta;
-						if (newPos.z < m_pos.z) newPos.z = m_pos.z;
-					}
-					else//後ろにいるなら前に戻る
-					{
-						newPos.z += returnSpeed * delta;
-						if (newPos.z > m_pos.z) newPos.z = m_pos.z;
-					}
-				}
-				break;
+			if (m_MoveSound) {
+				SoundManager::Get().StopLoopSE(m_MoveSound);
 			}
 
-			m_speed = fabs(m_speed); // 速度を正の値にする
-			m_transform->SetPosition(newPos);
-
-			//Vec3 moveDelta = newPos - oldPos;
-			//計算した移動量をFloorDecisionに渡す
-			//m_floorDec->SetCurrentMoveVec(moveDelta);
 			m_floorDec->SetCurrentMoveVec(Vec3(0, 0, 0)); // 通電していないときは移動量をゼロにする
 		}
 	}

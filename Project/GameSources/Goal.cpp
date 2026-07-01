@@ -42,7 +42,6 @@ namespace basecross {
 		m_draw->SetMeshResource(L"PRINTER_MODEL");
 		m_draw->SetTextureResource(L"PRINTER_TEX");
 		m_draw->SetMeshToTransformMatrix(spanMat);
-		//m_draw->SetRasterizerState(RasterizerState::CullNone);
 
 		m_draw->SetOwnShadowActive(true);
 
@@ -51,23 +50,24 @@ namespace basecross {
 
 		m_draw->SetDrawActive(true);
 		m_draw->AddAnimation(L"PRINTER_MODEL", 0, 120, false);
-		
-		m_resultSprite = GetStage()->AddGameObject<Sprite>(L"BACKGROUND", Vec3(0,0,0), Vec2(100, 100),Anchor::Center);
+
+		m_resultSprite = GetStage()->AddGameObject<Sprite>(L"BACKGROUND", Vec3(0, 0, 0), Vec2(100, 100), Anchor::Center);
 		m_resultSprite->SetDrawActive(false);
 		m_resultSprite->SetDrawLayer(1);
 
+		Vec3 spawnCenter = m_pos + Vec3(0.0f, 0.5f, 0.0f);
+		float radius = 2.5f;//回転半径
 		try
-		{	// objectの取得
-			m_player = GetStage()->GetSharedGameObject<Player>(L"Player");
+		{
+			//エフェクトの生成
+			GetStage()->AddGameObject<GoalEffect>(spawnCenter, Vec3(m_scale.x / 5.0f, m_scale.y / 5.0f, m_scale.z / 5.0f), radius, m_port);
 		}
 		catch (...) {
-			m_player.reset();
 		}
 	}
 
 	void Goal::OnUpdate()
 	{
-		if (!m_player) return; // プレイヤーがいなければ何もしない
 		if (m_port == nullptr) return;//ポートが指定されていなければ何もしない
 
 		auto scene = App::GetApp()->GetScene<Scene>();
@@ -84,17 +84,27 @@ namespace basecross {
 				m_draw->UpdateAnimation(delta * 0.5f);
 				m_state = State::Vibrate;
 				m_animatimer = 0.0f;
+
+				if (!m_MoveSound_1) {
+					m_MoveSound_1 = SoundManager::Get().PlaySE(L"PRINTER_SE_1");
+				}
 			}
 			break;
 
 		case basecross::Goal::State::Vibrate:
 			//振動アニメーション
 			m_draw->UpdateAnimation(delta * 0.5f);
+
+			if (!m_MoveSound_2) {
+				m_MoveSound_2 = SoundManager::Get().PlayLoopSE(L"PRINTER_SE_2");
+			}
+
 			VibrateAnimation(delta);
 			break;
 
 		case basecross::Goal::State::SpriteScale:
 			//スプライトアニメーション
+			SoundManager::Get().StopLoopSE(m_MoveSound_2);
 			m_resultSprite->SetDrawActive(true);//スプライトの表示
 			SpriteAnimation(delta);
 			break;
@@ -207,17 +217,73 @@ namespace basecross {
 		m_spritePos2D.y += floatOffset;//上下にふわふわさせる
 
 		//サイズ補間計算
-		Vec3 startSize = Vec3(100.0f, 100.0f,100.0f);
-		Vec3 endSize = Vec3(1280.0f, 840.0f,1.0f);
+		Vec3 startSize = Vec3(100.0f, 100.0f, 100.0f);
+		Vec3 endSize = Vec3(1280.0f, 840.0f, 1.0f);
 
 		Vec3 currentSize = startSize * (1.0f - t_ease) + endSize * t_ease;
 
-		m_resultSprite->SetPosition(Vec3(m_spritePos2D.x, m_spritePos2D.y,0.0f));
+		m_resultSprite->SetPosition(Vec3(m_spritePos2D.x, m_spritePos2D.y, 0.0f));
 		m_resultSprite->SetSize(Vec2(currentSize.x, currentSize.y));
 
 		if (t >= 1.0f)
 		{
 			m_state = State::End;
+		}
+	}
+
+	//------------------------------------------------------------------
+	//		エフェクト
+	//------------------------------------------------------------------
+	void GoalParticle::OnCreate()
+	{
+		m_trans = GetComponent<Transform>();
+		m_trans->SetScale(m_scale);
+
+		m_draw = AddComponent<PNTStaticDraw>();
+		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
+		SetAlphaActive(true);
+
+		m_draw->SetBlendState(BlendState::AlphaBlend);
+		m_draw->SetEmissive(Col4(1.0f, 1.0f, 0.0f, m_alpha));
+		m_draw->SetDiffuse(Col4(1.0f, 1.0f, 0.0f, m_alpha));
+
+	}
+
+	void GoalParticle::OnUpdate()
+	{
+		float delta = App::GetApp()->GetElapsedTime();
+		if (m_port && m_port->GetConnect())
+		{
+			m_speed = 15.0f;
+		}
+		else
+		{
+			m_speed = 5.0f;
+		}
+		m_angle += m_speed * delta;
+		float x = m_centerPos.x + cosf(m_angle) * m_radius;
+		float y = m_centerPos.y;
+		float z = m_centerPos.z + sinf(m_angle) * m_radius;
+		m_trans->SetPosition(Vec3(x, y, z));
+
+	}
+
+	void GoalEffect::OnCreate()
+	{
+		float interval = 0.05f;//球体同士の間隔
+
+		for (int i = 0; i < m_total; i++)
+		{
+			float startAngle = i * interval;
+
+
+			float baseRate = (m_total > 1) ? (float)i / (float)(m_total - 1) : 0.0f;
+			float alpha = 0.1f + (baseRate * 0.9f);
+			float scale = 0.05f + (baseRate * 0.35f);
+
+			//球体の生成
+			auto particle = GetStage()->AddGameObject<GoalParticle>(
+				m_centerPos, m_scale, m_radius, startAngle, alpha, m_port);
 		}
 	}
 }
