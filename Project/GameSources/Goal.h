@@ -89,17 +89,17 @@ namespace basecross {
 
 	public:
 		GoalParticle(const std::shared_ptr<Stage>& stage,
-			const Vec3& centerPos,
+			const Vec3& centerPos,const Vec3& scale, 
 			float radius, float angle,float alpha, std::shared_ptr<Port> port
 		)
 			: GameObject(stage),
 			m_centerPos(centerPos),
+			m_scale(scale),
 			m_radius(radius),
 			m_angle(angle),
 			m_alpha(alpha),
 			m_port(port),
-			m_speed(5.0f),
-			m_scale(Vec3(0.5f,0.1f,0.5f))
+			m_speed(5.0f)
 		{}
 		void OnCreate() override;
 		void OnUpdate() override;
@@ -111,15 +111,16 @@ namespace basecross {
 
 		Vec3 m_centerPos;	//中心位置
 		float m_radius;		//中心からの距離
-
+		Vec3 m_scale;		//球体の大きさ
 		int m_total;		//球体の全ての数
 
 	public:
 		GoalEffect(const std::shared_ptr<Stage>& stage,
-			const Vec3& centerPos, float radius, std::shared_ptr<Port> port
+			const Vec3& centerPos,const Vec3& scale, float radius,  std::shared_ptr<Port> port
 		)
 			: GameObject(stage),
 			m_centerPos(centerPos),
+			m_scale(scale),
 			m_radius(radius),
 			m_port(port),
 			m_total(50)

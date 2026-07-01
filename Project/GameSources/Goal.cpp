@@ -60,7 +60,7 @@ namespace basecross {
 		try
 		{
 			//エフェクトの生成
-			GetStage()->AddGameObject<GoalEffect>(spawnCenter, radius, m_port);
+			GetStage()->AddGameObject<GoalEffect>(spawnCenter, Vec3(m_scale.x / 5.0f, m_scale.y / 5.0f, m_scale.z / 5.0f), radius, m_port);
 		}
 		catch (...) {
 		}
@@ -283,7 +283,7 @@ namespace basecross {
 
 			//球体の生成
 			auto particle = GetStage()->AddGameObject<GoalParticle>(
-				m_centerPos, m_radius, startAngle, alpha, m_port);
+				m_centerPos, m_scale, m_radius, startAngle, alpha, m_port);
 		}
 	}
 }
