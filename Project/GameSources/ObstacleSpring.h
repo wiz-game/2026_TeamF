@@ -28,9 +28,37 @@ namespace basecross{
 		{
 		}
 
+		float m_angle = 0.0f;
+		float m_moveSpeed = 1.0f;
+		float m_roteto = 1.0f;
+		float m_gravity = -9.8f;
+		float m_velocity = 0.0f;
+		float m_floor = 0.0f;
+
+		bool m_isGround = false;
+
 		virtual void OnCreate() override; // èâä˙âª
 		virtual void OnUpdate() override; // çXêV
 		//virtual void OnDraw() override; // ï`âÊ
+
+		void Roteto(float delta);
+		void UpdateGravity(float delta);
+		void PushPlayer(std::shared_ptr<Player> player);
+
+		void OnCollisionEnter(std::shared_ptr<GameObject>& obj);
+		void OnCollisionExcute(std::shared_ptr<GameObject>& obj);
+		void OnCollisionExit(std::shared_ptr<GameObject>& obj);
+	
+	private:
+		static const Vec3 SCALE;
+		static const Vec3 START_POS;
+		static const float ROTATION_Z;
+
+		static const float PUSH_POWER;
+		static const float NORMALIZE_EPS;
+
+		static const float LOOP_ANGLE;
+
 	};
 
 }

@@ -101,7 +101,9 @@ namespace basecross {
 		}
 		if (!m_WaitContour.empty()) {
 			m_Contour = m_WaitContour;
+			m_ElectricContourIndices = m_WaitElectricContourIndices;
 			m_WaitContour.clear();
+			m_WaitElectricContourIndices.clear();
 		}
 	}
 	void TextureCollision::OnDraw() {

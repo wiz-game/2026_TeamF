@@ -6,7 +6,9 @@
 #pragma once
 #include "stdafx.h"
 #include "JoltManager.h"
+#include "Pause.h"
 #include "PauseMenu.h"
+#include "OptionMenu.h"
 
 namespace basecross {
 
@@ -17,13 +19,25 @@ namespace basecross {
 	{
 		JoltManager m_jphManger; // Jolt Physics マネージャー
 		shared_ptr<Player> m_Player;	//プレイヤー
+		std::shared_ptr<Pause> m_pause;	//ポーズ
 		std::shared_ptr<PauseMenu> m_pauseMenu;	//ポーズメニュー
+		std::shared_ptr<OptionMenu> m_optionMenu;	//設定メニュー
 
 		std::shared_ptr<SoundItem> m_stageBGM;	//BGM
 
 		void CreateViewLight(); //ビューの作成
 
 		bool m_isPause = false;
+		bool m_isOption = false;
+
+		enum PauseState
+		{
+			none,
+			pause,
+			option
+		};
+
+		PauseState m_ps = PauseState::none;
 
 	public:
 		//構築と破棄
@@ -37,6 +51,9 @@ namespace basecross {
 
 		void Pause(bool isPause);
 		bool IsPause()const;
+
+		void Option(bool isOption);
+		bool IsOption()const;
 		void OnDestroy();
 	};
 }

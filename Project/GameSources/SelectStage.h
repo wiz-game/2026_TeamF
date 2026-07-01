@@ -16,15 +16,21 @@ namespace basecross {
 		int m_SelectIndex;
 		int m_MaxSelectIndex;
 
-		shared_ptr<Sprite> m_Title;
+		vector<shared_ptr<Sprite>> m_sprite_Buttons;
+		int m_ButtonScaleIndex = 1;
+		float m_ButtonScaleTimer;
+		float m_ButtonScaleRation;
+
+
+		shared_ptr<Stage> m_Title;
+		int m_MaxPageNum;
+		int m_PageNum = 1;
+		Vec2 m_Scale;
+		wstring m_PageName = L"SelectPage1";
 
 		//�e�X�g�p
 		shared_ptr<NumberSprite> m_SelectingSprite;
 		std::shared_ptr<SoundItem> m_sSelectBGM;	//BGM
-
-		// �e�X�e�[�W�̉摜�X�v���C�g
-		std::vector<std::shared_ptr<Sprite>> m_StageSprites; 
-
 
 		//BGM�̉���
 		float m_BGMVolume = 0.5f;
@@ -39,12 +45,13 @@ namespace basecross {
 		virtual void OnCreate()override; //������
 		virtual void OnUpdate()override; //�X�V
 
+		void SpriteMove();
+
 		//�X�e�[�W�I���X�v���C�g�̍쐬
 		void SpriteCreation();
 
 		//�^�C�g���R���g���[��
 		void TitleControl();
-
 	};
 }
 //end basecross

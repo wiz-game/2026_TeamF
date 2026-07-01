@@ -206,18 +206,21 @@ namespace basecross {
 		int digits = static_cast<int>(pow(10, m_DisplayDigit - 1));
 		float sizeX = m_Size.x / m_DisplayDigit;
 		m_Numbers.reserve(m_DisplayDigit);
+		m_DrawActives.resize(m_DisplayDigit, 0);
 		bool isFirst = true;
 		for (int i = 0; i < m_DisplayDigit; i++) {
 			shared_ptr<Sprite> number = GetStage()->AddGameObject<Sprite>(m_TexKey, Vec3(m_Pos.x + i * sizeX, m_Pos.y, m_Pos.z), Vec2(sizeX, m_Size.y),Anchor::TopLeft);//ObjectFactory::Create<Sprite>(GetStage(), m_TexKey, Vec3(0,0,0)/*m_Pos + i * sizeX*/, Vec2(sizeX, m_Size.y));
 			int singleDigit = m_DisplayNumber / digits % 10;
-			if (isFirst && singleDigit == 0) continue;
-
-			isFirst = false;
-			number->UpdateUV(GetUV(singleDigit));
 			digits /= 10;
 			auto trans = number->GetComponent<Transform>();
 			trans->SetParent(GetThis<NumberSprite>());
 			m_Numbers.push_back(number);
+
+			if (isFirst && singleDigit == 0) continue;
+
+			isFirst = false;
+			number->UpdateUV(GetUV(singleDigit));
+			m_DrawActives[i] = 1;
 		}
 		auto trans = GetComponent<Transform>();
 		
@@ -225,8 +228,9 @@ namespace basecross {
 	}
 
 	void NumberSprite::OnUpdate() {
-		for (auto& number : m_Numbers) {
-			number->SetDrawActive(GetDrawActive());
+		for (int i = 0; i < m_Numbers.size(); i++) {
+			bool isActive = GetDrawActive() && m_DrawActives[i];
+			m_Numbers[i]->SetDrawActive(isActive);
 		}
 	}
 
@@ -245,12 +249,21 @@ namespace basecross {
 
 	void NumberSprite::UpdateNumber(int number) {
 		m_DisplayNumber = number;
-		int digits = static_cast<int>(pow(10, m_DisplayDigit - 1));
-		for (auto& sprite : m_Numbers) {
-			int singleDigit = m_DisplayNumber / digits % 10;
+		bool isFirst = true;
 
-			sprite->UpdateUV(GetUV(singleDigit));
+		int digits = static_cast<int>(pow(10, m_DisplayDigit - 1));
+
+		for (int i = 0; i < m_Numbers.size(); i++) {
+			int singleDigit = m_DisplayNumber / digits % 10;
 			digits /= 10;
+			if (isFirst && singleDigit == 0) {
+				m_DrawActives[i] = 0;
+				continue;
+			}
+
+			isFirst = false;
+			m_Numbers[i]->UpdateUV(GetUV(singleDigit));
+			m_DrawActives[i] = 1;
 		}
 	}
 	void NumberSprite::Destroy() {
@@ -465,9 +478,10 @@ namespace basecross {
 			Vec3 movementAmount = groupMovementAmount.second;
 			if (movementAmount.length() != 0) {
 				movementAmount = movementAmount.normalize();
-				movementAmount *= 30.0f;//ˆÚ“®‘¬“x
+				movementAmount *= m_GroupMovementSpeed;//ˆÚ“®‘¬“x
 				if (groupMovementAmount.second.length() < movementAmount.length()) {
 					movementAmount = groupMovementAmount.second;
+					m_IsMoveStop = true;
 				}
 				for (auto& button : m_ButtonGroup[groupMovementAmount.first]) {
 					auto trans = button->GetGameObject()->GetComponent<Transform>();
@@ -524,8 +538,22 @@ namespace basecross {
 	void ButtonManager::SetSelectSound(const wstring& sound) {
 		m_SelectSound = sound;
 	}
+
 	void ButtonManager::SetMoveAmount(const wstring& group, Vec3 target) {
-		if (FindGroup(m_GroupMovementAmount,group)) {
+		if (FindGroup(m_GroupMovementAmount, group)) {
+			m_GroupMovementSpeed = 30.0f;
+			m_IsMoveStop = false;
+			if (m_GroupMovementAmount[group].length() == 0) {
+				m_GroupMovementAmount[group] = target;
+			}
+		}
+	}
+
+
+	void ButtonManager::SetMoveAmount(const wstring& group, Vec3 target, float speed) {
+		if (FindGroup(m_GroupMovementAmount, group)) {
+			m_GroupMovementSpeed = speed;
+			m_IsMoveStop = false;
 			if (m_GroupMovementAmount[group].length() == 0) {
 				m_GroupMovementAmount[group] = target;
 			}

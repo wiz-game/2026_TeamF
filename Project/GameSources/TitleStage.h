@@ -1,6 +1,6 @@
 ///*!
 //@file GameStage.h
-//@brief ƒQ[ƒ€ƒXƒe[ƒW
+//@brief ï¿½Qï¿½[ï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½W
 //*/
 //
 #pragma once
@@ -10,25 +10,25 @@ namespace basecross {
 	class Sprite;
 
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒX
+	//	ï¿½Qï¿½[ï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½Wï¿½Nï¿½ï¿½ï¿½X
 	//--------------------------------------------------------------------------------------
 	class TitleStage : public Stage
 	{
 		shared_ptr<Sprite> m_Title;
 		shared_ptr<Sprite> m_sprite_Button;
 
-		//BGM‚Ì‰¹—Ê
+		//BGMï¿½Ì‰ï¿½ï¿½ï¿½
 		float m_BGMVolume = 0.5f;
 
-		void CreateViewLight(); //ƒrƒ…[‚Ìì¬
+		void CreateViewLight(); //ï¿½rï¿½ï¿½ï¿½[ï¿½Ìì¬
 		void RegisterResources();
 		std::shared_ptr<SoundItem> m_titleBGM;	//BGM
 	
-		float m_ButtonScaleTimer;//ƒAƒjƒ[ƒVƒ‡ƒ“‚µ‚Ä‚¢‚È‚¢‚Í-1
-		float m_ButtonScaleRation;//Œ»İ‚Ìscale”{—¦
+		float m_ButtonScaleTimer;//ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½-1
+		float m_ButtonScaleRation;//ï¿½ï¿½ï¿½İ‚ï¿½scaleï¿½{ï¿½ï¿½
 
 	public:
-		//\’z‚Æ”jŠü
+		//ï¿½\ï¿½zï¿½Æ”jï¿½ï¿½
 		TitleStage() :
 			Stage(),
 			m_ButtonScaleTimer(-1),
@@ -37,8 +37,8 @@ namespace basecross {
 		}
 		virtual ~TitleStage();
 		
-		virtual void OnCreate()override; //‰Šú‰»
-		virtual void OnUpdate()override; //XV
+		virtual void OnCreate()override; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		virtual void OnUpdate()override; //ï¿½Xï¿½V
 		void SpriteMove();
 
 	};

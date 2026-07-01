@@ -63,14 +63,16 @@ namespace basecross {
 
 			//BGM再生
 			if(!m_stageBGM)
-				m_stageBGM = SoundManager::Get().PlayBGM(L"STAGE", 0.55f);
+				m_stageBGM = SoundManager::Get().PlayBGM(L"GAMESTAGE_BGM", 0.55f);
 
 			//UI作成
 			auto gaugeBack = AddGameObject<GaugeBack>();
 			auto gauge = AddGameObject<InkGauge>();
 
 			//ポーズメニュー作成
+			//m_pause = ObjectFactory::Create<Pause>(GetThis<Stage>());
 			m_pauseMenu = ObjectFactory::Create<PauseMenu>(GetThis<Stage>());
+			m_optionMenu = ObjectFactory::Create<OptionMenu>(GetThis<Stage>());
 
 			//プロトタイプ用地面作成
 			JPH::StaticCompoundShapeSettings compoundSettings;
@@ -206,9 +208,9 @@ namespace basecross {
 
 			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0), Vec3(-3.0f, -0.5f, 12.5f), moveFloorX_4);
 
+			//AddGameObject<ObstacleSpring>();
 			auto UISprite = AddGameObject<Sprite>(L"BUTTON_AB", Vec3(630,-380,0), Vec2(250,200), Anchor::BottomRight);
 			auto inkprite = AddGameObject<Sprite>(L"INK_MOZI", Vec3(-550, 380, 0), Vec2(100, 30), Anchor::Center);
-			AddGameObject<ObstacleSpring>();
 
 			//スカイボックス
 			AddGameObject<SkyCube>(L"SKYBOX");
@@ -227,13 +229,15 @@ namespace basecross {
 		auto& pad = device.GetControlerVec()[0];
 		GameController::Update();
 
+		//m_pause->PauseBase();
 		bool pause = m_pauseMenu->GetPause();
-		//m_isPause = pause;
+		m_isPause = pause;
 
 		if (pad.wPressedButtons & XINPUT_GAMEPAD_START)
 		{
 			m_pauseMenu->SetPause(!pause);
 			Pause(!pause);
+			//m_pause->OnPause(!pause);
 			//BGMを中断
 			SoundManager::Get().PauseBGM(!pause);
 		}
@@ -241,6 +245,7 @@ namespace basecross {
 		if (IsPause())
 		{
 			m_pauseMenu->OnUpdate();
+			//m_optionMenu->OnUpdate();
 		}
 	}
 
@@ -257,15 +262,13 @@ namespace basecross {
 		}
 	}
 
-	bool ProtoStage::IsPause() const
-	{
-		return m_pauseMenu->GetPause() && m_pauseMenu;
-	}
-
 	void ProtoStage::Pause(bool isPause)
 	{
 		bool pause = m_pauseMenu->GetPause();
 		m_isPause = isPause;
+		m_ps = PauseState::pause;
+
+		SoundManager::Get().PlaySE(L"SELECT", 1.0f);
 
 		auto objs = GetGameObjectVec();
 		auto view = GetView();
@@ -277,6 +280,21 @@ namespace basecross {
 		//EffectManager::g_Instance->OnDraw();
 	}
 
+	bool ProtoStage::IsPause() const
+	{
+		return m_pauseMenu->GetPause() && m_pauseMenu;
+	}
+
+	void ProtoStage::Option(bool isOption)
+	{
+		bool option = m_optionMenu->GetOption();
+		m_isOption = isOption;
+		m_ps = PauseState::option;
+	}
+
+	bool ProtoStage::IsOption() const
+	{
+		return m_optionMenu->GetOption() && m_optionMenu;
 	void ProtoStage::OnDestroy()
 	{
 		SoundManager::Get().StopAll();
