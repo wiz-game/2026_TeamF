@@ -1,6 +1,6 @@
 /*!
 @file SoundManager.cpp
-@brief サウンド関係
+@brief ﾂサﾂウﾂ�窶慊ドﾅﾃ滅啗
 */
 
 #include "stdafx.h"
@@ -23,6 +23,8 @@ namespace basecross {
 		RegisterSound(L"PLAYER_MOVE", L"PlayerMove.wav");
 		RegisterSound(L"ELECTRIC", L"Electric.wav");
 		RegisterSound(L"ELEVATER_MOVE", L"ElevatorMove.wav");
+		RegisterSound(L"PRINTER_SE_1", L"Printer_1.wav");
+		RegisterSound(L"PRINTER_SE_2", L"Printer_2.wav");
 	}
 	void SoundManager::RegisterSound(const wstring& key, const wstring& fileName) {
 		wstring path = App::GetApp()->GetDataDirWString() + L"Sounds/";

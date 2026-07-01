@@ -32,6 +32,9 @@ namespace basecross {
 
 		std::shared_ptr<Sprite> m_resultSprite;
 
+		std::shared_ptr<SoundItem> m_MoveSound_1;
+		std::shared_ptr<SoundItem> m_MoveSound_2;
+
 		Vec3 m_startPos;	   //初期位置
 		float m_speed;
 		float m_animatimer;	   //共通のタイマー
@@ -67,5 +70,61 @@ namespace basecross {
 		void SpriteAnimation(float delta);
 	};
 
+	//--------------------------------------------------------------------------------------
+	//	エフェクト
+	//--------------------------------------------------------------------------------------
+
+	class GoalParticle : public GameObject
+	{
+		std::shared_ptr<Transform> m_trans;
+		std::shared_ptr<PNTStaticDraw> m_draw;
+		std::shared_ptr<Port> m_port;
+
+		Vec3 m_centerPos;
+		float m_radius;
+		float m_angle;
+		float m_speed;
+		Vec3 m_scale;
+		float m_alpha;
+
+	public:
+		GoalParticle(const std::shared_ptr<Stage>& stage,
+			const Vec3& centerPos,
+			float radius, float angle,float alpha, std::shared_ptr<Port> port
+		)
+			: GameObject(stage),
+			m_centerPos(centerPos),
+			m_radius(radius),
+			m_angle(angle),
+			m_alpha(alpha),
+			m_port(port),
+			m_speed(5.0f),
+			m_scale(Vec3(0.5f,0.1f,0.5f))
+		{}
+		void OnCreate() override;
+		void OnUpdate() override;
+	};
+
+	class GoalEffect : public GameObject
+	{
+		std::shared_ptr<Port> m_port;
+
+		Vec3 m_centerPos;	//中心位置
+		float m_radius;		//中心からの距離
+
+		int m_total;		//球体の全ての数
+
+	public:
+		GoalEffect(const std::shared_ptr<Stage>& stage,
+			const Vec3& centerPos, float radius, std::shared_ptr<Port> port
+		)
+			: GameObject(stage),
+			m_centerPos(centerPos),
+			m_radius(radius),
+			m_port(port),
+			m_total(50)
+		{}
+		void OnCreate() override;
+	};
 }
 //end basecross

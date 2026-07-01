@@ -54,6 +54,7 @@ namespace basecross {
 
 		void Option(bool isOption);
 		bool IsOption()const;
+		void OnDestroy();
 	};
 }
 //end basecross

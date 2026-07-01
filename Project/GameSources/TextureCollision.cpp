@@ -446,7 +446,10 @@ namespace basecross {
 
 				result.m_Ptr->ApplyThreadResult(result.m_Result);
 			}
-			InkConnectChecker::Get().CheckConnect();
+			{
+				lock_guard lock(m_Mutex);
+				InkConnectChecker::Get().CheckConnect();
+			}
 		}
 	}
 
