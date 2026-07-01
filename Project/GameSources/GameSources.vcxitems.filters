@@ -211,6 +211,11 @@
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PauseMenu.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SpriteGeneric.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)OptionMenu.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Pause.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
@@ -239,6 +244,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)OptionMenu.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Pause.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>

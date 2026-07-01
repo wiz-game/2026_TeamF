@@ -1,6 +1,6 @@
 /*!
 @file Foo.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -70,15 +70,15 @@ namespace basecross {
 			int checker = 0;
 		}
 
-		//ƒVƒF[ƒ_[‰Šú‰»
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼åˆæœŸåŒ–
 		m_MaskShader = make_shared<DX11ComputeShader>();
 		m_MaskShader->Initialize({ 8,8,1,m_TextureContext.m_SizeX,m_TextureContext.m_SizeY,1 });
 
 		auto object = GetGameObject();
 		auto draw = object->GetComponent<InkDrawComp>();
-		//srv‚©‚çî•ñ‚ğæ“¾
+		//srvã‹ã‚‰æƒ…å ±ã‚’å–å¾—
 		auto srv = draw->GetSRV();
-		//SRV,UAV‚ÌêŠ‚ğ‰¼‚Åæ‚Á‚Ä‚¨‚­
+		//SRV,UAVã®å ´æ‰€ã‚’ä»®ã§å–ã£ã¦ãŠã
 		m_MaskShader->AddSRV(srv.Get());
 		m_MaskShader->AddUAV(m_LabelBuffer->m_UAV.Get());
 		m_MaskShader->SetShader(GenerateMaskShader::GetPtr()->GetShader());
@@ -141,7 +141,7 @@ namespace basecross {
 		auto object = GetGameObject();
 		auto draw = object->GetComponent<InkDrawComp>(false);
 		if (!draw) return;
-		//srv‚©‚çî•ñ‚ğæ“¾
+		//srvã‹ã‚‰æƒ…å ±ã‚’å–å¾—
 		auto srv = draw->GetSRV().Get();
 		ID3D11Resource* gpuResource = nullptr;
 		srv->GetResource(&gpuResource);
@@ -151,11 +151,11 @@ namespace basecross {
 	}
 
 	void TextureCollision::ProcessCPU() {
-		//ƒƒbƒVƒ…ì¬
+		//ãƒ¡ãƒƒã‚·ãƒ¥ä½œæˆ
 		//CreateTextureMesh(m_Labels, m_TextureContext);
 	}
 	void TextureCollision::ProcessGPU() {
-		//ƒJƒ‰[ƒ}ƒXƒN’Šo
+		//ã‚«ãƒ©ãƒ¼ãƒã‚¹ã‚¯æŠ½å‡º
 		m_MaskShader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
 		m_MaskShader->Execute();
 		m_LabelBuffer->ReadBuffer(m_Labels.data());
@@ -318,72 +318,72 @@ namespace basecross {
 		XMVECTOR direction = XMVector3Normalize(dir);
 		XMVECTOR up = XMVectorSet(0, 1, 0, 0);
 
-		// ƒ[ƒ‹ƒhs—ñiŒü‚«j‚ğì‚é
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ï¼ˆå‘ãï¼‰ã‚’ä½œã‚‹
 		XMMATRIX mat = XMMatrixInverse(nullptr, XMMatrixLookToLH(XMVectorZero(), direction, up));
 		
-		// ƒNƒH[ƒ^ƒjƒIƒ“‚É•ÏŠ·
+		// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã«å¤‰æ›
 		quaternion = (Quat)XMQuaternionRotationMatrix(mat);
 
 		Mat4x4 world = (Mat4x4)XMMatrixScaling(1.0f, 1.0f, length);
 		world *= (Mat4x4)XMMatrixRotationQuaternion(quaternion);
 		world *= (Mat4x4)XMMatrixTranslation(position.x, position.y, position.z);
 		world.transpose();
-		//s—ñ‚Ì’è‹`
+		//è¡Œåˆ—ã®å®šç¾©
 		bsm::Mat4x4 ViewMat, ProjMat;
 		
-		//ƒJƒƒ‰‚ğ“¾‚é
+		//ã‚«ãƒ¡ãƒ©ã‚’å¾—ã‚‹
 		auto CameraPtr = GetGameObject()->OnGetDrawCamera();
-		//ƒrƒ…[‚ÆË‰es—ñ‚ğ“¾‚é
+		//ãƒ“ãƒ¥ãƒ¼ã¨å°„å½±è¡Œåˆ—ã‚’å¾—ã‚‹
 		ViewMat = CameraPtr->GetViewMatrix();
-		//“]’u‚·‚é
+		//è»¢ç½®ã™ã‚‹
 		ViewMat.transpose();
-		//“]’u‚·‚é
+		//è»¢ç½®ã™ã‚‹
 		ProjMat = CameraPtr->GetProjMatrix();
 		ProjMat.transpose();
-		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ì€”õ
+		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®æº–å‚™
 		SimpleConstants sb;
 		sb.World = world;
 		sb.View = ViewMat;
 		sb.Projection = ProjMat;
-		//ƒGƒ~ƒbƒVƒu
+		//ã‚¨ãƒŸãƒƒã‚·ãƒ–
 		sb.Emissive = Col4(0, 0, 0, 0);
-		//ƒfƒtƒB[ƒY‚Í‚·‚×‚Ä’Ê‚·
+		//ãƒ‡ãƒ•ã‚£ãƒ¼ã‚ºã¯ã™ã¹ã¦é€šã™
 		sb.Diffuse = Col4(1, 1, 1, 1);
-		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÌXV
+		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®æ›´æ–°
 		pD3D11DeviceContext->UpdateSubresource(CBSimple::GetPtr()->GetBuffer(), 0, nullptr, &sb, 0, 0);
 
-		//ƒXƒgƒ‰ƒCƒh‚ÆƒIƒtƒZƒbƒg
+		//ã‚¹ãƒˆãƒ©ã‚¤ãƒ‰ã¨ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 		UINT stride = sizeof(VertexPositionColor);
 		UINT offset = 0;
-		//’¸“_ƒoƒbƒtƒ@‚ÌƒZƒbƒg
+		//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚»ãƒƒãƒˆ
 		pD3D11DeviceContext->IASetVertexBuffers(0, 1, meshResource->GetVertexBuffer().GetAddressOf(), &stride, &offset);
-		//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ÌƒZƒbƒg
+		//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚»ãƒƒãƒˆ
 		pD3D11DeviceContext->IASetIndexBuffer(meshResource->GetIndexBuffer().Get(), DXGI_FORMAT_R16_UINT, 0);
 
-		//•`‰æ•û–@iƒ‰ƒCƒ“j
+		//æç”»æ–¹æ³•ï¼ˆãƒ©ã‚¤ãƒ³ï¼‰
 		pD3D11DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìİ’è
+		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
 		ID3D11Buffer* pConstantBuffer = CBSimple::GetPtr()->GetBuffer();
 		ID3D11Buffer* pNullConstantBuffer = nullptr;
-		//’¸“_ƒVƒF[ƒ_‚É“n‚·
+		//é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã«æ¸¡ã™
 		pD3D11DeviceContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
-		//ƒsƒNƒZƒ‹ƒVƒF[ƒ_‚É“n‚·
+		//ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã«æ¸¡ã™
 		pD3D11DeviceContext->PSSetConstantBuffers(0, 1, &pConstantBuffer);
-		//ƒVƒF[ƒ_‚Ìİ’è
+		//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
 		pD3D11DeviceContext->VSSetShader(VSPCStatic::GetPtr()->GetShader(), nullptr, 0);
 		pD3D11DeviceContext->PSSetShader(PSPCStatic::GetPtr()->GetShader(), nullptr, 0);
-		//ƒCƒ“ƒvƒbƒgƒŒƒCƒAƒEƒg‚Ìİ’è
+		//ã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®è¨­å®š
 		pD3D11DeviceContext->IASetInputLayout(VSPCStatic::GetPtr()->GetInputLayout());
-		//ƒuƒŒƒ“ƒhƒXƒe[ƒg
-		//“§–¾ˆ—‚µ‚È‚¢
+		//ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆ
+		//é€æ˜å‡¦ç†ã—ãªã„
 		pD3D11DeviceContext->OMSetBlendState(RenderState->GetOpaque(), nullptr, 0xffffffff);
-		//ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg
+		//ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆ
 		pD3D11DeviceContext->OMSetDepthStencilState(RenderState->GetDepthDefault(), 0);
-		//ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg(ƒƒCƒAƒtƒŒ[ƒ€)
+		//ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆ(ãƒ¯ã‚¤ã‚¢ãƒ•ãƒ¬ãƒ¼ãƒ )
 		pD3D11DeviceContext->RSSetState(RenderState->GetWireframe());
 		pD3D11DeviceContext->DrawIndexed(meshResource->GetNumIndicis(), 0, 0);
-		//Œãn––
+		//å¾Œå§‹æœ«
 		Dev->InitializeStates();
 	}
 
@@ -402,11 +402,11 @@ namespace basecross {
 			{
 				unique_lock lock(m_Mutex);
 
-				//ğŒ‚ª’B¬‚³‚ê‚é‚Ü‚Å‚±‚±‚Å~‚Ü‚é(ƒXƒŒƒbƒh‚ª~‚Ü‚é‚©ƒ}ƒXƒN‚ª’Ç‰Á‚³‚ê‚é‚Ü‚Å)
+				//æ¡ä»¶ãŒé”æˆã•ã‚Œã‚‹ã¾ã§ã“ã“ã§æ­¢ã¾ã‚‹(ã‚¹ãƒ¬ãƒƒãƒ‰ãŒæ­¢ã¾ã‚‹ã‹ãƒã‚¹ã‚¯ãŒè¿½åŠ ã•ã‚Œã‚‹ã¾ã§)
 				m_Condition.wait(lock, [this]() {
 					return m_ThreadStop || !m_Tasks.empty();
 					});
-				//‚±‚Ì“_‚ÅƒXƒŒƒbƒh‚ª~‚Ü‚Á‚½‚¤‚¦Aƒ^ƒXƒN‚ª‚È‚¢ê‡‚ÍI—¹
+				//ã“ã®æ™‚ç‚¹ã§ã‚¹ãƒ¬ãƒƒãƒ‰ãŒæ­¢ã¾ã£ãŸã†ãˆã€ã‚¿ã‚¹ã‚¯ãŒãªã„å ´åˆã¯çµ‚äº†
 				if (m_ThreadStop && m_Tasks.empty())
 					return;
 
@@ -467,6 +467,10 @@ namespace basecross {
 				}
 
 				result.m_Ptr->ApplyThreadResult(result.m_Result);
+			}
+			{
+				lock_guard lock(m_Mutex);
+				InkConnectChecker::Get().CheckConnect();
 			}
 		}
 	}
@@ -574,7 +578,7 @@ namespace basecross {
 		m_TextureCollisions.clear();
 	}
 	vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> InkConnectChecker::CheckConnect() {
-		//’Ê“dî•ñ‚ğ‰Šú‰»
+		//é€šé›»æƒ…å ±ã‚’åˆæœŸåŒ–
 		for (auto& weakCollision : m_TextureCollisions) {
 			auto collision = weakCollision.lock();
 			if (!collision) continue;
