@@ -42,7 +42,6 @@ namespace basecross {
 		m_draw->SetMeshResource(L"PRINTER_MODEL");
 		m_draw->SetTextureResource(L"PRINTER_TEX");
 		m_draw->SetMeshToTransformMatrix(spanMat);
-		//m_draw->SetRasterizerState(RasterizerState::CullNone);
 
 		m_draw->SetOwnShadowActive(true);
 
@@ -56,33 +55,19 @@ namespace basecross {
 		m_resultSprite->SetDrawActive(false);
 		m_resultSprite->SetDrawLayer(1);
 
+		Vec3 spawnCenter = m_pos + Vec3(0.0f, 0.5f, 0.0f);
+		float radius = 2.5f;//回転半径
 		try
-		{	// objectの取得
-			//m_player = GetStage()->GetSharedGameObject<Player>(L"Player");
-
-			GoalEreaEffect::InitParams params; // オーラエフェクトに渡すパラメータをまとめた構造体（BaseCrossはAddGameObjectの際、引数が分かりづらいのでまとめると良い）
-			params.textureKey = L"line";//テクスチャ
-			params.sides = 30;			//面の数
-			params.height = 0.0f;		//筒の高さ
-			params.topRadius = 10.0f;	//筒の上のわっかの半径
-			params.bottomRadius = 1.0f; //下のわっかの半径
-			params.topColor = Col4(1.0f, 1.0f, 0.0f, 0.2f);		//上の方の色
-			params.bottomColor = Col4(1.0f, 1.0f, 0.0f, 1.0f);	//下の方の色
-			params.uvOffsetSpeed = Vec2(0.0f, 2.0f);			//アニメーションの速さ(テクスチャをずらす)
-			params.textureLoops = 5.0f;							//テクスチャのループ
-
-			auto light = GetStage()->AddGameObject<GoalEreaEffect>(params);
-			light->GetComponent<Transform>()->SetPosition(m_pos.x,m_pos.y + 1.0f,m_pos.z);
-
+		{
+			//エフェクトの生成
+			GetStage()->AddGameObject<GoalEffect>(spawnCenter, radius, m_port);
 		}
 		catch (...) {
-			m_player.reset();
 		}
 	}
 
 	void Goal::OnUpdate()
 	{
-		//if (!m_player) return; // プレイヤーがいなければ何もしない
 		if (m_port == nullptr) return;//ポートが指定されていなければ何もしない
 
 		auto scene = App::GetApp()->GetScene<Scene>();
@@ -103,7 +88,6 @@ namespace basecross {
 				if (!m_MoveSound_1) {
 					m_MoveSound_1 = SoundManager::Get().PlaySE(L"PRINTER_SE_1");
 				}
-
 			}
 			break;
 
@@ -246,68 +230,60 @@ namespace basecross {
 		}
 	}
 
-	//初期化
-	void GoalEreaEffect::OnCreate()
+	//------------------------------------------------------------------
+	//		エフェクト
+	//------------------------------------------------------------------
+	void GoalParticle::OnCreate()
 	{
-		// 頂点データの作成する
-		for (int i = 0; i < params.sides + 1; i++) // 1周して戻ってきて、出発点にも頂点が必要なため、分割数より1回多くループする
-		{
-			float fSides = static_cast<float>(params.sides); // 円の分割数をfloat型に変換する
-			float radian = XMConvertToRadians(i * 360.0f / fSides); // 頂点を配置する角度を算出する
-			vertices.push_back({ Vec3(params.topRadius * cosf(radian), params.height, params.topRadius * sinf(radian)), params.topColor, Vec2(i / fSides, 0.0f) }); // 上の頂点
-			vertices.push_back({ Vec3(params.bottomRadius * cosf(radian), 0.0f, params.bottomRadius * sinf(radian)), params.bottomColor, Vec2(i / fSides, params.textureLoops) }); // 下の頂点
-		}
+		m_trans = GetComponent<Transform>();
+		m_trans->SetScale(m_scale);
 
-		// ループ処理のベースにするインデックス
-		uint16_t baseIndices[] = {
-			1, 0, 2,
-			1, 2, 3,
-		};
+		m_draw = AddComponent<PNTStaticDraw>();
+		m_draw->SetMeshResource(L"DEFAULT_SPHERE");
+		SetAlphaActive(true);
 
-		// ベースインデックスをもとに頂点インデックスを作成する
-		std::vector<uint16_t> indices;
-		//面の数だけループ
-		for (int i = 0; i < params.sides; i++)
-		{
-			//一枚の板ポリ（四角）を形成
-			for (auto baseIndex : baseIndices)
-			{
-				indices.push_back(baseIndex + 2 * i); // ベースインデックスを２ずつずらして設定していく
-			}
-		}
+		m_draw->SetBlendState(BlendState::AlphaBlend);
+		m_draw->SetEmissive(Col4(1.0f, 1.0f, 0.0f, m_alpha));
+		m_draw->SetDiffuse(Col4(1.0f, 1.0f, 0.0f, m_alpha));
 
-		// ドローコンポーネントを追加する
-		auto drawComp = AddComponent<BcPCTStaticDraw>(); // Bc系のコンポーネントだと、頂点の色でアルファブレンドしてくれる
-		drawComp->CreateOriginalMesh(vertices, indices); // 上記の設定をもとにメッシュを生成する
-		drawComp->SetOriginalMeshUse(true); // 独自メッシュ(プログラム内で作成)を使用することを宣言する
-		if (params.textureKey != L"") // テクスチャを使用する場合の設定
-		{
-			drawComp->SetTextureResource(params.textureKey); // 使用するテクスチャを設定する
-		}
-		drawComp->SetBlendState(BlendState::Additive); // 加算合成されるように設定する
-		drawComp->SetDepthStencilState(DepthStencilState::Read); // 他の板ポリと干渉しないようにする]
-		if (params.textureLoops > 1.0f || params.uvOffsetSpeed.length() != 0.0f) // ループアニメーションや拡大UVを使用する場合はテクスチャが繰り返しに対応できるように設定する
-		{
-			drawComp->SetSamplerState(SamplerState::AnisotropicWrap); // テクスチャアニメーション用にループ貼り付けできるようにする
-		}
-
-		SetAlphaActive(true); // 透過処理を有効にする
-		SetDrawLayer(1);
 	}
 
-	void GoalEreaEffect::OnUpdate()
+	void GoalParticle::OnUpdate()
 	{
-		auto& app = App::GetApp();
-		float delta = app->GetElapsedTime();
-
-		for (auto& vertex : vertices) // テクスチャアニメーションさせる
+		float delta = App::GetApp()->GetElapsedTime();
+		if (m_port && m_port->GetConnect())
 		{
-			vertex.textureCoordinate += delta * params.uvOffsetSpeed; // すべての頂点のUVを秒速でずらす
+			m_speed = 15.0f;
 		}
+		else
+		{
+			m_speed = 5.0f;
+		}
+		m_angle += m_speed * delta;
+		float x = m_centerPos.x + cosf(m_angle) * m_radius;
+		float y = m_centerPos.y;
+		float z = m_centerPos.z + sinf(m_angle) * m_radius;
+		m_trans->SetPosition(Vec3(x, y, z));
 
-		auto drawComp = GetComponent<BcPCTStaticDraw>();
-		drawComp->UpdateVertices(vertices); // 更新された頂点データを再適用する
 	}
 
+	void GoalEffect::OnCreate()
+	{
+		float interval = 0.05f;//球体同士の間隔
+
+		for (int i = 0; i < m_total; i++)
+		{
+			float startAngle = i * interval;
+
+
+			float baseRate = (m_total > 1) ? (float)i / (float)(m_total - 1) : 0.0f;
+			float alpha = 0.1f + (baseRate * 0.9f);
+			float scale = 0.05f + (baseRate * 0.35f);
+
+			//球体の生成
+			auto particle = GetStage()->AddGameObject<GoalParticle>(
+				m_centerPos, m_radius, startAngle, alpha, m_port);
+		}
+	}
 }
 //end basecross
