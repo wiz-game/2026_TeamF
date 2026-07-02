@@ -12,7 +12,7 @@ namespace basecross{
 	const Vec3 ObstacleSpring::SCALE = Vec3(1.0f, 2.0f, 1.0f);
 	const Vec3 ObstacleSpring::START_POS = Vec3(0.0f, 5.0f, 0.0f);
 	const float ObstacleSpring::ROTATION_Z = XM_PIDIV2;
-	const float ObstacleSpring::PUSH_POWER = 0.5f;
+	const float ObstacleSpring::PUSH_POWER = 0.3f;
 	const float ObstacleSpring::NORMALIZE_EPS = 0.001f;
 	const float ObstacleSpring::LOOP_ANGLE = XM_2PI;
 
@@ -90,18 +90,16 @@ namespace basecross{
 		pos.y += m_velocity * delta;
 
 
-		if (pos.y <= m_floor)
+		if (!m_isGround)
 		{
-			pos.y = m_floor;
-			m_velocity = 0.0f;
-			m_isGround = true;
+			m_gravity = -9.8f;
+			m_velocity += m_gravity * delta;
+			pos.y += m_velocity * delta;
 		}
 		else
 		{
-			m_velocity += m_gravity * delta;
-			pos.y += m_velocity * delta;
-
-			m_isGround = false;
+			m_velocity = 0.0f;
+			m_gravity = 0.0f;
 		}
 
 		m_transform->SetPosition(pos);
@@ -109,7 +107,6 @@ namespace basecross{
 
 	void ObstacleSpring::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
 	{
-		OutputDebugStringA("Obstacle Execute!\n");
 		if (auto floor = dynamic_pointer_cast<Floor>(obj))
 		{
 			m_isGround = true;
@@ -126,14 +123,12 @@ namespace basecross{
 
 	void ObstacleSpring::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
 	{
-		OutputDebugStringA("Obstacle Execute!\n");
 		if (auto player = std::dynamic_pointer_cast<Player>(obj))
 		{
 			PushPlayer(player);
 		}
 
 	}
-
 
 	void ObstacleSpring::OnCollisionExit(std::shared_ptr<GameObject>& obj)
 	{
