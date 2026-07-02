@@ -92,6 +92,8 @@ namespace basecross{
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
 		InkConnectChecker::Get().Initialize();
+		ThreadPool::Get().Wait();
+		TextureMeshManager::Get().Clear();
 
 		if (event->m_MsgStr == L"ToProtoStage") {
 			ResetActiveStage<ProtoStage>();

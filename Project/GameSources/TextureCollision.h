@@ -92,13 +92,18 @@ namespace basecross{
 
 		mutex m_Mutex;
 		condition_variable m_Condition;
+		condition_variable m_WaitCondition;
 
 		bool m_ThreadStop;
+		int m_RunningTask;
+
+		void Worker();
 	public:
 
 		void Initialize(size_t numThreads);
 		void Destory();
 		void Execute(function<void()> task);
+		void Wait();
 
 	};
 
@@ -119,6 +124,7 @@ namespace basecross{
 
 		void DecreeseProccessCount();
 	public:
+		void Clear();
 		void AddReload(const shared_ptr<TextureCollision>& meshCollision);
 		void Reload();
 	};
