@@ -198,9 +198,9 @@ namespace basecross {
 			}
 			m_transform->SetPosition(newPos);
 
-			Vec3 moveDelta = newPos - oldPos;
+			//Vec3 moveDelta = newPos - oldPos;
 			//計算した移動量をFloorDecisionに渡す
-			m_floorDec->SetCurrentMoveVec(moveDelta);
+			//m_floorDec->SetCurrentMoveVec(moveDelta);
 		}
 		else
 		{
@@ -213,7 +213,7 @@ namespace basecross {
 				SoundManager::Get().StopLoopSE(m_MoveSound);
 			}
 
-			m_floorDec->SetCurrentMoveVec(Vec3(0, 0, 0)); // 通電していないときは移動量をゼロにする
+			//m_floorDec->SetCurrentMoveVec(Vec3(0, 0, 0)); // 通電していないときは移動量をゼロにする
 		}
 	}
 	void MoveFloor::OnDestroy() {

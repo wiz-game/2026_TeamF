@@ -32,7 +32,7 @@ namespace basecross
 
 		//ターゲットの移動用コンポーネント取得
 		auto targetTrans = target->GetComponent<Transform>();
-		Vec3 targetPos = targetTrans->GetPosition();
+		Vec3 targetPos = targetTrans->GetWorldPosition();
 
 		//位置
 		Vec3 at = targetPos + Vec3(0.0f, 5.0f, 0.0f);

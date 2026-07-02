@@ -36,10 +36,7 @@ namespace basecross {
 
 	void FloorDecision::OnUpdate()
 	{
-		//現在の世界座標を取得し、前フレームからの移動差分を計算
-		Vec3 currentWorldPos = m_transform->GetWorldPosition();
-		m_currentMoveVec = currentWorldPos - m_lastPosition;
-		m_lastPosition = currentWorldPos;//次フレームのために保存
+
 	}
 
 	void FloorDecision::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
@@ -47,7 +44,8 @@ namespace basecross {
 		if (auto player = dynamic_pointer_cast<Player>(obj))
 		{
 			//Playerに移動量を渡す
-			player->UpdateMoveFloor(m_currentMoveVec);
+			//player->UpdateMoveFloor(m_currentMoveVec);
+			player->GetComponent<Transform>()->SetParent(GetThis<FloorDecision>());//Playerの親をFloorDecisionにする
 			m_isPlayerOn = true;
 		}
 	}
@@ -60,7 +58,8 @@ namespace basecross {
 	{
 		if (auto player = dynamic_pointer_cast<Player>(obj))
 		{
-			player->UpdateMoveFloor(Vec3(0));
+			//player->UpdateMoveFloor(Vec3(0));
+			player->GetComponent<Transform>()->SetParent(nullptr);//Playerの親を解除する
 			m_isPlayerOn = false;
 		}
 	}
