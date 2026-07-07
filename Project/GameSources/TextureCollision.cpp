@@ -26,6 +26,8 @@ namespace basecross {
 	vector<TRIANGLE> Contour::GetWorldTriangles(const shared_ptr<Transform>& transform)const {
 		Vec3 position = transform->GetWorldPosition();
 		Vec3 scale = transform->GetScale();
+
+		auto worldMatrix = transform->GetWorldMatrix();
 		vector<TRIANGLE> worldTriangles;
 
 		size_t triangleSize = m_Triangles.size();
@@ -34,8 +36,9 @@ namespace basecross {
 			const TRIANGLE& triangle = m_Triangles[i];
 
 			for (int j = 0; j < 3; j++) {
-				worldTriangles[i][j] = triangle[j] * scale;
-				worldTriangles[i][j] += position;
+				Vec3 local = triangle[j];
+
+				worldTriangles[i][j] = (Vec3)XMVector3Transform(local, worldMatrix);
 			}
 		}
 		return worldTriangles;
@@ -107,7 +110,9 @@ namespace basecross {
 		}
 	}
 	void TextureCollision::OnDraw() {
-		
+		for (int i = 0; i < m_Contour.size(); i++) {
+			DrawContour(i);
+		}
 	}
 	void TextureCollision::DrawContour(int index) {
 		for (auto& triangle : GetWorldTriangles(index)) {
