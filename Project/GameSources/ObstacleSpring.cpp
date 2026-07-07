@@ -116,6 +116,7 @@ namespace basecross{
 		if (auto player = std::dynamic_pointer_cast<Player>(obj))
 		{
 			PushPlayer(player);
+			SoundManager::Get().PlaySE(L"STEELHIT", 0.1f);
 		}
 
 	}
