@@ -11,7 +11,7 @@
 #include "Port.h"
 #include <opencv2/opencv.hpp>
 #include <poly2tri/poly2tri.h>
-
+#include <queue>
 namespace basecross{
 	struct CoordContext {
 		UINT m_SizeX = 0;
@@ -77,8 +77,7 @@ namespace basecross{
 		TextureSnapShot SnapShot();
 		void ApplyThreadResult(vector<Contour>& result) {
 			m_WaitContour = result;
-			m_WaitElectricContourIndices.resize(m_Contour.size(), 0);
-
+			m_WaitElectricContourIndices.resize(m_WaitContour.size(), 0);
 		}
 	};
 

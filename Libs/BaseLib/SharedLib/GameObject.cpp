@@ -6,6 +6,8 @@
 
 #include "stdafx.h"
 #include "../../../Project/GameSources/SoundManager.h"
+#include "../../../Project/GameSources/Floor.h"
+#include "../../../Project/GameSources/TextureCollision.h"
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
@@ -1357,6 +1359,13 @@ namespace basecross {
 		}
 		//配置オブジェクトの削除処理
 		for (auto ptr : GetGameObjectVec()) {
+			auto floor = dynamic_pointer_cast<Floor>(ptr);
+			if (floor) {
+				auto collision = floor->GetComponent<TextureCollision>();
+				if (collision->GetContourCount() > 0) {
+					int check = 0;
+				}
+			}
 				ptr->DestroyGameObject();
 		}
 		//自身の削除処理

@@ -186,14 +186,13 @@ namespace basecross {
 		vector<cv::Vec4i> contourHierarchy;
 		cv::findContours(mask, contours, contourHierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
 
-		m_CvContours.clear();
-		m_CvContours.resize(contours.size());
+		vector<vector<cv::Point>> simpleContours;
+		simpleContours.resize(contours.size());
 		for (int i = 0; i < contours.size(); i++) {
 			double epsilon = 1.0f;
-			cv::approxPolyDP(contours[i], m_CvContours[i], epsilon, true);
+			cv::approxPolyDP(contours[i], simpleContours[i], epsilon, true);
 		}
-
-		size_t contourSize = m_CvContours.size();
+		size_t contourSize = simpleContours.size();
 		result.clear();
 
 		using p2tStorage = vector<unique_ptr<p2t::Point>>;
@@ -206,16 +205,16 @@ namespace basecross {
 		result.reserve(contourSize);
 
 		int contourCount = 0;
-		for (size_t i = 0, size = m_CvContours.size(); i < size; i++) {
-			double area = cv::contourArea(m_CvContours[i], true);
+		for (size_t i = 0, size = simpleContours.size(); i < size; i++) {
+			double area = cv::contourArea(simpleContours[i], true);
 			bool isHole = contourHierarchy[i][3] != -1;
 			if (!isHole) {
 				contourCount++;
 			}
 			if ((area < 0 && !isHole) || (area > 0 && isHole)) {
-				std::reverse(m_CvContours[i].begin(), m_CvContours[i].end());
+				std::reverse(simpleContours[i].begin(), simpleContours[i].end());
 			}
-			for (auto& point : m_CvContours[i]) {
+			for (auto& point : simpleContours[i]) {
 				if (!storages[i].empty()) {
 					auto prev = storages[i].back().get();
 					if (point.x == prev->x && point.y == prev->y) {
@@ -228,7 +227,7 @@ namespace basecross {
 			}
 		}
 
-		for (size_t i = 0, size = m_CvContours.size(); i < size; i++) {
+		for (size_t i = 0, size = simpleContours.size(); i < size; i++) {
 			if (contourHierarchy[i][3] == -1) {
 				if (polylines[i].size() < 3) continue;
 
@@ -237,7 +236,7 @@ namespace basecross {
 				int hole = contourHierarchy[i][2];
 				while (hole != -1) {
 					const double MIN_HOLE_AREA = 10.0;
-					if (polylines[hole].size() >= 3 && abs(cv::contourArea(m_CvContours[hole])) >= MIN_HOLE_AREA) {
+					if (polylines[hole].size() >= 3 && abs(cv::contourArea(simpleContours[hole])) >= MIN_HOLE_AREA) {
 						cdt.AddHole(polylines[hole]);
 					}
 					hole = contourHierarchy[hole][0];
@@ -280,10 +279,13 @@ namespace basecross {
 
 			int vertexId = y * (int)context.m_SizeX + x;
 
-			if (x >= (int)context.m_SizeX - 1 || labels[vertexId + 1] == -1) {
+			bool canCheckRight = x < context.m_SizeX - 1;
+			bool canCheckDown = y < context.m_SizeY - 1;
+
+			if (x >= (int)context.m_SizeX - 1 || (canCheckRight && labels[vertexId + 1] == -1)) {
 				vertexPosition.x += 1.0f / (float)context.m_SizeX;
 			}
-			if (y >= (int)context.m_SizeY - 1 || labels[vertexId + context.m_SizeX] == -1) {
+			if (y >= (int)context.m_SizeY - 1 || (canCheckDown && labels[vertexId + context.m_SizeX] == -1)) {
 				vertexPosition.z -= 1.0f / (float)context.m_SizeY;
 			}
 			return vertexPosition;
@@ -462,19 +464,12 @@ namespace basecross {
 	void TextureMeshManager::Update() {
 		InkConnectChecker::Get().CheckConnect();
 		if (m_ProccessCount == 0) {
-			if (!m_ResultQueue.empty()) {
+			while (!m_ResultQueue.empty()) {
 				MeshResult result = m_ResultQueue.front();
-				string debug = to_string(result.m_Result.size()) + "/" + to_string(result.m_Result.capacity()) + "\n";
-				OutputDebugStringA(debug.c_str());
-				m_ResultQueue.pop();
-			}
-			/*while (!m_ResultQueue.empty()) {
-				MeshResult result;
-				result = m_ResultQueue.front();
 				m_ResultQueue.pop();
 				if (!result.m_Ptr) continue;
 				result.m_Ptr->ApplyThreadResult(result.m_Result);
-			}*/
+			}
 		}
 	}
 	void TextureMeshManager::Clear() {
