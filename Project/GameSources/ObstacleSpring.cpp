@@ -15,6 +15,7 @@ namespace basecross{
 	const float ObstacleSpring::PUSH_POWER = 0.3f;
 	const float ObstacleSpring::NORMALIZE_EPS = 0.001f;
 	const float ObstacleSpring::LOOP_ANGLE = XM_2PI;
+	const float ObstacleSpring::DEAD_LINE = -10.0f;
 
 	void ObstacleSpring::OnCreate()
 	{
@@ -42,6 +43,12 @@ namespace basecross{
 		float delta = App::GetApp()->GetElapsedTime();
 		Roteto(delta);
 		UpdateGravity(delta);
+
+		Vec3 pos = m_transform->GetPosition();
+		if (pos.y < DEAD_LINE)
+		{
+			OnDestroy();
+		}
 	}
 
 	void ObstacleSpring::Roteto(float delta)
@@ -116,6 +123,7 @@ namespace basecross{
 		if (auto player = std::dynamic_pointer_cast<Player>(obj))
 		{
 			PushPlayer(player);
+			SoundManager::Get().PlaySE(L"STEELHIT", 0.1f);
 		}
 
 	}
