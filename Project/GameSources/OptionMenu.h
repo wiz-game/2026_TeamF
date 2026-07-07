@@ -5,13 +5,15 @@
 
 namespace basecross
 {
+	class PauseMenu;
+
 	class OptionMenu :public GameObject
 	{
 		std::vector<std::shared_ptr<SpriteGeneric>> m_menuLabel;
 		std::vector<std::shared_ptr<SpriteGeneric>> m_menuButton;
 		std::vector<Vec2> m_menuPosList;
 		std::shared_ptr<SpriteGeneric> m_menuCursor;
-		//std::shared_ptr<PauseMenu> m_pause;
+		std::shared_ptr<PauseMenu> m_pause;
 
 		bool m_isOption = false;
 		int m_selectMenu;	//選択中のメニュー
@@ -40,11 +42,12 @@ namespace basecross
 		void OnDraw()override;
 
 		void SelectMenu();
+		void ToOption();
 		void ToPause();
 
-		void SetOption(bool isPause)
+		void SetOption(bool isOption)
 		{
-			m_isOption = isPause;
+			m_isOption = isOption;
 		}
 
 		bool GetOption()

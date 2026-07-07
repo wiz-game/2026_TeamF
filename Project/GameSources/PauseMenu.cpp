@@ -212,10 +212,17 @@ namespace basecross
 		SoundManager::Get().PauseBGM(false);
 	}
 
+	void PauseMenu::ToPause()
+	{
+		SetPause(true);
+		m_option->SetOption(false);
+	}
+
 	void PauseMenu::ToOption()
 	{
 		bool a = false;
 		SetPause(false);
-		//m_option->ToPause();
+
+		m_option->SetOption(true);
 	}
 }

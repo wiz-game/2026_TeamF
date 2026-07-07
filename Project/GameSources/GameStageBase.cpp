@@ -80,6 +80,11 @@ namespace basecross {
 
 		//ポーズメニュー作成
 		m_pauseMenu = ObjectFactory::Create<PauseMenu>(GetThis<Stage>());
+		SetSharedGameObject(L"pause", m_pauseMenu);
+
+		//設定メニュー作成
+		m_optionMenu = ObjectFactory::Create<OptionMenu>(GetThis<Stage>());
+		SetSharedGameObject(L"option", m_optionMenu);
 	}
 
 	void GameStageBase::OnUpdate()

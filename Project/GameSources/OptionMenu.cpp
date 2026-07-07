@@ -36,13 +36,13 @@ namespace basecross
 		ScreenFilter->SetColor(Col4(0.0f, 0.0f, 0.0f, 0.55f));
 		m_menuLabel.push_back(ScreenFilter);
 
-		//ポーズ
-		auto PauseText = ObjectFactory::Create<SpriteGeneric>(GetStage());
-		PauseText->SetSize(400.0f, 200.0f, Vec2(0.5f, 0.5f));
-		PauseText->SetPos(Vec2(0, 200));
-		PauseText->SetTexture(L"Pause");
-		PauseText->SetColor(Col4(1, 1, 1, 1));
-		m_menuLabel.push_back(PauseText);
+		////ポーズ
+		//auto PauseText = ObjectFactory::Create<SpriteGeneric>(GetStage());
+		//PauseText->SetSize(400.0f, 200.0f, Vec2(0.5f, 0.5f));
+		//PauseText->SetPos(Vec2(0, 200));
+		//PauseText->SetTexture(L"Pause");
+		//PauseText->SetColor(Col4(1, 1, 1, 1));
+		//m_menuLabel.push_back(PauseText);
 
 		//選択中のボタンに出るカーソル
 		auto Cursor = ObjectFactory::Create<SpriteGeneric>(GetStage());
@@ -53,13 +53,13 @@ namespace basecross
 		m_menuLabel.push_back(Cursor);
 		m_menuCursor = Cursor;
 
-		//続ける(continue)ボタン
-		auto continueButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
-		continueButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
-		continueButton->SetPos(m_menuPosList[0]);
-		continueButton->SetTexture(L"Cancel");
-		continueButton->SetColor(Col4(1, 1, 1, 1));
-		m_menuButton.push_back(continueButton);
+		////続ける(continue)ボタン
+		//auto continueButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
+		//continueButton->SetSize(200.0f, 100.0f, Vec2(0.5f, 0.5f));
+		//continueButton->SetPos(m_menuPosList[0]);
+		//continueButton->SetTexture(L"Cancel");
+		//continueButton->SetColor(Col4(1, 1, 1, 1));
+		//m_menuButton.push_back(continueButton);
 
 		////リトライボタン
 		//auto retryButton = ObjectFactory::Create<SpriteGeneric>(GetStage());
@@ -185,6 +185,12 @@ namespace basecross
 			}
 		}
 		scene->SetDebugString(wss.str());
+	}
+
+	void OptionMenu::ToOption()
+	{
+		//SetOption(true);
+		m_pause->SetPause(false);
 	}
 
 	void OptionMenu::ToPause()
