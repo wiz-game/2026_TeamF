@@ -88,6 +88,23 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto device = App::GetApp()->GetInputDevice();
 		auto& pad = device.GetControlerVec()[0];
+
+		//auto camera = GetView()->GetTargetCamera();
+		//auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
+		//bool isCameraInCutscene = mainCamera->GetState() == MainCamera::CameraState::StartToGoal;
+		//if (isCameraInCutscene)
+		//{
+		//	//カメラ演出中はポーズ
+		//	m_pauseMenu->SetPause(true);
+		//	Pause(true);
+		//	return;
+		//}
+		//else
+		//{
+		//	m_pauseMenu->SetPause(false);
+		//	Pause(false);
+		//}
+
 		GameController::Update();
 
 		bool pause = m_pauseMenu->GetPause();
@@ -350,7 +367,12 @@ namespace basecross {
 
 	void GameStageBase::AddGoalObj(STRUCT_ElectricObjBaseParams params)
 	{
-		AddGameObject<Goal>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID]);
+		auto goalPtr = AddGameObject<Goal>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID]);
+
+		auto view = GetView();
+		auto camera = view->GetTargetCamera();
+		auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
+		mainCamera->SetGoal(goalPtr);
 	}
 
 	void GameStageBase::AddMoveFloorObj(STRUCT_MoveFloorParams params)
