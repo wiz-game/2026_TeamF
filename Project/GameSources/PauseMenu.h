@@ -5,7 +5,7 @@
 
 namespace basecross
 {
-	class OptionMenu;
+	//class OptionMenu;
 
 	class PauseMenu :public GameObject
 	{

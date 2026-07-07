@@ -186,6 +186,9 @@ namespace basecross {
 
 		bool IsPause() const;
 		void Pause(bool isPause);
+
+		bool IsOption() const;
+		void Option(bool isOption);
 	};
 }
 //end basecross

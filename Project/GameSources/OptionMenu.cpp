@@ -7,6 +7,8 @@ namespace basecross
 {
 	void OptionMenu::OnCreate()
 	{
+		m_pause = GetStage()->GetSharedGameObject<PauseMenu>(L"Pause");
+
 		auto& app = App::GetApp();
 		auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
 		app->RegisterTexture(L"Pause", path + L"Pause.png"); // 画像ファイルを読み込んでアセットとして登録する

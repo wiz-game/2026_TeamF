@@ -220,9 +220,11 @@ namespace basecross
 
 	void PauseMenu::ToOption()
 	{
-		bool a = false;
-		SetPause(false);
+		auto option = GetStage()->GetSharedGameObject<OptionMenu>(L"Option");
 
-		m_option->SetOption(true);
+		SetPause(false);
+		option->SetOption(true);
+
+
 	}
 }

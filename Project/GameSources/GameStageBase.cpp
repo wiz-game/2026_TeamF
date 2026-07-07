@@ -80,11 +80,11 @@ namespace basecross {
 
 		//ポーズメニュー作成
 		m_pauseMenu = ObjectFactory::Create<PauseMenu>(GetThis<Stage>());
-		SetSharedGameObject(L"pause", m_pauseMenu);
+		SetSharedGameObject(L"Pause", m_pauseMenu);
 
 		//設定メニュー作成
 		m_optionMenu = ObjectFactory::Create<OptionMenu>(GetThis<Stage>());
-		SetSharedGameObject(L"option", m_optionMenu);
+		SetSharedGameObject(L"Option", m_optionMenu);
 	}
 
 	void GameStageBase::OnUpdate()
@@ -109,6 +109,10 @@ namespace basecross {
 		if (IsPause())
 		{
 			m_pauseMenu->OnUpdate();
+		}
+		if (IsOption())
+		{
+			m_optionMenu->OnUpdate();
 		}
 
 	}
@@ -428,6 +432,26 @@ namespace basecross {
 		for (auto& obj : objs)
 		{
 			obj->SetUpdateActive(!m_isPause);
+		}
+		//EffectManager::g_Instance->OnDraw();
+	}
+
+	bool GameStageBase::IsOption() const
+	{
+		return m_optionMenu->GetOption() && m_optionMenu;
+	}
+
+	void GameStageBase::Option(bool isOption)
+	{
+		bool pause = m_optionMenu->GetOption();
+		m_isOption = isOption;
+
+		auto objs = GetGameObjectVec();
+		auto view = GetView();
+		auto camera = view->GetTargetCamera();
+		for (auto& obj : objs)
+		{
+			obj->SetUpdateActive(!m_isOption);
 		}
 		//EffectManager::g_Instance->OnDraw();
 	}
