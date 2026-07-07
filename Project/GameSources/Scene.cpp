@@ -44,7 +44,8 @@ namespace basecross{
 		for (int i = 0; i < GameProgressManager::Get().GetStageSize(); i++) {
 			wstring indexStr = to_wstring(i);
 			try {
-				app->RegisterTexture(L"Map" + indexStr, mediaPath + L"Texture/Map/Map" + indexStr + L".png");
+				//app->RegisterTexture(L"Map" + indexStr, mediaPath + L"Texture/Map/Map" + indexStr + L".png");
+				app->RegisterTexture(L"Map" + indexStr, mediaPath + L"Texture/Map/MapProto.png");
 			}
 			catch (...) {
 				app->RegisterTexture(L"Map" + indexStr, mediaPath + L"Texture/Map/MapProto.png");
@@ -79,7 +80,7 @@ namespace basecross{
 	void Scene::OnUpdate() {
 		SceneBase::OnUpdate();
 		GameController::Update();
-		
+		TextureMeshManager::Get().Update();
 	}
 	void Scene::OnDraw() {
 		SceneBase::OnDraw();

@@ -181,16 +181,13 @@ namespace basecross
 		//自分自身の位置とスケールを習得
 		Vec3 myPos = trans->GetWorldPosition();
 		Vec3 myScale = trans->GetScale();
+		Vec3 playerLocalPosition = (Vec3)XMVector3Transform(playerWorldPos,inverse(trans->GetWorldMatrix()));
 
-		//オブジェクトの中心から距離を計算
-		float relativeX = playerWorldPos.x - myPos.x;
 		float relativeY = playerWorldPos.y - myPos.y;
-		float relativeZ = playerWorldPos.z - myPos.z;
-
 		//cubeメッシュのサイズを考慮して一律の範囲に収める
-		float localX = relativeX / myScale.x;
-		float localY = relativeY / myScale.y;
-		float localZ = relativeZ / myScale.z;
+		float localX = playerLocalPosition.x;
+		float localY = playerLocalPosition.y;
+		float localZ = playerLocalPosition.z;
 
 		//テクスチャの座標（0.0～1.0）に変換
 		float uvX = 0.0f;
@@ -209,10 +206,10 @@ namespace basecross
 			uvY = localZ + 0.5f;//trapDoor用
 			uvX = 1.0f - (localX + 0.5f);
 		}
-
+		
 		//プレイヤーが自分の上に乗っているかつ、
 		// Playerと接触している場合のみインクを塗る
-		if (uvX >= 0.0f && uvX <= 1.0f && uvY >= 0.0f && uvY <= 1.0f && relativeY <= 1.2f)
+		if (uvX >= 0.0f && uvX <= 1.0f && uvY >= 0.0f && uvY <= 1.0f && abs(relativeY) <= 1.2f)
 		{
 			if (GameController::IsPressed_ButtonDown())
 			{
