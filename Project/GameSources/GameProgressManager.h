@@ -19,7 +19,7 @@ namespace basecross{
 	public:
 		void Initialize(UINT gameStageCount);
 
-		UINT GetStageSize() const{ return m_GameDates.size(); }
+		size_t GetStageSize() const{ return m_GameDates.size(); }
 		bool IsUnlocked(UINT index)const;
 
 		void SetCurrentStage(int stage) { m_CurrentStage = stage; }

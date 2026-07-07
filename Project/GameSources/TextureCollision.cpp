@@ -186,14 +186,13 @@ namespace basecross {
 		vector<cv::Vec4i> contourHierarchy;
 		cv::findContours(mask, contours, contourHierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
 
-		m_CvContours.clear();
-		m_CvContours.resize(contours.size());
+		vector<vector<cv::Point>> simpleContours;
+		simpleContours.resize(contours.size());
 		for (int i = 0; i < contours.size(); i++) {
 			double epsilon = 1.0f;
-			cv::approxPolyDP(contours[i], m_CvContours[i], epsilon, true);
+			cv::approxPolyDP(contours[i], simpleContours[i], epsilon, true);
 		}
-
-		size_t contourSize = m_CvContours.size();
+		size_t contourSize = simpleContours.size();
 		result.clear();
 
 		using p2tStorage = vector<unique_ptr<p2t::Point>>;
@@ -206,16 +205,16 @@ namespace basecross {
 		result.reserve(contourSize);
 
 		int contourCount = 0;
-		for (size_t i = 0, size = m_CvContours.size(); i < size; i++) {
-			double area = cv::contourArea(m_CvContours[i], true);
+		for (size_t i = 0, size = simpleContours.size(); i < size; i++) {
+			double area = cv::contourArea(simpleContours[i], true);
 			bool isHole = contourHierarchy[i][3] != -1;
 			if (!isHole) {
 				contourCount++;
 			}
 			if ((area < 0 && !isHole) || (area > 0 && isHole)) {
-				std::reverse(m_CvContours[i].begin(), m_CvContours[i].end());
+				std::reverse(simpleContours[i].begin(), simpleContours[i].end());
 			}
-			for (auto& point : m_CvContours[i]) {
+			for (auto& point : simpleContours[i]) {
 				if (!storages[i].empty()) {
 					auto prev = storages[i].back().get();
 					if (point.x == prev->x && point.y == prev->y) {
@@ -228,7 +227,7 @@ namespace basecross {
 			}
 		}
 
-		for (size_t i = 0, size = m_CvContours.size(); i < size; i++) {
+		for (size_t i = 0, size = simpleContours.size(); i < size; i++) {
 			if (contourHierarchy[i][3] == -1) {
 				if (polylines[i].size() < 3) continue;
 
@@ -237,7 +236,7 @@ namespace basecross {
 				int hole = contourHierarchy[i][2];
 				while (hole != -1) {
 					const double MIN_HOLE_AREA = 10.0;
-					if (polylines[hole].size() >= 3 && abs(cv::contourArea(m_CvContours[hole])) >= MIN_HOLE_AREA) {
+					if (polylines[hole].size() >= 3 && abs(cv::contourArea(simpleContours[hole])) >= MIN_HOLE_AREA) {
 						cdt.AddHole(polylines[hole]);
 					}
 					hole = contourHierarchy[hole][0];
@@ -280,10 +279,13 @@ namespace basecross {
 
 			int vertexId = y * (int)context.m_SizeX + x;
 
-			if (x >= (int)context.m_SizeX - 1 || labels[vertexId + 1] == -1) {
+			bool canCheckRight = x < context.m_SizeX - 1;
+			bool canCheckDown = y < context.m_SizeY - 1;
+
+			if (x >= (int)context.m_SizeX - 1 || (canCheckRight && labels[vertexId + 1] == -1)) {
 				vertexPosition.x += 1.0f / (float)context.m_SizeX;
 			}
-			if (y >= (int)context.m_SizeY - 1 || labels[vertexId + context.m_SizeX] == -1) {
+			if (y >= (int)context.m_SizeY - 1 || (canCheckDown && labels[vertexId + context.m_SizeX] == -1)) {
 				vertexPosition.z -= 1.0f / (float)context.m_SizeY;
 			}
 			return vertexPosition;
@@ -389,33 +391,48 @@ namespace basecross {
 
 	void ThreadPool::Initialize(size_t numThread) {
 		m_ThreadStop = false;
+		m_RunningTask = 0;
 		for (size_t i = 0; i < numThread; i++)
 		{
-			m_Workers.emplace_back([this](){
-					while (true){
-						function<void()> task;
-						{
-							unique_lock lock(m_Mutex);
+			m_Workers.emplace_back([this](){ Worker(); });
+		}
+	}
 
-							m_Condition.wait(lock, [this]() {
-								return m_ThreadStop || !m_Tasks.empty();
-								});
+	void ThreadPool::Worker() {
+		while (true) {
+			function<void()> task;
+			{
+				unique_lock lock(m_Mutex);
 
-							if (m_ThreadStop && m_Tasks.empty())
-								return;
+				//条件が達成されるまでここで止まる(スレッドが止まるかマスクが追加されるまで)
+				m_Condition.wait(lock, [this]() {
+					return m_ThreadStop || !m_Tasks.empty();
+					});
+				//この時点でスレッドが止まったうえ、タスクがない場合は終了
+				if (m_ThreadStop && m_Tasks.empty())
+					return;
 
-							task = move(m_Tasks.front());
-							m_Tasks.pop();
-						}
-						task();
-					}
-				});
+				task = move(m_Tasks.front());
+				m_Tasks.pop();
+
+				m_RunningTask++;
+			}
+			task();
+
+			{
+				unique_lock lock(m_Mutex);
+				m_RunningTask--;
+				if (m_Tasks.empty() && m_RunningTask <= 0) {
+					m_WaitCondition.notify_all();
+				}
+			}
 		}
 	}
 	void ThreadPool::Destory() {
-		std::lock_guard lock(m_Mutex);
-		m_ThreadStop = true;
-
+		{
+			std::lock_guard lock(m_Mutex);
+			m_ThreadStop = true;
+		}
 		m_Condition.notify_all();
 
 		for (auto& worker : m_Workers){
@@ -426,61 +443,71 @@ namespace basecross {
 
 	
 	void ThreadPool::Execute(function<void()> task) {
-		lock_guard lock(m_Mutex);
-		m_Tasks.push(task);
-		
+		{
+			lock_guard lock(m_Mutex);
+			m_Tasks.push(task);
+		}
 		m_Condition.notify_one();
+	}
+	void ThreadPool::Wait() {
+		{
+			unique_lock lock(m_Mutex);
+			m_WaitCondition.wait(lock, [&]() {return m_Tasks.empty() && m_RunningTask <= 0; });
+		}
 	}
 
 	void TextureMeshManager::DecreeseProccessCount() {
 		if (m_ProccessCount <= 0) return;
 		m_ProccessCount--;
-		if (m_ProccessCount == 0) {
-			while (!m_ResultQueue.empty()) {
-				MeshResult result;
-				{
-					lock_guard lock(m_Mutex);
-					result = m_ResultQueue.front();
-					m_ResultQueue.pop();
-				}
-
-				result.m_Ptr->ApplyThreadResult(result.m_Result);
-			}
-			InkConnectChecker::Get().CheckConnect();
-		}
 	}
 
+	void TextureMeshManager::Update() {
+		InkConnectChecker::Get().CheckConnect();
+		if (m_ProccessCount == 0) {
+			while (!m_ResultQueue.empty()) {
+				MeshResult result = m_ResultQueue.front();
+				m_ResultQueue.pop();
+				if (!result.m_Ptr) continue;
+				result.m_Ptr->ApplyThreadResult(result.m_Result);
+			}
+		}
+	}
+	void TextureMeshManager::Clear() {
+		m_Proccess.clear();
+		m_Pending.clear();
+	}
 	void TextureMeshManager::AddReload(const shared_ptr<TextureCollision>& meshCollision) {
-		m_Pending[meshCollision.get()] = meshCollision->SnapShot();
+		m_Pending[meshCollision] = meshCollision->SnapShot();
 	}
 
 	void TextureMeshManager::Reload() {
-		if (m_ProccessCount > 0) return;
+		if (m_ProccessCount <= 0) {
 
-		m_Proccess = m_Pending;
-		m_Pending.clear();
+			m_Proccess = m_Pending;
+			m_Pending.clear();
 
-		m_ProccessCount = m_Proccess.size();
+			m_ProccessCount = m_Proccess.size();
 
-		for (auto& proccess : m_Proccess) {
-			proccess.first->ProcessGPU();
+			for (auto& proccess : m_Proccess) {
+				proccess.first->ProcessGPU();
 
-			ThreadPool::Get().Execute([&, proccess]() {
-				MeshResult result;
-				result.m_Ptr = proccess.first;
-				proccess.first->CreateMeshInThread(proccess.second, result.m_Result);
-				{
-					lock_guard lock(m_Mutex);
-					m_ResultQueue.push(result);
-				}
-				DecreeseProccessCount();
-				});
+				ThreadPool::Get().Execute([&, proccess]() {
+					MeshResult result;
+					result.m_Ptr = proccess.first;
+					proccess.first->CreateMeshInThread(proccess.second, result.m_Result);
+					{
+						lock_guard lock(m_Mutex);
+						m_ResultQueue.push(move(result));
+					}
+					DecreeseProccessCount();
+					});
+			}
 		}
 	}
 
 	bool InkConnectChecker::IsConnectedSupplyToInk(const OBB& supplyOBB, const AABB& supplyAABB, const vector<TRIANGLE>& triangles) {
 		for (auto& triangle : triangles) {
-			if (!HitTest::AABB_AABB(supplyAABB, triangle.GetWrappedAABB())) continue;
+			if (!HitTest::AABB_AABB(supplyAABB, triangle.GetWrappedAABB(), Vec3(0.0f, 0.5f, 0.0f))) continue;
 			if (!HitTest::CollisionTestOBBTriangle(supplyOBB, triangle)) continue;
 			return true;
 		}
@@ -495,14 +522,14 @@ namespace basecross {
 			for (int i = 0; i < contourCount; i++) {
 				if (collision->IsElectrified(i)) continue;
 				const auto& otherInkAABB = collision->GetContourAABB(i);
-				if (!HitTest::AABB_AABB(inkAABB, otherInkAABB)) continue;
+				if (!HitTest::AABB_AABB(inkAABB, otherInkAABB,Vec3(0.0f,0.5f,0.0f))) continue;
 
 				const auto& otherTriangles = collision->GetWorldTriangles(i);
 				bool isConnected = false;
 
 				for (auto& triangle : triangles) {
 					for (auto& otherTriangle : otherTriangles) {
-						if (!HitTest::AABB_AABB(triangle.GetWrappedAABB(), otherTriangle.GetWrappedAABB())) continue;
+						if (!HitTest::AABB_AABB(triangle.GetWrappedAABB(), otherTriangle.GetWrappedAABB(), Vec3(0.0f, 0.5f, 0.0f))) continue;
 						if (!HitTest::CollisionTestTriangle(triangle, otherTriangle)) continue;
 						isConnected = true;
 						break;
@@ -523,7 +550,7 @@ namespace basecross {
 			auto portAABB = portCollision->GetWrappedAABB();
 			auto portOBB = portCollision->GetObb();
 
-			if (!HitTest::AABB_AABB(inkAABB, portAABB)) continue;
+			if (!HitTest::AABB_AABB(inkAABB, portAABB, Vec3(0.0f, 0.5f, 0.0f))) continue;
 			if (IsConnectedInkToPort(portOBB, portAABB, triangles)) {
 				port->SetConnect(true);
 				//port->GetComponent<PNTStaticDraw>()->SetDiffuse(Col4(1, 0, 1, 1));
@@ -533,7 +560,7 @@ namespace basecross {
 	}
 	bool InkConnectChecker::IsConnectedInkToPort(const OBB& portOBB, const AABB& portAABB, const vector<TRIANGLE>& triangles) {
 		for (auto& triangle : triangles) {
-			if (!HitTest::AABB_AABB(portAABB, triangle.GetWrappedAABB())) continue;
+			if (!HitTest::AABB_AABB(portAABB, triangle.GetWrappedAABB(), Vec3(0.0f, 0.5f, 0.0f))) continue;
 			if (!HitTest::CollisionTestOBBTriangle(portOBB, triangle)) continue;
 			return true;
 		}
@@ -574,7 +601,7 @@ namespace basecross {
 				size_t contourCount = collision->GetContourCount();
 				for (int i = 0; i < contourCount; i++) {
 					const auto& inkAABB = collision->GetContourAABB(i);
-					if (!HitTest::AABB_AABB(supplyAABB, inkAABB)) continue;
+					if (!HitTest::AABB_AABB(supplyAABB, inkAABB, Vec3(0.0f, 0.5f, 0.0f))) continue;
 
 					const auto& triangles = collision->GetWorldTriangles(i);
 					bool isConnectedSupply = IsConnectedSupplyToInk(supplyOBB, supplyAABB, triangles);

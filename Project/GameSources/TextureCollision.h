@@ -11,7 +11,7 @@
 #include "Port.h"
 #include <opencv2/opencv.hpp>
 #include <poly2tri/poly2tri.h>
-
+#include <queue>
 namespace basecross{
 	struct CoordContext {
 		UINT m_SizeX = 0;
@@ -77,8 +77,7 @@ namespace basecross{
 		TextureSnapShot SnapShot();
 		void ApplyThreadResult(vector<Contour>& result) {
 			m_WaitContour = result;
-			m_WaitElectricContourIndices.resize(m_Contour.size(), 0);
-
+			m_WaitElectricContourIndices.resize(m_WaitContour.size(), 0);
 		}
 	};
 
@@ -92,26 +91,34 @@ namespace basecross{
 
 		mutex m_Mutex;
 		condition_variable m_Condition;
+		condition_variable m_WaitCondition;
 
 		bool m_ThreadStop;
+		int m_RunningTask;
+
+		void Worker();
 	public:
 
 		void Initialize(size_t numThreads);
 		void Destory();
 		void Execute(function<void()> task);
+		void Wait();
 
 	};
 
 	struct MeshResult {
-		TextureCollision* m_Ptr;
+		shared_ptr<TextureCollision> m_Ptr;
 		vector<Contour> m_Result;
+		~MeshResult() {
+			
+		}
 	};
 	class TextureMeshManager : public SingletonBase<TextureMeshManager> {
 		friend class SingletonBase<TextureMeshManager>;
 		vector<shared_ptr<TextureCollision>> m_ReloadMeshCollisions;
 
-		unordered_map<TextureCollision*, TextureSnapShot> m_Pending;
-		unordered_map<TextureCollision*, TextureSnapShot> m_Proccess;
+		unordered_map<shared_ptr<TextureCollision>, TextureSnapShot> m_Pending;
+		unordered_map<shared_ptr<TextureCollision>, TextureSnapShot> m_Proccess;
 		queue<MeshResult> m_ResultQueue;
 		atomic_int m_ProccessCount;
 
@@ -119,6 +126,8 @@ namespace basecross{
 
 		void DecreeseProccessCount();
 	public:
+		void Update();
+		void Clear();
 		void AddReload(const shared_ptr<TextureCollision>& meshCollision);
 		void Reload();
 	};

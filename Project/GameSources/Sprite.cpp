@@ -444,10 +444,15 @@ namespace basecross {
 		}
 
 		InputData data(0, 0);
+		for (auto& pressdSelect : m_SelectPressed) {
+			pressdSelect.second = data;
+		}
 		//‘I‘ð
 		if (PressSelect(m_UsingGroup,data)) {
 			int checkButton = static_cast<int>(selectIndex) + data.m_MoveAmount;
-			LimitIndex(checkButton);
+			if (LimitIndex(checkButton)) {
+				m_SelectPressed[m_UsingGroup] = data;
+			}
 			if (m_ButtonGroup[m_UsingGroup][checkButton]->GetActive()) {
 				if (m_SelectSound != L"") {
 					SoundManager::Get().PlaySE(m_SelectSound);

@@ -175,6 +175,9 @@ namespace basecross {
 			case ENUM_ObjType::T_GoalDoor:
 				AddGoalDoorObj(GoalDoorParams(*date));
 				break;
+			case ENUM_ObjType::T_Spring:
+				AddSpringObj(SpringParams(*date));
+				break;
 			}
 		}
 	}
@@ -192,6 +195,7 @@ namespace basecross {
 		if (objType == L"TrapDoorAxis")  return ENUM_ObjType::T_TrapDoor;
 		if (objType == L"BeltConveyor")  return ENUM_ObjType::T_BeltConveyor;
 		if (objType == L"GoalDoor") return ENUM_ObjType::T_GoalDoor;
+		if (objType == L"Spring") return ENUM_ObjType::T_Spring;
 		return ENUM_ObjType::T_Unknown;
 	}
 
@@ -309,6 +313,13 @@ namespace basecross {
 		return params;
 	}
 
+	GameStageBase::STRUCT_SpringParams GameStageBase::SpringParams(JsonObject& json)
+	{
+		STRUCT_SpringParams params;
+		BaseParams(json, params.StageObjParams);
+		return params;
+	}
+
 	void GameStageBase::AddStaticObj(STRUCT_BaseParams params)
 	{
 		switch (ToStageObjType(params.ObjType))
@@ -393,6 +404,12 @@ namespace basecross {
 		desc.MoveDir = params.MoveDir;
 		desc.PortID = params.PortID;
 		AddGameObject<GoalDoor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID], desc.MoveDir);
+	}
+
+	void GameStageBase::AddSpringObj(STRUCT_SpringParams params)
+	{
+		AddGameObject<ObstacleSpring>();
+		//AddGameObject<ObstacleSpring>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos);
 	}
 
 	bool GameStageBase::IsPause() const

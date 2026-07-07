@@ -90,7 +90,8 @@ namespace basecross {
 	{
 		// アプリケーションオブジェクトを取得
 		auto& app = App::GetApp();
-
+		app->GetElapsedTime();
+		
 		if (m_ButtonScaleTimer != -1) {
 			SpriteMove();
 			return;
@@ -105,16 +106,22 @@ namespace basecross {
 			PostEvent(0.3f, GetThis<ObjectInterface>(), app->GetScene<Scene>(), L"ToTitleStage");
 		}
 
+		
+		auto leftStickX = GameController::GetLeftStickX();
+
 		//選択移動左
+
 		if (GameController::IsTrigger_DpadLeft()) 
 		{
 			//選択効果音を鳴らす
 			SoundManager::Get().PlaySE(L"SELECT", 1.0f);
 		}
 
-		if (GameController::IsTrigger_DpadLeft() && ButtonManager::instance->GetMoveStop()) {
+
+		if ((GameController::IsPressed_DpadLeft() || leftStickX < -0.5f) && Timer(app->GetElapsedTime(), m_TimeCount, 0.3f) && ButtonManager::instance->GetMoveStop()) {
 			m_ButtonScaleTimer = 0;
 			m_ButtonScaleIndex = 1;
+			m_TimeCount = 0;
 
 			if (m_SelectIndex >= 1)ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((1980 / 2), 0, 0), 60.0f);
 			m_SelectIndex = max(0, m_SelectIndex - 1);
@@ -127,17 +134,22 @@ namespace basecross {
 			//選択効果音を鳴らす
 			SoundManager::Get().PlaySE(L"SELECT", 1.0f);
 		}
-
-		if (GameController::IsTrigger_DpadRight() && ButtonManager::instance->GetMoveStop()) {
+		if ((GameController::IsPressed_DpadRight() || leftStickX > 0.5f) && Timer(app->GetElapsedTime(), m_TimeCount, 0.3f) && ButtonManager::instance->GetMoveStop()) {
 			m_ButtonScaleTimer = 0;
 			m_ButtonScaleIndex = 1;
-
+			m_TimeCount = 0;
 
 			if (m_SelectIndex < m_MaxSelectIndex - 1)ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((-1980 / 2), 0, 0), 60.0f);
 			m_SelectIndex = min(m_MaxSelectIndex - 1, m_SelectIndex + 1);
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
 			ButtonManager::instance->SetSelectIndex(L"SelectPage1", m_SelectIndex);
 		}
+		if (GameController::IsRelease_DpadLeft() || GameController::IsRelease_DpadRight() || leftStickX == 0.0f)
+		{
+			m_TimeCount = 10.0f;
+		}
+		
+
 		//選択決定(A)
 		if (GameController::IsTrigger_ButtonDown()) {
 			//決定効果音を鳴らす
@@ -173,6 +185,27 @@ namespace basecross {
 			m_Scale = Vec2(600, 600);
 			ButtonManager::instance->Create(m_Title, L"SelectPage1", texName, texSelected, Vec3((((1980 / 2) * (i - 1)) - (m_Scale.x / 2)), m_Scale.y / 2, 0), m_Scale, [](shared_ptr<ObjectInterface>& object) {});
 		}
+	}
+
+	bool SelectStage::Timer(float deltaTime,float& count, float time, bool loop)
+	{
+		if (count < time)
+		{
+			count += deltaTime;
+		}
+		else if (count >= time)
+		{
+			if (loop)
+			{
+				count = 0.0f;
+			}
+			else
+			{
+				count = time;
+			}
+			return true;
+		}
+		return false;
 	}
 }
 //end basecross
