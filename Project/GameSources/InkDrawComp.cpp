@@ -183,6 +183,7 @@ namespace basecross
 		Vec3 myScale = trans->GetScale();
 		Vec3 playerLocalPosition = (Vec3)XMVector3Transform(playerWorldPos,inverse(trans->GetWorldMatrix()));
 
+		float relativeY = playerWorldPos.y - myPos.y;
 		//cubeメッシュのサイズを考慮して一律の範囲に収める
 		float localX = playerLocalPosition.x;
 		float localY = playerLocalPosition.y;
@@ -208,7 +209,7 @@ namespace basecross
 		
 		//プレイヤーが自分の上に乗っているかつ、
 		// Playerと接触している場合のみインクを塗る
-		if (uvX >= 0.0f && uvX <= 1.0f && uvY >= 0.0f && uvY <= 1.0f && relativeY <= 1.2f)
+		if (uvX >= 0.0f && uvX <= 1.0f && uvY >= 0.0f && uvY <= 1.0f && abs(relativeY) <= 1.2f)
 		{
 			if (GameController::IsPressed_ButtonDown())
 			{
