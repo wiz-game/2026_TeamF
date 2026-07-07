@@ -56,7 +56,9 @@
 #include "BeltConveyorTex.h"
 #include "SkyCube.h"
 #include "GameOverStage.h"
+#include "Pause.h"
 #include "PauseMenu.h"
+#include "OptionMenu.h"
 #include "SpriteGeneric.h"
 #include "EffectManager.h"
 

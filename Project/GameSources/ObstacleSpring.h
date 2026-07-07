@@ -1,5 +1,9 @@
 /*!
-@file ObstacleSpring.h
+@file 
+
+
+
+.h
 @brief キャラクターなど
 */
 

@@ -64,7 +64,7 @@ namespace basecross{
 
 		SetAlphaActive(true);
 		//m_draw->SetDiffuse(Col4(0, 0, 0, 1.0f));
-		m_draw->SetEmissive(Col4(0.80f, 0.80f, 0.80f, 1.0f));
+		m_draw->SetEmissive(Col4(0.2f, 0.2f, 0.2f, 1.0f));
 
 		auto cc = AddComponent<CharacterController>();
 		//CharacterController::Settings settings;
@@ -228,9 +228,9 @@ namespace basecross{
 			m_velocity *= m_accel;
 
 		//転がす処理
-		m_rotAngle.x += m_velocity.z * m_moveSpeed * 0.10f;
+		m_rotAngle.x += m_velocity.z * m_moveSpeed * 0.02f;
 		m_rotAngle.y = 0;
-		m_rotAngle.z += m_velocity.x * m_moveSpeed * 0.10f;
+		m_rotAngle.z += m_velocity.x * m_moveSpeed * 0.02f;
 		m_transform->SetRotation(m_rotAngle);
 
 		m_pos.x += m_moveSpeed * m_velocity.x * delta;
