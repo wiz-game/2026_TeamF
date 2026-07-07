@@ -8,6 +8,12 @@
 
 namespace basecross{
 
+	template<typename T>
+	T RoundValue(T value, int digit = 1) {
+		T scale = pow(10, digit);
+		return round(value * scale) / scale;
+	}
+
 	enum class JsonType {
 		Number, String, Bool, Object, Array, Null, Unknown
 	};
@@ -58,7 +64,7 @@ namespace basecross{
 		/// ’l‚ðfloatŒ^‚ÅŽæ“¾
 		/// </summary>
 		/// <returns>float</returns>
-		float GetFloatValue() const { return m_Value; }
+		float GetFloatValue() const { return RoundValue(m_Value, 2); }
 
 		/// <summary>
 		/// ’l‚ðintŒ^‚ÅŽæ“¾
@@ -490,5 +496,6 @@ namespace basecross{
 			return m_Root->At(key);
 		}
 	};
+
 }
 //end basecross
