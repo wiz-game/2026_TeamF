@@ -1,6 +1,6 @@
 /*!
 @file Foo.cpp
-@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
+@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
 */
 
 #include "stdafx.h"
@@ -70,15 +70,15 @@ namespace basecross {
 			int checker = 0;
 		}
 
-		//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼åˆæœŸåŒ–
+		//ƒVƒF[ƒ_[‰Šú‰»
 		m_MaskShader = make_shared<DX11ComputeShader>();
 		m_MaskShader->Initialize({ 8,8,1,m_TextureContext.m_SizeX,m_TextureContext.m_SizeY,1 });
 
 		auto object = GetGameObject();
 		auto draw = object->GetComponent<InkDrawComp>();
-		//srvã‹ã‚‰æƒ…å ±ã‚’å–å¾—
+		//srv‚©‚çî•ñ‚ğæ“¾
 		auto srv = draw->GetSRV();
-		//SRV,UAVã®å ´æ‰€ã‚’ä»®ã§å–ã£ã¦ãŠã
+		//SRV,UAV‚ÌêŠ‚ğ‰¼‚Åæ‚Á‚Ä‚¨‚­
 		m_MaskShader->AddSRV(srv.Get());
 		m_MaskShader->AddUAV(m_LabelBuffer->m_UAV.Get());
 		m_MaskShader->SetShader(GenerateMaskShader::GetPtr()->GetShader());
@@ -141,7 +141,7 @@ namespace basecross {
 		auto object = GetGameObject();
 		auto draw = object->GetComponent<InkDrawComp>(false);
 		if (!draw) return;
-		//srvã‹ã‚‰æƒ…å ±ã‚’å–å¾—
+		//srv‚©‚çî•ñ‚ğæ“¾
 		auto srv = draw->GetSRV().Get();
 		ID3D11Resource* gpuResource = nullptr;
 		srv->GetResource(&gpuResource);
@@ -151,11 +151,11 @@ namespace basecross {
 	}
 
 	void TextureCollision::ProcessCPU() {
-		//ãƒ¡ãƒƒã‚·ãƒ¥ä½œæˆ
+		//ƒƒbƒVƒ…ì¬
 		//CreateTextureMesh(m_Labels, m_TextureContext);
 	}
 	void TextureCollision::ProcessGPU() {
-		//ã‚«ãƒ©ãƒ¼ãƒã‚¹ã‚¯æŠ½å‡º
+		//ƒJƒ‰[ƒ}ƒXƒN’Šo
 		m_MaskShader->SetConstantBuffer(m_CB, TextureSizeConstantBuffer::GetPtr()->GetBuffer());
 		m_MaskShader->Execute();
 		m_LabelBuffer->ReadBuffer(m_Labels.data());
@@ -186,14 +186,13 @@ namespace basecross {
 		vector<cv::Vec4i> contourHierarchy;
 		cv::findContours(mask, contours, contourHierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
 
-		m_CvContours.clear();
-		m_CvContours.resize(contours.size());
+		vector<vector<cv::Point>> simpleContours;
+		simpleContours.resize(contours.size());
 		for (int i = 0; i < contours.size(); i++) {
 			double epsilon = 1.0f;
-			cv::approxPolyDP(contours[i], m_CvContours[i], epsilon, true);
+			cv::approxPolyDP(contours[i], simpleContours[i], epsilon, true);
 		}
-
-		size_t contourSize = m_CvContours.size();
+		size_t contourSize = simpleContours.size();
 		result.clear();
 
 		using p2tStorage = vector<unique_ptr<p2t::Point>>;
@@ -206,16 +205,16 @@ namespace basecross {
 		result.reserve(contourSize);
 
 		int contourCount = 0;
-		for (size_t i = 0, size = m_CvContours.size(); i < size; i++) {
-			double area = cv::contourArea(m_CvContours[i], true);
+		for (size_t i = 0, size = simpleContours.size(); i < size; i++) {
+			double area = cv::contourArea(simpleContours[i], true);
 			bool isHole = contourHierarchy[i][3] != -1;
 			if (!isHole) {
 				contourCount++;
 			}
 			if ((area < 0 && !isHole) || (area > 0 && isHole)) {
-				std::reverse(m_CvContours[i].begin(), m_CvContours[i].end());
+				std::reverse(simpleContours[i].begin(), simpleContours[i].end());
 			}
-			for (auto& point : m_CvContours[i]) {
+			for (auto& point : simpleContours[i]) {
 				if (!storages[i].empty()) {
 					auto prev = storages[i].back().get();
 					if (point.x == prev->x && point.y == prev->y) {
@@ -228,7 +227,7 @@ namespace basecross {
 			}
 		}
 
-		for (size_t i = 0, size = m_CvContours.size(); i < size; i++) {
+		for (size_t i = 0, size = simpleContours.size(); i < size; i++) {
 			if (contourHierarchy[i][3] == -1) {
 				if (polylines[i].size() < 3) continue;
 
@@ -237,7 +236,7 @@ namespace basecross {
 				int hole = contourHierarchy[i][2];
 				while (hole != -1) {
 					const double MIN_HOLE_AREA = 10.0;
-					if (polylines[hole].size() >= 3 && abs(cv::contourArea(m_CvContours[hole])) >= MIN_HOLE_AREA) {
+					if (polylines[hole].size() >= 3 && abs(cv::contourArea(simpleContours[hole])) >= MIN_HOLE_AREA) {
 						cdt.AddHole(polylines[hole]);
 					}
 					hole = contourHierarchy[hole][0];
@@ -280,10 +279,13 @@ namespace basecross {
 
 			int vertexId = y * (int)context.m_SizeX + x;
 
-			if (x >= (int)context.m_SizeX - 1 || labels[vertexId + 1] == -1) {
+			bool canCheckRight = x < context.m_SizeX - 1;
+			bool canCheckDown = y < context.m_SizeY - 1;
+
+			if (x >= (int)context.m_SizeX - 1 || (canCheckRight && labels[vertexId + 1] == -1)) {
 				vertexPosition.x += 1.0f / (float)context.m_SizeX;
 			}
-			if (y >= (int)context.m_SizeY - 1 || labels[vertexId + context.m_SizeX] == -1) {
+			if (y >= (int)context.m_SizeY - 1 || (canCheckDown && labels[vertexId + context.m_SizeX] == -1)) {
 				vertexPosition.z -= 1.0f / (float)context.m_SizeY;
 			}
 			return vertexPosition;
@@ -318,72 +320,72 @@ namespace basecross {
 		XMVECTOR direction = XMVector3Normalize(dir);
 		XMVECTOR up = XMVectorSet(0, 1, 0, 0);
 
-		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ï¼ˆå‘ãï¼‰ã‚’ä½œã‚‹
+		// ƒ[ƒ‹ƒhs—ñiŒü‚«j‚ğì‚é
 		XMMATRIX mat = XMMatrixInverse(nullptr, XMMatrixLookToLH(XMVectorZero(), direction, up));
 		
-		// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã«å¤‰æ›
+		// ƒNƒH[ƒ^ƒjƒIƒ“‚É•ÏŠ·
 		quaternion = (Quat)XMQuaternionRotationMatrix(mat);
 
 		Mat4x4 world = (Mat4x4)XMMatrixScaling(1.0f, 1.0f, length);
 		world *= (Mat4x4)XMMatrixRotationQuaternion(quaternion);
 		world *= (Mat4x4)XMMatrixTranslation(position.x, position.y, position.z);
 		world.transpose();
-		//è¡Œåˆ—ã®å®šç¾©
+		//s—ñ‚Ì’è‹`
 		bsm::Mat4x4 ViewMat, ProjMat;
 		
-		//ã‚«ãƒ¡ãƒ©ã‚’å¾—ã‚‹
+		//ƒJƒƒ‰‚ğ“¾‚é
 		auto CameraPtr = GetGameObject()->OnGetDrawCamera();
-		//ãƒ“ãƒ¥ãƒ¼ã¨å°„å½±è¡Œåˆ—ã‚’å¾—ã‚‹
+		//ƒrƒ…[‚ÆË‰es—ñ‚ğ“¾‚é
 		ViewMat = CameraPtr->GetViewMatrix();
-		//è»¢ç½®ã™ã‚‹
+		//“]’u‚·‚é
 		ViewMat.transpose();
-		//è»¢ç½®ã™ã‚‹
+		//“]’u‚·‚é
 		ProjMat = CameraPtr->GetProjMatrix();
 		ProjMat.transpose();
-		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®æº–å‚™
+		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ì€”õ
 		SimpleConstants sb;
 		sb.World = world;
 		sb.View = ViewMat;
 		sb.Projection = ProjMat;
-		//ã‚¨ãƒŸãƒƒã‚·ãƒ–
+		//ƒGƒ~ƒbƒVƒu
 		sb.Emissive = Col4(0, 0, 0, 0);
-		//ãƒ‡ãƒ•ã‚£ãƒ¼ã‚ºã¯ã™ã¹ã¦é€šã™
+		//ƒfƒtƒB[ƒY‚Í‚·‚×‚Ä’Ê‚·
 		sb.Diffuse = Col4(1, 1, 1, 1);
-		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®æ›´æ–°
+		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÌXV
 		pD3D11DeviceContext->UpdateSubresource(CBSimple::GetPtr()->GetBuffer(), 0, nullptr, &sb, 0, 0);
 
-		//ã‚¹ãƒˆãƒ©ã‚¤ãƒ‰ã¨ã‚ªãƒ•ã‚»ãƒƒãƒˆ
+		//ƒXƒgƒ‰ƒCƒh‚ÆƒIƒtƒZƒbƒg
 		UINT stride = sizeof(VertexPositionColor);
 		UINT offset = 0;
-		//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚»ãƒƒãƒˆ
+		//’¸“_ƒoƒbƒtƒ@‚ÌƒZƒbƒg
 		pD3D11DeviceContext->IASetVertexBuffers(0, 1, meshResource->GetVertexBuffer().GetAddressOf(), &stride, &offset);
-		//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚»ãƒƒãƒˆ
+		//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ÌƒZƒbƒg
 		pD3D11DeviceContext->IASetIndexBuffer(meshResource->GetIndexBuffer().Get(), DXGI_FORMAT_R16_UINT, 0);
 
-		//æç”»æ–¹æ³•ï¼ˆãƒ©ã‚¤ãƒ³ï¼‰
+		//•`‰æ•û–@iƒ‰ƒCƒ“j
 		pD3D11DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
+		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìİ’è
 		ID3D11Buffer* pConstantBuffer = CBSimple::GetPtr()->GetBuffer();
 		ID3D11Buffer* pNullConstantBuffer = nullptr;
-		//é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã«æ¸¡ã™
+		//’¸“_ƒVƒF[ƒ_‚É“n‚·
 		pD3D11DeviceContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
-		//ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã«æ¸¡ã™
+		//ƒsƒNƒZƒ‹ƒVƒF[ƒ_‚É“n‚·
 		pD3D11DeviceContext->PSSetConstantBuffers(0, 1, &pConstantBuffer);
-		//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
+		//ƒVƒF[ƒ_‚Ìİ’è
 		pD3D11DeviceContext->VSSetShader(VSPCStatic::GetPtr()->GetShader(), nullptr, 0);
 		pD3D11DeviceContext->PSSetShader(PSPCStatic::GetPtr()->GetShader(), nullptr, 0);
-		//ã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®è¨­å®š
+		//ƒCƒ“ƒvƒbƒgƒŒƒCƒAƒEƒg‚Ìİ’è
 		pD3D11DeviceContext->IASetInputLayout(VSPCStatic::GetPtr()->GetInputLayout());
-		//ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆ
-		//é€æ˜å‡¦ç†ã—ãªã„
+		//ƒuƒŒƒ“ƒhƒXƒe[ƒg
+		//“§–¾ˆ—‚µ‚È‚¢
 		pD3D11DeviceContext->OMSetBlendState(RenderState->GetOpaque(), nullptr, 0xffffffff);
-		//ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆ
+		//ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg
 		pD3D11DeviceContext->OMSetDepthStencilState(RenderState->GetDepthDefault(), 0);
-		//ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆ(ãƒ¯ã‚¤ã‚¢ãƒ•ãƒ¬ãƒ¼ãƒ )
+		//ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg(ƒƒCƒAƒtƒŒ[ƒ€)
 		pD3D11DeviceContext->RSSetState(RenderState->GetWireframe());
 		pD3D11DeviceContext->DrawIndexed(meshResource->GetNumIndicis(), 0, 0);
-		//å¾Œå§‹æœ«
+		//Œãn––
 		Dev->InitializeStates();
 	}
 
@@ -402,11 +404,11 @@ namespace basecross {
 			{
 				unique_lock lock(m_Mutex);
 
-				//æ¡ä»¶ãŒé”æˆã•ã‚Œã‚‹ã¾ã§ã“ã“ã§æ­¢ã¾ã‚‹(ã‚¹ãƒ¬ãƒƒãƒ‰ãŒæ­¢ã¾ã‚‹ã‹ãƒã‚¹ã‚¯ãŒè¿½åŠ ã•ã‚Œã‚‹ã¾ã§)
+				//ğŒ‚ª’B¬‚³‚ê‚é‚Ü‚Å‚±‚±‚Å~‚Ü‚é(ƒXƒŒƒbƒh‚ª~‚Ü‚é‚©ƒ}ƒXƒN‚ª’Ç‰Á‚³‚ê‚é‚Ü‚Å)
 				m_Condition.wait(lock, [this]() {
 					return m_ThreadStop || !m_Tasks.empty();
 					});
-				//ã“ã®æ™‚ç‚¹ã§ã‚¹ãƒ¬ãƒƒãƒ‰ãŒæ­¢ã¾ã£ãŸã†ãˆã€ã‚¿ã‚¹ã‚¯ãŒãªã„å ´åˆã¯çµ‚äº†
+				//‚±‚Ì“_‚ÅƒXƒŒƒbƒh‚ª~‚Ü‚Á‚½‚¤‚¦Aƒ^ƒXƒN‚ª‚È‚¢ê‡‚ÍI—¹
 				if (m_ThreadStop && m_Tasks.empty())
 					return;
 
@@ -457,31 +459,25 @@ namespace basecross {
 	void TextureMeshManager::DecreeseProccessCount() {
 		if (m_ProccessCount <= 0) return;
 		m_ProccessCount--;
+	}
+
+	void TextureMeshManager::Update() {
+		InkConnectChecker::Get().CheckConnect();
 		if (m_ProccessCount == 0) {
 			while (!m_ResultQueue.empty()) {
-				MeshResult result;
-				{
-					lock_guard lock(m_Mutex);
-					result = m_ResultQueue.front();
-					m_ResultQueue.pop();
-				}
-
+				MeshResult result = m_ResultQueue.front();
+				m_ResultQueue.pop();
+				if (!result.m_Ptr) continue;
 				result.m_Ptr->ApplyThreadResult(result.m_Result);
-			}
-			{
-				lock_guard lock(m_Mutex);
-				InkConnectChecker::Get().CheckConnect();
 			}
 		}
 	}
-
-
 	void TextureMeshManager::Clear() {
 		m_Proccess.clear();
 		m_Pending.clear();
 	}
 	void TextureMeshManager::AddReload(const shared_ptr<TextureCollision>& meshCollision) {
-		m_Pending[meshCollision.get()] = meshCollision->SnapShot();
+		m_Pending[meshCollision] = meshCollision->SnapShot();
 	}
 
 	void TextureMeshManager::Reload() {
@@ -501,13 +497,12 @@ namespace basecross {
 					proccess.first->CreateMeshInThread(proccess.second, result.m_Result);
 					{
 						lock_guard lock(m_Mutex);
-						m_ResultQueue.push(result);
+						m_ResultQueue.push(move(result));
 					}
 					DecreeseProccessCount();
 					});
 			}
 		}
-		InkConnectChecker::Get().CheckConnect();
 	}
 
 	bool InkConnectChecker::IsConnectedSupplyToInk(const OBB& supplyOBB, const AABB& supplyAABB, const vector<TRIANGLE>& triangles) {
@@ -578,7 +573,7 @@ namespace basecross {
 		m_TextureCollisions.clear();
 	}
 	vector<pair<weak_ptr<PowerSupply>, weak_ptr<Port>>> InkConnectChecker::CheckConnect() {
-		//é€šé›»æƒ…å ±ã‚’åˆæœŸåŒ–
+		//’Ê“dî•ñ‚ğ‰Šú‰»
 		for (auto& weakCollision : m_TextureCollisions) {
 			auto collision = weakCollision.lock();
 			if (!collision) continue;

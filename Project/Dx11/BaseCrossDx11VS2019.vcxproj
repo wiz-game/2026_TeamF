@@ -85,7 +85,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)External\SDL3\lib\x64;$(SolutionDir)External\openCV\lib\Debug;$(SolutionDir)External\Jolt\lib\Debug\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Jolt.lib;SDL3.lib;opencv_world4120d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Jolt.lib;SDL3.lib;opencv_imgproc4120d.lib;opencv_core4120d.lib;libjpeg-turbod.lib;libopenjp2d.lib;zlibd.lib;ittnotifyd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -106,7 +106,7 @@
       <PreprocessorDefinitions>JPH_PROFILE_ENABLED;JPH_DEBUG_RENDERER;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED;JPH_DISABLE_CUSTOM_ALLOCATOR;JPH_OBJECT_STREAM;_HAS_STD_BYTE=0;NDEBUG;_WINDOWS;P2T_STATIC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)External\poly2tri;$(SolutionDir)External\openCV;$(SolutionDir)External\SDL3\include;$(SolutionDir)External\Jolt\include\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-<!--=======
+      <!--=======
       <AdditionalIncludeDirectories>$(SolutionDir)External\SDL3\include;$(SolutionDir)External\poly2tri;$(SolutionDir)External\openCV;$(SolutionDir)External\Jolt\include\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>JPH_PROFILE_ENABLED;JPH_DEBUG_RENDERER;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED;JPH_DISABLE_CUSTOM_ALLOCATOR;JPH_OBJECT_STREAM;_HAS_STD_BYTE=0;NDEBUG;_WINDOWS;P2T_STATIC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
@@ -125,7 +125,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)External\SDL3\lib\x64;$(SolutionDir)External\openCV\lib\Release;$(SolutionDir)External\Jolt\lib\Release\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Jolt.lib;SDL3.lib;opencv_world4120.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Jolt.lib;SDL3.lib;ittnotify.lib;libjpeg-turbo.lib;libopenjp2.lib;opencv_core4120.lib;opencv_imgproc4120.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>LinkVerbose</ShowProgress>
     </Link>
     <FxCompile>
