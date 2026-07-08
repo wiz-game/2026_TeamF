@@ -60,8 +60,8 @@ namespace basecross{
 
 		static const float PUSH_POWER;
 		static const float NORMALIZE_EPS;
-
 		static const float LOOP_ANGLE;
+		static const float DEAD_LINE;
 
 	};
 

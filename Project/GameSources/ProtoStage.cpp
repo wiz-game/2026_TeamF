@@ -135,7 +135,8 @@ namespace basecross {
 			auto goal_port = AddGameObject<Port>(Vec3(1.0f, 0.1f, 1.0f), Vec3(0), Vec3(-7.0f, -0.5f, 35.0f));
 
 			//Goal					scale			rotation		position			portの指定(nullptrの場合最初から表示)
-			AddGameObject<Goal>(Vec3(0.7f, 0.7f, 0.7f), Vec3(0, -XM_PIDIV2, 0), Vec3(-10.0f, 0.5f, 35.0f), goal_port);
+			m_Goal = AddGameObject<Goal>(Vec3(0.7f, 0.7f, 0.7f), Vec3(0, -XM_PIDIV2, 0), Vec3(-10.0f, 0.5f, 35.0f), goal_port);
+			mainCamera->SetGoal(m_Goal);
 
 			//左に開く扉
 			//auto leftDoor = AddGameObject<GoalDoor>(
@@ -225,6 +226,24 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto device = App::GetApp()->GetInputDevice();
 		auto& pad = device.GetControlerVec()[0];
+		
+		//auto camera = GetView()->GetTargetCamera();
+		//auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
+		//bool isCameraInCutscene = mainCamera->GetState() == MainCamera::CameraState::StartToGoal;
+		//if (isCameraInCutscene)
+		//{
+		//	//カメラ演出中はポーズ
+		//	m_pauseMenu->SetPause(true);
+		//	Pause(true);
+		//	return;
+		//}
+		//else
+		//{
+		//	m_pauseMenu->SetPause(false);
+		//	Pause(false);
+		//}
+
+
 		GameController::Update();
 
 		//m_pause->PauseBase();

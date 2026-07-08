@@ -23,6 +23,10 @@ namespace basecross {
 		RegisterSound(L"PLAYER_MOVE", L"PlayerMove.wav");
 		RegisterSound(L"ELECTRIC", L"Electric.wav");
 		RegisterSound(L"ELEVATER_MOVE", L"ElevatorMove.wav");
+		RegisterSound(L"TITLE_BGM", L"TitleBGM.wav");
+		RegisterSound(L"STAGESELECT_BGM", L"StageSelectBGM.wav");
+		RegisterSound(L"GAMESTAGE_BGM", L"GameStageBGM.wav");
+		RegisterSound(L"STEELHIT", L"SteelHit.wav");
 		RegisterSound(L"PRINTER_SE_1", L"Printer_1.wav");
 		RegisterSound(L"PRINTER_SE_2", L"Printer_2.wav");
 	}
