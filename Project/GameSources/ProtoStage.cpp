@@ -137,7 +137,6 @@ namespace basecross {
 			//Goal					scale			rotation		position			portの指定(nullptrの場合最初から表示)
 			AddGameObject<Goal>(Vec3(0.7f, 0.7f, 0.7f), Vec3(0, -XM_PIDIV2, 0), Vec3(-10.0f, 0.5f, 35.0f), goal_port);
 
-
 			//左に開く扉
 			//auto leftDoor = AddGameObject<GoalDoor>(
 			//	Vec3(4.0f, 5.0f, 1.0f), Vec3(0), Vec3(8.0f, 4.0f, 30.0f), //Scale, Rotation, Position
@@ -208,13 +207,6 @@ namespace basecross {
 
 			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0), Vec3(-3.0f, -0.5f, 12.5f), moveFloorX_4);
 
-			//AddGameObject<
-			// 
-			// 
-			// 
-			// 
-			// 
-			// >();
 			auto UISprite = AddGameObject<Sprite>(L"BUTTON_AB", Vec3(630, -380, 0), Vec2(250, 200), Anchor::BottomRight);
 			auto inkprite = AddGameObject<Sprite>(L"INK_MOZI", Vec3(-550, 380, 0), Vec2(100, 30), Anchor::Center);
 
