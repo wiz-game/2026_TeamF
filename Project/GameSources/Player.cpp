@@ -157,7 +157,7 @@ namespace basecross{
 	void Player::OnMove()
 	{
 		auto& app = App::GetApp();
-		std::wstringstream wss(L"");
+		//std::wstringstream wss(L"");
 		//auto cc = GetComponent<CharacterController>();
 		
 		//�ｽR�ｽ�ｽ�ｽg�ｽ�ｽ�ｽ[�ｽ�ｽ�ｽ[�ｽ謫ｾ
