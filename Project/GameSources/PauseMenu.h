@@ -43,7 +43,6 @@ namespace basecross
 
 		void SelectMenu();
 		void ClosePause();
-		void ToPause();
 		void ToOption();
 
 		void SetPause(bool isPause)

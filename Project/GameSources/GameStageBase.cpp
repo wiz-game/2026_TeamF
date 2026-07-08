@@ -140,6 +140,10 @@ namespace basecross {
 		{
 			m_pauseMenu->OnDraw();
 		}
+		if (IsOption())
+		{
+			m_optionMenu->OnDraw();
+		}
 	}
 
 	void GameStageBase::SetStageNum(int num)
@@ -465,7 +469,7 @@ namespace basecross {
 
 	void GameStageBase::Option(bool isOption)
 	{
-		bool pause = m_optionMenu->GetOption();
+		bool option = m_optionMenu->GetOption();
 		m_isOption = isOption;
 
 		auto objs = GetGameObjectVec();

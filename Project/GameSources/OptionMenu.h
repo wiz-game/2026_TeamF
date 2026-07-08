@@ -28,7 +28,7 @@ namespace basecross
 		OptionMenu(const std::shared_ptr<Stage>stage) :
 			GameObject(stage),
 			m_selectMenu(1),
-			m_menuNum(1),
+			m_menuNum(4),
 			m_lock(false)
 		{
 		}
@@ -42,8 +42,9 @@ namespace basecross
 		void OnDraw()override;
 
 		void SelectMenu();
-		void ToOption();
 		void ToPause();
+
+		void CloseOption();
 
 		void SetOption(bool isOption)
 		{
