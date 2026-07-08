@@ -27,7 +27,7 @@ namespace basecross {
 			T_Floor,
 			T_Wall,
 			T_Goal,
-			T_Port,
+			T_Port,	
 			T_MoveFloor,
 			T_PowerSupply,
 			T_TrapDoor,
