@@ -29,6 +29,7 @@ namespace basecross {
 		RegisterSound(L"STEELHIT", L"SteelHit.wav");
 		RegisterSound(L"PRINTER_SE_1", L"Printer_1.wav");
 		RegisterSound(L"PRINTER_SE_2", L"Printer_2.wav");
+		RegisterSound(L"RESULT_BGM", L"Result.wav");
 	}
 	void SoundManager::RegisterSound(const wstring& key, const wstring& fileName) {
 		wstring path = App::GetApp()->GetDataDirWString() + L"Sounds/";
