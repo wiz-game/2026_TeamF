@@ -86,10 +86,7 @@ namespace basecross
 
 			//インク用コンスタントバッファ
 			inkDrawCB InkCb;
-			InkCb.Up = Vec4(0, 1, 0, 0); // 上方向ベクトルの初期化
-			auto forward = GetGameObject()->GetComponent<Transform>()->GetForward();
-			Vec3 right = cross(InkCb.Up, forward);//右側のベクトル
-			InkCb.Up = cross(forward, right);
+			InkCb.Up = GetGameObject()->GetComponent<Transform>()->GetUp();
 			
 			pD3D11DeviceContext->UpdateSubresource(CBInk::GetPtr()->GetBuffer(), 0, nullptr, &InkCb, 0, 0);
 			ID3D11Buffer* InkResourceBuffer = CBInk::GetPtr()->GetBuffer();
