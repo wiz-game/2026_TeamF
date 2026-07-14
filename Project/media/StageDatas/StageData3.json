@@ -182,7 +182,7 @@
     "childObjectData": {
         "Axis": 2,
         "Speed": 10.0,
-        "LimitDistance": 10.0,
+        "LimitDistance": 8.0,
         "PortID": 1
     }
 },
@@ -225,7 +225,7 @@
     "childObjectData": {
         "Axis": 2,
         "Speed": 5.0,
-        "LimitDistance": -10.0,
+        "LimitDistance": -7.0,
         "PortID": 0
     }
 },
@@ -268,7 +268,7 @@
     "childObjectData": {
         "Axis": 2,
         "Speed": 15.0,
-        "LimitDistance": -15.0,
+        "LimitDistance": -7.0,
         "PortID": 1
     }
 },
