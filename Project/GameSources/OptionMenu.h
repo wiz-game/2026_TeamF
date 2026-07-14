@@ -28,7 +28,7 @@ namespace basecross
 		OptionMenu(const std::shared_ptr<Stage>stage) :
 			GameObject(stage),
 			m_selectMenu(1),
-			m_menuNum(4),
+			m_menuNum(3),
 			m_lock(false)
 		{
 		}
