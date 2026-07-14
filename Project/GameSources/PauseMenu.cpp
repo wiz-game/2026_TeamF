@@ -34,7 +34,7 @@ namespace basecross
 		ScreenFilter->SetPos(Vec2(0, 0));
 		ScreenFilter->SetTexture(L"Pause");
 		ScreenFilter->SetColor(Col4(0.0f, 0.0f, 0.0f, 0.55f));
-		m_menuLabel.push_back(ScreenFilter);
+		m_menuBG.push_back(ScreenFilter);
 
 		//ポーズ
 		auto PauseText = ObjectFactory::Create<SpriteGeneric>(GetStage());
@@ -96,21 +96,31 @@ namespace basecross
 
 	void PauseMenu::OnUpdate()
 	{
-		SelectMenu();
-		//カーソル位置更新
-		Vec2 cursorPos = m_menuPosList[m_selectMenu - 1];
-		m_menuCursor->SetPos(cursorPos);
+		if (m_isMenuActive)
+		{
+			SelectMenu();
+			//カーソル位置更新
+			Vec2 cursorPos = m_menuPosList[m_selectMenu - 1];
+			m_menuCursor->SetPos(cursorPos);
+		}
 	}
 
 	void PauseMenu::OnDraw()
 	{
-		for (auto obj : m_menuLabel)
+		for (auto obj : m_menuBG)
 		{
 			obj->OnDraw();
 		}
-		for (auto obj : m_menuButton)
+		if (m_isMenuActive)
 		{
-			obj->OnDraw();
+			for (auto obj : m_menuLabel)
+			{
+				obj->OnDraw();
+			}
+			for (auto obj : m_menuButton)
+			{
+				obj->OnDraw();
+			}
 		}
 	}
 
@@ -214,8 +224,8 @@ namespace basecross
 
 	void PauseMenu::ToOption()
 	{
-		SetPause(false);
 		auto option = GetStage()->GetSharedGameObject<OptionMenu>(L"Option");
 		option->SetOption(true);
+		m_isMenuActive = false;
 	}
 }

@@ -26,14 +26,6 @@ namespace basecross
 			Vec2(0.0f, -225.0f),
 		};
 
-		//画面の明るさフィルター
-		auto ScreenFilter = ObjectFactory::Create<SpriteGeneric>(GetStage());
-		ScreenFilter->SetSize(sWidth, sHeight, Vec2(0.5f, 0.5f));
-		ScreenFilter->SetPos(Vec2(0, 0));
-		ScreenFilter->SetTexture(L"Pause");
-		ScreenFilter->SetColor(Col4(0.0f, 0.0f, 0.0f, 0.55f));
-		m_menuLabel.push_back(ScreenFilter);
-
 		//オプション
 		auto OptionText = ObjectFactory::Create<SpriteGeneric>(GetStage());
 		OptionText->SetSize(400.0f, 200.0f, Vec2(0.5f, 0.5f));
@@ -164,12 +156,14 @@ namespace basecross
 		}
 		if (pad.wPressedButtons & XINPUT_GAMEPAD_B)
 		{
+			m_selectMenu = 1;
 			SoundManager::Get().PlaySE(L"SELECT", 1.0f);
 			ToPause();
 		}
 
 		if (pad.wPressedButtons & XINPUT_GAMEPAD_START)
 		{
+			m_selectMenu = 1;
 			CloseOption();
 		}
 			//scene->SetDebugString(wss.str());

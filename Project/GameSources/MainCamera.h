@@ -80,5 +80,10 @@ namespace basecross
 		{
 			return cameraState;
 		}
+
+		bool GetAnimationFlag() const
+		{
+			return m_isPause;
+		}
 	};
 }

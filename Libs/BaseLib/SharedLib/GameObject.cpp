@@ -1551,6 +1551,8 @@ namespace basecross {
 			ConvertVertex(vertices, new_pc_vertices, new_pn_vertices, new_pt_vertices, new_pntnt_vertices);
 			App::GetApp()->RegisterResource(L"DEFAULT_PT_SQUARE_2", MeshResource::CreateMeshResource(new_pt_vertices, indices, false));
 
+			vertices.clear();
+			indices.clear();
 
 			MeshUtill::CreateCube(1.0f, vertices, indices);
 			ConvertVertex(vertices, new_pc_vertices, new_pn_vertices, new_pt_vertices, new_pntnt_vertices);

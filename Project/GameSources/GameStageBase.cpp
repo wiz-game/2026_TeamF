@@ -70,10 +70,6 @@ namespace basecross {
 
 		auto UISprite = AddGameObject<Sprite>(L"BUTTON_AB", Vec3(630, -380, 0), Vec2(250, 200), Anchor::BottomRight);
 		auto inkprite = AddGameObject<Sprite>(L"INK_MOZI", Vec3(-550, 380, 0), Vec2(100, 30), Anchor::Center);
-
-		//スカイボックス
-		AddGameObject<SkyCube>(L"SKYBOX");
-
 		//UI作成
 		auto gaugeBack = AddGameObject<GaugeBack>();
 		auto gauge = AddGameObject<InkGauge>();
@@ -93,28 +89,31 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto device = App::GetApp()->GetInputDevice();
 		auto& pad = device.GetControlerVec()[0];
-
-		//auto camera = GetView()->GetTargetCamera();
-		//auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
-		//bool isCameraInCutscene = mainCamera->GetState() == MainCamera::CameraState::StartToGoal;
-		//if (isCameraInCutscene)
-		//{
-		//	//カメラ演出中はポーズ
-		//	m_pauseMenu->SetPause(true);
-		//	Pause(true);
-		//	return;
-		//}
-		//else
-		//{
-		//	m_pauseMenu->SetPause(false);
-		//	Pause(false);
-		//}
-
 		GameController::Update();
 
+		auto camera = GetView()->GetTargetCamera();
+		auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
+
+		bool cameraAnimation = mainCamera->GetAnimationFlag();
 		bool pause = m_pauseMenu->GetPause();
 		//m_isPause = pause;
 
+		if (cameraAnimation)
+		{
+			//カメラ演出中はポーズ
+			Pause(true);
+			return;
+		}
+		else
+		{
+			//ポーズ画面が開いていない時はポーズしない
+			if (!pause)
+			{
+				Pause(false);
+			}
+		}
+
+		
 		if (pad.wPressedButtons & XINPUT_GAMEPAD_START)
 		{
 			m_pauseMenu->SetPause(!pause);
