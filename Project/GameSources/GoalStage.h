@@ -36,6 +36,7 @@ namespace basecross {
 		int m_ButtonScaleIndex = 0;
 		float m_ButtonScaleTimer;//アニメーションしていない時は-1
 		float m_ButtonScaleRation;//現在のscale倍率
+		float m_BGMVolume;
 
 
 	public:
@@ -43,7 +44,8 @@ namespace basecross {
 		GoalStage() :
 			Stage(),
 			m_ButtonScaleTimer(-1),
-			m_ButtonScaleRation(0.0f)
+			m_ButtonScaleRation(0.0f),
+			m_BGMVolume(0.5f)
 		{
 		}
 		virtual ~GoalStage() {}
@@ -68,7 +70,6 @@ namespace basecross {
 		float m_AnimationTime;
 		float m_MaxScaling;
 		float m_MinScaling;
-
 		shared_ptr<Sprite> m_Sprite;
 	public:
 		StanpSprite(const shared_ptr<Stage>& ptr, const wstring& tex,const Vec3& position,const Vec2& scale,float animationTime,float maxScaling,float minScaling);

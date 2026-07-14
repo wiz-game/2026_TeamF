@@ -71,6 +71,7 @@ namespace basecross {
 
 			GameProgressManager::Get().ClearCurrentStage();
 			
+			SoundManager::Get().PlayBGM(L"RESULT_BGM", m_BGMVolume);
 		}
 		catch (...) {
 			throw;
@@ -90,39 +91,36 @@ namespace basecross {
 			m_state = State::Move;
 
 			break;
-
 		case State::Move:
+		if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
+		{
+			SoundManager::Get().StopBGM();
 
-			m_InputHandler.PushHandle(GetThis<GoalStage>());
+			m_ButtonScaleTimer = 0;
+			m_ButtonScaleIndex = 0;
+			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToTitleStage");
+		}
+		if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+		{
+			SoundManager::Get().StopBGM();
 
-			auto CntlVec = app->GetInputDevice().GetControlerVec();
-			if (m_ButtonScaleTimer != -1) {
-				SpriteMove();
-				return;
-			}
+			m_ButtonScaleTimer = 0;
+			m_ButtonScaleIndex = 1;
+			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToSelectStage");
+		}
 
-			if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
-			{
-				m_ButtonScaleTimer = 0;
-				m_ButtonScaleIndex = 0;
-				PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToTitleStage");
-			}
-			if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
-			{
-				m_ButtonScaleTimer = 0;
-				m_ButtonScaleIndex = 1;
-				PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToSelectStage");
-			}
+		if (!GameProgressManager::Get().IsExistsNextStage()) return;
+		if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)
+		{
+			SoundManager::Get().StopBGM();
 
-			if (!GameProgressManager::Get().IsExistsNextStage()) return;
-			if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)
-			{
-				m_ButtonScaleTimer = 0;
-				m_ButtonScaleIndex = 2;
-				int currentStage = GameProgressManager::Get().GetCurrentStage();
-				currentStage++;
-				PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToGameStage", make_shared<int>(currentStage));
-			}
+			m_ButtonScaleTimer = 0;
+			m_ButtonScaleIndex = 2;
+			int currentStage = GameProgressManager::Get().GetCurrentStage();
+			currentStage++;
+			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToGameStage",make_shared<int>(currentStage));
+
+
 			break;
 		}
 
