@@ -14,6 +14,13 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	class GoalStage : public Stage
 	{
+		enum class State {
+			Wait,			//画面遷移
+			Move,
+		};
+
+		State m_state = State::Wait;
+
 		void CreateViewLight(); //ビューの作成
 		void RegisterResources();
 
@@ -21,11 +28,15 @@ namespace basecross {
 		vector<shared_ptr<Sprite>> m_sprite_Buttons;
 		shared_ptr<StanpSprite> m_ClearStanp;
 
+		std::shared_ptr<Sprite> m_fadeSprite = nullptr;
+		std::shared_ptr<SpriteFade> m_fadeComp = nullptr;
+
 		InputHandler<GoalStage> m_InputHandler; // 入力ハンドラー
 
 		int m_ButtonScaleIndex = 0;
 		float m_ButtonScaleTimer;//アニメーションしていない時は-1
 		float m_ButtonScaleRation;//現在のscale倍率
+		float m_BGMVolume;
 
 
 	public:
@@ -33,7 +44,8 @@ namespace basecross {
 		GoalStage() :
 			Stage(),
 			m_ButtonScaleTimer(-1),
-			m_ButtonScaleRation(0.0f)
+			m_ButtonScaleRation(0.0f),
+			m_BGMVolume(0.5f)
 		{
 		}
 		virtual ~GoalStage() {}
@@ -58,7 +70,6 @@ namespace basecross {
 		float m_AnimationTime;
 		float m_MaxScaling;
 		float m_MinScaling;
-
 		shared_ptr<Sprite> m_Sprite;
 	public:
 		StanpSprite(const shared_ptr<Stage>& ptr, const wstring& tex,const Vec3& position,const Vec2& scale,float animationTime,float maxScaling,float minScaling);

@@ -24,13 +24,15 @@ namespace basecross {
 
 		float m_ButtonScaleTimer;//アニメーションしていない時は-1
 		float m_ButtonScaleRation;//現在のscale倍率
+		float m_BGMVolume;
 
 	public:
 		//構築と破棄
 		GameOverStage() :
 			Stage(),
 			m_ButtonScaleTimer(-1),
-			m_ButtonScaleRation(1.0f)
+			m_ButtonScaleRation(1.0f),
+			m_BGMVolume(1.0)
 		{}
 		virtual ~GameOverStage() {}
 

@@ -28,6 +28,12 @@
     <FxCompile Include="$(MSBuildThisFileDirectory)VSInkDrop.hlsl">
       <Filter>InkShader\HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)VSPNTStatic2.hlsl">
+      <Filter>InkShader\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)VSPNTStaticShadow2.hlsl">
+      <Filter>InkShader\HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Box.cpp">

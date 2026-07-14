@@ -21,10 +21,10 @@ namespace basecross
 		auto PtrMeshResource = GetMeshResource();
 		if (PtrMeshResource) {
 			if (GetOwnShadowActive()) {
-				DrawStatic<VSPNTStaticShadow, Texture2ShadewPixelSheder>(PtrMeshResource->GetMashData());
+				DrawStatic<VSPNTStaticShadow2, Texture2ShadewPixelSheder>(PtrMeshResource->GetMashData());
 			}
 			else {
-				DrawStatic<VSPNTStatic, Texture2PixelSheder>(PtrMeshResource->GetMashData());
+				DrawStatic<VSPNTStatic2, Texture2PixelSheder>(PtrMeshResource->GetMashData());
 			}
 		}
 		//マルチメッシュリソースの取得
@@ -36,14 +36,14 @@ namespace basecross
 				if (GetMultiMeshIsDraw(i)) {
 					if (GetOwnShadowActive()) {
 						if (GetGameObject()->GetComponent<Shadowmap>(false)) {
-							DrawStatic<VSPNTStaticShadow, PSPNTStaticShadow2>(vec[i]);
+							DrawStatic<VSPNTStaticShadow2, PSPNTStaticShadow2>(vec[i]);
 						}
 						else {
-							DrawStatic<VSPNTStaticShadow, Texture2ShadewPixelSheder>(vec[i]);
+							DrawStatic<VSPNTStaticShadow2, Texture2ShadewPixelSheder>(vec[i]);
 						}
 					}
 					else {
-						DrawStatic<VSPNTStatic, Texture2PixelSheder>(vec[i]);
+						DrawStatic<VSPNTStatic2, Texture2PixelSheder>(vec[i]);
 					}
 				}
 			}
@@ -55,4 +55,7 @@ namespace basecross
 
 	IMPLEMENT_DX11_PIXEL_SHADER(Texture2PixelSheder, App::GetApp()->GetShadersPath() + L"PSTexture2.cso")
 	IMPLEMENT_DX11_PIXEL_SHADER(Texture2ShadewPixelSheder, App::GetApp()->GetShadersPath() + L"PSTexture2Shadow.cso")
+	IMPLEMENT_DX11_VERTEX_SHADER(VSPNTStatic2, App::GetApp()->GetShadersPath() + L"VSPNTStatic2.cso")
+	IMPLEMENT_DX11_VERTEX_SHADER(VSPNTStaticShadow2, App::GetApp()->GetShadersPath() + L"VSPNTStaticShadow2.cso")
+
 }

@@ -13,6 +13,7 @@ namespace basecross {
 		auto& app = App::GetApp();
 		wstring mediaPath = App::GetApp()->GetDataDirWString();
 		app->RegisterTexture(L"BACKGROUND", mediaPath + L"Texture/background.jpg");
+		app->RegisterTexture(L"Black", mediaPath + L"Texture/Black.png");
 	}
 
 	//初期化
@@ -60,7 +61,8 @@ namespace basecross {
 		try
 		{
 			//エフェクトの生成
-			GetStage()->AddGameObject<GoalEffect>(spawnCenter, Vec3(m_scale.x / 5.0f, m_scale.y / 5.0f, m_scale.z / 5.0f), radius, m_port);
+			GetStage()->AddGameObject<GoalEffect>(spawnCenter, Vec3(m_scale.x / 3.0f, m_scale.y / 5.0f, m_scale.z / 3.0f), radius, m_port);
+			m_player = GetStage()->GetSharedGameObject<Player>(L"Player");
 		}
 		catch (...) {
 		}
@@ -112,8 +114,18 @@ namespace basecross {
 		case basecross::Goal::State::End:
 			scene->SetResultInk(m_player->GetInk(), m_player->GetMaxInk());
 			//演出終了、画面遷移
-			PostEvent(0.0f, GetThis<Goal>(), scene, L"ToGoalStage");
+			if (!m_fadeSprite)
+			{
+				m_fadeSprite = GetStage()->AddGameObject<Sprite>(L"Black", Vec3(0, 0, 0), Vec2(1280, 840), Anchor::Center);
+				m_fadeSprite->SetDrawLayer(1);
+				m_fadeComp = m_fadeSprite->AddComponent<SpriteFade>(1.5f);
+				m_fadeComp->StartFade(FadeState::Out);
+			}
 
+			if (m_fadeComp->IsFinish())
+			{
+				PostEvent(0.0f, GetThis<Goal>(), scene, L"ToGoalStage");
+			}
 			break;
 		}
 	}
@@ -225,7 +237,7 @@ namespace basecross {
 		m_resultSprite->SetPosition(Vec3(m_spritePos2D.x, m_spritePos2D.y, 0.0f));
 		m_resultSprite->SetSize(Vec2(currentSize.x, currentSize.y));
 
-		if (t >= 1.0f)
+		if (t >= 0.8f)
 		{
 			m_state = State::End;
 		}

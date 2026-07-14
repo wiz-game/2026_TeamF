@@ -86,7 +86,10 @@ namespace basecross
 
 			//インク用コンスタントバッファ
 			inkDrawCB InkCb;
-			InkCb.Up = GetGameObject()->GetComponent<Transform>()->GetUp();
+			InkCb.Up = Vec3(0, 1, 0);//GetGameObject()->GetComponent<Transform>()->GetUp(); // 上方向ベクトルの初期化
+			//auto forward = GetGameObject()->GetComponent<Transform>()->GetForward();
+			//Vec3 right = cross(InkCb.Up, forward);//右側のベクトル
+			//InkCb.Up = cross(forward, right);
 			
 			pD3D11DeviceContext->UpdateSubresource(CBInk::GetPtr()->GetBuffer(), 0, nullptr, &InkCb, 0, 0);
 			ID3D11Buffer* InkResourceBuffer = CBInk::GetPtr()->GetBuffer();
@@ -160,6 +163,8 @@ namespace basecross
 
 	DECLARE_DX11_PIXEL_SHADER(Texture2PixelSheder)
 	DECLARE_DX11_PIXEL_SHADER(Texture2ShadewPixelSheder)
+	DECLARE_DX11_VERTEX_SHADER(VSPNTStatic2,VertexPositionNormalTexture)
+	DECLARE_DX11_VERTEX_SHADER(VSPNTStaticShadow2, VertexPositionNormalTexture)
 
 }
 #pragma once
