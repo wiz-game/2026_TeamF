@@ -4,7 +4,7 @@
     "type": "Player",
     "position": {
         "x": -0.5720996856689453,
-        "y": -3.920799970626831,
+        "y": -3.684999942779541,
         "z": 10.332599639892579
     },
     "scale": {
@@ -39,7 +39,7 @@
         "z": 0.0
     },
     "childObjectData": {
-        "PortID": 0
+        "PortID": 4
     }
 },
 {
@@ -174,7 +174,7 @@
             "z": 0.0
         },
         "Axis": 0,
-        "Speed": 10.0,
+        "Speed": 0.009999999776482582,
         "PortID": 1
     }
 },
@@ -261,9 +261,9 @@
     },
     "childObjectData": {
         "Axis": 0,
-        "Speed": -5.0,
+        "Speed": 5.0,
         "LimitDistance": -5.0,
-        "PortID": 0
+        "PortID": 4
     }
 },
 {
@@ -327,7 +327,7 @@
         "Axis": 2,
         "Speed": 5.0,
         "LimitDistance": -8.0,
-        "PortID": 0
+        "PortID": 4
     }
 },
 {
@@ -351,7 +351,7 @@
         "Axis": 0,
         "Speed": 5.0,
         "LimitDistance": -7.5,
-        "PortID": 0
+        "PortID": 4
     }
 },
 {
