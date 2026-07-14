@@ -62,6 +62,7 @@ namespace basecross {
 		{
 			//エフェクトの生成
 			GetStage()->AddGameObject<GoalEffect>(spawnCenter, Vec3(m_scale.x / 3.0f, m_scale.y / 5.0f, m_scale.z / 3.0f), radius, m_port);
+			m_player = GetStage()->GetSharedGameObject<Player>(L"Player");
 		}
 		catch (...) {
 		}
@@ -111,7 +112,7 @@ namespace basecross {
 			break;
 
 		case basecross::Goal::State::End:
-			//scene->SetResultInk(m_player->GetInk(), m_player->GetMaxInk());
+			scene->SetResultInk(m_player->GetInk(), m_player->GetMaxInk());
 			//演出終了、画面遷移
 			if (!m_fadeSprite)
 			{
