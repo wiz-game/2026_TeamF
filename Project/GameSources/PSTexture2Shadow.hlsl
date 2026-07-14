@@ -47,7 +47,7 @@ float4 main(PSPNTInputShadow input) : SV_TARGET
     float4 RetColor = (saturate(dot(N1, -lightdir)) * Diffuse) + Emissive;
     RetColor += input.specular;
     RetColor.a = Diffuse.a;
-    
+   
     //判定用フラグ
     bool isFirstTexture = false;
     
@@ -76,13 +76,20 @@ float4 main(PSPNTInputShadow input) : SV_TARGET
     //まとめてテクスチャをサンプリング
     if (isFirstTexture)
     {
-        color = g_texture.Sample(g_sampler, input.tex) * RetColor;
+        color = g_texture.Sample(g_sampler, input.tex);
+        if (color.r >= 0.8f && color.g >= 0.8f && color.b >= 0.8f)
+        {
+            color *= RetColor;
+        }
     }
     else
     {
         color = g_texture2.Sample(g_sampler, input.tex) * RetColor;
     }
-    
+    if (color.a <= 0.1f)
+    {
+        color = float4(1, 1, 1, 1);
+    }
     float4 InkColor = GetInkColor(input);
     if (InkColor.a != 0)
     {
