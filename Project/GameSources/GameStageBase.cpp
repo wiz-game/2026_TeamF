@@ -62,13 +62,11 @@ namespace basecross {
 		//BGM再生
 		SoundManager::Get().PlayBGM(L"GAMESTAGE_BGM", 1.0f /*m_BGMVolume*/);
 
-		//スカイボックス
-		AddGameObject<SkyCube>(L"SKYBOX");
 
 		CreateViewLight();
 		StageDateRoad(m_StageNum);
 
-		auto UISprite = AddGameObject<Sprite>(L"BUTTON_AB", Vec3(630, -380, 0), Vec2(250, 200), Anchor::BottomRight);
+		auto UISprite = AddGameObject<Sprite>(L"BUTTON_AB", Vec3(630, -380, 0), Vec2(971, 600) * 0.25f, Anchor::BottomRight);
 		auto inkprite = AddGameObject<Sprite>(L"INK_MOZI", Vec3(-550, 380, 0), Vec2(100, 30), Anchor::Center);
 		//UI作成
 		auto gaugeBack = AddGameObject<GaugeBack>();
@@ -76,6 +74,10 @@ namespace basecross {
 
 		//ポーズメニュー作成
 		m_pauseMenu = ObjectFactory::Create<PauseMenu>(GetThis<Stage>());
+
+		//スカイボックス
+		AddGameObject<SkyCube>(L"SKYBOX");
+
 	}
 
 	void GameStageBase::OnUpdate()
