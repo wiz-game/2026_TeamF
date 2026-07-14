@@ -9,9 +9,7 @@
 namespace basecross{
 
 	// ===== 定数まとめ =====
-	const Vec3 ObstacleSpring::SCALE = Vec3(1.0f, 2.0f, 1.0f);
-	const Vec3 ObstacleSpring::START_POS = Vec3(0.0f, 5.0f, 0.0f);
-	const float ObstacleSpring::ROTATION_Z = XM_PIDIV2;
+
 	const float ObstacleSpring::PUSH_POWER = 0.3f;
 	const float ObstacleSpring::NORMALIZE_EPS = 0.001f;
 	const float ObstacleSpring::LOOP_ANGLE = XM_2PI;
@@ -22,9 +20,9 @@ namespace basecross{
 		m_draw = AddComponent<PNTStaticDraw>();
 		m_draw->SetMeshResource(L"DEFAULT_CYLINDER");
 		m_transform = GetComponent<Transform>();
-		m_transform->SetScale(SCALE);
-		m_transform->SetPosition(START_POS);
-		m_transform->SetRotation(0, 0, ROTATION_Z);
+		m_transform->SetScale(m_scale);
+		m_transform->SetPosition(m_pos);
+		m_transform->SetRotation(m_rot);
 		m_draw->SetOwnShadowActive(true);
 
 		auto shadowMap = AddComponent<Shadowmap>();
@@ -63,7 +61,7 @@ namespace basecross{
 
 		//Vec3 forward = m_transform->GetForward();
 		Vec3 pos = m_transform->GetPosition();
-		pos.z +=  m_moveSpeed * delta;
+		pos += m_moveDirection * m_moveSpeed * delta;
 
 		m_transform->SetPosition(pos);
 	}
