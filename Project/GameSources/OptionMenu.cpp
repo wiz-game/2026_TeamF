@@ -122,8 +122,8 @@ namespace basecross
 		auto device = app->GetInputDevice();
 		auto pad = device.GetControlerVec()[0];
 
-		std::wstringstream wss(L"");
-		wss << m_selectMenu;
+		//std::wstringstream wss(L"");
+		//wss << m_selectMenu;
 
 		float stickY = pad.fThumbLY;
 		float threshold = 0.25f;
@@ -184,7 +184,7 @@ namespace basecross
 			//	break;
 			}
 		}
-		scene->SetDebugString(wss.str());
+		//scene->SetDebugString(wss.str());
 	}
 
 	void OptionMenu::ToPause()

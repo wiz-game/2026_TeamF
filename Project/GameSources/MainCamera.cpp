@@ -31,10 +31,12 @@ namespace basecross
 		case CameraState::StartToGoal:
 			// ゴールに向かうカメラ演出
 			StartToGoalCameraMove(goalPos, 4.0f);
+			m_isPause = true;
 			break;
 		case CameraState::TransitionToFollow:
 			//カメラ演出からターゲット追従にスムーズに移行する
 			TransitionToFollowMove(0.5f);
+			m_isPause = false;
 			break;
 		case CameraState::TargetFollow:
 			// ターゲット追従
