@@ -61,7 +61,7 @@ namespace basecross{
 
 			SoundManager::Get().RegisterSounds();
 			//ステージ数1で初期化
-			GameProgressManager::Get().Initialize(5);
+			GameProgressManager::Get().Initialize(7);
 			ThreadPool::Get().Initialize(thread::hardware_concurrency());
 
 			SetClearColor(Col4(0.0f, 0.11328125f, 0.2578125, 1.0f));
