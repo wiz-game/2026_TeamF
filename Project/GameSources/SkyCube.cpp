@@ -9,11 +9,11 @@
 namespace basecross{
 
 	void SkyCube::OnCreate() {
-		auto draw = AddComponent<PNTStaticDraw>();
-		draw->SetMeshResource(L"DEFAULT_CUBE");
+		auto draw = AddComponent<PTStaticDraw>();
+		draw->SetMeshResource(L"DEFAULT_PT_CUBE");
 		draw->SetTextureResource(m_TexKey);
 		draw->SetRasterizerState(RasterizerState::CullFront);
-		draw->SetDepthStencilState(DepthStencilState::Read);
+		//draw->SetDepthStencilState(DepthStencilState::Read);
 
 		auto transform = GetComponent<Transform>();
 		transform->SetScale(Vec3(100));

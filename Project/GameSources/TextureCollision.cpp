@@ -86,6 +86,8 @@ namespace basecross {
 		m_MaskShader->AddUAV(m_LabelBuffer->m_UAV.Get());
 		m_MaskShader->SetShader(GenerateMaskShader::GetPtr()->GetShader());
 		InkConnectChecker::Get().AddTextureCollision(GetThis<TextureCollision>());
+
+		SetDrawActive(false);
 	}
 	void TextureCollision::OnUpdate() {
 		m_EffectSpawnTimer += App::GetApp()->GetElapsedTime();
@@ -110,6 +112,7 @@ namespace basecross {
 		}
 	}
 	void TextureCollision::OnDraw() {
+		if (!GetDrawActive()) return;
 		for (int i = 0; i < m_Contour.size(); i++) {
 			DrawContour(i);
 		}
@@ -181,9 +184,6 @@ namespace basecross {
 			UINT offset = y * snapShot.m_Context.m_SizeX;
 			for (UINT x = 0; x < snapShot.m_Context.m_SizeX; x++) {
 				row[x] = snapShot.m_Data[offset + x];
-				if (row[x] == 255) {
-					int checker = 0;
-				}
 			}
 		}
 
@@ -558,7 +558,6 @@ namespace basecross {
 			if (!HitTest::AABB_AABB(inkAABB, portAABB, Vec3(0.0f, 0.5f, 0.0f))) continue;
 			if (IsConnectedInkToPort(portOBB, portAABB, triangles)) {
 				port->SetConnect(true);
-				//port->GetComponent<PNTStaticDraw>()->SetDiffuse(Col4(1, 0, 1, 1));
 			}
 		}
 		return false;
