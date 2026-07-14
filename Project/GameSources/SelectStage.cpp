@@ -14,7 +14,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
-	SelectStage::SelectStage() :Stage(), m_SelectIndex(0), m_MaxSelectIndex(5) {}
+	SelectStage::SelectStage() :Stage(), m_SelectIndex(0), m_MaxSelectIndex(7) {}
 
 	SelectStage::~SelectStage()
 	{
