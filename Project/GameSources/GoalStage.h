@@ -14,12 +14,22 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	class GoalStage : public Stage
 	{
+		enum class State {
+			Wait,			//画面遷移
+			Move,
+		};
+
+		State m_state = State::Wait;
+
 		void CreateViewLight(); //ビューの作成
 		void RegisterResources();
 
 		shared_ptr<Sprite> m_sprite;
 		vector<shared_ptr<Sprite>> m_sprite_Buttons;
 		shared_ptr<StanpSprite> m_ClearStanp;
+
+		std::shared_ptr<Sprite> m_fadeSprite = nullptr;
+		std::shared_ptr<SpriteFade> m_fadeComp = nullptr;
 
 		InputHandler<GoalStage> m_InputHandler; // 入力ハンドラー
 
