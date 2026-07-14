@@ -25,7 +25,14 @@ namespace basecross
 		}
 
 		Vec3 goalPos = goal->GetComponent<Transform>()->GetWorldPosition();
-
+		if (cameraState != CameraState::TargetFollow) {
+			auto device = App::GetApp()->GetInputDevice();
+			auto& pad = device.GetControlerVec()[0];
+			if (pad.wPressedButtons & XINPUT_GAMEPAD_A) {
+				cameraState = CameraState::TargetFollow;
+				m_isPause = false;
+			}
+		}
 		switch (cameraState)
 		{
 		case CameraState::StartToGoal:
