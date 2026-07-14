@@ -75,6 +75,7 @@ namespace basecross {
 					m_rotateVec.y += m_speed;
 					if (m_speed > 0 && m_rotateVec.y > LIMIT_ANGLE) m_rotateVec.y = LIMIT_ANGLE;
 					if (m_speed < 0 && m_rotateVec.y < LIMIT_ANGLE) m_rotateVec.y = LIMIT_ANGLE;
+
 				}
 
 				break;

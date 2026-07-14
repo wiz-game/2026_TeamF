@@ -36,6 +36,7 @@ namespace basecross {
 		app->RegisterTexture(L"BUTTON_B_SELECT", mediaPath + L"Texture/Button_B_Select.png");
 		app->RegisterTexture(L"BUTTON_X_NEXT", mediaPath + L"Texture/Button_X_Next.png");
 		app->RegisterTexture(L"NUMBER", mediaPath + L"Texture/Number.png");
+		app->RegisterTexture(L"Black", mediaPath + L"Texture/Black.png");
 
 	}
 
@@ -83,45 +84,49 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto scene = app->GetScene<Scene>();
 		//GameController::Update();
-		
-		m_InputHandler.PushHandle(GetThis<GoalStage>());
-
-		auto CntlVec = app->GetInputDevice().GetControlerVec();
-		if (m_ButtonScaleTimer != -1) {
-			SpriteMove();
-			return;
-		}
-
-		if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
+		switch (m_state)
 		{
-			SoundManager::Get().StopBGM();
+		case State::Wait:
+			//画面遷移
+			m_state = State::Move;
 
-			m_ButtonScaleTimer = 0;
-			m_ButtonScaleIndex = 0;
-			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToTitleStage");
+			break;
+		case State::Move:
+			auto CntlVec = app->GetInputDevice().GetControlerVec();
+			m_InputHandler.PushHandle(GetThis<GoalStage>());
+
+			if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
+			{
+				SoundManager::Get().StopBGM();
+
+				m_ButtonScaleTimer = 0;
+				m_ButtonScaleIndex = 0;
+				PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToTitleStage");
+			}
+			if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+			{
+				SoundManager::Get().StopBGM();
+
+				m_ButtonScaleTimer = 0;
+				m_ButtonScaleIndex = 1;
+				PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToSelectStage");
+			}
+
+			if (!GameProgressManager::Get().IsExistsNextStage()) return;
+			if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)
+			{
+				SoundManager::Get().StopBGM();
+
+				m_ButtonScaleTimer = 0;
+				m_ButtonScaleIndex = 2;
+				int currentStage = GameProgressManager::Get().GetCurrentStage();
+				currentStage++;
+				PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToGameStage", make_shared<int>(currentStage));
+
+
+				break;
+			}
 		}
-		if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
-		{
-			SoundManager::Get().StopBGM();
-
-			m_ButtonScaleTimer = 0;
-			m_ButtonScaleIndex = 1;
-			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToSelectStage");
-		}
-
-		if (!GameProgressManager::Get().IsExistsNextStage()) return;
-		if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)
-		{
-			SoundManager::Get().StopBGM();
-
-			m_ButtonScaleTimer = 0;
-			m_ButtonScaleIndex = 2;
-			int currentStage = GameProgressManager::Get().GetCurrentStage();
-			currentStage++;
-			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToGameStage",make_shared<int>(currentStage));
-		}
-		
-		
 	}
 
 	//ボタンの押し込みアニメーション

@@ -16,7 +16,7 @@ cbuffer VectorBuffer : register(b1)
     float3 up;
 }
 
-float4 GetInkColor(PSPNTInput input)
+float4 GetInkColor(PSPNTInput2 input)
 {
     float4 color = g_texture3.Sample(g_sampler, input.tex);
     if (color.a > 0)
@@ -34,12 +34,13 @@ float4 GetInkColor(PSPNTInput input)
 }
 
 
-float4 main(PSPNTInput input) : SV_TARGET
+float4 main(PSPNTInput2 input) : SV_TARGET
 {
     float4 color;
 	//法線ライティング
     float3 lightdir = normalize(LightDir.xyz);
-    float3 N1 = normalize(input.norm);
+    float3 N1 = normalize(input.norm); //変換後の法線ベクトル
+    float3 modelNorm = normalize(input.modelNorm); //変換前の法線ベクトル
     float4 Light = (saturate(dot(N1, -lightdir)) * Diffuse) + Emissive;
     Light += input.specular;
     Light.a = Diffuse.a;
@@ -53,7 +54,7 @@ float4 main(PSPNTInput input) : SV_TARGET
         if (Activeflags.y > 0.5f)
         {
             // Z軸方向（前後両方）を向いているか判定
-            if (abs(dot(N1, float3(0, 0, 1))) > 0.99f)
+            if (abs(dot(modelNorm, float3(0, 0, 1))) > 0.99f)
             {
                 isFirstTexture = true;
             }
@@ -62,7 +63,7 @@ float4 main(PSPNTInput input) : SV_TARGET
         else
         {
             // Y軸上向きを向いているか判定
-            if (dot(N1, up) > 0.99f)
+            if (dot(modelNorm, up) > 0.99f)
             {
                 isFirstTexture = true;
             }
