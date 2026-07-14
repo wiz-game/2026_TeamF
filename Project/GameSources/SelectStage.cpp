@@ -121,14 +121,16 @@ namespace basecross {
 			//選択効果音を鳴らす
 			SoundManager::Get().PlaySE(L"SELECT", 1.0f);
 		}
-
-
 		if ((GameController::IsPressed_DpadLeft() || leftStickX < -0.5f) && Timer(app->GetElapsedTime(), m_TimeCount, 0.3f) && ButtonManager::instance->GetMoveStop()) {
 			m_ButtonScaleTimer = 0;
 			m_ButtonScaleIndex = 1;
 			m_TimeCount = 0;
 
-			if (m_SelectIndex >= 1)ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((1980 / 2), 0, 0), 60.0f);
+			if (m_SelectIndex >= 1)
+			{
+				ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((1980 / 2), 0, 0), 60.0f);
+				ButtonManager::instance->SetMoveAmount(L"SelectPage2", Vec3((1980 / 2), 0, 0), 60.0f);
+			}
 			m_SelectIndex = max(0, m_SelectIndex - 1);
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
 			ButtonManager::instance->SetSelectIndex(L"SelectPage1", m_SelectIndex);
@@ -144,7 +146,11 @@ namespace basecross {
 			m_ButtonScaleIndex = 1;
 			m_TimeCount = 0;
 
-			if (m_SelectIndex < m_MaxSelectIndex - 1)ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((-1980 / 2), 0, 0), 60.0f);
+			if (m_SelectIndex < m_MaxSelectIndex - 1)
+			{
+				ButtonManager::instance->SetMoveAmount(L"SelectPage1", Vec3((-1980 / 2), 0, 0), 60.0f);
+				ButtonManager::instance->SetMoveAmount(L"SelectPage2", Vec3((-1980 / 2), 0, 0), 60.0f);
+			}
 			m_SelectIndex = min(m_MaxSelectIndex - 1, m_SelectIndex + 1);
 			m_SelectingSprite->UpdateNumber(m_SelectIndex);
 			ButtonManager::instance->SetSelectIndex(L"SelectPage1", m_SelectIndex);
@@ -191,7 +197,7 @@ namespace basecross {
 			//auto texName = L"STAGE" + to_wstring(i);
 			auto texName = L"STAGE" + to_wstring(1);
 			m_Scale = Vec2(500, 500);
-			auto stageTitle = ButtonManager::instance->Create(m_Title, L"SelectPage1", texName, texName, Vec3((((1980 / 2) * (i - 1)) - (m_Scale.x / 2)), m_Scale.y / 2, 0), m_Scale, [](shared_ptr<ObjectInterface>& object) {});
+			auto stageTitle = ButtonManager::instance->Create(m_Title, L"SelectPage2", texName, texName, Vec3((((1980 / 2) * (i - 1)) - (m_Scale.x / 2)), m_Scale.y / 2, 0), m_Scale, [](shared_ptr<ObjectInterface>& object) {});
 		}
 	}
 
