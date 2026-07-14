@@ -126,6 +126,8 @@ namespace basecross {
 		catch (...){
 			throw;
 		}
+
+		OnUpdate();
 	}
 	StringSprite::~StringSprite(){}
 	//アクセサ

@@ -86,9 +86,29 @@ namespace basecross {
 		auto& pad = device.GetControlerVec()[0];
 		GameController::Update();
 
+		auto camera = GetView()->GetTargetCamera();
+		auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
+
+		bool cameraAnimation = mainCamera->GetAnimationFlag();
 		bool pause = m_pauseMenu->GetPause();
 		//m_isPause = pause;
 
+		if (cameraAnimation)
+		{
+			//カメラ演出中はポーズ
+			Pause(true);
+			return;
+		}
+		else
+		{
+			//ポーズ画面が開いていない時はポーズしない
+			if (!pause)
+			{
+				Pause(false);
+			}
+		}
+
+		
 		if (pad.wPressedButtons & XINPUT_GAMEPAD_START)
 		{
 			m_pauseMenu->SetPause(!pause);
@@ -346,7 +366,12 @@ namespace basecross {
 
 	void GameStageBase::AddGoalObj(STRUCT_ElectricObjBaseParams params)
 	{
-		AddGameObject<Goal>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID]);
+		auto goalPtr = AddGameObject<Goal>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID]);
+
+		auto view = GetView();
+		auto camera = view->GetTargetCamera();
+		auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
+		mainCamera->SetGoal(goalPtr);
 	}
 
 	void GameStageBase::AddMoveFloorObj(STRUCT_MoveFloorParams params)

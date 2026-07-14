@@ -11,7 +11,7 @@
 #include "OptionMenu.h"
 
 namespace basecross {
-
+	class Goal;
 	//--------------------------------------------------------------------------------------
 	//	プロトタイプステージクラス
 	//--------------------------------------------------------------------------------------
@@ -22,6 +22,7 @@ namespace basecross {
 		std::shared_ptr<Pause> m_pause;	//ポーズ
 		std::shared_ptr<PauseMenu> m_pauseMenu;	//ポーズメニュー
 		std::shared_ptr<OptionMenu> m_optionMenu;	//設定メニュー
+		shared_ptr<Goal> m_Goal;	//プレイヤー
 
 		std::shared_ptr<SoundItem> m_stageBGM;	//BGM
 
