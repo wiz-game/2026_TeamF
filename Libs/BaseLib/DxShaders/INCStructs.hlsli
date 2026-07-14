@@ -146,6 +146,16 @@ struct PSPNTInput
 	float2 tex : TEXCOORD;
 };
 
+struct PSPNTInput2
+{
+    float4 position : SV_POSITION;
+    float3 norm : NOMRAL0;
+    float3 modelNorm : NORMAL1;
+    float4 specular : COLOR;
+    float2 tex : TEXCOORD;
+};
+
+
 struct PSPNTInputShadow
 {
 	float4 position : SV_Position;
@@ -156,6 +166,19 @@ struct PSPNTInputShadow
 	float2 tex : TEXCOORD0;
 	float4 lightSpacePos : POSITION1;
 };
+
+struct PSPNTInputShadow2
+{
+    float4 position : SV_Position;
+    float3 norm : NORMAL0;
+    float3 lightRay : NORMAL1;
+    float3 lightView : NORMAL2;
+    float3 modelNorm : NORMAL3;
+    float4 specular : COLOR;
+    float2 tex : TEXCOORD0;
+    float4 lightSpacePos : POSITION1;
+};
+
 
 struct VSPNCTInput
 {

@@ -5,9 +5,9 @@
 
 #pragma once
 #include "stdafx.h"
+#include "Sprite.h"
 
 namespace basecross {
-	class Sprite;
 	//--------------------------------------------------------------------------------------
 	//	class Goal : public GameObject;
 	//--------------------------------------------------------------------------------------
@@ -34,6 +34,9 @@ namespace basecross {
 
 		std::shared_ptr<SoundItem> m_MoveSound_1;
 		std::shared_ptr<SoundItem> m_MoveSound_2;
+
+		std::shared_ptr<Sprite> m_fadeSprite = nullptr;
+		std::shared_ptr<SpriteFade> m_fadeComp = nullptr;
 
 		Vec3 m_startPos;	   //初期位置
 		float m_speed;

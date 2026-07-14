@@ -140,22 +140,22 @@ namespace basecross {
 
 			//左に開く扉
 			//auto leftDoor = AddGameObject<GoalDoor>(
-			//	Vec3(4.0f, 5.0f, 1.0f), Vec3(0), Vec3(8.0f, 4.0f, 30.0f), //Scale, Rotation, Position
+			//	Vec3(4.0f, 5.0f, 1.0f), Vec3(0,0,0), Vec3(8.0f, 4.0f, 0.0f), //Scale, Rotation, Position
 			//	goal_port, 
 			//	Vec3(-1, 0, 0));//移動する方向を指定。
-			////右に開く扉
+			//右に開く扉
 			//auto rightDoor = AddGameObject<GoalDoor>(
-			//	Vec3(4.0f, 5.0f, 1.0f), Vec3(0), Vec3(12.0f, 4.0f, 30.0f), 
+			//	Vec3(4.0f, 5.0f, 1.0f), Vec3(0, 0,0), Vec3(12.0f, 4.0f, 0.0f),
 			//	goal_port,
 			//	Vec3(1, 0, 0));
 
 			//トラップドアの初期設定
-			//TrapDoorAxisDesc moveDoorX;
-			//moveDoorX.axis = MoveAxis::X;
-			//moveDoorX.speed = 0.01f;
-			//moveDoorX.port = nullptr;
-			////moveDoorX.bReverseConnect = false;
-			//AddGameObject<TrapDoorAxis>(Vec3(2.0f, 0.1f, 4.0f), Vec3(XM_PIDIV2, 0.0f, 0.0f), Vec3(5.0f, -0.5f, 0.0f), moveDoorX);
+			TrapDoorAxisDesc moveDoorX;
+			moveDoorX.axis = MoveAxis::X;
+			moveDoorX.speed = 0.01f;
+			moveDoorX.port = MoveFoor_port;
+			//moveDoorX.bReverseConnect = false;
+			AddGameObject<TrapDoorAxis>(Vec3(2.0f, 0.1f, 4.0f), Vec3(XM_PIDIV2, 0.0f, 0.0f), Vec3(5.0f, -0.5f, 0.0f), moveDoorX);
 
 			//動く床の初期設定
 			//MoveFloorDesc moveFloorY;

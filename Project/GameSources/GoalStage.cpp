@@ -36,6 +36,7 @@ namespace basecross {
 		app->RegisterTexture(L"BUTTON_B_SELECT", mediaPath + L"Texture/Button_B_Select.png");
 		app->RegisterTexture(L"BUTTON_X_NEXT", mediaPath + L"Texture/Button_X_Next.png");
 		app->RegisterTexture(L"NUMBER", mediaPath + L"Texture/Number.png");
+		app->RegisterTexture(L"Black", mediaPath + L"Texture/Black.png");
 
 	}
 
@@ -83,15 +84,14 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto scene = app->GetScene<Scene>();
 		//GameController::Update();
-		
-		m_InputHandler.PushHandle(GetThis<GoalStage>());
+		switch (m_state)
+		{
+		case State::Wait:
+			//画面遷移
+			m_state = State::Move;
 
-		auto CntlVec = app->GetInputDevice().GetControlerVec();
-		if (m_ButtonScaleTimer != -1) {
-			SpriteMove();
-			return;
-		}
-
+			break;
+		case State::Move:
 		if (CntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
 		{
 			SoundManager::Get().StopBGM();
@@ -119,9 +119,11 @@ namespace basecross {
 			int currentStage = GameProgressManager::Get().GetCurrentStage();
 			currentStage++;
 			PostEvent(0.3f, GetThis<GoalStage>(), scene, L"ToGameStage",make_shared<int>(currentStage));
+
+
+			break;
 		}
-		
-		
+
 	}
 
 	//ボタンの押し込みアニメーション
