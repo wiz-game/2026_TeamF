@@ -15,7 +15,7 @@ namespace basecross {
 		m_trans->SetPosition(m_pos);
 		m_trans->SetScale(m_scale);
 
-		m_staticDraw = AddComponent<PNTStaticDraw>();
+		//m_staticDraw = AddComponent<PNTStaticDraw>();
 		//m_staticDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
 		//auto coll = AddComponent<CollisionObb>();
@@ -24,11 +24,16 @@ namespace basecross {
 		//初期のRotationを決めるためのOffsetObjectを作成
 		auto offsetObj = GetStage()->AddGameObject<OffsetObject>(GetThis<TrapDoorAxis>());
 		auto offsetTrans = offsetObj->GetComponent<Transform>();
-
 		offsetTrans->SetRotation(m_initialRotation);
 
 		//TrapDoorの作成と位置をずらすためのObject
 		m_trapDoor = GetStage()->AddGameObject<TrapDoor>(offsetObj, m_trapDoorScale);
+		
+		//X軸回転かつスピードがマイナスの時は
+		if (m_moveAxis == MoveAxis::X && m_speed < 0)
+		{
+			m_trapDoor->GetComponent<Transform>()->SetRotation(Vec3(0,XM_PI,0));//オブジェクトのYを180度回転させる
+		}
 	}
 
 	void TrapDoorAxis::OnUpdate()
