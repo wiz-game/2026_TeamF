@@ -47,6 +47,8 @@ namespace basecross {
 
 			m_sprite = AddGameObject<Sprite>(L"GameOver", Vec3(), Vec2(1280, 840), Anchor::Center);
 			m_sprite_Button = AddGameObject<Sprite>(L"BUTTON_A_TITLE", Vec3(0,-255,0), Vec2(400, 150), Anchor::Center);
+
+			SoundManager::Get().PlayBGM(L"GAMEOVER_BGM", m_BGMVolume);
 		}
 		catch (...) {
 			throw;
@@ -67,6 +69,8 @@ namespace basecross {
 
 		if (CntlVec[0].wPressedButtons && XINPUT_GAMEPAD_A)
 		{
+			SoundManager::Get().StopBGM();
+
 			m_ButtonScaleTimer = 0;
 			PostEvent(0.3f, GetThis<GameOverStage>(), scene, L"ToTitleStage");
 		}
