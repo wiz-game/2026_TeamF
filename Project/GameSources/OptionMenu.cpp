@@ -145,7 +145,6 @@ namespace basecross
 				break;
 			case 2:
 				//SE
-				ToPause();
 				break;
 			case 3:
 				//ポーズに戻る
