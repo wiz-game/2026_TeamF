@@ -66,8 +66,8 @@ namespace basecross {
 			inkSprite->UpdateNumber(pasent);
 
 			m_ClearStanp = AddGameObject<StanpSprite>(L"ClearMark", Vec3(0.0f, 80.0f, 0.0f), Vec2(350.0f, 210.0f), 0.35f, 1.5f, 0.8f);
-			m_ClearStanp->SetSE(L"STAGESELECT");
-			//m_ClearStanp->StartAnimation();
+			//m_ClearStanp->SetSE(L"STAGESELECT");
+			m_ClearStanp->StartAnimation();
 
 			GameProgressManager::Get().ClearCurrentStage();
 			
