@@ -184,6 +184,9 @@ namespace basecross {
 			AddGameObject<BeltConveyor>(Vec3(2.0f, 0.1f, 8.0f), Vec3(0, -XM_PIDIV2, 0), Vec3(0.0f, -0.2f, 22.0f), nullptr);
 			AddGameObject<BeltConveyor>(Vec3(2.0f, 0.1f, 8.0f), Vec3(0, XM_PIDIV2, 0), Vec3(0.0f, -0.2f, 25.0f), nullptr);
 
+			AddGameObject<BeltConveyor>(Vec3(2.0f, 0.1f, 5.0f), Vec3(0, 0, 0), Vec3(3.0f, -0.2f, 0.0f), nullptr);
+
+
 			MoveFloorDesc moveFloorX_2;
 			moveFloorX_2.axis = MoveAxis::X;	//移動する軸の指定
 			moveFloorX_2.speed = 1.0f;			//移動速度

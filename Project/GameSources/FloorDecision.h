@@ -55,6 +55,16 @@ namespace basecross {
 		{
 			return m_isPlayerOn;
 		}
+
+		Vec3 GetCurrentMoveVec() const
+		{
+			return m_currentMoveVec;
+		}
+
+		std::shared_ptr<GameObject> GetOwner() const
+		{
+			return m_owner;
+		}
 	};
 
 }
