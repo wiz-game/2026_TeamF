@@ -91,6 +91,7 @@ namespace basecross {
 		struct STRUCT_SpringParams
 		{
 			STRUCT_BaseParams StageObjParams;
+			Vec3 MoveDir;
 		};
 
 		//テスト用のパラメータ

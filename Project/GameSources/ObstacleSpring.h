@@ -1,9 +1,5 @@
 /*!
-@file 
-
-
-
-.h
+@file ObstacleSpring.h
 @brief キャラクターなど
 */
 
@@ -24,10 +20,20 @@ namespace basecross{
 		std::shared_ptr<Transform> m_transform; // トランスフォームコンポーネント
 
 		// 構築と破棄
-		ObstacleSpring(const shared_ptr<Stage>& stage) :
-			GameObject(stage)
-		{
-		}
+		ObstacleSpring(
+			const shared_ptr<Stage>& stage,
+			const Vec3& Scale,//サイズ
+			const Vec3& Rot,//回転
+			const Vec3& Position,//位置
+			const Vec3& MoveDirection//移動の向き
+		) :
+			GameObject(stage),
+			m_scale(Scale),
+			m_rot(Rot),
+			m_pos(Position),
+			m_moveDirection(MoveDirection)
+		{}
+
 		virtual ~ObstacleSpring()
 		{
 		}
@@ -54,9 +60,10 @@ namespace basecross{
 		void OnCollisionExit(std::shared_ptr<GameObject>& obj);
 	
 	private:
-		static const Vec3 SCALE;
-		static const Vec3 START_POS;
-		static const float ROTATION_Z;
+		Vec3 m_scale;
+		Vec3 m_rot;
+		Vec3 m_pos;
+		Vec3 m_moveDirection;
 
 		static const float PUSH_POWER;
 		static const float NORMALIZE_EPS;

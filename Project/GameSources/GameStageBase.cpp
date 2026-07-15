@@ -343,6 +343,11 @@ namespace basecross {
 	{
 		STRUCT_SpringParams params;
 		BaseParams(json, params.StageObjParams);
+		auto childObjectData = json.At<JsonObject>(L"childObjectData");
+		auto moveDir = childObjectData->At<JsonObject>(L"MoveDir");
+		params.MoveDir.x = moveDir->At<JsonNumber>(L"x")->GetFloatValue();
+		params.MoveDir.y = moveDir->At<JsonNumber>(L"y")->GetFloatValue();
+		params.MoveDir.z = moveDir->At<JsonNumber>(L"z")->GetFloatValue();
 		return params;
 	}
 
@@ -439,8 +444,7 @@ namespace basecross {
 
 	void GameStageBase::AddSpringObj(STRUCT_SpringParams params)
 	{
-		AddGameObject<ObstacleSpring>();
-		//AddGameObject<ObstacleSpring>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos);
+		AddGameObject<ObstacleSpring>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, params.MoveDir);
 	}
 
 	bool GameStageBase::IsPause() const
