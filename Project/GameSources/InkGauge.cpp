@@ -35,6 +35,11 @@ namespace basecross
 
 	void InkGauge::OnUpdate()
 	{
+		GaugeUpdate();
+	}
+
+	void InkGauge::GaugeUpdate()
+	{
 		auto& app = App::GetApp();
 		auto delta = app->GetElapsedTime();
 		auto stage = GetStage();
