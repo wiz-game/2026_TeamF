@@ -312,8 +312,9 @@ namespace basecross{
 		// m_floorDecision が null なら何もしない
 		if (!m_floorDecision) return;
 
-		m_velocity += movePos;//Playerに床の移動量を加算  
-		//m_transform->SetPosition(m_pos);
+		//auto delta = App::GetApp()->GetElapsedTime();
+		m_velocity += movePos ;//Playerに床の移動量を加算  
+
 	}
 
 	// 衝突開始
