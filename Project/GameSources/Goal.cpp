@@ -56,7 +56,7 @@ namespace basecross {
 		m_resultSprite->SetDrawActive(false);
 		m_resultSprite->SetDrawLayer(1);
 
-		Vec3 spawnCenter = m_pos + Vec3(0.0f, 0.5f, 0.0f);
+		Vec3 spawnCenter = m_pos + Vec3(0.0f, 0.0f, 0.0f);
 		float radius = m_scale.z + 2.0f;//回転半径
 		try
 		{
