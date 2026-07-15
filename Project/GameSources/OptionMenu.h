@@ -19,10 +19,17 @@ namespace basecross
 		int m_selectMenu;	//選択中のメニュー
 		int m_menuNum;		//メニュー数
 		bool m_lock;
-
 		int m_selectIndex = 0;	//選択肢のインデックス
 
 		Vec2 cursorPos = Vec2(0, 0);
+
+		enum OptionState
+		{
+			None,
+			BGM,
+			SE
+		};
+		OptionState m_opState = OptionState::None;
 
 	public:
 		OptionMenu(const std::shared_ptr<Stage>stage) :
