@@ -142,6 +142,11 @@ namespace basecross{
 			Get(str, pos);
 			while (isdigit(Peek(str, pos))) Get(str, pos);
 		}
+		if (Peek(str, pos) == L'e' || Peek(str, pos) == L'E') {
+			Get(str, pos);
+			if (Peek(str, pos) == L'+' || Peek(str, pos) == L'-') Get(str, pos);
+			while (isdigit(Peek(str, pos))) Get(str, pos);
+		}
 		auto s = str.substr(start, pos - start);
 		float value = stof(s);
 		return make_shared<JsonNumber>(value);
@@ -161,7 +166,9 @@ namespace basecross{
 		throw BaseException(L"無効な値が設定されています", L"", L"JsonHelper::ParseBool(const wstring&,size_t&)");
 	}
 	shared_ptr<JsonString> JsonHelper::ParseString(const wstring& str, size_t& pos) {
-		if(Get(str,pos) != L'"') throw BaseException(L"無効なオブジェクトが読み込まれました", L"", L"JsonHelper::ParseString(const wstring&,size_t&)");
+		char c = Peek(str, pos);
+		if(Get(str,pos) != L'"')
+			throw BaseException(L"無効なオブジェクトが読み込まれました", L"", L"JsonHelper::ParseString(const wstring&,size_t&)");
 
 		wstring result;
 		while (true) {
