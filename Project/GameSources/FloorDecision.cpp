@@ -43,9 +43,17 @@ namespace basecross {
 	{
 		if (auto player = dynamic_pointer_cast<Player>(obj))
 		{
-			//Playerに移動量を渡す
-			//player->UpdateMoveFloor(m_currentMoveVec);
-			player->GetComponent<Transform>()->SetParent(GetThis<FloorDecision>());//Playerの親をFloorDecisionにする
+			//自身の親がベルトコンベアーだったら移動量は直接加算
+			auto conveyor = dynamic_pointer_cast<BeltConveyor>(m_owner);
+			if (conveyor)
+			{
+				//Playerに移動量を渡す
+				player->UpdateMoveFloor(m_currentMoveVec);
+			}
+			else
+			{
+				player->GetComponent<Transform>()->SetParent(GetThis<FloorDecision>());//Playerの親をFloorDecisionにする
+			}
 			m_isPlayerOn = true;
 		}
 	}
@@ -58,7 +66,7 @@ namespace basecross {
 	{
 		if (auto player = dynamic_pointer_cast<Player>(obj))
 		{
-			//player->UpdateMoveFloor(Vec3(0));
+			player->UpdateMoveFloor(Vec3(0));
 			player->GetComponent<Transform>()->SetParent(nullptr);//Playerの親を解除する
 			m_isPlayerOn = false;
 		}

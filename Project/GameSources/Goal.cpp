@@ -57,11 +57,11 @@ namespace basecross {
 		m_resultSprite->SetDrawLayer(1);
 
 		Vec3 spawnCenter = m_pos + Vec3(0.0f, 0.5f, 0.0f);
-		float radius = 2.5f;//回転半径
+		float radius = m_scale.z + 2.0f;//回転半径
 		try
 		{
 			//エフェクトの生成
-			GetStage()->AddGameObject<GoalEffect>(spawnCenter, Vec3(m_scale.x / 3.0f, m_scale.y / 5.0f, m_scale.z / 3.0f), radius, m_port);
+			GetStage()->AddGameObject<GoalEffect>(spawnCenter, Vec3(m_scale.x / 2.0f, m_scale.y / 4.0f, m_scale.z / 2.0f), radius, m_port);
 			m_player = GetStage()->GetSharedGameObject<Player>(L"Player");
 		}
 		catch (...) {
