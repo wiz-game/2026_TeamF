@@ -228,9 +228,9 @@ namespace basecross{
 			m_velocity *= m_accel;
 
 		//転がす処理
-		m_rotAngle.x += m_velocity.z * m_moveSpeed * 0.02f;
+		m_rotAngle.x += m_velocity.z * m_moveSpeed * 0.01f;
 		m_rotAngle.y = 0;
-		m_rotAngle.z += m_velocity.x * m_moveSpeed * 0.02f;
+		m_rotAngle.z += m_velocity.x * m_moveSpeed * 0.01f;
 		m_transform->SetRotation(m_rotAngle);
 
 		m_pos.x += m_moveSpeed * m_velocity.x * delta;

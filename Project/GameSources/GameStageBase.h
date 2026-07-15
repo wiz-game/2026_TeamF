@@ -108,7 +108,9 @@ namespace basecross {
 
 		//ポーズメニュー
 		std::shared_ptr<PauseMenu> m_pauseMenu;	
+		std::shared_ptr<OptionMenu> m_optionMenu;
 		bool m_isPause = false;
+		bool m_isOption = false;
 
 
 		//構築と破棄
@@ -185,6 +187,9 @@ namespace basecross {
 
 		bool IsPause() const;
 		void Pause(bool isPause);
+
+		bool IsOption() const;
+		void Option(bool isOption);
 	};
 }
 //end basecross

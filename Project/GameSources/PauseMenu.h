@@ -5,8 +5,11 @@
 
 namespace basecross
 {
+	//class OptionMenu;
+
 	class PauseMenu :public GameObject
 	{
+		std::vector<std::shared_ptr<SpriteGeneric>> m_menuBG;
 		std::vector<std::shared_ptr<SpriteGeneric>> m_menuLabel;
 		std::vector<std::shared_ptr<SpriteGeneric>> m_menuButton;
 		std::vector<Vec2> m_menuPosList;
@@ -14,6 +17,7 @@ namespace basecross
 		std::shared_ptr<OptionMenu> m_option;
 
 		bool m_isPause = false;
+		bool m_isMenuActive = false;
 		int m_selectMenu;	//選択中のメニュー
 		int m_menuNum;		//メニュー数
 		bool m_lock;
@@ -46,6 +50,7 @@ namespace basecross
 		void SetPause(bool isPause)
 		{
 			m_isPause = isPause;
+			m_isMenuActive = isPause;
 		}
 
 		bool GetPause()
