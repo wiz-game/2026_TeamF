@@ -224,6 +224,7 @@ namespace basecross
 
 	void PauseMenu::ToOption()
 	{
+		
 		auto option = GetStage()->GetSharedGameObject<OptionMenu>(L"Option");
 		option->SetOption(true);
 		m_isMenuActive = false;

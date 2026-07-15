@@ -141,28 +141,42 @@ namespace basecross
 			{
 			case 1:
 				//BGM
+				m_opState = OptionState::BGM;
 
 				break;
 			case 2:
 				//SE
+				m_opState = OptionState::SE;
+
 				break;
 			case 3:
 				//ポーズに戻る
 				ToPause();
 				m_selectMenu = 1;
+				m_opState = OptionState::None;
 				break;
 			}
 		}
 		if (pad.wPressedButtons & XINPUT_GAMEPAD_B)
 		{
-			m_selectMenu = 1;
-			SoundManager::Get().PlaySE(L"SELECT", 1.0f);
-			ToPause();
+			switch (m_opState)
+			{
+			case None:
+				m_selectMenu = 1;
+				m_opState = OptionState::None;
+				SoundManager::Get().PlaySE(L"SELECT", 1.0f);
+				ToPause();
+				break;
+			case BGM || SE:
+				m_opState = OptionState::None;
+				break;
+			}
 		}
 
 		if (pad.wPressedButtons & XINPUT_GAMEPAD_START)
 		{
 			m_selectMenu = 1;
+			m_opState = OptionState::None;
 			CloseOption();
 		}
 			//scene->SetDebugString(wss.str());
