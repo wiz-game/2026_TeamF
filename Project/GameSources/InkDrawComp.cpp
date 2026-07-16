@@ -3,7 +3,7 @@
 #include "game_controller.h"
 #include "Player.h"
 #include "TextureCollision.h"
-
+#include "GameProgressManager.h"
 namespace basecross
 {
 	void InkDrawComp::OnCreate()
@@ -20,6 +20,17 @@ namespace basecross
 		auto size = m_defaultSize * 0.5f;
 		AddPointFromWorldPos(pTrans->GetWorldPosition());
 		SetBrushSize(size);
+
+		if (GameController::IsPressed_ButtonRight() && GameController::IsPressed_DpadLeft()) {
+			int stageNum = GameProgressManager::Get().GetCurrentStage();
+			wstring filename = L"DefaultInk_Stage" + to_wstring(stageNum) + L"_";
+			auto object = GetGameObject();
+			auto objBase = dynamic_pointer_cast<StageObjBase>(object);
+
+			int id = (int)(objBase->m_pos.x + objBase->m_pos.y + objBase->m_pos.z);
+			filename += objBase->m_type + to_wstring(id);
+			TextureWriter::Write(filename, m_texture.Get());
+		}
 
 	}
 

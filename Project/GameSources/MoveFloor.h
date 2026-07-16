@@ -52,7 +52,7 @@ namespace basecross {
 			const Vec3& Pos,
 			const MoveFloorDesc& desc
 		) :
-			StageObjBase(stage, Scale, Rot, Pos),
+			StageObjBase(stage, Scale, Rot, Pos,L"MoveFloor"),
 			m_moveAxis(desc.axis),
 			m_speed(desc.speed),
 			m_limitDist(desc.limitDist),

@@ -52,7 +52,7 @@ namespace basecross {
 			const Vec3& Pos,
 			std::shared_ptr<Port> port
 		) :
-			StageObjBase(StagePtr, Scale, Rot, Pos),
+			StageObjBase(StagePtr, Scale, Rot, Pos,L"Goal"),
 			m_port(port),
 			m_startPos(Pos),
 			m_speed(1.5f),

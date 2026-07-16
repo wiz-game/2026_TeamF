@@ -10,13 +10,15 @@ namespace basecross {
 		Vec3 m_rot;
 		Vec3 m_pos;
 
+		wstring m_type;
 	protected:
 		StageObjBase
 		(
 			const shared_ptr<Stage>& StagePtr,
 			const Vec3& Scale,
 			const Vec3& Rot,
-			const Vec3& Position
+			const Vec3& Position,
+			const wstring& type
 		);
 
 		virtual ~StageObjBase();

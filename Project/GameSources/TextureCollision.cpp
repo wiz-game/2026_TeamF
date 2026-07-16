@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "Project.h"
 #include <filesystem>
+#include "game_controller.h"
 namespace basecross {
 
 	void Contour::CalcAABB(const shared_ptr<Transform>& transform) {
@@ -110,6 +111,7 @@ namespace basecross {
 			m_WaitContour.clear();
 			m_WaitElectricContourIndices.clear();
 		}
+
 	}
 	void TextureCollision::OnDraw() {
 		if (!GetDrawActive()) return;
@@ -618,6 +620,17 @@ namespace basecross {
 			}
 		}
 		return result;
+	}
+
+	void TextureWriter::Write(const wstring& filename,ID3D11Texture2D* texture) {
+		auto dev = App::GetApp()->GetDeviceResources()->GetD3DDevice();
+		auto devContext = App::GetApp()->GetDeviceResources()->GetD3DDeviceContext();
+
+		wstring writeFilename = L"../media/Texture/Ink/" + filename + L".png";
+		ScratchImage image;
+		CaptureTexture(dev, devContext, texture, image);
+
+		SaveToWICFile(*image.GetImage(0, 0, 0), WIC_FLAGS_NONE, GetWICCodec(WIC_CODEC_PNG), writeFilename.c_str());
 	}
 }
 //end basecross

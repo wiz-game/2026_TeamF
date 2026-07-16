@@ -24,7 +24,7 @@ namespace basecross {
 			const Vec3& Scale,
 			const Vec3& Rot,
 			const Vec3& Position) :
-			StageObjBase(stage, Scale, Rot, Position) // ステージをGameObjectに渡す【必須】
+			StageObjBase(stage, Scale, Rot, Position,L"Port") // ステージをGameObjectに渡す【必須】
 		{
 		}
 
