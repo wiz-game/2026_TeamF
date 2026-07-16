@@ -52,7 +52,7 @@ namespace basecross {
 			const Vec3& Rot,
 			const Vec3& Position,
 			const TrapDoorAxisDesc& desc) :
-			StageObjBase(stage, Scale, Rot, Position),
+			StageObjBase(stage, Scale, Rot, Position,L"TrapDoor"),
 			m_trapDoorScale(Scale),
 			m_initialRotation(Rot),
 			m_moveAxis(desc.axis),

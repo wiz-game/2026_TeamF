@@ -31,7 +31,7 @@ namespace basecross
 			const Vec3& Position,
 			std::shared_ptr<Port> port,
 			const Vec3& moveDir) :
-			StageObjBase(stage, Scale, Rot, Position),
+			StageObjBase(stage, Scale, Rot, Position,L"GoolDoor"),
 			m_port(port),
 			m_moveDir(moveDir),
 			m_speed(0.05f),

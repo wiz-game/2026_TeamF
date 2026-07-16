@@ -43,7 +43,7 @@ namespace basecross {
 			const Vec3& Rot,
 			const Vec3& Position,
 			shared_ptr<Port> port) :
-			StageObjBase(stage,Scale,Rot,Position),
+			StageObjBase(stage,Scale,Rot,Position,L"BeltConveryor"),
 			m_port(port)
 		{
 		}
