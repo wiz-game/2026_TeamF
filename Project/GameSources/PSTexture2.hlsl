@@ -54,7 +54,7 @@ float4 main(PSPNTInput2 input) : SV_TARGET
         if (Activeflags.y > 0.5f)
         {
             // Z軸方向（前後両方）を向いているか判定
-            if (abs(dot(modelNorm, float3(0, 0, 1))) > 0.99f)
+            if (abs(dot(modelNorm, float3(1, 0, 0))) > 0.99f)
             {
                 isFirstTexture = true;
             }

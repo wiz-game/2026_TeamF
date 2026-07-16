@@ -74,6 +74,11 @@ namespace basecross {
 
 		//ポーズメニュー作成
 		m_pauseMenu = ObjectFactory::Create<PauseMenu>(GetThis<Stage>());
+		SetSharedGameObject(L"Pause", m_pauseMenu);
+
+		//設定メニュー作成
+		m_optionMenu = ObjectFactory::Create<OptionMenu>(GetThis<Stage>());
+		SetSharedGameObject(L"Option", m_optionMenu);
 
 		//スカイボックス
 		AddGameObject<SkyCube>(L"SKYBOX");
@@ -123,6 +128,10 @@ namespace basecross {
 		{
 			m_pauseMenu->OnUpdate();
 		}
+		if (IsOption())
+		{
+			m_optionMenu->OnUpdate();
+		}
 
 	}
 
@@ -131,6 +140,10 @@ namespace basecross {
 		if (IsPause())
 		{
 			m_pauseMenu->OnDraw();
+		}
+		if (IsOption())
+		{
+			m_optionMenu->OnDraw();
 		}
 	}
 
@@ -330,6 +343,11 @@ namespace basecross {
 	{
 		STRUCT_SpringParams params;
 		BaseParams(json, params.StageObjParams);
+		auto childObjectData = json.At<JsonObject>(L"childObjectData");
+		auto moveDir = childObjectData->At<JsonObject>(L"MoveDir");
+		params.MoveDir.x = moveDir->At<JsonNumber>(L"x")->GetFloatValue();
+		params.MoveDir.y = moveDir->At<JsonNumber>(L"y")->GetFloatValue();
+		params.MoveDir.z = moveDir->At<JsonNumber>(L"z")->GetFloatValue();
 		return params;
 	}
 
@@ -426,8 +444,7 @@ namespace basecross {
 
 	void GameStageBase::AddSpringObj(STRUCT_SpringParams params)
 	{
-		AddGameObject<ObstacleSpring>();
-		//AddGameObject<ObstacleSpring>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos);
+		AddGameObject<ObstacleSpring>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, params.MoveDir);
 	}
 
 	bool GameStageBase::IsPause() const
@@ -446,6 +463,26 @@ namespace basecross {
 		for (auto& obj : objs)
 		{
 			obj->SetUpdateActive(!m_isPause);
+		}
+		//EffectManager::g_Instance->OnDraw();
+	}
+
+	bool GameStageBase::IsOption() const
+	{
+		return m_optionMenu->GetOption() && m_optionMenu;
+	}
+
+	void GameStageBase::Option(bool isOption)
+	{
+		bool option = m_optionMenu->GetOption();
+		m_isOption = isOption;
+
+		auto objs = GetGameObjectVec();
+		auto view = GetView();
+		auto camera = view->GetTargetCamera();
+		for (auto& obj : objs)
+		{
+			obj->SetUpdateActive(!m_isOption);
 		}
 		//EffectManager::g_Instance->OnDraw();
 	}

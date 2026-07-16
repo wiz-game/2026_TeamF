@@ -152,7 +152,7 @@ namespace basecross {
 			//トラップドアの初期設定
 			TrapDoorAxisDesc moveDoorX;
 			moveDoorX.axis = MoveAxis::X;
-			moveDoorX.speed = 0.01f;
+			moveDoorX.speed = -0.01f;
 			moveDoorX.port = MoveFoor_port;
 			//moveDoorX.bReverseConnect = false;
 			AddGameObject<TrapDoorAxis>(Vec3(2.0f, 0.1f, 4.0f), Vec3(XM_PIDIV2, 0.0f, 0.0f), Vec3(5.0f, -0.5f, 0.0f), moveDoorX);
@@ -183,6 +183,9 @@ namespace basecross {
 			AddGameObject<BeltConveyor>(Vec3(2.0f, 0.1f, 5.0f), Vec3(0, 0, 0), Vec3(0.0f, -0.2f, 16.0f), nullptr);
 			AddGameObject<BeltConveyor>(Vec3(2.0f, 0.1f, 8.0f), Vec3(0, -XM_PIDIV2, 0), Vec3(0.0f, -0.2f, 22.0f), nullptr);
 			AddGameObject<BeltConveyor>(Vec3(2.0f, 0.1f, 8.0f), Vec3(0, XM_PIDIV2, 0), Vec3(0.0f, -0.2f, 25.0f), nullptr);
+
+			AddGameObject<BeltConveyor>(Vec3(2.0f, 0.1f, 5.0f), Vec3(0, 0, 0), Vec3(3.0f, -0.2f, 0.0f), nullptr);
+
 
 			MoveFloorDesc moveFloorX_2;
 			moveFloorX_2.axis = MoveAxis::X;	//移動する軸の指定
