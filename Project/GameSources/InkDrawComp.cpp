@@ -102,6 +102,49 @@ namespace basecross
 		 m_brush.textrueHeight = height;
 	}
 
+	void InkDrawComp::CreateTexture(const wstring& texKey)
+	{
+		auto texResource = App::GetApp()->GetResource<TextureResource>(texKey);
+
+		auto texSRV = texResource->GetShaderResourceView();
+
+		ID3D11Resource* tempResource = nullptr;
+		ID3D11Texture2D* texture = nullptr;
+
+		texSRV->GetResource(&tempResource);
+		tempResource->QueryInterface(__uuidof(ID3D11Texture2D),(void**)&texture);
+
+		if (!texture) return;
+		D3D11_TEXTURE2D_DESC desc{};
+		texture->GetDesc(&desc);
+
+		desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;//テクスチャのバインドフラグ
+
+		auto device = App::GetApp()->GetDeviceResources()->GetD3DDevice();
+		//色を塗る対象
+		device->CreateTexture2D(&desc, nullptr, m_texture.GetAddressOf());
+		auto deviceContext = App::GetApp()->GetDeviceResources()->GetD3DDeviceContext();
+		deviceContext->CopyResource(m_texture.Get(), texture);
+		//読込
+		device->CreateShaderResourceView(m_texture.Get(), nullptr, m_textureSRV.GetAddressOf());//シェーダーリソースビューの作成
+		//書き込み
+		device->CreateRenderTargetView(m_texture.Get(), nullptr, m_textureRTV.GetAddressOf());//レンダーターゲットビューの作成
+
+		D3D11_VIEWPORT viewport{};
+		viewport.Width = static_cast<FLOAT>(desc.Width);
+		viewport.Height = static_cast<FLOAT>(desc.Height);
+		viewport.MinDepth = 0.0f;//表示するｚ軸の最小の幅
+		viewport.MaxDepth = 1.0f;//表示するｚ軸の最大
+		m_viewport = viewport;
+
+		auto dev = App::GetApp()->GetDeviceResources();
+		auto devContext = dev->GetD3DDeviceContext();//描画するためのデバイスコンテキストの取得
+
+		m_brush.textrueWidth = desc.Width;
+		m_brush.textrueHeight = desc.Height;
+	}
+
+
 	void InkDrawComp::InkDraw()
 	{
 		if (m_brush.count <= 0) return;
