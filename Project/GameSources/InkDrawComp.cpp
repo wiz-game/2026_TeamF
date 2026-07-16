@@ -20,18 +20,6 @@ namespace basecross
 		auto size = m_defaultSize * 0.5f;
 		AddPointFromWorldPos(pTrans->GetWorldPosition());
 		SetBrushSize(size);
-
-		if (GameController::IsPressed_ButtonRight() && GameController::IsPressed_DpadLeft()) {
-			int stageNum = GameProgressManager::Get().GetCurrentStage();
-			wstring filename = L"DefaultInk_Stage" + to_wstring(stageNum) + L"_";
-			auto object = GetGameObject();
-			auto objBase = dynamic_pointer_cast<StageObjBase>(object);
-
-			int id = (int)(objBase->m_pos.x + objBase->m_pos.y + objBase->m_pos.z);
-			filename += objBase->m_type + to_wstring(id);
-			TextureWriter::Write(filename, m_texture.Get());
-		}
-
 	}
 
 	void InkDrawComp::InkDrawStart()
@@ -277,7 +265,16 @@ namespace basecross
 
 		}
 	}
+	void InkDrawComp::WriteToWIC() {
+		int stageNum = GameProgressManager::Get().GetCurrentStage();
+		wstring filename = L"DefaultInk_Stage" + to_wstring(stageNum) + L"_";
+		auto object = GetGameObject();
+		auto objBase = dynamic_pointer_cast<StageObjBase>(object);
 
+		int id = (int)(objBase->m_pos.x + objBase->m_pos.y + objBase->m_pos.z);
+		filename += objBase->m_type + to_wstring(id);
+		TextureWriter::Write(filename, m_texture.Get());
+	}
 
 	IMPLEMENT_DX11_PIXEL_SHADER(InkDrawPixelSheder, App::GetApp()->GetShadersPath() + L"PSInkDraw.cso")
 	IMPLEMENT_DX11_VERTEX_SHADER(InkDrawVertexSheder, App::GetApp()->GetShadersPath() + L"VSInkDraw.cso")

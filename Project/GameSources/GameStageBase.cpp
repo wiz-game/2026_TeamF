@@ -7,7 +7,7 @@
 #include "Project.h"
 #include "game_controller.h"
 #include "GameStageBase.h"
-
+#include "GameProgressManager.h"
 namespace basecross {
 	//ビューとライトの作成
 	void GameStageBase::CreateViewLight() {
@@ -133,6 +133,26 @@ namespace basecross {
 			m_optionMenu->OnUpdate();
 		}
 
+		if (GameController::IsPressed_ButtonRight() && GameController::IsPressed_DpadLeft()) {
+			auto player = GetSharedGameObject<Player>(L"Player", false);
+			if (!player) return;
+			Vec3 playerPosition = player->GetComponent<Transform>()->GetPosition();
+			for (auto& floor : GetGameObjectVec()) {
+				auto draw = floor->GetComponent<InkDrawComp>(false);
+				if (!draw) continue;
+				Vec3 hitPos;
+				TRIANGLE tempTri;
+				size_t temp;
+				if (draw->HitTestStaticMeshSphereTriangles(
+					SPHERE(playerPosition, 1.0f),
+					SPHERE(playerPosition + Vec3(0.0f, 1.0f, 0.0f), 1.0f),
+					hitPos, tempTri, temp)) {
+
+					draw->WriteToWIC();
+				}
+			}
+			
+		}
 	}
 
 	void GameStageBase::OnDraw()
