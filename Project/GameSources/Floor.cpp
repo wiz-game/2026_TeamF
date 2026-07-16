@@ -28,6 +28,8 @@ namespace basecross
 			auto& app = App::GetApp();
 			auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
 			app->RegisterTexture(L"Floor", path + L"Floor.png"); // 画像ファイルを読み込んでアセットとして登録する
+			app->RegisterTexture(L"InkCollisionTest2", path + L"Test/InkCollisionTest2.png"); // 画像ファイルを読み込んでアセットとして登録する
+
 		}
 		catch (...) {
 		}
@@ -36,6 +38,8 @@ namespace basecross
 		//m_draw = AddComponent<PNTStaticDraw>();
 		m_draw = AddComponent<InkDrawComp>();
 		m_draw->CreateTexture(m_scale.x, m_scale.z);
+		//m_draw->CreateTexture(L"InkCollisionTest2");
+
 		//m_draw->SetBrushSize(0.3);
 		m_draw->SetMeshResource(L"DEFAULT_CUBE");
 		m_draw->SetTextureResource(L"Floor");
