@@ -43,6 +43,7 @@ namespace basecross
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 		void CreateTexture(float scaleX, float scaleZ);
+		void CreateTexture(const wstring& texKey);
 		void InkDraw();
 		void AddPoint(const Vec3& point);
 		void ClearPoint();
