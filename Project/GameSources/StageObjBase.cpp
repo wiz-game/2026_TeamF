@@ -16,8 +16,10 @@ namespace basecross {
 		m_scale(Scale),
 		m_rot(Rot),
 		m_pos(Position),
-		m_type(type)
+		m_type(type),
+		m_id(TOTAL_ID)
 	{
+		TOTAL_ID++;
 	}
 
 	StageObjBase::~StageObjBase()

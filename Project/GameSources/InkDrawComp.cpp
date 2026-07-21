@@ -271,8 +271,7 @@ namespace basecross
 		auto object = GetGameObject();
 		auto objBase = dynamic_pointer_cast<StageObjBase>(object);
 
-		int id = (int)(objBase->m_pos.x + objBase->m_pos.y + objBase->m_pos.z);
-		filename += objBase->m_type + to_wstring(id);
+		filename += objBase->m_type + to_wstring(objBase->m_id);
 		TextureWriter::Write(filename, m_texture.Get());
 	}
 

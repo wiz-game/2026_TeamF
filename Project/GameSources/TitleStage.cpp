@@ -31,6 +31,7 @@ namespace basecross {
 		wstring mediaPath = App::GetApp()->GetDataDirWString();
 		app->RegisterTexture(L"TITLE", mediaPath + L"Texture/Title1.png");
 		app->RegisterTexture(L"BUTTON_A_START", mediaPath + L"Texture/Button_A_Start.png");
+		app->RegisterTexture(L"PAPER", mediaPath + L"Texture/Paper.png");
 
 	}
 
@@ -53,6 +54,11 @@ namespace basecross {
 			m_Title->MatchToScreenSize();
 			m_sprite_Button = AddGameObject<Sprite>(L"BUTTON_A_START", Vec3(0, -300, 0), Vec2(400, 150), Anchor::Center);
 
+			/*shared_ptr<Sprite> paper = AddGameObject<Sprite>(L"PAPER", Vec3(), Vec2(), Anchor::Center);
+			paper->MatchToScreenSize();
+			paper->CreateAnimationUV(Vec2(6, 4));
+			paper->AddAnimation(L"MAIN", 0, 23, 0.02f, true,true);
+			paper->SetCurrentAnimation(L"MAIN");*/
 		}
 		catch (...) {
 			throw;
