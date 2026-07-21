@@ -1,5 +1,5 @@
 /*!
-@file ErEnemy.h
+@file MoveObj.h
 @brief キャラクターなど
 */
 
@@ -12,18 +12,18 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	class GenericSprite : public GameObject;
 	//--------------------------------------------------------------------------------------
-	class ErEnemy : public BaseEnemy
+	class MoveObj : public BaseEnemy
 	{
 		std::shared_ptr<InkCloud> m_targetInk;
 		std::shared_ptr<InkCloud> FindNearestInk(
 			const std::vector<std::shared_ptr<GameObject>>& objs);
 	public:
 		// 構築と破棄
-		ErEnemy(const shared_ptr<Stage>& stage) :
+		MoveObj(const shared_ptr<Stage>& stage) :
 			BaseEnemy(stage)
 		{
 		}
-		virtual ~ErEnemy()
+		virtual ~MoveObj()
 		{
 		}
 

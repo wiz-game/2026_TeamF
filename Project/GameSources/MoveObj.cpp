@@ -1,5 +1,5 @@
 /*!
-@file ErEnemy.cpp
+@file MoveObj.cpp
 @brief インク消去機体
 */
 
@@ -9,7 +9,7 @@
 
 namespace basecross {
 
-    void ErEnemy::OnCreate()
+    void MoveObj::OnCreate()
     {
         BaseEnemy::OnCreate();
 
@@ -23,7 +23,7 @@ namespace basecross {
     // ============================================================
     // メイン制御（超シンプル）
     // ============================================================
-    void ErEnemy::OnUpdate()
+    void MoveObj::OnUpdate()
     {
         UpdateGroundRay();
 
@@ -61,7 +61,7 @@ namespace basecross {
     // ============================================================
     // ターゲット取得
     // ============================================================
-    std::shared_ptr<InkCloud> ErEnemy::FindNearestInk(
+    std::shared_ptr<InkCloud> MoveObj::FindNearestInk(
         const std::vector<std::shared_ptr<GameObject>>& objs)
     {
         Vec3 pos = m_transform->GetPosition();
@@ -93,7 +93,7 @@ namespace basecross {
     // ============================================================
     // インク消去
     // ============================================================
-    void ErEnemy::UpdateErase(std::shared_ptr<InkCloud> target)
+    void MoveObj::UpdateErase(std::shared_ptr<InkCloud> target)
     {
         Vec3 pos = m_transform->GetPosition();
 
@@ -138,7 +138,7 @@ namespace basecross {
     // ============================================================
     // 徘徊
     // ============================================================
-    void ErEnemy::UpdatePatrol()
+    void MoveObj::UpdatePatrol()
     {
         auto delta = App::GetApp()->GetElapsedTime();
         Vec3 pos = m_transform->GetPosition();

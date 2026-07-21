@@ -36,7 +36,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BaseEnemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)MoveObj.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\advancing_front.cc">
@@ -59,9 +59,6 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ComputeShader.cpp">
       <Filter>CS</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp">
-      <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp">
       <Filter>Effect</Filter>
@@ -220,16 +217,16 @@
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ObstacleSpring.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Singleton.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)DrEnemy.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)MoveObj.h">
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Box.h">
@@ -413,6 +410,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h">
       <Filter>Stage\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DrEnemy.h">
+      <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
