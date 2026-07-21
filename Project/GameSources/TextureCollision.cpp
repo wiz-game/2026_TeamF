@@ -237,24 +237,28 @@ namespace basecross {
 		for (size_t i = 0, size = simpleContours.size(); i < size; i++) {
 			if (contourHierarchy[i][3] == -1) {
 				if (polylines[i].size() < 3) continue;
+				try {
+					p2t::CDT cdt(polylines[i]);
 
-				p2t::CDT cdt(polylines[i]);
-
-				int hole = contourHierarchy[i][2];
-				while (hole != -1) {
-					const double MIN_HOLE_AREA = 10.0;
-					if (polylines[hole].size() >= 3 && abs(cv::contourArea(simpleContours[hole])) >= MIN_HOLE_AREA) {
-						cdt.AddHole(polylines[hole]);
+					int hole = contourHierarchy[i][2];
+					while (hole != -1) {
+						const double MIN_HOLE_AREA = 10.0;
+						if (polylines[hole].size() >= 3 && abs(cv::contourArea(simpleContours[hole])) >= MIN_HOLE_AREA) {
+							cdt.AddHole(polylines[hole]);
+						}
+						hole = contourHierarchy[hole][0];
 					}
-					hole = contourHierarchy[hole][0];
-				}
-				
-				cdt.Triangulate();
-				auto triangles = cdt.GetWorldTriangles();
 
-				Contour data = Contour(CalcContourWorldTriangle(triangles,snapShot));
-				data.CalcAABB(snapShot.m_Transform);
-				result.push_back(data);
+					cdt.Triangulate();
+					auto triangles = cdt.GetWorldTriangles();
+
+					Contour data = Contour(CalcContourWorldTriangle(triangles, snapShot));
+					data.CalcAABB(snapShot.m_Transform);
+					result.push_back(data);
+				}
+				catch (...) {
+
+				}
 			}
 		}
 	}
