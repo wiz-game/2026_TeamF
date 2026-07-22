@@ -8,11 +8,14 @@
 
 namespace basecross {
 
-	const float MoveObj::PUSH_POWER = 0.03f;
+	const float MoveObj::PUSH_POWER = 0.003f;
+	const float MoveObj::GRAVITY = -9.8f;
 
 	void MoveObj::OnCreate()
 	{
-		GameObject::OnCreate();
+		m_draw = AddComponent<PNTStaticDraw>();
+		m_draw->SetMeshResource(L"DEFAULT_CUBE");
+		m_transform = GetComponent<Transform>();
 
 		m_transform->SetScale(m_scale);
 		m_transform->SetRotation(m_rot);
@@ -28,11 +31,10 @@ namespace basecross {
 
 	void MoveObj::OnUpdate()
 	{
-		OutputDebugStringW(L"Hit\n");
-
 		float delta =
 			App::GetApp()->GetElapsedTime();
 
+		UpdateGravity(delta);
 		m_moveAmount += m_moveSpeed * delta;
 
 		Vec3 dir = m_moveDirection;
@@ -42,13 +44,33 @@ namespace basecross {
 			dir.normalize();
 		}
 
-		Vec3 pos = m_startPos + dir * m_moveAmount;
-
+		Vec3 pos = m_transform->GetPosition();
+		pos.x = m_startPos.x + dir.x * m_moveAmount;
+		pos.z = m_startPos.z + dir.z * m_moveAmount;
 		m_transform->SetPosition(pos);
+
 	}
 
-	void MoveObj::OnCollisionEnter(
-		std::shared_ptr<GameObject>& obj)
+	void MoveObj::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
+	{
+		if (dynamic_pointer_cast<BeltConveyor>(obj))
+		{
+			m_isGround = true;
+			m_velocity = 0.0f;
+		}
+		if (dynamic_pointer_cast<Floor>(obj))
+		{
+			m_isGround = true;
+			m_velocity = 0.0f;
+		}
+		if (auto player =
+			std::dynamic_pointer_cast<Player>(obj))
+		{
+			PushPlayer(player);
+		}
+	}
+
+	void MoveObj::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
 	{
 		if (auto player =
 			std::dynamic_pointer_cast<Player>(obj))
@@ -57,13 +79,15 @@ namespace basecross {
 		}
 	}
 
-	void MoveObj::OnCollisionExcute(
-		std::shared_ptr<GameObject>& obj)
+	void MoveObj::OnCollisionExit(std::shared_ptr<GameObject>& obj)
 	{
-		if (auto player =
-			std::dynamic_pointer_cast<Player>(obj))
+		if (dynamic_pointer_cast<BeltConveyor>(obj))
 		{
-			PushPlayer(player);
+			m_isGround = false;
+		}
+		if (dynamic_pointer_cast<Floor>(obj))
+		{
+			m_isGround = false;
 		}
 	}
 
@@ -83,5 +107,20 @@ namespace basecross {
 			dir * PUSH_POWER
 		);
 	}
+	void MoveObj::UpdateGravity(float delta)
+	{
+		Vec3 pos = m_transform->GetPosition();
 
+		if (!m_isGround)
+		{
+			m_velocity += GRAVITY * delta;
+			pos.y += m_velocity * delta;
+		}
+		else
+		{
+			m_velocity = 0.0f;
+		}
+
+		m_transform->SetPosition(pos);
+	}
 }

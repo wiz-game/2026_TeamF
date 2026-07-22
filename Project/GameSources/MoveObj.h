@@ -12,8 +12,11 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	class GenericSprite : public GameObject;
 	//--------------------------------------------------------------------------------------
-	class MoveObj : public BaseEnemy
+	class MoveObj : public GameObject
 	{
+		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
+		std::shared_ptr<Transform> m_transform; // トランスフォームコンポーネント
+
 	private:
 		Vec3 m_scale;
 		Vec3 m_pos;
@@ -23,8 +26,14 @@ namespace basecross {
 		
 		float m_moveSpeed = 1.0f;
 		float m_moveAmount;
+		float m_gravity = -9.8f;
+		float m_velocity = 0.0f;
+
+		bool m_isGround = false;
 
 		static const float PUSH_POWER;
+		static const float GRAVITY;
+
 	public:
 		// 構築と破棄
 		MoveObj(
@@ -34,7 +43,7 @@ namespace basecross {
 			const Vec3& Position,//位置
 			const Vec3& MoveDirection//移動の向き
 			):
-			BaseEnemy(stage),
+			GameObject(stage),
 			m_scale(Scale),
 			m_rot(Rot),
 			m_pos(Position),
@@ -51,10 +60,11 @@ namespace basecross {
 
 		void OnCollisionEnter(std::shared_ptr<GameObject>& obj);
 		void OnCollisionExcute(std::shared_ptr<GameObject>& obj);
-		//void OnCollisionExit(std::shared_ptr<GameObject>& obj);
+		void OnCollisionExit(std::shared_ptr<GameObject>& obj);
 
 	private:
 		void PushPlayer(std::shared_ptr<Player> player);
+		void UpdateGravity(float delta);
 	};
 
 }
