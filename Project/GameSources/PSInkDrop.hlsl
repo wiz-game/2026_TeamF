@@ -21,7 +21,7 @@ float4 main(VS_Output input) : SV_TARGET
     diff.x *= textrueWidth;
     diff.y *= textrueHeiht;
     float dist = length(diff);
-        
+    
     if(dist < brushSize)
     {
         //center.z = 0 なら「塗る」、１なら「消す」

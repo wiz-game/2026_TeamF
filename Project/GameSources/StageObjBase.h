@@ -11,6 +11,9 @@ namespace basecross {
 		Vec3 m_pos;
 
 		wstring m_type;
+		UINT m_id;
+
+		inline static UINT TOTAL_ID = 0;
 	protected:
 		StageObjBase
 		(

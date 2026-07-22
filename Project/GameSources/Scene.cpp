@@ -95,7 +95,7 @@ namespace basecross{
 		InkConnectChecker::Get().Initialize();
 		ThreadPool::Get().Wait();
 		TextureMeshManager::Get().Clear();
-
+		StageObjBase::TOTAL_ID = 0;
 		if (event->m_MsgStr == L"ToProtoStage") {
 			ResetActiveStage<ProtoStage>();
 		}
