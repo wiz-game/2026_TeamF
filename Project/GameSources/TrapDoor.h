@@ -30,7 +30,7 @@ namespace basecross
 			GameObject(stage),
 			m_owner(owner),
 			m_scale(scale),
-			m_pos(Vec3(0.0f, 0.0f, scale.z / 2.0f)),
+			m_pos(Vec3(scale.x / 2.0f, 0.0f, 0.0f)),
 			m_isMove(false)
 		{
 		}

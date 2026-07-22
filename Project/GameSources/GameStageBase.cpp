@@ -445,7 +445,7 @@ namespace basecross {
 		desc.speed = params.Speed;
 		desc.port = Map_Ports[params.PortID];
 
-		AddGameObject<TrapDoorAxis>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, desc);
+		AddGameObject<TrapDoorB>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, desc);
 	}
 
 	void GameStageBase::AddBeltConveyorObj(STRUCT_ElectricObjBaseParams params)

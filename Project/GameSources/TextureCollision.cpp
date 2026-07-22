@@ -610,12 +610,12 @@ namespace basecross {
 
 				size_t contourCount = collision->GetContourCount();
 				for (int i = 0; i < contourCount; i++) {
+					if (collision->IsElectrified(i)) continue;
 					const auto& inkAABB = collision->GetContourAABB(i);
 					if (!HitTest::AABB_AABB(supplyAABB, inkAABB, Vec3(0.0f, 0.5f, 0.0f))) continue;
 
 					const auto& triangles = collision->GetWorldTriangles(i);
 					bool isConnectedSupply = IsConnectedSupplyToInk(supplyOBB, supplyAABB, triangles);
-					
 					if (isConnectedSupply) {
 						collision->SetElectricfield(i);
 						IsConnectedInkToInk(triangles, inkAABB);
