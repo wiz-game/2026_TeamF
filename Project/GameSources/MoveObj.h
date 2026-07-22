@@ -12,7 +12,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	class GenericSprite : public GameObject;
 	//--------------------------------------------------------------------------------------
-	class MoveObj : public GameObject
+	class MoveObj : public StageObjBase
 	{
 		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<Transform> m_transform; // トランスフォームコンポーネント
@@ -42,7 +42,7 @@ namespace basecross {
 			const Vec3& Rot,//回転
 			const Vec3& Position//位置
 			):
-			GameObject(stage),
+			StageObjBase(stage, Scale,Rot,Position,L"MoveObj"),
 			m_scale(Scale),
 			m_rot(Rot),
 			m_pos(Position)
