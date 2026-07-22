@@ -21,10 +21,10 @@ namespace basecross {
 		Vec3 m_scale;
 		Vec3 m_pos;
 		Vec3 m_rot;
-		Vec3 m_moveDirection;
 		Vec3 m_startPos;
-		
-		float m_moveSpeed = 1.0f;
+		Vec3 m_moveFloorVec;
+		Vec3 m_currentMoveVec;
+
 		float m_moveAmount;
 		float m_gravity = -9.8f;
 		float m_velocity = 0.0f;
@@ -40,14 +40,12 @@ namespace basecross {
 			const shared_ptr<Stage>& stage,
 			const Vec3& Scale,//サイズ
 			const Vec3& Rot,//回転
-			const Vec3& Position,//位置
-			const Vec3& MoveDirection//移動の向き
+			const Vec3& Position//位置
 			):
 			GameObject(stage),
 			m_scale(Scale),
 			m_rot(Rot),
-			m_pos(Position),
-			m_moveDirection(MoveDirection)
+			m_pos(Position)
 		{}
 
 		virtual ~MoveObj()
@@ -61,6 +59,8 @@ namespace basecross {
 		void OnCollisionEnter(std::shared_ptr<GameObject>& obj);
 		void OnCollisionExcute(std::shared_ptr<GameObject>& obj);
 		void OnCollisionExit(std::shared_ptr<GameObject>& obj);
+
+		void UpdateMoveFloor(const Vec3& movePos);
 
 	private:
 		void PushPlayer(std::shared_ptr<Player> player);

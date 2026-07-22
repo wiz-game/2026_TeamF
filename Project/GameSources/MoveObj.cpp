@@ -35,20 +35,6 @@ namespace basecross {
 			App::GetApp()->GetElapsedTime();
 
 		UpdateGravity(delta);
-		m_moveAmount += m_moveSpeed * delta;
-
-		Vec3 dir = m_moveDirection;
-
-		if (dir.length() > 0.001f)
-		{
-			dir.normalize();
-		}
-
-		Vec3 pos = m_transform->GetPosition();
-		pos.x = m_startPos.x + dir.x * m_moveAmount;
-		pos.z = m_startPos.z + dir.z * m_moveAmount;
-		m_transform->SetPosition(pos);
-
 	}
 
 	void MoveObj::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
@@ -91,10 +77,20 @@ namespace basecross {
 		}
 	}
 
+	void MoveObj::UpdateMoveFloor(const Vec3& movePos)
+	{
+		m_currentMoveVec = movePos;
+		Vec3 pos = m_transform->GetPosition();
+
+		pos += movePos;
+
+		m_transform->SetPosition(pos);
+	}
+
 	void MoveObj::PushPlayer(
 		std::shared_ptr<Player> player)
 	{
-		Vec3 dir = m_moveDirection;
+		Vec3 dir = m_currentMoveVec;
 
 		dir.y = 0.0f;
 
