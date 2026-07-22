@@ -47,7 +47,7 @@
 
 #include "BaseEnemy.h"
 #include "DrEnemy.h"
-#include "ErEnemy.h"
+#include "MoveObj.h"
 
 #include "Sprite.h"
 #include "SoundManager.h"

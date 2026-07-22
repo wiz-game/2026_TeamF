@@ -350,10 +350,18 @@ namespace basecross {
 		BaseParams(json, params.StageObjParams);
 
 		auto childObjectData = json.At<JsonObject>(L"childObjectData");
-		auto moveDir = childObjectData->At<JsonObject>(L"MoveDir");
-		params.MoveDir.x = moveDir->At<JsonNumber>(L"x")->GetFloatValue();
-		params.MoveDir.y = moveDir->At<JsonNumber>(L"y")->GetFloatValue();
-		params.MoveDir.z = moveDir->At<JsonNumber>(L"z")->GetFloatValue();
+		float sideStr = childObjectData->At<JsonNumber>(L"Side")->GetFloatValue();
+		switch ((int)sideStr)
+		{
+		default:
+			break;
+		case 0:
+			params.Side = DoorSide::Left;
+			break;
+		case 1:
+			params.Side = DoorSide::Right;
+			break;
+		}
 		params.PortID = childObjectData->At<JsonNumber>(L"PortID")->GetIntValue();
 
 		return params;
@@ -457,9 +465,7 @@ namespace basecross {
 	void GameStageBase::AddGoalDoorObj(STRUCT_GoalDoorParams params)
 	{
 		STRUCT_GoalDoorParams desc;
-		desc.MoveDir = params.MoveDir;
-		desc.PortID = params.PortID;
-		AddGameObject<GoalDoor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID], desc.MoveDir);
+		AddGameObject<GoalDoor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID], params.Side);
 	}
 
 	void GameStageBase::AddSpringObj(STRUCT_SpringParams params)

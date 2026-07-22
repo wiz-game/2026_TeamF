@@ -12,6 +12,12 @@ namespace basecross
 {
 	class Port;
 
+	enum class DoorSide
+	{
+		Left,
+		Right
+	};
+
 	class GoalDoor : public StageObjBase
 	{
 		std::shared_ptr<Texture2DrawComp> m_draw;
@@ -24,16 +30,20 @@ namespace basecross
 		bool m_isOpen;
 		float m_speed;
 
+		DoorSide m_side;//左右どちらの扉か
+
 	public:
-		GoalDoor(const std::shared_ptr<Stage> stage,
+		GoalDoor(
+			const std::shared_ptr<Stage>& stage,
 			const Vec3& Scale,
 			const Vec3& Rot,
 			const Vec3& Position,
 			std::shared_ptr<Port> port,
-			const Vec3& moveDir) :
-			StageObjBase(stage, Scale, Rot, Position,L"GoolDoor"),
+			DoorSide side
+		) :
+			StageObjBase(stage,Scale,Rot,Position,L"GoalDoor"),
 			m_port(port),
-			m_moveDir(moveDir),
+			m_side(side),
 			m_speed(0.05f),
 			m_startPos(m_pos)
 		{
