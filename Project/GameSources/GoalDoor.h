@@ -33,13 +33,15 @@ namespace basecross
 		DoorSide m_side;//左右どちらの扉か
 
 	public:
-		GoalDoor(const std::shared_ptr<Stage> stage,
+		GoalDoor(
+			const std::shared_ptr<Stage>& stage,
 			const Vec3& Scale,
 			const Vec3& Rot,
 			const Vec3& Position,
 			std::shared_ptr<Port> port,
-			DoorSide side) :
-			StageObjBase(stage, Scale, Rot, Position),
+			DoorSide side
+		) :
+			StageObjBase(stage,Scale,Rot,Position,L"GoalDoor"),
 			m_port(port),
 			m_side(side),
 			m_speed(0.05f),

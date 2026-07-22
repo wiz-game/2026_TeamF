@@ -55,7 +55,7 @@ namespace basecross
 		void InkDrawStart();
 
 		void AddPointFromWorldPos(const Vec3& playerWorldPos);
-
+		void WriteToWIC();
 		ComPtr<ID3D11ShaderResourceView> GetSRV()
 		{
 			return m_textureSRV;

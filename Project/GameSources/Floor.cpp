@@ -15,7 +15,7 @@ namespace basecross
 		const Vec3& rot,
 		const Vec3& Pos
 	) :
-		StageObjBase(stage, Scale, rot, Pos),
+		StageObjBase(stage, Scale, rot, Pos,L"Floor"),
 		m_pos(Pos),
 		m_scale(Scale)
 	{
@@ -65,5 +65,6 @@ namespace basecross
 
 	void Floor::OnUpdate()
 	{
+
 	}
 }

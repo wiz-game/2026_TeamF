@@ -56,6 +56,13 @@ namespace basecross {
 			}
 			m_isPlayerOn = true;
 		}
+		if (auto moveObj = dynamic_pointer_cast<MoveObj>(obj))
+		{
+			//Playerに移動量を渡す
+			moveObj->UpdateMoveFloor(m_currentMoveVec);
+			m_isPlayerOn = true;
+		}
+
 	}
 
 	void FloorDecision::OnCollisionExcute(std::shared_ptr<GameObject>& obj)

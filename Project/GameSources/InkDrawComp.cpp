@@ -3,7 +3,7 @@
 #include "game_controller.h"
 #include "Player.h"
 #include "TextureCollision.h"
-
+#include "GameProgressManager.h"
 namespace basecross
 {
 	void InkDrawComp::OnCreate()
@@ -20,7 +20,6 @@ namespace basecross
 		auto size = m_defaultSize * 0.5f;
 		AddPointFromWorldPos(pTrans->GetWorldPosition());
 		SetBrushSize(size);
-
 	}
 
 	void InkDrawComp::InkDrawStart()
@@ -266,7 +265,15 @@ namespace basecross
 
 		}
 	}
+	void InkDrawComp::WriteToWIC() {
+		int stageNum = GameProgressManager::Get().GetCurrentStage();
+		wstring filename = L"DefaultInk_Stage" + to_wstring(stageNum) + L"_";
+		auto object = GetGameObject();
+		auto objBase = dynamic_pointer_cast<StageObjBase>(object);
 
+		filename += objBase->m_type + to_wstring(objBase->m_id);
+		TextureWriter::Write(filename, m_texture.Get());
+	}
 
 	IMPLEMENT_DX11_PIXEL_SHADER(InkDrawPixelSheder, App::GetApp()->GetShadersPath() + L"PSInkDraw.cso")
 	IMPLEMENT_DX11_VERTEX_SHADER(InkDrawVertexSheder, App::GetApp()->GetShadersPath() + L"VSInkDraw.cso")

@@ -24,7 +24,7 @@ namespace basecross{
 
 		void SetCurrentStage(int stage) { m_CurrentStage = stage; }
 		int GetCurrentStage()const { return m_CurrentStage; }
-		bool IsExistsNextStage()const { return ( m_GameDates.size() - 1 ) < m_CurrentStage; }
+		bool IsExistsNextStage()const { return ( m_GameDates.size() - 1 ) > m_CurrentStage; }
 
 		void ClearCurrentStage();
 		bool IsClear(int stage)const;
