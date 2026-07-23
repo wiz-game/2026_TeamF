@@ -3808,7 +3808,7 @@ namespace basecross{
 			return CollisionTestObbObbSub(SrcObb, SrcVelocity,DestObb, StartTime, EndTime,HitTime);
 		}
 
-		static bool CollisionTestOBBTriangle(const OBB& obb, const TRIANGLE& triangle) {
+		static bool CollisionTestOBBTriangle(const OBB& obb, const TRIANGLE& triangle,const bsm::Vec3& epsilon = bsm::Vec3()) {
 			array<bsm::Vec3, 13> axis;
 			axis[0] = obb.m_Rot[0];
 			axis[1] = obb.m_Rot[1];
@@ -3826,9 +3826,9 @@ namespace basecross{
 
 				float proj = obb.m_Center.dot(L);
 				float radius = 
-					obb.m_Size.x * abs(obb.m_Rot[0].dot(L)) +
-					obb.m_Size.y * abs(obb.m_Rot[1].dot(L)) +
-					obb.m_Size.z * abs(obb.m_Rot[2].dot(L));
+					(obb.m_Size.x + epsilon.x) * abs(obb.m_Rot[0].dot(L)) +
+					(obb.m_Size.y + epsilon.y) * abs(obb.m_Rot[1].dot(L)) +
+					(obb.m_Size.z + epsilon.z) * abs(obb.m_Rot[2].dot(L));
 
 				float obbMin = proj - radius;
 				float obbMax = proj + radius;

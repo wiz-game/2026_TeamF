@@ -519,7 +519,7 @@ namespace basecross {
 	bool InkConnectChecker::IsConnectedSupplyToInk(const OBB& supplyOBB, const AABB& supplyAABB, const vector<TRIANGLE>& triangles) {
 		for (auto& triangle : triangles) {
 			if (!HitTest::AABB_AABB(supplyAABB, triangle.GetWrappedAABB(), Vec3(0.0f, 0.5f, 0.0f))) continue;
-			if (!HitTest::CollisionTestOBBTriangle(supplyOBB, triangle)) continue;
+			if (!HitTest::CollisionTestOBBTriangle(supplyOBB, triangle,Vec3(0.0f,0.5f,0.0f))) continue;
 			return true;
 		}
 		return false;
@@ -571,7 +571,7 @@ namespace basecross {
 	bool InkConnectChecker::IsConnectedInkToPort(const OBB& portOBB, const AABB& portAABB, const vector<TRIANGLE>& triangles) {
 		for (auto& triangle : triangles) {
 			if (!HitTest::AABB_AABB(portAABB, triangle.GetWrappedAABB(), Vec3(0.0f, 0.5f, 0.0f))) continue;
-			if (!HitTest::CollisionTestOBBTriangle(portOBB, triangle)) continue;
+			if (!HitTest::CollisionTestOBBTriangle(portOBB, triangle, Vec3(0.0f, 0.5f, 0.0f))) continue;
 			return true;
 		}
 		return false;
@@ -610,12 +610,12 @@ namespace basecross {
 
 				size_t contourCount = collision->GetContourCount();
 				for (int i = 0; i < contourCount; i++) {
+					if (collision->IsElectrified(i)) continue;
 					const auto& inkAABB = collision->GetContourAABB(i);
 					if (!HitTest::AABB_AABB(supplyAABB, inkAABB, Vec3(0.0f, 0.5f, 0.0f))) continue;
 
 					const auto& triangles = collision->GetWorldTriangles(i);
 					bool isConnectedSupply = IsConnectedSupplyToInk(supplyOBB, supplyAABB, triangles);
-					
 					if (isConnectedSupply) {
 						collision->SetElectricfield(i);
 						IsConnectedInkToInk(triangles, inkAABB);

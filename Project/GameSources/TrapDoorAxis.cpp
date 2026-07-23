@@ -7,6 +7,93 @@
 #include "Project.h"
 
 namespace basecross {
+	TrapDoorB::TrapDoorB(const shared_ptr<Stage>& ptr, const Vec3& scale, const Vec3& rotation, const Vec3& position, const TrapDoorAxisDesc& desc):
+		StageObjBase(ptr,scale,rotation,position,L"TrapDoor"),m_AxisDesc(desc){}
+	TrapDoorB::~TrapDoorB(){}
+
+	void TrapDoorB::OnCreate() {
+		try
+		{
+			auto& app = App::GetApp();
+			auto path = app->GetDataDirWString() + L"Texture\\"; // テクスチャのパスを構築
+			app->RegisterTexture(L"MoveFloor", path + L"MoveFloor.png"); // 画像ファイルを読み込んでアセットとして登録する
+			app->RegisterTexture(L"Black", path + L"Black.png"); // 画像ファイルを読み込んでアセットとして登録する
+		}
+		catch (...) {
+		}
+		m_CurrentRotation = m_rot;
+
+		shared_ptr<Transform> transform = GetComponent<Transform>();
+
+		//m_pos.y = -9.2f - m_scale.y;
+		transform->SetScale(m_scale);
+		transform->SetRotation(m_CurrentRotation);
+		ApplyCurrentPosition();
+
+		//Drawコンポーネント
+		shared_ptr<Texture2DrawComp> draw = AddComponent<Texture2DrawComp>();
+		draw->CreateTexture(m_scale.x, m_scale.z);
+		draw->SetMeshResource(L"DEFAULT_CUBE");
+		draw->SetTextureResource(L"MoveFloor");
+		draw->SetTexture2(L"Black");
+		draw->SetDiffuse(Col4(1, 1, 1, 1));
+
+		draw->SetOwnShadowActive(true);
+
+		auto shadowMap = AddComponent<Shadowmap>();
+		shadowMap->SetMeshResource(L"DEFAULT_CUBE");
+
+		auto coll = AddComponent<CollisionObb>();
+		coll->SetFixed(true);
+
+		AddComponent<TextureCollision>();
+	}
+	void TrapDoorB::OnUpdate() {
+		m_IsConnected = m_AxisDesc.port != nullptr ? m_AxisDesc.port->GetConnect() : true;
+		Vec3 rotateAmount = {};
+
+		float delta = App::GetApp()->GetElapsedTime();
+		float deltaSpeed = abs(m_AxisDesc.speed);
+		if (m_IsConnected) {
+			if(m_rot.x != 0) rotateAmount.x = m_rot.x < 0 ? 1 : -1;
+			if(m_rot.z != 0) rotateAmount.z = m_rot.z < 0 ? 1 : -1;
+			rotateAmount *= deltaSpeed;
+
+			if (abs(rotateAmount.x) > abs(m_CurrentRotation.x)) rotateAmount.x = -m_CurrentRotation.x;
+			if (abs(rotateAmount.z) > abs(m_CurrentRotation.z)) rotateAmount.z = -m_CurrentRotation.z;
+		}
+		else {
+			if (m_rot.x != 0) rotateAmount.x = m_rot.x > 0 ? 1 : -1;
+			if (m_rot.z != 0) rotateAmount.z = m_rot.z > 0 ? 1 : -1;
+
+			rotateAmount *= deltaSpeed;
+			Vec3 diff = m_rot - m_CurrentRotation;
+			if (abs(rotateAmount.x) > abs(diff.x)) rotateAmount.x = diff.x;
+			if (abs(rotateAmount.z) > abs(diff.z)) rotateAmount.z = diff.z;
+		}
+		m_CurrentRotation += rotateAmount;
+		shared_ptr<Transform> transform = GetComponent<Transform>();
+		transform->SetRotation(m_CurrentRotation);
+		ApplyCurrentPosition();
+	}
+	void TrapDoorB::ApplyCurrentPosition() {
+		shared_ptr<Transform> transform = GetComponent<Transform>();
+		Vec3 forward = transform->GetForward();
+		if (m_AxisDesc.axis == MoveAxis::Z) {
+			forward = transform->GetRight();
+		}
+		switch (m_AxisDesc.axis) {
+		case MoveAxis::X:
+			m_CurrentPosition = m_pos + forward * m_scale.z * 0.5f;
+			break;
+		case MoveAxis::Z:
+			m_CurrentPosition = m_pos + forward * m_scale.x * 0.5f;
+			break;
+		}
+
+		transform->SetPosition(m_CurrentPosition);
+
+	}
 
 	//初期化
 	void TrapDoorAxis::OnCreate()
