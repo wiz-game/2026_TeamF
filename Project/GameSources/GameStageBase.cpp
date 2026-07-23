@@ -350,10 +350,15 @@ namespace basecross {
 		BaseParams(json, params.StageObjParams);
 
 		auto childObjectData = json.At<JsonObject>(L"childObjectData");
-		float sideStr = childObjectData->At<JsonNumber>(L"Side")->GetFloatValue();
+		auto sideData = childObjectData->At<JsonNumber>(L"Side");
+		float sideStr = -1;
+		if (sideData) {
+			sideStr = sideData->GetFloatValue();
+		}
 		switch ((int)sideStr)
 		{
 		default:
+			params.Side = DoorSide::Left;
 			break;
 		case 0:
 			params.Side = DoorSide::Left;
