@@ -35,7 +35,56 @@ namespace basecross
 
 	void InkGauge::OnUpdate()
 	{
-		GaugeUpdate();
+		switch (m_state)
+		{
+		case A:
+			GauseIncrease();
+			break;
+		case Update:
+			GaugeUpdate();
+			break;
+		}
+	}
+
+	void InkGauge::GauseIncrease()
+	{
+		auto& app = App::GetApp();
+		auto delta = app->GetElapsedTime();
+		auto stage = GetStage();
+		auto device = App::GetApp()->GetInputDevice();
+		auto& pad = device.GetControlerVec()[0];
+
+		m_player = stage->GetSharedGameObject<Player>(L"player");
+		if (m_player)
+		{
+			m_maxInk = m_player->GetMaxInk();
+			m_gaugeInk = m_maxInk / m_width;
+			m_unitWidth = m_ink / m_gaugeInk * 2;
+
+			m_vertices[2].position.x = m_unitWidth + m_offsetPos.x;
+			m_vertices[3].position.x = m_unitWidth + m_offsetPos.x;
+
+		}
+
+		if (m_ink < m_maxInk)
+		{
+			m_ink += (m_maxInk / 3.0f) * delta;
+		}
+		else if (m_ink >= m_maxInk)
+		{
+			m_state = GauseState::Update;
+		}
+
+		if (pad.wPressedButtons & XINPUT_GAMEPAD_A)
+		{
+			m_ink = m_maxInk;
+			m_state = GauseState::Update;
+		}
+
+		if (m_draw)
+		{
+			m_draw->UpdateVertices(m_vertices);
+		}
 	}
 
 	void InkGauge::GaugeUpdate()
