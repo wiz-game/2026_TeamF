@@ -212,7 +212,7 @@ namespace basecross
 		//}
 
 		m_angleY = XMConvertToRadians(60.0f) * 90.0f;
-		eye = targetPos + Vec3(cos(m_angleY) * m_eyePos[0], m_eyePos[1], sinf(m_angleY) * 5.0f);
+		eye = targetPos + Vec3(cos(m_angleY) * m_eyePos[0], m_eyePos[1], sinf(m_angleY) * 10.0f);
 		//eye = targetPos + Vec3(cos(m_angleY), m_eyePos[1], sinf(m_angleY) * 5.0f);
 		SetEye(eye);
 

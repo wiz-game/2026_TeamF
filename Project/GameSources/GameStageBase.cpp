@@ -350,10 +350,15 @@ namespace basecross {
 		BaseParams(json, params.StageObjParams);
 
 		auto childObjectData = json.At<JsonObject>(L"childObjectData");
-		float sideStr = childObjectData->At<JsonNumber>(L"Side")->GetFloatValue();
+		auto sideData = childObjectData->At<JsonNumber>(L"Side");
+		float sideStr = -1;
+		if (sideData) {
+			sideStr = sideData->GetFloatValue();
+		}
 		switch ((int)sideStr)
 		{
 		default:
+			params.Side = DoorSide::Left;
 			break;
 		case 0:
 			params.Side = DoorSide::Left;
@@ -453,7 +458,7 @@ namespace basecross {
 		desc.speed = params.Speed;
 		desc.port = Map_Ports[params.PortID];
 
-		AddGameObject<TrapDoorAxis>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, desc);
+		AddGameObject<TrapDoorB>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, desc);
 	}
 
 	void GameStageBase::AddBeltConveyorObj(STRUCT_ElectricObjBaseParams params)

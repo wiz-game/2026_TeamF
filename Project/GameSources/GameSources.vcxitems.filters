@@ -266,9 +266,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h">
       <Filter>Effect</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h">
       <Filter>Object\Floor</Filter>
     </ClInclude>
