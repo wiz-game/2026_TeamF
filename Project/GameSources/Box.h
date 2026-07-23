@@ -22,7 +22,7 @@ namespace basecross {
 			const Vec3& Rot,
 			const Vec3& Pos
 		) :
-			StageObjBase(StagePtr, Scale, Rot, Pos),
+			StageObjBase(StagePtr, Scale, Rot, Pos,L"Box"),
 			m_pos(Pos),
 			m_scale(Scale),
 			m_rot(Rot)

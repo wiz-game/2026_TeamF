@@ -52,6 +52,10 @@ namespace basecross {
 		m_draw->SetDrawActive(true);
 		m_draw->AddAnimation(L"PRINTER_MODEL", 0, 120, false);
 
+		auto coll = AddComponent<CollisionObb>();
+		coll->SetMakedSize(2.5f);
+		coll->SetFixed(true);
+
 		m_resultSprite = GetStage()->AddGameObject<Sprite>(L"BACKGROUND", Vec3(0, 0, 0), Vec2(100, 100), Anchor::Center);
 		m_resultSprite->SetDrawActive(false);
 		m_resultSprite->SetDrawLayer(1);

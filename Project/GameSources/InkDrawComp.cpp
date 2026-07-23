@@ -3,7 +3,7 @@
 #include "game_controller.h"
 #include "Player.h"
 #include "TextureCollision.h"
-
+#include "GameProgressManager.h"
 namespace basecross
 {
 	void InkDrawComp::OnCreate()
@@ -20,7 +20,6 @@ namespace basecross
 		auto size = m_defaultSize * 0.5f;
 		AddPointFromWorldPos(pTrans->GetWorldPosition());
 		SetBrushSize(size);
-
 	}
 
 	void InkDrawComp::InkDrawStart()
@@ -101,6 +100,49 @@ namespace basecross
 		 m_brush.textrueWidth = width;
 		 m_brush.textrueHeight = height;
 	}
+
+	void InkDrawComp::CreateTexture(const wstring& texKey)
+	{
+		auto texResource = App::GetApp()->GetResource<TextureResource>(texKey);
+
+		auto texSRV = texResource->GetShaderResourceView();
+
+		ID3D11Resource* tempResource = nullptr;
+		ID3D11Texture2D* texture = nullptr;
+
+		texSRV->GetResource(&tempResource);
+		tempResource->QueryInterface(__uuidof(ID3D11Texture2D),(void**)&texture);
+
+		if (!texture) return;
+		D3D11_TEXTURE2D_DESC desc{};
+		texture->GetDesc(&desc);
+
+		desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;//テクスチャのバインドフラグ
+
+		auto device = App::GetApp()->GetDeviceResources()->GetD3DDevice();
+		//色を塗る対象
+		device->CreateTexture2D(&desc, nullptr, m_texture.GetAddressOf());
+		auto deviceContext = App::GetApp()->GetDeviceResources()->GetD3DDeviceContext();
+		deviceContext->CopyResource(m_texture.Get(), texture);
+		//読込
+		device->CreateShaderResourceView(m_texture.Get(), nullptr, m_textureSRV.GetAddressOf());//シェーダーリソースビューの作成
+		//書き込み
+		device->CreateRenderTargetView(m_texture.Get(), nullptr, m_textureRTV.GetAddressOf());//レンダーターゲットビューの作成
+
+		D3D11_VIEWPORT viewport{};
+		viewport.Width = static_cast<FLOAT>(desc.Width);
+		viewport.Height = static_cast<FLOAT>(desc.Height);
+		viewport.MinDepth = 0.0f;//表示するｚ軸の最小の幅
+		viewport.MaxDepth = 1.0f;//表示するｚ軸の最大
+		m_viewport = viewport;
+
+		auto dev = App::GetApp()->GetDeviceResources();
+		auto devContext = dev->GetD3DDeviceContext();//描画するためのデバイスコンテキストの取得
+
+		m_brush.textrueWidth = desc.Width;
+		m_brush.textrueHeight = desc.Height;
+	}
+
 
 	void InkDrawComp::InkDraw()
 	{
@@ -223,7 +265,15 @@ namespace basecross
 
 		}
 	}
+	void InkDrawComp::WriteToWIC() {
+		int stageNum = GameProgressManager::Get().GetCurrentStage();
+		wstring filename = L"DefaultInk_Stage" + to_wstring(stageNum) + L"_";
+		auto object = GetGameObject();
+		auto objBase = dynamic_pointer_cast<StageObjBase>(object);
 
+		filename += objBase->m_type + to_wstring(objBase->m_id);
+		TextureWriter::Write(filename, m_texture.Get());
+	}
 
 	IMPLEMENT_DX11_PIXEL_SHADER(InkDrawPixelSheder, App::GetApp()->GetShadersPath() + L"PSInkDraw.cso")
 	IMPLEMENT_DX11_VERTEX_SHADER(InkDrawVertexSheder, App::GetApp()->GetShadersPath() + L"VSInkDraw.cso")

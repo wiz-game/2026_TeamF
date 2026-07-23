@@ -42,7 +42,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BaseEnemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)MoveObj.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\External\poly2tri\poly2tri\sweep\advancing_front.cc">
@@ -66,14 +66,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ComputeShader.cpp">
       <Filter>CS</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp">
       <Filter>Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ErEnemy.cpp">
-      <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp">
       <Filter>Object\Floor</Filter>
@@ -217,7 +211,6 @@
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PauseMenu.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SpriteGeneric.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OptionMenu.cpp" />
@@ -226,16 +219,19 @@
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ObstacleSpring.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Singleton.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BaseEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)DrEnemy.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)MoveObj.h">
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Box.h">
@@ -245,9 +241,6 @@
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)DrEnemy.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)OptionMenu.h" />
@@ -272,9 +265,6 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h">
       <Filter>Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ErEnemy.h">
-      <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h">
       <Filter>Object\Floor</Filter>
@@ -419,6 +409,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h">
       <Filter>Stage\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DrEnemy.h">
+      <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

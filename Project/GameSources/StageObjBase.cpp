@@ -9,13 +9,17 @@ namespace basecross {
 		const shared_ptr<Stage>& StagePtr,
 		const Vec3& Scale, 
 		const Vec3& Rot, 
-		const Vec3& Position
+		const Vec3& Position,
+		const wstring& type
 	) :
 		GameObject(StagePtr),
 		m_scale(Scale),
 		m_rot(Rot),
-		m_pos(Position)
+		m_pos(Position),
+		m_type(type),
+		m_id(TOTAL_ID)
 	{
+		TOTAL_ID++;
 	}
 
 	StageObjBase::~StageObjBase()

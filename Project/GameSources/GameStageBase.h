@@ -8,8 +8,8 @@
 #include "Json.h"
 #include "PauseMenu.h"
 #include "InkGauge.h"
+#include "GoalDoor.h"
 
-#include <unordered_set>
 #include <string>
 
 namespace basecross {
@@ -84,7 +84,7 @@ namespace basecross {
 		struct STRUCT_GoalDoorParams
 		{
 			STRUCT_BaseParams StageObjParams;
-			Vec3 MoveDir;
+			DoorSide Side;
 			int PortID;
 		};
 

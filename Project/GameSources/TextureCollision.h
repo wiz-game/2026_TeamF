@@ -163,5 +163,10 @@ namespace basecross{
 		}
 	};
 
+
+	class TextureWriter {
+	public:
+		static void Write(const wstring& filename, ID3D11Texture2D* texture);
+	};
 }
 //end basecross

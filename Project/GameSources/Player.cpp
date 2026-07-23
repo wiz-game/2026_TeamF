@@ -18,7 +18,7 @@ namespace basecross{
 		const Vec3& Position,
 		const float& InkMax
 	) :
-		StageObjBase(stage, Scale, Rot, Position),
+		StageObjBase(stage, Scale, Rot, Position,L"Player"),
 		m_height(1.0f),
 		m_radius(0.49f),
 		m_moveSpeed(0.0f),

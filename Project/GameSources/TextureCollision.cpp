@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "Project.h"
 #include <filesystem>
+#include "game_controller.h"
 namespace basecross {
 
 	void Contour::CalcAABB(const shared_ptr<Transform>& transform) {
@@ -110,6 +111,7 @@ namespace basecross {
 			m_WaitContour.clear();
 			m_WaitElectricContourIndices.clear();
 		}
+
 	}
 	void TextureCollision::OnDraw() {
 		if (!GetDrawActive()) return;
@@ -235,24 +237,28 @@ namespace basecross {
 		for (size_t i = 0, size = simpleContours.size(); i < size; i++) {
 			if (contourHierarchy[i][3] == -1) {
 				if (polylines[i].size() < 3) continue;
+				try {
+					p2t::CDT cdt(polylines[i]);
 
-				p2t::CDT cdt(polylines[i]);
-
-				int hole = contourHierarchy[i][2];
-				while (hole != -1) {
-					const double MIN_HOLE_AREA = 10.0;
-					if (polylines[hole].size() >= 3 && abs(cv::contourArea(simpleContours[hole])) >= MIN_HOLE_AREA) {
-						cdt.AddHole(polylines[hole]);
+					int hole = contourHierarchy[i][2];
+					while (hole != -1) {
+						const double MIN_HOLE_AREA = 10.0;
+						if (polylines[hole].size() >= 3 && abs(cv::contourArea(simpleContours[hole])) >= MIN_HOLE_AREA) {
+							cdt.AddHole(polylines[hole]);
+						}
+						hole = contourHierarchy[hole][0];
 					}
-					hole = contourHierarchy[hole][0];
-				}
-				
-				cdt.Triangulate();
-				auto triangles = cdt.GetWorldTriangles();
 
-				Contour data = Contour(CalcContourWorldTriangle(triangles,snapShot));
-				data.CalcAABB(snapShot.m_Transform);
-				result.push_back(data);
+					cdt.Triangulate();
+					auto triangles = cdt.GetWorldTriangles();
+
+					Contour data = Contour(CalcContourWorldTriangle(triangles, snapShot));
+					data.CalcAABB(snapShot.m_Transform);
+					result.push_back(data);
+				}
+				catch (...) {
+
+				}
 			}
 		}
 	}
@@ -513,7 +519,7 @@ namespace basecross {
 	bool InkConnectChecker::IsConnectedSupplyToInk(const OBB& supplyOBB, const AABB& supplyAABB, const vector<TRIANGLE>& triangles) {
 		for (auto& triangle : triangles) {
 			if (!HitTest::AABB_AABB(supplyAABB, triangle.GetWrappedAABB(), Vec3(0.0f, 0.5f, 0.0f))) continue;
-			if (!HitTest::CollisionTestOBBTriangle(supplyOBB, triangle)) continue;
+			if (!HitTest::CollisionTestOBBTriangle(supplyOBB, triangle,Vec3(0.0f,0.5f,0.0f))) continue;
 			return true;
 		}
 		return false;
@@ -565,7 +571,7 @@ namespace basecross {
 	bool InkConnectChecker::IsConnectedInkToPort(const OBB& portOBB, const AABB& portAABB, const vector<TRIANGLE>& triangles) {
 		for (auto& triangle : triangles) {
 			if (!HitTest::AABB_AABB(portAABB, triangle.GetWrappedAABB(), Vec3(0.0f, 0.5f, 0.0f))) continue;
-			if (!HitTest::CollisionTestOBBTriangle(portOBB, triangle)) continue;
+			if (!HitTest::CollisionTestOBBTriangle(portOBB, triangle, Vec3(0.0f, 0.5f, 0.0f))) continue;
 			return true;
 		}
 		return false;
@@ -604,12 +610,12 @@ namespace basecross {
 
 				size_t contourCount = collision->GetContourCount();
 				for (int i = 0; i < contourCount; i++) {
+					if (collision->IsElectrified(i)) continue;
 					const auto& inkAABB = collision->GetContourAABB(i);
 					if (!HitTest::AABB_AABB(supplyAABB, inkAABB, Vec3(0.0f, 0.5f, 0.0f))) continue;
 
 					const auto& triangles = collision->GetWorldTriangles(i);
 					bool isConnectedSupply = IsConnectedSupplyToInk(supplyOBB, supplyAABB, triangles);
-					
 					if (isConnectedSupply) {
 						collision->SetElectricfield(i);
 						IsConnectedInkToInk(triangles, inkAABB);
@@ -618,6 +624,17 @@ namespace basecross {
 			}
 		}
 		return result;
+	}
+
+	void TextureWriter::Write(const wstring& filename,ID3D11Texture2D* texture) {
+		auto dev = App::GetApp()->GetDeviceResources()->GetD3DDevice();
+		auto devContext = App::GetApp()->GetDeviceResources()->GetD3DDeviceContext();
+
+		wstring writeFilename = L"../media/Texture/Ink/" + filename + L".png";
+		ScratchImage image;
+		CaptureTexture(dev, devContext, texture, image);
+
+		SaveToWICFile(*image.GetImage(0, 0, 0), WIC_FLAGS_NONE, GetWICCodec(WIC_CODEC_PNG), writeFilename.c_str());
 	}
 }
 //end basecross

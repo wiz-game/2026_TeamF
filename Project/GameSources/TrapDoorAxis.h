@@ -19,7 +19,23 @@ namespace basecross {
 		float speed = 0.01f;
 		std::shared_ptr<Port> port = nullptr;
 	};
+	class TrapDoorB : public StageObjBase{
+		TrapDoorAxisDesc m_AxisDesc;
 
+		Vec3 m_CurrentPosition;
+		Vec3 m_CurrentRotation;
+
+		bool m_IsConnected;
+		bool m_IsMoved;
+
+		void ApplyCurrentPosition();
+	public:
+		TrapDoorB(const shared_ptr<Stage>& ptr, const Vec3& scale, const Vec3& rotation, const Vec3& position, const TrapDoorAxisDesc& desc);
+		virtual ~TrapDoorB();
+
+		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+	};
 	//--------------------------------------------------------------------------------------
 	//	class TrapDoorAxis : public GameObject;
 	//--------------------------------------------------------------------------------------
@@ -52,7 +68,7 @@ namespace basecross {
 			const Vec3& Rot,
 			const Vec3& Position,
 			const TrapDoorAxisDesc& desc) :
-			StageObjBase(stage, Scale, Rot, Position),
+			StageObjBase(stage, Scale, Rot, Position,L"TrapDoor"),
 			m_trapDoorScale(Scale),
 			m_initialRotation(Rot),
 			m_moveAxis(desc.axis),

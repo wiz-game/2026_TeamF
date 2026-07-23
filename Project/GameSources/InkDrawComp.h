@@ -43,6 +43,7 @@ namespace basecross
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 		void CreateTexture(float scaleX, float scaleZ);
+		void CreateTexture(const wstring& texKey);
 		void InkDraw();
 		void AddPoint(const Vec3& point);
 		void ClearPoint();
@@ -54,7 +55,7 @@ namespace basecross
 		void InkDrawStart();
 
 		void AddPointFromWorldPos(const Vec3& playerWorldPos);
-
+		void WriteToWIC();
 		ComPtr<ID3D11ShaderResourceView> GetSRV()
 		{
 			return m_textureSRV;
