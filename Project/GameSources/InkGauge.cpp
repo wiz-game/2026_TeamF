@@ -32,7 +32,7 @@ namespace basecross
 		m_draw->SetTextureResource(L"Gauge");
 		m_trans = GetComponent<Transform>();
 
-		SoundManager::Get().PlaySE(L"GAUGE", 0.55f);
+		SoundManager::Get().PlaySE(L"GAUGE", 0.50f);
 	}
 
 	void InkGauge::OnUpdate()
