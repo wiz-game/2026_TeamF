@@ -31,6 +31,8 @@ namespace basecross
 		m_draw = AddComponent<PCTSpriteDraw>(m_vertices, m_indices);
 		m_draw->SetTextureResource(L"Gauge");
 		m_trans = GetComponent<Transform>();
+
+		SoundManager::Get().PlaySE(L"GAUGE", 0.55f);
 	}
 
 	void InkGauge::OnUpdate()

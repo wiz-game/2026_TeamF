@@ -20,6 +20,7 @@ namespace basecross {
 		//SE
 		RegisterSound(L"SELECT", L"SelectSE.wav");
 		RegisterSound(L"CONFIRM", L"ConfirmSE.wav");
+		RegisterSound(L"GAUGE", L"gaugeSE.wav");
 		RegisterSound(L"PLAYER_MOVE", L"PlayerMove.wav");
 		RegisterSound(L"ELECTRIC", L"Electric.wav");
 		RegisterSound(L"ELEVATER_MOVE", L"ElevatorMove.wav");
