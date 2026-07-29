@@ -395,7 +395,7 @@ namespace basecross {
 			AddGameObject<Floor>(params.Scale, params.Rot, params.Pos);
 			break;
 		case ENUM_ObjType::T_Box:
-			AddGameObject<Box>(params.Scale, params.Rot, params.Pos);
+			AddGameObject<MoveObj>(params.Scale, params.Rot, params.Pos);
 			break;
 		}
 	}
