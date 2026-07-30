@@ -27,6 +27,13 @@ namespace basecross
 
 		Vec2 m_offsetPos;
 
+		enum GauseState
+		{
+			A,	//演出中
+			Update	//通常
+		};
+		GauseState m_state = GauseState::A;
+
 	public:
 		InkGauge(const std::shared_ptr<Stage>stage) :
 			GameObject(stage),
@@ -47,6 +54,8 @@ namespace basecross
 
 		void OnCreate()override;
 		void OnUpdate()override;
+
+		void GauseIncrease();
 
 		void GaugeUpdate();
 		void ChangeGaugeColor();

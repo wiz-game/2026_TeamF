@@ -14,7 +14,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
-	SelectStage::SelectStage() :Stage(), m_SelectIndex(0), m_MaxSelectIndex(7) {}
+	SelectStage::SelectStage() :Stage(), m_SelectIndex(0), m_MaxSelectIndex(8) {}
 
 	SelectStage::~SelectStage()
 	{
@@ -48,16 +48,12 @@ namespace basecross {
 		app->RegisterTexture(L"SELECT_STAGE_TITLE", mediaPath + L"Texture/Select_Stage.png");
 		app->RegisterTexture(L"SELECT_STAGE_SELECT", mediaPath + L"Texture/Select_Stage_SelectedTex.png");
 
-		auto texName = L"STAGE" + to_wstring(1);
-		auto texPathName = L"Texture/Select_Stage" + to_wstring(1);
-		app->RegisterTexture(texName, mediaPath + texPathName + L".png");
-
 
 		for (int i = 1; i < m_MaxSelectIndex + 1; i++)
 		{
-			//auto texName = L"STAGE" + to_wstring(i);
-			//auto texPathName = L"Texture/Select_Stage" + to_wstring(i);
-			//app->RegisterTexture(texName, mediaPath + texPathName + L".png");
+			auto texName = L"STAGE" + to_wstring(i);
+			auto texPathName = L"Texture/Stage/stage" + to_wstring(i);
+			app->RegisterTexture(texName, mediaPath + texPathName + L".png");
 		}
 	}
 
@@ -194,8 +190,7 @@ namespace basecross {
 			m_Scale = Vec2(600, 600);
 			ButtonManager::instance->Create(m_Title, L"SelectPage1", L"SELECT_STAGE_TITLE", L"SELECT_STAGE_SELECT", Vec3((((1980 / 2) * (i - 1)) - (m_Scale.x / 2)), m_Scale.y / 2, 0), m_Scale, [](shared_ptr<ObjectInterface>& object) {});
 
-			//auto texName = L"STAGE" + to_wstring(i);
-			auto texName = L"STAGE" + to_wstring(1);
+			auto texName = L"STAGE" + to_wstring(i);
 			m_Scale = Vec2(500, 500);
 			auto stageTitle = ButtonManager::instance->Create(m_Title, L"SelectPage2", texName, texName, Vec3((((1980 / 2) * (i - 1)) - (m_Scale.x / 2)), m_Scale.y / 2, 0), m_Scale, [](shared_ptr<ObjectInterface>& object) {});
 		}

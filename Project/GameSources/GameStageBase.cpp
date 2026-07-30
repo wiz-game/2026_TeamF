@@ -70,7 +70,7 @@ namespace basecross {
 		auto inkprite = AddGameObject<Sprite>(L"INK_MOZI", Vec3(-550, 380, 0), Vec2(100, 30), Anchor::Center);
 		//UI作成
 		auto gaugeBack = AddGameObject<GaugeBack>();
-		auto gauge = AddGameObject<InkGauge>();
+		m_inkGauge = AddGameObject<InkGauge>();
 
 		//ポーズメニュー作成
 		m_pauseMenu = ObjectFactory::Create<PauseMenu>(GetThis<Stage>());
@@ -410,7 +410,7 @@ namespace basecross {
 			AddGameObject<Floor>(params.Scale, params.Rot, params.Pos);
 			break;
 		case ENUM_ObjType::T_Box:
-			AddGameObject<Box>(params.Scale, params.Rot, params.Pos);
+			AddGameObject<MoveObj>(params.Scale, params.Rot, params.Pos);
 			break;
 		}
 	}
