@@ -42,22 +42,19 @@ namespace basecross
 		m_trans->SetRotation(m_rot);
 
 		m_startPos = m_pos;
-		
-		Vec3 localMoveDir = Vec3(0.0f,0.0f,0.0f);
+
+		Mat4x4 worldMat = m_trans->GetWorldMatrix();
+		Vec3 localForward = Vec3(worldMat._31, worldMat._32, worldMat._33);
+		localForward.normalize();
+
 		if (m_side == DoorSide::Left)
 		{
-			localMoveDir = Vec3(-1.0f, 0.0f, 0.0f);//左扉はマイナス方向に移動
+			m_moveDir = -localForward;//左扉はマイナス方向に移動
 		}
 		if (m_side == DoorSide::Right)
 		{
-			localMoveDir = Vec3(1.0f, 0.0f, 0.0f);//左扉はプラス方向に移動
+			m_moveDir = localForward;//左扉はプラス方向に移動
 		}
-
-		//扉がどの向きを向いていても、その扉にとっての左右に動くようにする
-		Quat rotQuat = m_trans->GetQuaternion();
-		//ローカルベクトルの回転変換
-		m_moveDir = rotQuat * localMoveDir;
-		m_moveDir.normalize();
 
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetFixed(true);
@@ -80,10 +77,10 @@ namespace basecross
 			m_pos += m_moveDir * (m_speed * delta);
 
 			float distance = (m_pos - m_startPos).length();
-			
-			if (distance >= m_scale.x)
+
+			if (distance >= m_scale.z)
 			{
-				m_pos = m_startPos + m_moveDir * m_scale.x;
+				m_pos = m_startPos + m_moveDir * m_scale.z;
 				m_trans->SetPosition(m_pos);
 
 				m_speed = 0;
@@ -91,4 +88,4 @@ namespace basecross
 			m_trans->SetPosition(m_pos);
 		}
 	}
-}
+};

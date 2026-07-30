@@ -8,6 +8,7 @@
 #include "Json.h"
 #include "PauseMenu.h"
 #include "GoalDoor.h"
+#include "Goal.h"
 
 #include <string>
 
@@ -112,6 +113,8 @@ namespace basecross {
 		bool m_isPause = false;
 		bool m_isOption = false;
 
+		//ゴール
+		std::shared_ptr<Goal> m_goalPtr;
 
 		//構築と破棄
 		GameStageBase() :Stage(){}
