@@ -15,7 +15,7 @@ const wchar_t* pWndTitle = L"BaseCrossFullSample";
 int g_ClientWidth = 1280;
 int g_ClientHeight = 800;
 
-
+BOOL g_IsShawCourcor = FALSE;
 //--------------------------------------------------------------------------------------
 //
 //  ä÷êî: MyRegisterClass()
@@ -114,6 +114,7 @@ HWND InitInstance(HINSTANCE hInstance, int nCmdShow, bool isFullScreen, int iCli
 		nCmdShow    //WinMainÇ…ìnÇ≥ÇÍÇΩÉpÉâÉÅÅ[É^
 	);
 	UpdateWindow(hWnd);
+	ShowCursor(g_IsShawCourcor);
 	return hWnd;
 }
 
