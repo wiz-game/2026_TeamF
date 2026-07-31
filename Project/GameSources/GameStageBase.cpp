@@ -70,7 +70,7 @@ namespace basecross {
 		auto inkprite = AddGameObject<Sprite>(L"INK_MOZI", Vec3(-550, 380, 0), Vec2(100, 30), Anchor::Center);
 		//UI作成
 		auto gaugeBack = AddGameObject<GaugeBack>();
-		auto gauge = AddGameObject<InkGauge>();
+		m_inkGauge = AddGameObject<InkGauge>();
 
 		//ポーズメニュー作成
 		m_pauseMenu = ObjectFactory::Create<PauseMenu>(GetThis<Stage>());
@@ -97,12 +97,28 @@ namespace basecross {
 
 		bool cameraAnimation = mainCamera->GetAnimationFlag();
 		bool pause = m_pauseMenu->GetPause();
-		//m_isPause = pause;
 
-		if (cameraAnimation)
+		bool goalFlag = m_goalPtr->GetGoal();
+
+		if (cameraAnimation || goalFlag)
 		{
-			//カメラ演出中はポーズ
-			Pause(true);
+			//カメラ演出中もしくはゴールしたときはポーズ
+			//Pause(true);
+			auto objs = GetGameObjectVec();
+			for (auto& obj : objs)
+			{
+				//ゴール関係はポーズしない
+				if(dynamic_pointer_cast<Goal>(obj) || 
+					dynamic_pointer_cast<GoalEffect>(obj) ||
+					dynamic_pointer_cast<GoalParticle>(obj))
+				{
+					obj->SetUpdateActive(true);
+				}
+				else
+				{
+					obj->SetUpdateActive(false);
+				}
+			}
 			return;
 		}
 		else
@@ -393,7 +409,7 @@ namespace basecross {
 			AddGameObject<Floor>(params.Scale, params.Rot, params.Pos);
 			break;
 		case ENUM_ObjType::T_Box:
-			AddGameObject<Box>(params.Scale, params.Rot, params.Pos);
+			AddGameObject<MoveObj>(params.Scale, params.Rot, params.Pos);
 			break;
 		}
 	}
@@ -418,12 +434,12 @@ namespace basecross {
 
 	void GameStageBase::AddGoalObj(STRUCT_ElectricObjBaseParams params)
 	{
-		auto goalPtr = AddGameObject<Goal>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID]);
+		m_goalPtr = AddGameObject<Goal>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID]);
 
 		auto view = GetView();
 		auto camera = view->GetTargetCamera();
 		auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
-		mainCamera->SetGoal(goalPtr);
+		mainCamera->SetGoal(m_goalPtr);
 	}
 
 	void GameStageBase::AddMoveFloorObj(STRUCT_MoveFloorParams params)

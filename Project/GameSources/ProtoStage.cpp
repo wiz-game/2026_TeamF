@@ -72,7 +72,10 @@ namespace basecross {
 			//ポーズメニュー作成
 			//m_pause = ObjectFactory::Create<Pause>(GetThis<Stage>());
 			m_pauseMenu = ObjectFactory::Create<PauseMenu>(GetThis<Stage>());
+			SetSharedGameObject(L"Pause", m_pauseMenu);
 			m_optionMenu = ObjectFactory::Create<OptionMenu>(GetThis<Stage>());
+			SetSharedGameObject(L"Option", m_optionMenu);
+
 
 			//プロトタイプ用地面作成
 			JPH::StaticCompoundShapeSettings compoundSettings;
@@ -230,21 +233,23 @@ namespace basecross {
 		auto device = App::GetApp()->GetInputDevice();
 		auto& pad = device.GetControlerVec()[0];
 		
-		//auto camera = GetView()->GetTargetCamera();
-		//auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
-		//bool isCameraInCutscene = mainCamera->GetState() == MainCamera::CameraState::StartToGoal;
-		//if (isCameraInCutscene)
-		//{
-		//	//カメラ演出中はポーズ
-		//	m_pauseMenu->SetPause(true);
-		//	Pause(true);
-		//	return;
-		//}
-		//else
-		//{
-		//	m_pauseMenu->SetPause(false);
-		//	Pause(false);
-		//}
+		auto camera = GetView()->GetTargetCamera();
+		auto mainCamera = dynamic_pointer_cast<MainCamera>(camera);
+		bool isCameraInCutscene = mainCamera->GetState() == MainCamera::CameraState::StartToGoal;
+		if (isCameraInCutscene)
+		{
+			//カメラ演出中はポーズ
+			Pause(true);
+			return;
+		}
+		else
+		{
+			//ポーズ画面が開いていない時はポーズしない
+			if (!pause)
+			{
+				Pause(false);
+			}
+		}
 
 
 		GameController::Update();

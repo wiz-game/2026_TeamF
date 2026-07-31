@@ -7,7 +7,9 @@
 #include "stdafx.h"
 #include "Json.h"
 #include "PauseMenu.h"
+#include "InkGauge.h"
 #include "GoalDoor.h"
+#include "Goal.h"
 
 #include <string>
 
@@ -109,9 +111,12 @@ namespace basecross {
 		//ポーズメニュー
 		std::shared_ptr<PauseMenu> m_pauseMenu;	
 		std::shared_ptr<OptionMenu> m_optionMenu;
+		std::shared_ptr<InkGauge> m_inkGauge;
 		bool m_isPause = false;
 		bool m_isOption = false;
 
+		//ゴール
+		std::shared_ptr<Goal> m_goalPtr;
 
 		//構築と破棄
 		GameStageBase() :Stage(){}
