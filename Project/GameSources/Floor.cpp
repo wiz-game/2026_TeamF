@@ -61,10 +61,13 @@ namespace basecross
 		coll->SetFixed(true);
 
 		AddComponent<TextureCollision>();
+
+		AddTag(L"Ground");
 	}
 
 	void Floor::OnUpdate()
 	{
-
+		auto position = m_trans->GetPosition();
+		int checker = 0;
 	}
 }

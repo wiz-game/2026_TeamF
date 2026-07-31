@@ -82,7 +82,6 @@ namespace basecross {
 
 		//スカイボックス
 		AddGameObject<SkyCube>(L"SKYBOX");
-
 	}
 
 	void GameStageBase::OnUpdate()

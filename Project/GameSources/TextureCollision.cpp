@@ -103,6 +103,7 @@ namespace basecross {
 				vector<TRIANGLE> triangles = m_Contour[i].GetWorldTriangles(GetGameObject()->GetComponent<Transform>());
 				Vec3 position = triangles[spwanTriangle].GetCenter();
 				EffectManager::g_Instance->PlayEffect(handle, L"ELECTRIC", position, 0);
+				EffectManager::g_Instance->SetScale(handle, Vec3(3));
 			}
 		}
 		if (!m_WaitContour.empty()) {
