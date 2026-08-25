@@ -205,7 +205,6 @@ namespace basecross{
 
 			m_velocity += m_forward * delta;
 
-			//cc->SetLinearVelocity(m_moveSpeed * m_velocity * m_moveDir);
 			if (!m_MoveSound) {
 				m_MoveSound = SoundManager::Get().PlayLoopSE(L"PLAYER_MOVE", 0.75f);
 			}

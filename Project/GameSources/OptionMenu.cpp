@@ -101,7 +101,7 @@ namespace basecross
 		float stickY = pad.fThumbLY;
 		float threshold = 0.25f;
 
-		if (!m_lock)
+		if (!m_lock && m_opState == OptionState::None)
 		{
 			if (stickY > threshold || pad.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP)
 			{
@@ -167,7 +167,10 @@ namespace basecross
 				SoundManager::Get().PlaySE(L"SELECT", 1.0f);
 				ToPause();
 				break;
-			case BGM || SE:
+			case BGM:
+				m_opState = OptionState::None;
+				break;
+			case SE:
 				m_opState = OptionState::None;
 				break;
 			}
