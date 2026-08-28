@@ -40,6 +40,7 @@ namespace basecross {
 				Vec3 local = triangle[j];
 
 				worldTriangles[i][j] = (Vec3)XMVector3Transform(local, worldMatrix);
+
 			}
 		}
 		return worldTriangles;
@@ -88,7 +89,7 @@ namespace basecross {
 		m_MaskShader->SetShader(GenerateMaskShader::GetPtr()->GetShader());
 		InkConnectChecker::Get().AddTextureCollision(GetThis<TextureCollision>());
 
-		SetDrawActive(false);
+		//SetDrawActive(false);
 	}
 	void TextureCollision::OnUpdate() {
 		m_EffectSpawnTimer += App::GetApp()->GetElapsedTime();
@@ -103,6 +104,7 @@ namespace basecross {
 				vector<TRIANGLE> triangles = m_Contour[i].GetWorldTriangles(GetGameObject()->GetComponent<Transform>());
 				Vec3 position = triangles[spwanTriangle].GetCenter();
 				EffectManager::g_Instance->PlayEffect(handle, L"ELECTRIC", position, 0);
+				EffectManager::g_Instance->SetScale(handle, Vec3(3));
 			}
 		}
 		if (!m_WaitContour.empty()) {
@@ -533,15 +535,15 @@ namespace basecross {
 			for (int i = 0; i < contourCount; i++) {
 				if (collision->IsElectrified(i)) continue;
 				const auto& otherInkAABB = collision->GetContourAABB(i);
-				if (!HitTest::AABB_AABB(inkAABB, otherInkAABB,Vec3(0.0f,0.5f,0.0f))) continue;
+				if (!HitTest::AABB_AABB(inkAABB, otherInkAABB,Vec3(0.05f,0.5f,0.05f))) continue;
 
 				const auto& otherTriangles = collision->GetWorldTriangles(i);
 				bool isConnected = false;
 
 				for (auto& triangle : triangles) {
 					for (auto& otherTriangle : otherTriangles) {
-						if (!HitTest::AABB_AABB(triangle.GetWrappedAABB(), otherTriangle.GetWrappedAABB(), Vec3(0.0f, 0.5f, 0.0f))) continue;
-						if (!HitTest::CollisionTestTriangle(triangle, otherTriangle)) continue;
+						if (!HitTest::AABB_AABB(triangle.GetWrappedAABB(), otherTriangle.GetWrappedAABB(), Vec3(0.05f, 0.5f, 0.05f))) continue;
+						if (!HitTest::CollisionTestTriangle2D(triangle.Extended(0.05f), otherTriangle.Extended(0.05f))) continue;
 						isConnected = true;
 						break;
 					}

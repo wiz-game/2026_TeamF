@@ -66,7 +66,7 @@ namespace basecross{
 		//m_draw->SetDiffuse(Col4(0, 0, 0, 1.0f));
 		m_draw->SetEmissive(Col4(0.2f, 0.2f, 0.2f, 1.0f));
 
-		auto cc = AddComponent<CharacterController>();
+		//auto cc = AddComponent<CharacterController>();
 		//CharacterController::Settings settings;
 		//settings.height = m_height;
 		//settings.radius = m_radius;
@@ -86,9 +86,18 @@ namespace basecross{
 	// �ｽv�ｽ�ｽ�ｽC�ｽ�ｽ�ｽ[�ｽﾌ更�ｽV�ｽ�ｽ�ｽ�ｽ
 	void Player::OnUpdate()
 	{
-		//// �ｽA�ｽv�ｽ�ｽ�ｽP�ｽ[�ｽV�ｽ�ｽ�ｽ�ｽ�ｽI�ｽu�ｽW�ｽF�ｽN�ｽg�ｽ�ｽ�ｽ謫ｾ
 		m_pos = m_transform->GetPosition();
+		float fps = App::GetApp()->GetElapsedTime();
+		time += fps;
+
+		if (time > 0.1f) {
+			time = 0.0f;
+			wstring str = L"height : " + to_wstring(m_pos.y) + L"\n";
+			OutputDebugString(str.c_str());
+		}
+		//// �ｽA�ｽv�ｽ�ｽ�ｽP�ｽ[�ｽV�ｽ�ｽ�ｽ�ｽ�ｽI�ｽu�ｽW�ｽF�ｽN�ｽg�ｽ�ｽ�ｽ謫ｾ
 		auto scene = App::GetApp()->GetScene<Scene>();
+
 		//// �ｽA�ｽv�ｽ�ｽ�ｽP�ｽ[�ｽV�ｽ�ｽ�ｽ�ｽ�ｽI�ｽu�ｽW�ｽF�ｽN�ｽg�ｽ�ｽ�ｽ謫ｾ
 		//auto& app = App::GetApp();
 
@@ -113,16 +122,14 @@ namespace basecross{
 
 		if (m_pos.y <= -10.0f)
 		{
-			int currentStage = GameProgressManager::Get().GetCurrentStage();
-			PostEvent(0.0f, GetThis<Player>(), scene, L"ToGameStage", make_shared<int>(currentStage));
+			PostEvent(0.0f, GetThis<Player>(), scene, L"ToGameOverStage");
 		}
 
 		if (m_ink <= 0)
 		{
 			PostEvent(0.0f, GetThis<Player>(), scene, L"ToGameOverStage");
 		}
-
-		float fps = 1.0f / App::GetApp()->GetElapsedTime();
+		
 	//	scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
 	//		+ L"\n"
 	//		+ L"ink残量 : " + std::to_wstring(m_ink)
@@ -215,6 +222,9 @@ namespace basecross{
 			m_MoveSound = nullptr;
 		}
 
+		if (m_velocity.x <= m_maxSpeed || m_velocity.z <= m_maxSpeed)
+			m_velocity *= m_accel;
+
 		if (m_isGround)
 		{
 			m_velocity.y = 0.0f;
@@ -224,8 +234,7 @@ namespace basecross{
 			m_velocity.y += m_gravity * delta;
 		}
 		
-		if (m_velocity.x <= m_maxSpeed || m_velocity.z <= m_maxSpeed)
-			m_velocity *= m_accel;
+		
 
 		//転がす処理
 		m_rotAngle.x += m_velocity.z * m_moveSpeed * 0.01f;

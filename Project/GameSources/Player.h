@@ -47,6 +47,8 @@ class MoveFloor;
 		float m_gravity;
 		bool m_isGround;
 		
+
+		float time;
 	public :
 
 		Player
