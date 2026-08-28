@@ -98,26 +98,6 @@ namespace basecross{
 		//// �ｽA�ｽv�ｽ�ｽ�ｽP�ｽ[�ｽV�ｽ�ｽ�ｽ�ｽ�ｽI�ｽu�ｽW�ｽF�ｽN�ｽg�ｽ�ｽ�ｽ謫ｾ
 		auto scene = App::GetApp()->GetScene<Scene>();
 
-		Vec3 scale = m_transform->GetScale();
-		SPHERE start = SPHERE(m_pos, scale.y * 0.4f);
-		SPHERE end = SPHERE(m_pos - scale.y * 0.6f, scale.y * 0.4f);
-		for (auto& object : GetStage()->GetGameObjectVec()) {
-			if (!object->FindTag(L"Ground")) continue;
-
-			auto draw = object->GetComponent<SmBaseDraw>(false);
-			if (!draw) continue;
-
-			Vec3 point;
-			TRIANGLE tempTriangle;
-			size_t tempIndex;
-			if (draw->HitTestStaticMeshSphereTriangles(start, end, point, tempTriangle, tempIndex)) {
-				if (auto floor = dynamic_pointer_cast<FloorDecision>(object)) {
-					m_floorDecision = floor;
-				}
-				m_isGround = true;
-			}
-		}
-
 		//// �ｽA�ｽv�ｽ�ｽ�ｽP�ｽ[�ｽV�ｽ�ｽ�ｽ�ｽ�ｽI�ｽu�ｽW�ｽF�ｽN�ｽg�ｽ�ｽ�ｽ謫ｾ
 		//auto& app = App::GetApp();
 
@@ -149,9 +129,6 @@ namespace basecross{
 		{
 			PostEvent(0.0f, GetThis<Player>(), scene, L"ToGameOverStage");
 		}
-
-		m_isGround = false;
-		m_floorDecision = nullptr;
 		
 	//	scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
 	//		+ L"\n"
@@ -352,7 +329,6 @@ namespace basecross{
 	// 衝突開始
 	void Player::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
 	{
-		return;
 		if (auto floor = dynamic_pointer_cast<FloorDecision>(obj))
 		{
 			m_floorDecision = floor;
@@ -387,7 +363,6 @@ namespace basecross{
 	//衝突中
 	void Player::OnCollisionExcute(std::shared_ptr<GameObject>& obj)
 	{
-		return;
 		if (auto floor = dynamic_pointer_cast<FloorDecision>(obj))
 		{
 			m_floorDecision = floor;
@@ -424,7 +399,6 @@ namespace basecross{
 	//衝突終了
 	void Player::OnCollisionExit(std::shared_ptr<GameObject>& obj)
 	{
-		return;
 		auto ink = dynamic_pointer_cast<InkDraw>(obj);
 		if (ink)
 		{

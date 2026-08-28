@@ -25,7 +25,7 @@ namespace basecross {
 
 		shared_ptr<Transform> transform = GetComponent<Transform>();
 
-		m_pos.y = -9.0f + 0.55f;
+		m_pos.y -= m_scale.y * 0.5f;
 		transform->SetScale(m_scale);
 		transform->SetRotation(m_CurrentRotation);
 		ApplyCurrentPosition();
@@ -45,7 +45,6 @@ namespace basecross {
 
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetFixed(true);
-		coll->SetDrawActive(true);
 
 		AddComponent<TextureCollision>();
 		AddTag(L"Ground");

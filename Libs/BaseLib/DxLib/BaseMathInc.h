@@ -560,6 +560,9 @@ namespace bsm {
 		*this = (Flt3)XMVector3Normalize(*this);
 		return *this;
 	}
+	inline Flt3 Flt3::normalized() {
+		return (Flt3)XMVector3Normalize(*this);
+	}
 
 	inline Flt3& Flt3::floor(int len) {
 		x = bsm::floor(x, len);

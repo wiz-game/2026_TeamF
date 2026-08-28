@@ -60,8 +60,7 @@ namespace basecross
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetFixed(true);
 
-		AddComponent<TextureCollision>();
-
+		auto col = AddComponent<TextureCollision>();
 		AddTag(L"Ground");
 	}
 
