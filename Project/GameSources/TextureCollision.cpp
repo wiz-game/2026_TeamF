@@ -89,7 +89,7 @@ namespace basecross {
 		m_MaskShader->SetShader(GenerateMaskShader::GetPtr()->GetShader());
 		InkConnectChecker::Get().AddTextureCollision(GetThis<TextureCollision>());
 
-		//SetDrawActive(false);
+		SetDrawActive(false);
 	}
 	void TextureCollision::OnUpdate() {
 		m_EffectSpawnTimer += App::GetApp()->GetElapsedTime();
