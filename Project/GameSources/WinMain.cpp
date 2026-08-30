@@ -16,6 +16,7 @@ int g_ClientWidth = 1280;
 int g_ClientHeight = 800;
 
 BOOL g_IsShawCourcor = FALSE;
+
 //--------------------------------------------------------------------------------------
 //
 //  ä÷êî: MyRegisterClass()
@@ -115,6 +116,7 @@ HWND InitInstance(HINSTANCE hInstance, int nCmdShow, bool isFullScreen, int iCli
 	);
 	UpdateWindow(hWnd);
 	ShowCursor(g_IsShawCourcor);
+
 	return hWnd;
 }
 

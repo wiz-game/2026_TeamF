@@ -409,7 +409,7 @@ namespace basecross {
 			AddGameObject<Floor>(params.Scale, params.Rot, params.Pos);
 			break;
 		case ENUM_ObjType::T_Box:
-			AddGameObject<MoveObj>(params.Scale, params.Rot, params.Pos);
+			//AddGameObject<MoveObj>(params.Scale, params.Rot, params.Pos);
 			break;
 		}
 	}
@@ -479,7 +479,7 @@ namespace basecross {
 	void GameStageBase::AddBeltConveyorObj(STRUCT_ElectricObjBaseParams params)
 	{
 		STRUCT_ElectricObjBaseParams desc;
-		AddGameObject<BeltConveyor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, Map_Ports[params.PortID]);
+		AddGameObject<BeltConveyor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, nullptr);// Map_Ports[params.PortID]);
 	}
 
 	void GameStageBase::AddGoalDoorObj(STRUCT_GoalDoorParams params)
