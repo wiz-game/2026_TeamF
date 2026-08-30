@@ -1506,6 +1506,8 @@ namespace basecross{
 			const bsm::Mat4x4& m) {
 			Set(baseA,baseB,baseC,m);
 		}
+
+
 		bool IsValid() {
 			if (m_A == m_B) {
 				return false;
@@ -1640,7 +1642,45 @@ namespace basecross{
 				throw std::out_of_range("Triangle index out of range");
 			}
 		}
+		TRIANGLE Scaled(float multiply) const {
+			TRIANGLE scaledTriangle{};
+			bsm::Vec3 center = GetCenter();
 
+			bsm::Vec3 direction = m_A - center;
+			direction *= multiply;
+			scaledTriangle.m_A = center + direction;
+
+			direction = m_B - center;
+			direction *= multiply;
+			scaledTriangle.m_B = center + direction;
+
+			direction = m_C - center;
+			direction *= multiply;
+			scaledTriangle.m_C = center + direction;
+
+			return scaledTriangle;
+		}
+		TRIANGLE Extended(float extend) const {
+			TRIANGLE extendedTriangle{};
+			bsm::Vec3 center = GetCenter();
+
+			bsm::Vec3 direction = m_A - center;
+			bsm::Vec3 extendDirection = direction.normalized();
+			direction += extendDirection * extend;
+			extendedTriangle.m_A = center + direction;
+
+			direction = m_B - center;
+			extendDirection = direction.normalized();
+			direction += extendDirection * extend;
+			extendedTriangle.m_B = center + direction;
+
+			direction = m_C - center;
+			extendDirection = direction.normalized();
+			direction += extendDirection * extend;
+			extendedTriangle.m_C = center + direction;
+
+			return extendedTriangle;
+		}
 	};
 
 

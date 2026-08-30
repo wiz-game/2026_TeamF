@@ -14,7 +14,8 @@ const wchar_t* pWndTitle = L"BaseCrossFullSample";
 //ウィンドウモードの時の幅と高さ
 int g_ClientWidth = 1280;
 int g_ClientHeight = 800;
-bool showCursor = false;
+
+BOOL g_IsShawCourcor = FALSE;
 
 //--------------------------------------------------------------------------------------
 //
@@ -114,7 +115,8 @@ HWND InitInstance(HINSTANCE hInstance, int nCmdShow, bool isFullScreen, int iCli
 		nCmdShow    //WinMainに渡されたパラメータ
 	);
 	UpdateWindow(hWnd);
-	ShowCursor(showCursor);
+	ShowCursor(g_IsShawCourcor);
+
 	return hWnd;
 }
 

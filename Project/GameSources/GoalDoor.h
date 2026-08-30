@@ -44,7 +44,7 @@ namespace basecross
 			StageObjBase(stage,Scale,Rot,Position,L"GoalDoor"),
 			m_port(port),
 			m_side(side),
-			m_speed(0.05f),
+			m_speed(1.0f),
 			m_startPos(m_pos)
 		{
 		}

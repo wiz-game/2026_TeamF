@@ -25,7 +25,7 @@ namespace basecross {
 
 		shared_ptr<Transform> transform = GetComponent<Transform>();
 
-		//m_pos.y = -9.2f - m_scale.y;
+		m_pos.y -= m_scale.y * 0.5f;
 		transform->SetScale(m_scale);
 		transform->SetRotation(m_CurrentRotation);
 		ApplyCurrentPosition();
@@ -47,6 +47,8 @@ namespace basecross {
 		coll->SetFixed(true);
 
 		AddComponent<TextureCollision>();
+		AddTag(L"Ground");
+
 	}
 	void TrapDoorB::OnUpdate() {
 		m_IsConnected = m_AxisDesc.port != nullptr ? m_AxisDesc.port->GetConnect() : true;
