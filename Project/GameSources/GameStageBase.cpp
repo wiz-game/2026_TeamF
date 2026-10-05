@@ -209,11 +209,8 @@ namespace basecross {
 			{
 			default:
 				break;
-			case ENUM_ObjType::T_Box: 
+			case ENUM_ObjType::T_Box: case ENUM_ObjType::T_Floor:
 				AddStaticObj(StaticParams(*date));
-				break;
-			case ENUM_ObjType::T_Floor:
-				AddFloorObj(FloorParams(*date));
 				break;
 			case ENUM_ObjType::T_Player:
 				AddPlayerObj(PlayerParams(*date));
@@ -290,15 +287,6 @@ namespace basecross {
 		return params;
 	}
 
-	GameStageBase::STRUCT_FloorParams GameStageBase::FloorParams(JsonObject& json)
-	{
-		STRUCT_FloorParams params;
-		BaseParams(json, params.StageObjParams);
-		auto childObjectData = json.At<JsonObject>(L"childObjectData");
-		params.FloorInk = childObjectData->At<JsonString>(L"FloorInk")->GetValue();
-		return params;
-	}
-
 	GameStageBase::STRUCT_PlayerParams GameStageBase::PlayerParams(JsonObject& json)
 	{
 		STRUCT_PlayerParams params;
@@ -342,7 +330,7 @@ namespace basecross {
 		params.Speed = childObjectData->At<JsonNumber>(L"Speed")->GetFloatValue();
 		params.LimitDist = childObjectData->At<JsonNumber>(L"LimitDistance")->GetFloatValue();
 		params.PortID = childObjectData->At<JsonNumber>(L"PortID")->GetIntValue();
-		params.FloorInk = childObjectData->At<JsonString>(L"FloorInk")->GetValue();
+
 		return params;
 	}
 
@@ -424,12 +412,6 @@ namespace basecross {
 			//AddGameObject<MoveObj>(params.Scale, params.Rot, params.Pos);
 			break;
 		}
-	}
-
-	void GameStageBase::AddFloorObj(STRUCT_FloorParams params)
-	{
-		auto floorPtr = AddGameObject<Floor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, params.FloorInk);
-		SetSharedGameObject(L"floor", floorPtr);
 	}
 
 	void GameStageBase::AddPlayerObj(STRUCT_PlayerParams params)
