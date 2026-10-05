@@ -48,6 +48,13 @@ namespace basecross {
 			Vec3 Scale;
 		};
 
+		struct STRUCT_FloorParams
+		{
+			STRUCT_BaseParams StageObjParams;
+			wstring FloorInk;
+
+		};
+
 		//Playerのパラメーター
 		struct STRUCT_PlayerParams
 		{
@@ -70,6 +77,7 @@ namespace basecross {
 			float Speed;
 			float LimitDist;
 			int PortID;
+			wstring FloorInk;
 		};
 
 		//トラップドアのパラメーター
@@ -139,6 +147,9 @@ namespace basecross {
 		//基本情報しかないオブジェクトのパラメータの取得
 		GameStageBase::STRUCT_BaseParams StaticParams(JsonObject& json);
 
+		//床のパラメーターの取得
+		GameStageBase::STRUCT_FloorParams FloorParams(JsonObject& json);
+
 		//プレイヤーのパラメーターの取得
 		GameStageBase::STRUCT_PlayerParams PlayerParams(JsonObject& json);
 
@@ -162,6 +173,9 @@ namespace basecross {
 
 		//ゲームオブジェクトの生成
 		void AddStaticObj(STRUCT_BaseParams params);
+
+		//床オブジェクトの生成
+		void AddFloorObj(STRUCT_FloorParams params);
 
 		//プレイヤーオブジェクトの生成
 		void AddPlayerObj(STRUCT_PlayerParams params);
