@@ -51,6 +51,8 @@ namespace basecross {
 		}
 
 		AddComponent<TextureCollision>();
+		AddTag(L"Ground");
+
 	}
 
 	void MoveFloor::OnUpdate()
