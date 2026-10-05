@@ -16,6 +16,7 @@ namespace basecross {
 	{
 		std::shared_ptr<PNTStaticDraw> m_draw; // ドローコンポーネント
 		std::shared_ptr<Transform> m_transform; // トランスフォームコンポーネント
+		std::shared_ptr<FloorDecision> m_floorDecision;
 
 	private:
 		Vec3 m_scale;

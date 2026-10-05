@@ -34,11 +34,22 @@ namespace basecross {
 		float delta =
 			App::GetApp()->GetElapsedTime();
 
+		if (m_floorDecision)
+		{
+			UpdateMoveFloor(m_floorDecision->GetCurrentMoveVec());
+		}
+
 		UpdateGravity(delta);
+
+
 	}
 
 	void MoveObj::OnCollisionEnter(std::shared_ptr<GameObject>& obj)
 	{
+		if (auto floor = std::dynamic_pointer_cast<FloorDecision>(obj))
+		{
+			m_floorDecision = floor;
+		}
 		if (dynamic_pointer_cast<BeltConveyor>(obj))
 		{
 			m_isGround = true;
@@ -67,6 +78,10 @@ namespace basecross {
 
 	void MoveObj::OnCollisionExit(std::shared_ptr<GameObject>& obj)
 	{
+		if (auto floor = std::dynamic_pointer_cast<FloorDecision>(obj))
+		{
+			m_floorDecision = nullptr;
+		}
 		if (dynamic_pointer_cast<BeltConveyor>(obj))
 		{
 			m_isGround = false;
