@@ -28,7 +28,12 @@ namespace basecross {
 
 		// ドローコンポーネントを追加
 		m_staticDraw = AddComponent<Texture2DrawComp>();
-		m_staticDraw->CreateTexture(m_scale.x,m_scale.z);
+		if (m_DefaultInkTexture.empty()) {
+			m_staticDraw->CreateTexture(m_scale.x, m_scale.z);
+		}
+		else {
+			m_staticDraw->CreateTexture(m_DefaultInkTexture);
+		}
 		m_staticDraw->SetMeshResource(L"DEFAULT_CUBE");
 		m_staticDraw->SetTextureResource(L"MoveFloor");
 		m_staticDraw->SetTexture2(L"Black");
