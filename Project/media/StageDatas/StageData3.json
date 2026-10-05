@@ -101,7 +101,7 @@
     },
     "childObjectData": {
         "Axis": 0,
-        "Speed": 0.20000000298023225,
+        "Speed": 1.0,
         "LimitDistance": -13.5,
         "PortID": 1
     }

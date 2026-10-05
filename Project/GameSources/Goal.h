@@ -43,6 +43,8 @@ namespace basecross {
 		float m_animatimer;	   //共通のタイマー
 		Vec2 m_spriteStartPos2D; //スプライトの初期位置
 
+		bool m_goal = false;
+
 	public:
 		// 構築と破棄
 		Goal(
@@ -71,6 +73,11 @@ namespace basecross {
 
 		void VibrateAnimation(float delta);
 		void SpriteAnimation(float delta);
+
+		bool GetGoal() const
+		{
+			return m_goal;
+		}
 	};
 
 	//--------------------------------------------------------------------------------------
