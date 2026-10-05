@@ -281,7 +281,7 @@ namespace basecross {
 		params.Rot.y = rotParams->At<JsonNumber>(L"y")->GetFloatValue();
 		params.Rot.z = rotParams->At<JsonNumber>(L"z")->GetFloatValue();
 
-		auto inkParams = json.At<JsonString>(L"ink");
+		auto inkParams = json.At<JsonString>(L"FloorInk");
 		if (inkParams) {
 			params.DefaultInk = inkParams->GetValue();
 		}
