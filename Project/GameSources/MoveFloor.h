@@ -43,6 +43,7 @@ namespace basecross {
 		const float PAUSE_TIME = 0.5f; // 停止時間
 		bool isConnect = false;
 
+		wstring m_DefaultInkTexture;
 	public:
 		// 構築と破棄
 		MoveFloor(
@@ -50,13 +51,15 @@ namespace basecross {
 			const Vec3& Scale,
 			const Vec3& Rot,
 			const Vec3& Pos,
-			const MoveFloorDesc& desc
+			const MoveFloorDesc& desc,
+			const wstring& defaultInk
 		) :
 			StageObjBase(stage, Scale, Rot, Pos,L"MoveFloor"),
 			m_moveAxis(desc.axis),
 			m_speed(desc.speed),
 			m_limitDist(desc.limitDist),
-			m_port(desc.port)
+			m_port(desc.port), m_DefaultInkTexture(defaultInk)
+
 		{
 		}
 		virtual ~MoveFloor()
