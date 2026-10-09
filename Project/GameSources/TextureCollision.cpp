@@ -21,7 +21,7 @@ namespace basecross {
 				m_Aabb.m_Max.y = max(m_Aabb.m_Max.y, triangle[i].y);
 				m_Aabb.m_Max.z = max(m_Aabb.m_Max.z, triangle[i].z);
 			}
-			
+
 		}
 	}
 	vector<TRIANGLE> Contour::GetWorldTriangles(const shared_ptr<Transform>& transform)const {
@@ -45,8 +45,8 @@ namespace basecross {
 		}
 		return worldTriangles;
 	}
-	TextureCollision::TextureCollision(const shared_ptr<GameObject>& ptr) : 
-		Component(ptr),m_EffectSpawnInterval(0.1f),m_EffectSpawnTimer(0.0f),
+	TextureCollision::TextureCollision(const shared_ptr<GameObject>& ptr) :
+		Component(ptr), m_EffectSpawnInterval(0.5f), m_EffectSpawnTimer(0.0f),
 		m_CB{}
 	{}
 
@@ -65,13 +65,13 @@ namespace basecross {
 		m_CB.width = m_TextureContext.m_SizeX;
 		m_CB.height = m_TextureContext.m_SizeY;
 
-		m_Labels.resize(textureFullSize,0);
+		m_Labels.resize(textureFullSize, 0);
 
 		m_LabelBuffer = make_shared<BufferContext>(sizeof(int), textureFullSize);
-		if(!m_LabelBuffer->CreateUAV()) {
+		if (!m_LabelBuffer->CreateUAV()) {
 			int checker = 0;
 		}
-		if(!m_LabelBuffer->CreateSRV()) {
+		if (!m_LabelBuffer->CreateSRV()) {
 			int checker = 0;
 		}
 
@@ -95,16 +95,19 @@ namespace basecross {
 		m_EffectSpawnTimer += App::GetApp()->GetElapsedTime();
 		if (m_EffectSpawnTimer < m_EffectSpawnInterval) return;
 		m_EffectSpawnTimer = 0;
-		const int spawnEffectCount = 5;
+		m_EffectSpawnInterval = Util::RandZeroToOne() * 0.5f;
 		for (int i = 0; i < m_ElectricContourIndices.size(); i++) {
 			if (m_ElectricContourIndices[i] == 0)continue;
+			int triangleCount = m_Contour[i].m_Triangles.size();
+			int spawnEffectCount = rand() % (int)(triangleCount * 0.5f);
+
 			int handle = -1;
 			for (int j = 0; j < spawnEffectCount; j++) {
-				int spwanTriangle = rand() % m_Contour[i].m_Triangles.size();
+				int spwanTriangle = rand() % triangleCount;
 				vector<TRIANGLE> triangles = m_Contour[i].GetWorldTriangles(GetGameObject()->GetComponent<Transform>());
 				Vec3 position = triangles[spwanTriangle].GetCenter();
 				EffectManager::g_Instance->PlayEffect(handle, L"ELECTRIC", position, 0);
-				EffectManager::g_Instance->SetScale(handle, Vec3(3));
+				EffectManager::g_Instance->SetScale(handle, Vec3(2.0f));
 			}
 		}
 		if (!m_WaitContour.empty()) {
@@ -288,7 +291,7 @@ namespace basecross {
 			}
 			float px = (float)x / (float)context.m_SizeX;
 			float py = (float)y / (float)context.m_SizeY;
-			Vec3 vertexPosition = Vec3((px - 0.5f),0.5f, -(py - 0.5f));
+			Vec3 vertexPosition = Vec3((px - 0.5f), 0.5f, -(py - 0.5f));
 
 			int vertexId = y * (int)context.m_SizeX + x;
 
@@ -335,7 +338,7 @@ namespace basecross {
 
 		// ワールド行列（向き）を作る
 		XMMATRIX mat = XMMatrixInverse(nullptr, XMMatrixLookToLH(XMVectorZero(), direction, up));
-		
+
 		// クォータニオンに変換
 		quaternion = (Quat)XMQuaternionRotationMatrix(mat);
 
@@ -345,7 +348,7 @@ namespace basecross {
 		world.transpose();
 		//行列の定義
 		bsm::Mat4x4 ViewMat, ProjMat;
-		
+
 		//カメラを得る
 		auto CameraPtr = GetGameObject()->OnGetDrawCamera();
 		//ビューと射影行列を得る
@@ -407,7 +410,7 @@ namespace basecross {
 		m_RunningTask = 0;
 		for (size_t i = 0; i < numThread; i++)
 		{
-			m_Workers.emplace_back([this](){ Worker(); });
+			m_Workers.emplace_back([this]() { Worker(); });
 		}
 	}
 
@@ -448,13 +451,13 @@ namespace basecross {
 		}
 		m_Condition.notify_all();
 
-		for (auto& worker : m_Workers){
+		for (auto& worker : m_Workers) {
 			if (worker.joinable())
 				worker.join();
 		}
 	}
 
-	
+
 	void ThreadPool::Execute(function<void()> task) {
 		{
 			lock_guard lock(m_Mutex);
@@ -521,12 +524,12 @@ namespace basecross {
 	bool InkConnectChecker::IsConnectedSupplyToInk(const OBB& supplyOBB, const AABB& supplyAABB, const vector<TRIANGLE>& triangles) {
 		for (auto& triangle : triangles) {
 			if (!HitTest::AABB_AABB(supplyAABB, triangle.GetWrappedAABB(), Vec3(0.0f, 0.5f, 0.0f))) continue;
-			if (!HitTest::CollisionTestOBBTriangle(supplyOBB, triangle,Vec3(0.0f,0.5f,0.0f))) continue;
+			if (!HitTest::CollisionTestOBBTriangle(supplyOBB, triangle, Vec3(0.0f, 0.5f, 0.0f))) continue;
 			return true;
 		}
 		return false;
 	}
-	bool InkConnectChecker::IsConnectedInkToInk(const vector<TRIANGLE>& triangles,const AABB& inkAABB) {
+	bool InkConnectChecker::IsConnectedInkToInk(const vector<TRIANGLE>& triangles, const AABB& inkAABB) {
 		for (auto& weakCollision : m_TextureCollisions) {
 			auto collision = weakCollision.lock();
 			if (!collision) continue;
@@ -535,7 +538,7 @@ namespace basecross {
 			for (int i = 0; i < contourCount; i++) {
 				if (collision->IsElectrified(i)) continue;
 				const auto& otherInkAABB = collision->GetContourAABB(i);
-				if (!HitTest::AABB_AABB(inkAABB, otherInkAABB,Vec3(0.05f,0.5f,0.05f))) continue;
+				if (!HitTest::AABB_AABB(inkAABB, otherInkAABB, Vec3(0.05f, 0.5f, 0.05f))) continue;
 
 				const auto& otherTriangles = collision->GetWorldTriangles(i);
 				bool isConnected = false;
@@ -553,7 +556,7 @@ namespace basecross {
 					collision->SetElectricfield(i);
 					IsConnectedInkToInk(otherTriangles, otherInkAABB);
 				}
-				
+
 			}
 		}
 		for (auto& weakPort : m_Ports) {
@@ -628,7 +631,7 @@ namespace basecross {
 		return result;
 	}
 
-	void TextureWriter::Write(const wstring& filename,ID3D11Texture2D* texture) {
+	void TextureWriter::Write(const wstring& filename, ID3D11Texture2D* texture) {
 		auto dev = App::GetApp()->GetDeviceResources()->GetD3DDevice();
 		auto devContext = App::GetApp()->GetDeviceResources()->GetD3DDeviceContext();
 
