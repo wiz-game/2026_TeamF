@@ -196,7 +196,7 @@ namespace basecross {
 			moveFloorX_2.limitDist = 6.0f;		//移動上限
 			moveFloorX_2.port = MoveFoor_port;	//portの指定
 
-			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0), Vec3(-3.0f, -0.5f, 8.5f), moveFloorX_2);
+			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0), Vec3(-3.0f, -0.5f, 8.5f), moveFloorX_2,L"");
 
 			MoveFloorDesc moveFloorX_3;
 			moveFloorX_3.axis = MoveAxis::X;	//移動する軸の指定
@@ -204,7 +204,7 @@ namespace basecross {
 			moveFloorX_3.limitDist = -6.0f;		//移動上限
 			moveFloorX_3.port = MoveFoor_port;	//portの指定
 
-			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0), Vec3(3.0f, -0.5f, 10.5f), moveFloorX_3);
+			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0), Vec3(3.0f, -0.5f, 10.5f), moveFloorX_3, L"");
 
 			MoveFloorDesc moveFloorX_4;
 			moveFloorX_4.axis = MoveAxis::X;	//移動する軸の指定
@@ -212,7 +212,7 @@ namespace basecross {
 			moveFloorX_4.limitDist = 6.0f;		//移動上限
 			moveFloorX_4.port = MoveFoor_port;	//portの指定
 
-			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0), Vec3(-3.0f, -0.5f, 12.5f), moveFloorX_4);
+			AddGameObject<MoveFloor>(Vec3(2.0f, 0.1f, 2.0f), Vec3(0), Vec3(-3.0f, -0.5f, 12.5f), moveFloorX_4, L"");
 
 			auto UISprite = AddGameObject<Sprite>(L"BUTTON_AB", Vec3(630, -380, 0), Vec2(250, 200), Anchor::BottomRight);
 			auto inkprite = AddGameObject<Sprite>(L"INK_MOZI", Vec3(-550, 380, 0), Vec2(100, 30), Anchor::Center);

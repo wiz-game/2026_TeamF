@@ -62,6 +62,8 @@ namespace basecross {
 		//BGM再生
 		//SoundManager::Get().PlayBGM(L"GAMESTAGE_BGM", 1.0f /*m_BGMVolume*/);
 
+		//デフォルトインク登録
+		App::GetApp()->RegisterTexture(L"DEFAULT_INK_TEST", texPath + L"Ink/DefaultInk_Stage0_Floor-4.png");
 
 		CreateViewLight();
 		StageDateRoad(m_StageNum);
@@ -279,6 +281,16 @@ namespace basecross {
 		params.Rot.x = rotParams->At<JsonNumber>(L"x")->GetFloatValue();
 		params.Rot.y = rotParams->At<JsonNumber>(L"y")->GetFloatValue();
 		params.Rot.z = rotParams->At<JsonNumber>(L"z")->GetFloatValue();
+
+		auto childObjectData = json.At<JsonObject>(L"childObjectData");
+		auto inkParams = childObjectData->At<JsonString>(L"FloorInk");
+		if (inkParams) {
+			params.DefaultInk = inkParams->GetValue();
+		}
+		else {
+			params.DefaultInk = L"";
+		}
+		
 	}
 
 	GameStageBase::STRUCT_BaseParams GameStageBase::StaticParams(JsonObject& json)
@@ -407,7 +419,7 @@ namespace basecross {
 		default:
 			break;
 		case ENUM_ObjType::T_Floor:
-			AddGameObject<Floor>(params.Scale, params.Rot, params.Pos);
+			AddGameObject<Floor>(params.Scale, params.Rot, params.Pos,params.DefaultInk);
 			break;
 		case ENUM_ObjType::T_Box:
 			//AddGameObject<MoveObj>(params.Scale, params.Rot, params.Pos);
@@ -459,7 +471,7 @@ namespace basecross {
 			desc.port = Map_Ports[params.PortID];
 		}
 
-		AddGameObject<MoveFloor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, desc);
+		AddGameObject<MoveFloor>(params.StageObjParams.Scale, params.StageObjParams.Rot, params.StageObjParams.Pos, desc, params.StageObjParams.DefaultInk);
 	}
 
 	void GameStageBase::AddPowerSupplyObj(STRUCT_BaseParams params)
