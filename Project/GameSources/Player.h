@@ -49,6 +49,8 @@ class MoveFloor;
 
 		float m_inkTimer = 0.0f;
 		
+
+		float time;
 	public :
 
 		Player

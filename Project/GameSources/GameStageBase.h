@@ -46,6 +46,7 @@ namespace basecross {
 			Vec3 Pos;
 			Vec3 Rot;
 			Vec3 Scale;
+			wstring DefaultInk;
 		};
 
 		//Playerのパラメーター

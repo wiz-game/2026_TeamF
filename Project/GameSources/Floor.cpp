@@ -20,7 +20,18 @@ namespace basecross
 		m_scale(Scale)
 	{
 	}
-
+	Floor::Floor
+	(
+		const shared_ptr<Stage>& stage,
+		const Vec3& Scale,
+		const Vec3& rot,
+		const Vec3& Pos,
+		const wstring& inkTextureKey
+	) :
+		StageObjBase(stage, Scale, rot, Pos, L"Floor"),
+		m_pos(Pos),
+		m_scale(Scale), m_inkTexture(inkTextureKey)
+	{}
 	void Floor::OnCreate()
 	{
 		try
@@ -37,7 +48,12 @@ namespace basecross
 		//Drawコンポーネント
 		//m_draw = AddComponent<PNTStaticDraw>();
 		m_draw = AddComponent<InkDrawComp>();
-		m_draw->CreateTexture(m_scale.x, m_scale.z);
+		if (m_inkTexture.empty()) {
+			m_draw->CreateTexture(m_scale.x, m_scale.z);
+		}
+		else {
+			m_draw->CreateTexture(m_inkTexture);
+		}
 		//m_draw->CreateTexture(L"InkCollisionTest2");
 
 		//m_draw->SetBrushSize(0.3);
@@ -60,11 +76,13 @@ namespace basecross
 		auto coll = AddComponent<CollisionObb>();
 		coll->SetFixed(true);
 
-		AddComponent<TextureCollision>();
+		auto col = AddComponent<TextureCollision>();
+		AddTag(L"Ground");
 	}
 
 	void Floor::OnUpdate()
 	{
-
+		auto position = m_trans->GetPosition();
+		int checker = 0;
 	}
 }
