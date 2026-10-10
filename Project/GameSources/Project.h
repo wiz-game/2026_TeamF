@@ -63,3 +63,5 @@
 #include "EffectManager.h"
 
 #include "ObstacleSpring.h"
+
+#include "InkParticle.h"

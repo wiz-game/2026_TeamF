@@ -46,6 +46,8 @@ class MoveFloor;
 
 		float m_gravity;
 		bool m_isGround;
+
+		float m_inkTimer = 0.0f;
 		
 	public :
 
