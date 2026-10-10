@@ -130,7 +130,7 @@ namespace basecross{
 			PostEvent(0.0f, GetThis<Player>(), scene, L"ToGameOverStage");
 		}
 
-		float fps = 1.0f / App::GetApp()->GetElapsedTime();
+		//float fps = 1.0f / App::GetApp()->GetElapsedTime();
 
 		auto device = App::GetApp()->GetInputDevice();
 		auto pad = device.GetControlerVec()[0];
