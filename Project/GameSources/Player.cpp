@@ -129,16 +129,52 @@ namespace basecross{
 		{
 			PostEvent(0.0f, GetThis<Player>(), scene, L"ToGameOverStage");
 		}
-		
-	//	scene->SetDebugString(L"PlayerPos:" + std::to_wstring(m_pos.x) + L", " + std::to_wstring(m_pos.y) + L", " + std::to_wstring(m_pos.z)
-	//		+ L"\n"
-	//		+ L"ink残量 : " + std::to_wstring(m_ink)
-	//		+ L"\n"
-	//		+ L"isGround : " + (m_isGround ? L"true" : L"false")
-	//		+ L"\n"
-	//		+ L" m_FloorDecision : " + (m_floorDecision ? L"Valid" : L"null")
-	//		+ L"\n"
-	//		+ L"FPS : " + std::to_wstring(fps));
+
+		float fps = 1.0f / App::GetApp()->GetElapsedTime();
+
+		auto device = App::GetApp()->GetInputDevice();
+		auto pad = device.GetControlerVec()[0];
+		auto key = device.GetKeyState();
+
+		bool isPushA = (pad.wButtons & XINPUT_GAMEPAD_A) || key.m_bPushKeyTbl[' '];
+
+		//Aボタンを押していて　地面に接地している場合のみ
+		if (isPushA && m_ink > 0 && m_isGround)
+		{
+			m_inkTimer += App::GetApp()->GetElapsedTime();
+
+			// スティック入力があるかどうか判定（OnMove の stickL の長さ等で判定できます）
+			// ここでは stickL や m_velocity が動いているかを見ます
+			Vec3 stickL(pad.fThumbLX, 0.0f, pad.fThumbLY);
+
+			while (m_inkTimer >= 0.1f)
+			{
+				m_inkTimer -= 0.1f;
+
+				//インクのパーティクルを生成する位置
+				Vec3 emitPos = Vec3(m_pos.x, m_pos.y - m_radius * 0.8f, m_pos.z);
+				Vec3 reverseDir = Vec3(0, 0, 0);
+
+				if (stickL.length() > 0.1f)
+				{
+					//移動方向と反対の方向
+					reverseDir = -m_forward;
+					reverseDir.y = 0.0f;
+				}
+				else
+				{
+					//スティック入力がない場合は全方向ランダムに飛ばす
+					reverseDir.x = (float)rand() / RAND_MAX * 2.0f - 1.0f;
+					reverseDir.z = (float)rand() / RAND_MAX * 2.0f - 1.0f;
+					reverseDir.y = 0.0f;
+
+				}
+
+				reverseDir.normalize();
+
+				GetStage()->AddGameObject<InkParticle>(emitPos, reverseDir);
+			}
+		}
 	}
 
 	void Player::OnUpdate2()
@@ -160,6 +196,7 @@ namespace basecross{
 		if (m_MoveSound) {
 			SoundManager::Get().StopLoopSE(m_MoveSound);
 		}
+
 	}
 	void Player::OnMove()
 	{
