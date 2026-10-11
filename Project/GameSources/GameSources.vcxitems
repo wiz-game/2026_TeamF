@@ -26,6 +26,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DXModelResource.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Electrified.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkParticle.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MoveObj.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Floor.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FloorDecision.h" />
@@ -110,6 +111,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)DXModelResource.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Electrified.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkParticle.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MoveObj.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Floor.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FloorDecision.cpp" />

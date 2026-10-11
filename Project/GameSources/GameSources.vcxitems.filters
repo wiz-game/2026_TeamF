@@ -225,6 +225,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)DrEnemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)InkParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Singleton.h" />
@@ -413,6 +414,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DrEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InkParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Pri2Tri">
